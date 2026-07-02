@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindSDL — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindSDL.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindSDL_gfx" href="FindSDL_gfx.html" />
+    <link rel="prev" title="FindRuby" href="FindRuby.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindSDL_gfx.html" title="FindSDL_gfx" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindRuby.html" title="FindRuby" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindSDL.html">FindSDL</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findsdl">
+<span id="module:FindSDL"></span><h1>FindSDL<a class="headerlink" href="FindSDL.html#findsdl" title="链接到此标题">¶</a></h1>
+<p>查找 SDL (Simple DirectMedia Layer) 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>SDL 是一个跨平台库，用于开发多媒体软件，例如游戏和模拟器。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此模块专门用于 SDL 1 版本。从 2 版本开始，SDL 在通过 CMake 构建时提供了一个 CMake 软件包配置文件，应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2)</span></code> 来查找。同样，SDL 3 版本可以使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL3)</span></code> 来查找。这些较新的版本提供了单独的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，封装了使用要求。有关更多信息，请参考官方 SDL 文档。</p>
+</div>
+<p>请注意，SDL 头文件的包含路径在近期的 SDL 1 版本中已从 <code class="docutils literal notranslate"><span class="pre">SDL/SDL.h</span></code> 更改为简单的 <code class="docutils literal notranslate"><span class="pre">SDL.h</span></code>。此更改符合 SDL 使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">"SDL.h"</span></code> 以实现可移植性的约定，因为并非所有系统都将头文件安装在 <code class="docutils literal notranslate"><span class="pre">SDL/</span></code> 子目录中（例如 FreeBSD）。</p>
+<p>当针对 macOS 并使用 SDL 框架时，请确保在项目中同时包含 <code class="docutils literal notranslate"><span class="pre">SDLmain.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SDLmain.m</span></code>。对于其他平台，<code class="docutils literal notranslate"><span class="pre">SDLmain</span></code> 库通常使用 <code class="docutils literal notranslate"><span class="pre">-lSDLmain</span></code> 进行链接，此模块将尝试自动定位它。此外，对于 macOS，此模块将根据需要添加 <code class="docutils literal notranslate"><span class="pre">-framework</span> <span class="pre">Cocoa</span></code> 标志。</p>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindSDL.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL::SDL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装 SDL 库使用要求的目标，如果找到 SDL，则可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindSDL.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）SDL。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>包含所找到 SDL 版本的易读字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_VERSION_MAJOR</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>所找到 SDL 的主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_VERSION_MINOR</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>所找到 SDL 的次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_VERSION_PATCH</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>所找到 SDL 的修订版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_INCLUDE_DIRS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>使用 SDL 所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_LIBRARIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>使用 SDL 时需要链接的库。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindSDL.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>可以有选择地设置这些变量以帮助此模块查找正确的文件</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_INCLUDE_DIR</span></code></dt><dd><p>包含 <code class="docutils literal notranslate"><span class="pre">SDL.h</span></code> 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code></dt><dd><p>包含 SDL 库路径以及使用 SDL 时需要链接的库的列表。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindSDL.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_BUILDING_LIBRARY</span></code></dt><dd><p>当设置为布尔值 true 时，<code class="docutils literal notranslate"><span class="pre">SDL_main</span></code> 库将从链接中排除，因为它在构建 SDL 库本身时不需要（只有应用程序需要 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数）。如果未设置，该模块会假定正在构建应用程序，并尝试定位并在返回的 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 变量中包含适当的 <code class="docutils literal notranslate"><span class="pre">SDL_main</span></code> 链接标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SDLDIR</span></code></dt><dd><p>环境变量，可用于帮助定位安装在自定义位置的 SDL 库。它应指向配置、构建和安装 SDL 库时使用的安装目标：<code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--prefix=$SDLDIR</span></code>。</p>
+<p>在 macOS 上，设置此变量将优先选择框架版本（如果找到）。在这种情况下，需要手动更改 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 的缓存值以覆盖此选择，或者设置 <span class="target" id="index-0-variable:CMAKE_INCLUDE_PATH"></span><a class="reference internal" href="../variable/CMAKE_INCLUDE_PATH.html#variable:CMAKE_INCLUDE_PATH" title="CMAKE_INCLUDE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INCLUDE_PATH</span></code></a> 变量来修改搜索路径。</p>
+</dd>
+</dl>
+</section>
+<section id="troubleshooting">
+<h2>故障排查<a class="headerlink" href="FindSDL.html#troubleshooting" title="链接到此标题">¶</a></h2>
+<p>如果未能自动找到 SDL 库，则 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY_TEMP</span></code> 变量可能为空，且 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 将不会被设置。这通常意味着 CMake 无法定位 SDL 库（例如 <code class="docutils literal notranslate"><span class="pre">SDL.dll</span></code>, <code class="docutils literal notranslate"><span class="pre">libSDL.so</span></code>, <code class="docutils literal notranslate"><span class="pre">SDL.framework</span></code> 等）。要解决此问题，请手动将 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY_TEMP</span></code> 设置为正确路径并重新配置项目。同样，如果 <code class="docutils literal notranslate"><span class="pre">SDLMAIN_LIBRARY</span></code> 未设置，也可能需要手动指定。这些变量用于构建最终的 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 值。如果它们未设置，<code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 将保持未定义状态。</p>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindSDL.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SDL_VERSION_STRING</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.19 版本弃用：</span>已被同值的 <code class="docutils literal notranslate"><span class="pre">SDL_VERSION</span></code> 取代。</p>
+</div>
+<p>如果找到，包含 SDL 版本的易读字符串。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindSDL.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 SDL 库并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL</span><span class="o">::</span><span class="no">SDL</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>使用 SDL 2 版本时，上游包直接提供 <code class="docutils literal notranslate"><span class="pre">SDL2::SDL2</span></code> 导入目标。它可以在项目中直接使用，而无需使用此模块。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL2</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL2</span><span class="o">::</span><span class="no">SDL2</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>同样，对于 SDL 3 版本：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL3</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL3</span><span class="o">::</span><span class="no">SDL3</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindSDL.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-module:FindSDL_gfx"></span><a class="reference internal" href="FindSDL_gfx.html#module:FindSDL_gfx" title="FindSDL_gfx"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_gfx</span></code></a> 模块用于查找 SDL_gfx 库。</p></li>
+<li><p><span class="target" id="index-0-module:FindSDL_image"></span><a class="reference internal" href="FindSDL_image.html#module:FindSDL_image" title="FindSDL_image"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_image</span></code></a> 模块用于查找 SDL_image 库。</p></li>
+<li><p><span class="target" id="index-0-module:FindSDL_mixer"></span><a class="reference internal" href="FindSDL_mixer.html#module:FindSDL_mixer" title="FindSDL_mixer"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_mixer</span></code></a> 模块用于查找 SDL_mixer 库。</p></li>
+<li><p><span class="target" id="index-0-module:FindSDL_net"></span><a class="reference internal" href="FindSDL_net.html#module:FindSDL_net" title="FindSDL_net"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_net</span></code></a> 模块用于查找 SDL_net 库。</p></li>
+<li><p><span class="target" id="index-0-module:FindSDL_sound"></span><a class="reference internal" href="FindSDL_sound.html#module:FindSDL_sound" title="FindSDL_sound"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_sound</span></code></a> 模块用于查找 SDL_sound 库。</p></li>
+<li><p><span class="target" id="index-0-module:FindSDL_ttf"></span><a class="reference internal" href="FindSDL_ttf.html#module:FindSDL_ttf" title="FindSDL_ttf"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindSDL_ttf</span></code></a> 模块用于查找 SDL_ttf 库。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindSDL.html#">FindSDL</a><ul>
+<li><a class="reference internal" href="FindSDL.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindSDL.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindSDL.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindSDL.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindSDL.html#troubleshooting">故障排查</a></li>
+<li><a class="reference internal" href="FindSDL.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindSDL.html#examples">示例</a></li>
+<li><a class="reference internal" href="FindSDL.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindRuby.html" title="上一章">FindRuby</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindSDL_gfx.html" title="下一章">FindSDL_gfx</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindSDL.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindSDL_gfx.html" title="FindSDL_gfx">下一页</a> |</li>
+        <li class="right">
+          <a href="FindRuby.html" title="FindRuby">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindSDL.html">FindSDL</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

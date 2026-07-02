@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>load_cache — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="load_cache.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="macro" href="macro.html" />
+    <link rel="prev" title="list" href="list.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="macro.html" title="macro" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="list.html" title="list" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="load_cache.html">load_cache</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="load-cache">
+<span id="command:load_cache"></span><h1>load_cache<a class="headerlink" href="load_cache.html#load-cache" title="链接到此标题">¶</a></h1>
+<p>从另一个项目的 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 缓存文件中加载值。这对于依赖于在单独目录树中构建的另一个项目的项目非常有用。</p>
+<p>此命令有两种签名。推荐的签名是</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="read-with-prefix">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">load_cache(</span></span><span class="nv"><span class="pre">&lt;构建目录&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">READ_WITH_PREFIX</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;前缀&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;条目&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="load_cache.html#read-with-prefix" title="链接到此定义">¶</a></dt>
+<dd><p>从指定的 <code class="docutils literal notranslate"><span class="pre">&lt;构建目录&gt;</span></code> 构建目录加载缓存文件，并检索列出的缓存条目。检索到的值存储在本地变量中，其名称前面加上提供的 <code class="docutils literal notranslate"><span class="pre">&lt;前缀&gt;</span></code>。这仅读取缓存值；它不会创建或修改本地项目的缓存中的条目。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">READ_WITH_PREFIX</span> <span class="pre">&lt;前缀&gt;</span></code></dt><dd><p>对于每个缓存 <code class="docutils literal notranslate"><span class="pre">&lt;条目&gt;</span></code>，使用指定的 <code class="docutils literal notranslate"><span class="pre">&lt;前缀&gt;</span></code> 加上条目名称创建一个本地变量。</p>
+</dd>
+</dl>
+<p>此签名也可以在 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-P"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-P</span></code></a> 脚本模式中使用。</p>
+</dd></dl>
+
+<p>此命令的以下签名强烈不推荐使用，但为了向后兼容而提供</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="raw">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">load_cache(</span></span><span class="nv"><span class="pre">&lt;构建目录&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">EXCLUDE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;条目&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">INCLUDE_INTERNALS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;条目&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="load_cache.html#raw" title="链接到此定义">¶</a></dt>
+<dd><p>此形式从指定的 <code class="docutils literal notranslate"><span class="pre">&lt;构建目录&gt;</span></code> 构建目录加载缓存文件，并将所有非内部缓存条目作为内部缓存变量导入到本地项目的缓存中。默认情况下，仅导入非内部条目，除非使用 <code class="docutils literal notranslate"><span class="pre">INCLUDE_INTERNALS</span></code> 选项。</p>
+<p>选项包括</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE</span> <span class="pre">&lt;条目&gt;...</span></code></dt><dd><p>可以使用此选项排除在导入值时给定的非内部缓存条目列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_INTERNALS</span> <span class="pre">&lt;条目&gt;...</span></code></dt><dd><p>可以使用此选项提供要包含在非内部缓存条目之外的内部缓存条目列表。</p>
+</dd>
+</dl>
+<p>此签名只能在 CMake 项目中使用。不支持脚本模式。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>与其加载外部项目的缓存文件并手动访问变量，不如使用外部项目中的 <span class="target" id="index-0-command:export"></span><a class="reference internal" href="export.html#command:export" title="export"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export()</span></code></a> 命令（如果可用）来使用更强大和方便的方法。这允许项目以结构化和可维护的方式提供其目标、配置或功能，从而简化集成并减少出错的可能性。</p>
+</div>
+<section id="examples">
+<h2>示例<a class="headerlink" href="load_cache.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>从另一个项目读取特定的缓存变量并将它们存储为本地变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">load_cache(</span>
+<span class="w">  </span><span class="na">path/to/other-project/build-dir</span>
+<span class="w">  </span><span class="no">READ_WITH_PREFIX</span><span class="w"> </span><span class="nb">prefix_</span>
+<span class="w">  </span><span class="no">OTHER_PROJECT_CACHE_VAR_1</span>
+<span class="w">  </span><span class="no">OTHER_PROJECT_CACHE_VAR_2</span>
+<span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${prefix_OTHER_PROJECT_CACHE_VAR_1"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${prefix_OTHER_PROJECT_CACHE_VAR_2"</span><span class="nf">)</span>
+<span class="c"># Outputs:</span>
+<span class="c"># -- some-value...</span>
+<span class="c"># -- another-value...</span>
+</pre></div>
+</div>
+<p>使用过时的签名从另一个项目读取所有非内部缓存条目并将它们存储为内部缓存变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">load_cache(</span><span class="na">path/to/other-project/build-dir</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${OTHER_PROJECT_CACHE_VAR_1"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${OTHER_PROJECT_CACHE_VAR_2"</span><span class="nf">)</span>
+<span class="c"># Outputs:</span>
+<span class="c"># -- some-value...</span>
+<span class="c"># -- another-value...</span>
+</pre></div>
+</div>
+<p>使用过时的签名排除特定的非内部缓存条目并包含内部条目</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">load_cache(</span>
+<span class="w">  </span><span class="na">path/to/other-project/build-dir</span>
+<span class="w">  </span><span class="no">EXCLUDE</span><span class="w"> </span><span class="no">OTHER_PROJECT_CACHE_VAR_2</span>
+<span class="w">  </span><span class="no">INCLUDE_INTERNALS</span><span class="w"> </span><span class="no">OTHER_PROJECT_INTERNAL_CACHE_VAR</span>
+<span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${OTHER_PROJECT_CACHE_VAR_1"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${OTHER_PROJECT_CACHE_VAR_2"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${OTHER_PROJECT_INTERNAL_CACHE_VAR}"</span><span class="nf">)</span>
+<span class="c"># Outputs:</span>
+<span class="c"># -- some-value...</span>
+<span class="c"># --</span>
+<span class="c"># -- some-internal-value...</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="load_cache.html#">load_cache</a><ul>
+<li><a class="reference internal" href="load_cache.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="list.html" title="上一章">list</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="macro.html" title="下一章">macro</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/load_cache.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="macro.html" title="macro">下一页</a> |</li>
+        <li class="right">
+          <a href="list.html" title="list">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="load_cache.html">load_cache</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

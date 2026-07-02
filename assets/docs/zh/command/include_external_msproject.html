@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>include_external_msproject — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="include_external_msproject.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="include_regular_expression" href="include_regular_expression.html" />
+    <link rel="prev" title="include_directories" href="include_directories.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="include_regular_expression.html" title="include_regular_expression" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="include_directories.html" title="include_directories" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="include_external_msproject.html">include_external_msproject</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="include-external-msproject">
+<span id="command:include_external_msproject"></span><h1>include_external_msproject<a class="headerlink" href="include_external_msproject.html#include-external-msproject" title="链接到此标题">¶</a></h1>
+<p>在由 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 生成的解决方案文件中包含外部 Microsoft 项目文件。在其他生成器上会被忽略。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include_external_msproject(</span><span class="nb">projectname</span><span class="w"> </span><span class="nb">location</span>
+<span class="w">                           </span><span class="p">[</span><span class="no">TYPE</span><span class="w"> </span><span class="nb">projectTypeGUID</span><span class="p">]</span>
+<span class="w">                           </span><span class="p">[</span><span class="no">GUID</span><span class="w"> </span><span class="nb">projectGUID</span><span class="p">]</span>
+<span class="w">                           </span><span class="p">[</span><span class="no">PLATFORM</span><span class="w"> </span><span class="nb">platformName</span><span class="p">]</span>
+<span class="w">                           </span><span class="nb">dep1</span><span class="w"> </span><span class="nb">dep2</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将外部 Microsoft 项目包含到生成的解决方案文件中。这将创建一个名为 <code class="docutils literal notranslate"><span class="pre">[projectname]</span></code> 的目标。这可用于 <span class="target" id="index-0-command:add_dependencies"></span><a class="reference internal" href="add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a> 命令，使其他内容依赖于外部项目。</p>
+<p><code class="docutils literal notranslate"><span class="pre">TYPE</span></code>、<code class="docutils literal notranslate"><span class="pre">GUID</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PLATFORM</span></code> 是可选参数，允许指定项目类型、项目 ID（<code class="docutils literal notranslate"><span class="pre">GUID</span></code>）和目标平台名称。这对于需要其他于默认值（例如 WIX 项目）的项目非常有用。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.9 版本新增： </span>如果导入的项目具有与当前项目不同的配置名称，请设置 <span class="target" id="index-0-prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/MAP_IMPORTED_CONFIG_CONFIG.html#prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>" title="MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a> 目标属性以指定映射。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="include_directories.html" title="上一章">include_directories</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="include_regular_expression.html" title="下一章">include_regular_expression</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/include_external_msproject.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="include_regular_expression.html" title="include_regular_expression">下一页</a> |</li>
+        <li class="right">
+          <a href="include_directories.html" title="include_directories">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="include_external_msproject.html">include_external_msproject</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

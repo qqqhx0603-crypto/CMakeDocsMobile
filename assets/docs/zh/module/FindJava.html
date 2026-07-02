@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindJava — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindJava.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindJNI" href="FindJNI.html" />
+    <link rel="prev" title="FindJasper" href="FindJasper.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindJNI.html" title="FindJNI" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindJasper.html" title="FindJasper" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindJava.html">FindJava</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findjava">
+<span id="module:FindJava"></span><h1>FindJava<a class="headerlink" href="FindJava.html#findjava" title="链接到此标题">¶</a></h1>
+<p>查找 Java 安装，并确定其运行时工具和开发组件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增：</span>支持 Java 9+ 版本的解析。</p>
+</div>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindJava.html#components" title="此标题的链接">¶</a></h2>
+<p>此模块支持可选组件，这些组件可以通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令指定</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持的组件包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">运行时</span></code></dt><dd><p>查找用于执行 Java 字节码应用程序的 Java 运行时环境。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">开发</span></code></dt><dd><p>查找开发工具（<code class="docutils literal notranslate"><span class="pre">java</span></code>、<code class="docutils literal notranslate"><span class="pre">javac</span></code>、<code class="docutils literal notranslate"><span class="pre">javah</span></code>、<code class="docutils literal notranslate"><span class="pre">jar</span></code> 和 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code>）。指定此组件也意味着 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IdlJ</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>查找 Java 接口描述语言 (IDL) 编译器。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JarSigner</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>查找 Java 归档 (JAR) 文件的签名和验证工具。</p>
+</dd>
+</dl>
+<p>如果没有指定任何组件，该模块默认搜索 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件。</p>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindJava.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>布尔值，指示是否找到（请求版本的）Java 及其所有指定的组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_&lt;component&gt;_FOUND</span></code></dt><dd><p>布尔值，指示是否找到 <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION</span></code></dt><dd><p>找到的 Java 版本。其格式为：<code class="docutils literal notranslate"><span class="pre">&lt;major&gt;[.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]]]</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION_MAJOR</span></code></dt><dd><p>找到的 Java 的主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION_MINOR</span></code></dt><dd><p>找到的 Java 的次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION_PATCH</span></code></dt><dd><p>找到的 Java 的补丁版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION_TWEAK</span></code></dt><dd><p>找到的 Java 的修订版本号（下划线字符 <code class="docutils literal notranslate"><span class="pre">_</span></code> 后的部分）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_VERSION_STRING</span></code></dt><dd><p>找到的 Java 版本，例如 <code class="docutils literal notranslate"><span class="pre">1.6.0_12</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">Java_VERSION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Java_VERSION_STRING</span></code> 不保证相同。例如，某些 Java 版本可能会返回：<code class="docutils literal notranslate"><span class="pre">Java_VERSION_STRING</span> <span class="pre">=</span> <span class="pre">1.8.0_17</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Java_VERSION</span> <span class="pre">=</span> <span class="pre">1.8.0.17</span></code>。</p>
+<p>另一个例子是 Java OEM，<code class="docutils literal notranslate"><span class="pre">Java_VERSION_STRING</span> <span class="pre">=</span> <span class="pre">1.8.0-oem</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Java_VERSION</span> <span class="pre">=</span> <span class="pre">1.8.0</span></code>。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindJava.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JAVA_EXECUTABLE</span></code></dt><dd><p>Java 运行时的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JAVAC_EXECUTABLE</span></code></dt><dd><p>Java 编译器的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JAVAH_EXECUTABLE</span></code></dt><dd><p>Java 头文件生成器的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JAVADOC_EXECUTABLE</span></code></dt><dd><p>Java 文档生成器的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_IDLJ_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>Java idl 编译器的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JAR_EXECUTABLE</span></code></dt><dd><p>Java 归档工具的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Java_JARSIGNER_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>Java jar 签名工具的完整路径。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindJava.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">JAVA_HOME</span></code></dt><dd><p>调用者可以设置此变量以显式指定 Java 的安装目录。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindJava.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 Java</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找具有指定最低版本的 Java</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="w"> </span><span class="m">1.8</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 Java 并使其成为必需项（如果未找到 Java，则处理将停止并显示错误消息）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="w"> </span><span class="m">1.8</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>指定需要查找的 Java 组件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Java</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Development</span><span class="w"> </span><span class="nb">JarSigner</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindJava.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>用于查找 Java Native Interface (JNI) 的 <span class="target" id="index-0-module:FindJNI"></span><a class="reference internal" href="FindJNI.html#module:FindJNI" title="FindJNI"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindJNI</span></code></a> 模块。</p></li>
+<li><p>用于在 CMake 中使用 Java 的 <span class="target" id="index-0-module:UseJava"></span><a class="reference internal" href="UseJava.html#module:UseJava" title="UseJava"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">UseJava</span></code></a> 模块。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindJava.html#">FindJava</a><ul>
+<li><a class="reference internal" href="FindJava.html#components">组件</a></li>
+<li><a class="reference internal" href="FindJava.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindJava.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindJava.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindJava.html#examples">示例</a></li>
+<li><a class="reference internal" href="FindJava.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindJasper.html" title="上一章">FindJasper</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindJNI.html" title="下一章">FindJNI</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindJava.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindJNI.html" title="FindJNI">下一页</a> |</li>
+        <li class="right">
+          <a href="FindJasper.html" title="FindJasper">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindJava.html">FindJava</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

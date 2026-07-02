@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_MESSAGE_CONTEXT — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_MESSAGE_CONTEXT.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_MESSAGE_CONTEXT_SHOW" href="CMAKE_MESSAGE_CONTEXT_SHOW.html" />
+    <link rel="prev" title="CMAKE_MAXIMUM_RECURSION_DEPTH" href="CMAKE_MAXIMUM_RECURSION_DEPTH.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_MESSAGE_CONTEXT_SHOW.html" title="CMAKE_MESSAGE_CONTEXT_SHOW" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_MAXIMUM_RECURSION_DEPTH.html" title="CMAKE_MAXIMUM_RECURSION_DEPTH" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_MESSAGE_CONTEXT.html">CMAKE_MESSAGE_CONTEXT</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-message-context">
+<span id="variable:CMAKE_MESSAGE_CONTEXT"></span><h1>CMAKE_MESSAGE_CONTEXT<a class="headerlink" href="CMAKE_MESSAGE_CONTEXT.html#cmake-message-context" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>当通过 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-log-context"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--log-context</span></code></a> 命令行选项或 <span class="target" id="index-0-variable:CMAKE_MESSAGE_CONTEXT_SHOW"></span><a class="reference internal" href="CMAKE_MESSAGE_CONTEXT_SHOW.html#variable:CMAKE_MESSAGE_CONTEXT_SHOW" title="CMAKE_MESSAGE_CONTEXT_SHOW"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_CONTEXT_SHOW</span></code></a> 变量启用时，<span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a> 命令会将 <code class="docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_CONTEXT</span></code> 列表转换为用点分隔的字符串，并用方括号括起来，然后将其作为前缀添加到日志级别为 <code class="docutils literal notranslate"><span class="pre">NOTICE</span></code> 及以下的每行消息中。</p>
+<p>为了使日志上下文有效工作，项目通常应该 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 和 <code class="docutils literal notranslate"><span class="pre">POP_BACK</span></code> 项目到 <code class="docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_CONTEXT</span></code> 的当前值，而不是替换它。项目不应假定源树顶部的消息上下文为空，因为在某些情况下上下文可能已经设置（例如，分层项目）。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>有效的上下文名称仅限于可以用作 CMake 变量名称的任何内容。所有以下划线或字符串 <code class="docutils literal notranslate"><span class="pre">cmake_</span></code> 开头的名称也保留供 CMake 使用，不应由项目使用。</p>
+</div>
+<p>示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">bar</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="w"> </span><span class="s">"bar"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">VERBOSE</span><span class="w"> </span><span class="s">"bar VERBOSE message"</span><span class="nf">)</span>
+<span class="nf">endfunction()</span>
+
+<span class="nf">function(</span><span class="nb">baz</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="w"> </span><span class="s">"baz"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">DEBUG</span><span class="w"> </span><span class="s">"baz DEBUG message"</span><span class="nf">)</span>
+<span class="nf">endfunction()</span>
+
+<span class="nf">function(</span><span class="nb">foo</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="w"> </span><span class="s">"foo"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">bar()</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">TRACE</span><span class="w"> </span><span class="s">"foo TRACE message"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">baz()</span>
+<span class="nf">endfunction()</span>
+
+<span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="w"> </span><span class="s">"top"</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">VERBOSE</span><span class="w"> </span><span class="s">"Before `foo`"</span><span class="nf">)</span>
+<span class="nf">foo()</span>
+<span class="nf">message(</span><span class="no">VERBOSE</span><span class="w"> </span><span class="s">"After `foo`"</span><span class="nf">)</span>
+
+<span class="nf">list(</span><span class="no">POP_BACK</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>结果如下</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- [top] Before `foo`
+-- [top.foo.bar] bar VERBOSE message
+-- [top.foo] foo TRACE message
+-- [top.foo.baz] baz DEBUG message
+-- [top] After `foo`
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_MAXIMUM_RECURSION_DEPTH.html" title="上一章">CMAKE_MAXIMUM_RECURSION_DEPTH</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_MESSAGE_CONTEXT_SHOW.html" title="下一章">CMAKE_MESSAGE_CONTEXT_SHOW</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_MESSAGE_CONTEXT.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_MESSAGE_CONTEXT_SHOW.html" title="CMAKE_MESSAGE_CONTEXT_SHOW">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_MAXIMUM_RECURSION_DEPTH.html" title="CMAKE_MAXIMUM_RECURSION_DEPTH">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_MESSAGE_CONTEXT.html">CMAKE_MESSAGE_CONTEXT</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FAIL_REGULAR_EXPRESSION — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FAIL_REGULAR_EXPRESSION.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FIXTURES_CLEANUP" href="FIXTURES_CLEANUP.html" />
+    <link rel="prev" title="ENVIRONMENT_MODIFICATION" href="ENVIRONMENT_MODIFICATION.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FIXTURES_CLEANUP.html" title="FIXTURES_CLEANUP" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ENVIRONMENT_MODIFICATION.html" title="ENVIRONMENT_MODIFICATION" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FAIL_REGULAR_EXPRESSION.html">FAIL_REGULAR_EXPRESSION</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fail-regular-expression">
+<span id="prop_test:FAIL_REGULAR_EXPRESSION"></span><h1>FAIL_REGULAR_EXPRESSION<a class="headerlink" href="FAIL_REGULAR_EXPRESSION.html#fail-regular-expression" title="链接到此标题">¶</a></h1>
+<p>如果测试输出（stdout 或 stderr）匹配此正则表达式，则测试将失败，无论进程退出代码如何。超过由 <span class="target" id="index-0-prop_test:TIMEOUT"></span><a class="reference internal" href="TIMEOUT.html#prop_test:TIMEOUT" title="TIMEOUT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">TIMEOUT</span></code></a> 指定的超时时间的测试，无论 <code class="docutils literal notranslate"><span class="pre">FAIL_REGULAR_EXPRESSION</span></code> 如何都会失败。任何非零返回值或系统级测试失败，包括段错误、信号中止或堆错误，即使正则表达式不匹配，也会导致测试失败。</p>
+<p>如果设置，如果输出匹配指定的正则表达式之一，则测试将失败。示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># test would pass, except for FAIL_REGULAR_EXPRESSION</span>
+<span class="nf">add_test(</span><span class="no">NAME</span><span class="w"> </span><span class="nb">mytest</span><span class="w"> </span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s">"Failed"</span><span class="nf">)</span>
+
+<span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">mytest</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">  </span><span class="no">FAIL_REGULAR_EXPRESSION</span><span class="w"> </span><span class="s">"[^a-z]Error;ERROR;Failed"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FAIL_REGULAR_EXPRESSION</span></code> 期望一个正则表达式列表。</p>
+<p>另请参阅 <span class="target" id="index-0-prop_test:PASS_REGULAR_EXPRESSION"></span><a class="reference internal" href="PASS_REGULAR_EXPRESSION.html#prop_test:PASS_REGULAR_EXPRESSION" title="PASS_REGULAR_EXPRESSION"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">PASS_REGULAR_EXPRESSION</span></code></a> 和 <span class="target" id="index-0-prop_test:SKIP_REGULAR_EXPRESSION"></span><a class="reference internal" href="SKIP_REGULAR_EXPRESSION.html#prop_test:SKIP_REGULAR_EXPRESSION" title="SKIP_REGULAR_EXPRESSION"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">SKIP_REGULAR_EXPRESSION</span></code></a> 测试属性。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ENVIRONMENT_MODIFICATION.html" title="上一章">ENVIRONMENT_MODIFICATION</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FIXTURES_CLEANUP.html" title="下一章">FIXTURES_CLEANUP</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_test/FAIL_REGULAR_EXPRESSION.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FIXTURES_CLEANUP.html" title="FIXTURES_CLEANUP">下一页</a> |</li>
+        <li class="right">
+          <a href="ENVIRONMENT_MODIFICATION.html" title="ENVIRONMENT_MODIFICATION">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FAIL_REGULAR_EXPRESSION.html">FAIL_REGULAR_EXPRESSION</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

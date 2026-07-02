@@ -1,0 +1,1501 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CPack RPM 生成器 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="rpm.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPack WIX Generator" href="wix.html" />
+    <link rel="prev" title="CPack productbuild Generator" href="productbuild.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="wix.html" title="CPack WIX Generator" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="productbuild.html" title="CPack productbuild Generator" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html" accesskey="U">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="rpm.html">CPack RPM 生成器</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cpack-rpm-generator">
+<span id="cpack_gen:CPack RPM Generator"></span><h1>CPack RPM 生成器<a class="headerlink" href="rpm.html#cpack-rpm-generator" title="链接至此标题">¶</a></h1>
+<p>内置的（二进制）CPack RPM 生成器（仅限 Unix）</p>
+<section id="variables-specific-to-cpack-rpm-generator">
+<h2>CPack RPM 生成器专用变量<a class="headerlink" href="rpm.html#variables-specific-to-cpack-rpm-generator" title="链接至此标题">¶</a></h2>
+<p>CPack RPM 生成器可用于使用 <span class="target" id="index-0-module:CPack"></span><a class="reference internal" href="../module/CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 创建 RPM 软件包。CPack RPM 生成器是一个 <span class="target" id="index-1-module:CPack"></span><a class="reference internal" href="../module/CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 生成器，因此它使用了 <span class="target" id="index-2-module:CPack"></span><a class="reference internal" href="../module/CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 所使用的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_XXX</span></code> 变量。</p>
+<p>CPack RPM 生成器具有由特定 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_XXX</span></code> 变量控制的特定功能。</p>
+<p><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_XXXX</span></code> 变量可用于获取<strong>组件特定</strong>的值。但请注意，<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 指的是以大写形式书写的<strong>分组名称</strong>。它可以是组件名称或组件组名称。通常，这些变量对应于 RPM spec 文件实体。有关 spec 文件的信息，请访问 <a class="reference external" href="https://rpm.org/documentation">https://rpm.org/documentation</a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.6 中变更：</span>变量中的 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 部分首选使用大写形式（例如，如果组件名为 <code class="docutils literal notranslate"><span class="pre">foo</span></code>，则使用 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_FOO_XXXX</span></code> 变量名格式），这与其他 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_&lt;COMPONENT&gt;_XXXX</span></code> 变量保持一致。为了向后兼容（CMake/CPack 3.5 及更低版本），对于旧版本 CMake/CPack 中定义的变量，仍然支持区分大小写的组件名称（例如，<code class="docutils literal notranslate"><span class="pre">fOo</span></code> 将用作 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_fOo_XXXX</span></code>），但这在将来添加的变量中无法保证。出于向后兼容性考虑，在同时存在大小写形式的变量时，区分大小写的组件变量会覆盖大写版本。</p>
+</div>
+<p>以下是一些 CPack RPM 生成器的维基资源，它们保留仅出于历史原因，现已不再维护，但可能仍有参考价值：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gitlab.kitware.com/cmake/community/-/wikis/doc/cpack/Configuration">https://gitlab.kitware.com/cmake/community/-/wikis/doc/cpack/Configuration</a></p></li>
+<li><p><a class="reference external" href="https://gitlab.kitware.com/cmake/community/-/wikis/doc/cpack/PackageGenerators#rpm-unix-only">https://gitlab.kitware.com/cmake/community/-/wikis/doc/cpack/PackageGenerators#rpm-unix-only</a></p></li>
+</ul>
+<p>CPack RPM 生成器特定变量列表</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_COMPONENT_INSTALL">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_COMPONENT_INSTALL</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_COMPONENT_INSTALL" title="链接至此定义">¶</a></dt>
+<dd><p>为 CPack RPM 生成器启用组件打包</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+<p>如果启用（<code class="docutils literal notranslate"><span class="pre">ON</span></code>），则生成多个包。默认情况下，生成一个包含所有组件文件的单个包。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_SUMMARY">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_SUMMARY</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_SUMMARY" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_SUMMARY">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_SUMMARY</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_SUMMARY" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包摘要。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY" title="CPACK_PACKAGE_DESCRIPTION_SUMMARY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_SUMMARY</span></code></a></p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.2 版本新增：</span>按组件划分的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_SUMMARY</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_NAME" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_NAME" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包名称。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-0-variable:CPACK_PACKAGE_NAME"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_NAME" title="CPACK_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_NAME</span></code></a></p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>按组件划分的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_NAME</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_FILE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_FILE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_FILE_NAME" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_FILE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_FILE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_FILE_NAME" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>软件包文件名。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">&lt;CPACK_PACKAGE_FILE_NAME&gt;[-&lt;component&gt;].rpm</span></code>，其中空格替换为 '-'</p>
+</dd>
+</dl>
+<p>此变量可设置为：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">RPM-DEFAULT</span></code></dt><dd><p>告诉 <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> 自动生成软件包文件名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;file-name&gt;[.rpm]</span></code></dt><dd><p>使用指定的文件名。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.29 中变更：</span>如果缺少 <code class="docutils literal notranslate"><span class="pre">.rpm</span></code> 后缀，将自动添加。此前必须显式添加后缀。</p>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>通过使用用户提供的 spec 文件，或者使用 rpm 宏扩展（例如用于生成 <code class="docutils literal notranslate"><span class="pre">debuginfo</span></code> 软件包），或者简单地通过使用多个组件，可以生成多个 rpm 文件（可能源自单个 spec 文件或多个 spec 文件，每个组件执行都会生成自己的 spec 文件）。在这种情况下，由于此变量设置或 spec 文件内容结构，可能会出现重复的文件名。重复的文件会被覆盖，打包人员有责任以防止此类错误的方式设置变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_MAIN_COMPONENT">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_MAIN_COMPONENT</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_MAIN_COMPONENT" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>不带组件后缀打包的主组件。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>此变量可以设置为任何组件或组名称，以便生成的组件或组 rpm 软件包在文件名和软件包名称中不带组件后缀。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_EPOCH">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_EPOCH</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_EPOCH" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>RPM 软件包的 epoch（纪元）</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>一个可选的数字，当更改版本控制方案或修复旧软件包版本号中的错误时应增加该数字。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_VERSION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_VERSION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_VERSION" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包版本。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION" title="CPACK_PACKAGE_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_ARCHITECTURE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_ARCHITECTURE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_ARCHITECTURE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_ARCHITECTURE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_ARCHITECTURE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_ARCHITECTURE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包架构。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-m</span></code> 输出的原生架构。</p>
+</dd>
+</dl>
+<p>如果您知道正在构建 <code class="docutils literal notranslate"><span class="pre">noarch</span></code> 软件包，可以将其设置为 <code class="docutils literal notranslate"><span class="pre">noarch</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增：</span>按组件划分的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_ARCHITECTURE</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_RELEASE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_RELEASE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_RELEASE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包发布版本。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>1</p>
+</dd>
+</dl>
+<p>这是 RPM 软件包本身的编号，即打包的版本，而不是内容的版本（参见 <span class="target" id="index-0-variable:CPACK_RPM_PACKAGE_VERSION"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_VERSION" title="CPACK_RPM_PACKAGE_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_VERSION</span></code></a>）。如果之前的打包有缺陷，或者您想在此处放入特定的 Linux 发行版编号，可以更改默认值。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>这是放入 RPM <code class="docutils literal notranslate"><span class="pre">Release:</span></code> 字段的字符串。某些发行版（例如 Fedora、CentOS）需要 <code class="docutils literal notranslate"><span class="pre">1%{?dist}</span></code> 格式，而不仅仅是一个数字。<code class="docutils literal notranslate"><span class="pre">%{?dist}</span></code> 部分可以通过设置 <span class="target" id="index-0-variable:CPACK_RPM_PACKAGE_RELEASE_DIST"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_RELEASE_DIST" title="CPACK_RPM_PACKAGE_RELEASE_DIST"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_RELEASE_DIST</span></code></a> 来添加。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_RELEASE_DIST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_RELEASE_DIST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_RELEASE_DIST" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>添加到 RPM <code class="docutils literal notranslate"><span class="pre">Release:</span></code> 字段的 dist 标签。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+<p>这是当前发行版报告的 <code class="docutils literal notranslate"><span class="pre">%{dist}</span></code> 标签，如果未设置 RPM 宏，则为空。如果设置了此变量，RPM <code class="docutils literal notranslate"><span class="pre">Release:</span></code> 字段值将设置为 <code class="docutils literal notranslate"><span class="pre">${CPACK_RPM_PACKAGE_RELEASE}%{?dist}</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_LICENSE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_LICENSE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_LICENSE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包许可策略。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>"unknown"（未知）</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_GROUP">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_GROUP</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_GROUP" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_GROUP">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_GROUP</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_GROUP" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包组。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>"unknown"（未知）</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>按组件划分的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_GROUP</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_VENDOR">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_VENDOR</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_VENDOR" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包供应商。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>如果设置了 CPACK_PACKAGE_VENDOR，则为该值，否则为 "unknown"</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_URL">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_URL</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_URL" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_URL">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_URL</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_URL" title="链接至此定义">¶</a></dt>
+<dd><p>项目 URL。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-0-variable:CMAKE_PROJECT_HOMEPAGE_URL"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_HOMEPAGE_URL.html#variable:CMAKE_PROJECT_HOMEPAGE_URL" title="CMAKE_PROJECT_HOMEPAGE_URL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_HOMEPAGE_URL</span></code></a></p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增：</span><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_HOMEPAGE_URL</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_DESCRIPTION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_DESCRIPTION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_DESCRIPTION" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_DESCRIPTION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_DESCRIPTION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_DESCRIPTION" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 软件包描述。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span class="target" id="index-0-variable:CPACK_COMPONENT_<compName>_DESCRIPTION"></span><a class="reference internal" href="../module/CPackComponent.html#variable:CPACK_COMPONENT_<compName>_DESCRIPTION" title="CPACK_COMPONENT_<compName>_DESCRIPTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_DESCRIPTION</span></code></a>（仅限基于组件的安装程序，如果已设置），</p></li>
+<li><p><span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION_FILE"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_FILE" title="CPACK_PACKAGE_DESCRIPTION_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></code></a>（如果已设置），或</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">无软件包描述可用</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.2 版本新增：</span>按组件划分的 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_DESCRIPTION</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_COMPRESSION_TYPE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_COMPRESSION_TYPE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_COMPRESSION_TYPE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 压缩类型。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>(系统默认)</p>
+</dd>
+</dl>
+<p>可用于覆盖构建 RPM 时使用的 RPM 压缩类型。例如，某些 Linux 发行版默认使用 <code class="docutils literal notranslate"><span class="pre">xz</span></code> 或 <code class="docutils literal notranslate"><span class="pre">zstd</span></code>。使用此变量，可以指定要使用的特定压缩类型。</p>
+<p>可能的值为</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">lzma</span></code></dt><dd><p>Lempel–Ziv–Markov 链算法</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xz</span></code></dt><dd><p>XZ Utils LZMA2 (Lempel–Ziv–Markov 链算法，第 2 版) 压缩</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bzip2</span></code></dt><dd><p>bzip2 Burrows–Wheeler 算法</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">gzip</span></code></dt><dd><p>GNU Gzip Deflate 压缩</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">zstd</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>Zstandard 压缩</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_AUTOREQ">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_AUTOREQ</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_AUTOREQ" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOREQ">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOREQ</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_AUTOREQ" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 autoreq 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于启用 (<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>) 或禁用 (<code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>) 共享库依赖项的自动检测。依赖项将被添加到 requires 列表中。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>默认情况下，rpm 生成器启用自动依赖项检测。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_AUTOPROV">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_AUTOPROV</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_AUTOPROV" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOPROV">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOPROV</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_AUTOPROV" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 autoprov 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于启用 (<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>) 或禁用 (<code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>) 软件包提供的共享库的自动列表。共享库将被添加到 provides 列表中。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>默认情况下，rpm 生成器启用自动 provides 检测。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_AUTOREQPROV">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_AUTOREQPROV</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_AUTOREQPROV" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOREQPROV">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_AUTOREQPROV</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_AUTOREQPROV" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 autoreqprov 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>该变量可同时启用/禁用 autoreq 和 autoprov。有关更多详细信息，请参阅 <span class="target" id="index-0-variable:CPACK_RPM_PACKAGE_AUTOREQ"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_AUTOREQ" title="CPACK_RPM_PACKAGE_AUTOREQ"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_AUTOREQ</span></code></a> 和 <span class="target" id="index-0-variable:CPACK_RPM_PACKAGE_AUTOPROV"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_AUTOPROV" title="CPACK_RPM_PACKAGE_AUTOPROV"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_AUTOPROV</span></code></a>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>默认情况下，rpm 启用了自动检测功能。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_REQUIRES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_REQUIRES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_REQUIRES" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_REQUIRES" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 requires 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 依赖项（requires）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_REQUIRES</span><span class="w"> </span><span class="s">"python &gt;= 2.5.0, cmake &gt;= 2.8"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>RPM 文件的必需软件包列表可以用以下命令打印：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm -qp --requires file.rpm
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_CONFLICTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_CONFLICTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_CONFLICTS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_CONFLICTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_CONFLICTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_CONFLICTS" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 conflicts 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置负向 RPM 依赖项（conflicts）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_CONFLICTS</span><span class="w"> </span><span class="s">"libxml2"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>RPM 文件的冲突软件包列表可以用以下命令打印：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm -qp --conflicts file.rpm
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_REQUIRES_PRE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_REQUIRES_PRE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_REQUIRES_PRE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_PRE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_PRE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_REQUIRES_PRE" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>RPM spec 的 requires(pre) 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 安装前依赖项（requires(pre)）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_REQUIRES_PRE</span><span class="w"> </span><span class="s">"shadow-utils, initscripts"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_REQUIRES_POST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_REQUIRES_POST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_REQUIRES_POST" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_POST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_POST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_REQUIRES_POST" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>RPM spec 的 requires(post) 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 安装后依赖项（requires(post)）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_REQUIRES_POST</span><span class="w"> </span><span class="s">"shadow-utils, initscripts"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_REQUIRES_POSTUN">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_REQUIRES_POSTUN</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_REQUIRES_POSTUN" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_POSTUN">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_POSTUN</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_REQUIRES_POSTUN" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>RPM spec 的 requires(postun) 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 卸载后依赖项（requires(postun)）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_REQUIRES_POSTUN</span><span class="w"> </span><span class="s">"shadow-utils, initscripts"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_REQUIRES_PREUN">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_REQUIRES_PREUN</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_REQUIRES_PREUN" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_PREUN">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_REQUIRES_PREUN</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_REQUIRES_PREUN" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>RPM spec 的 requires(preun) 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 卸载前依赖项（requires(preun)）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_PACKAGE_REQUIRES_PREUN</span><span class="w"> </span><span class="s">"shadow-utils, initscripts"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_SUGGESTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_SUGGESTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_SUGGESTS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_SUGGESTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_SUGGESTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_SUGGESTS" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 suggests 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置弱 RPM 依赖项（suggests）。如果 <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> 不支持 <code class="docutils literal notranslate"><span class="pre">Suggests</span></code> 标签，CPack 将发出警告并忽略此变量。请注意，在设置此变量时，必须将整个值括在引号中。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_RECOMMENDS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_RECOMMENDS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_RECOMMENDS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_RECOMMENDS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_RECOMMENDS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_RECOMMENDS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>RPM spec 的 recommends 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置弱 RPM 依赖项（recommends）。如果 <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> 不支持 <code class="docutils literal notranslate"><span class="pre">Recommends</span></code> 标签，CPack 将发出警告并忽略此变量。请注意，在设置此变量时，必须将整个值括在引号中。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_SUPPLEMENTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_SUPPLEMENTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_SUPPLEMENTS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_SUPPLEMENTS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_SUPPLEMENTS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_SUPPLEMENTS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>RPM spec 的 supplements 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置弱 RPM 依赖项（supplements）。如果 <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> 不支持 <code class="docutils literal notranslate"><span class="pre">Supplements</span></code> 标签，CPack 将发出警告并忽略此变量。请注意，在设置此变量时，必须将整个值括在引号中。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_ENHANCES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_ENHANCES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_ENHANCES" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_ENHANCES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_ENHANCES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_ENHANCES" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>RPM spec 的 enhances 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置弱 RPM 依赖项（enhances）。如果 <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> 不支持 <code class="docutils literal notranslate"><span class="pre">Enhances</span></code> 标签，CPack 将发出警告并忽略此变量。请注意，在设置此变量时，必须将整个值括在引号中。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_PROVIDES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_PROVIDES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_PROVIDES" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_PROVIDES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_PROVIDES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_PROVIDES" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 provides 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置 RPM 依赖项（provides）。RPM 文件的提供的软件包列表可以用以下命令打印：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm -qp --provides file.rpm
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_OBSOLETES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_OBSOLETES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_OBSOLETES" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_PACKAGE_OBSOLETES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_PACKAGE_OBSOLETES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_PACKAGE_OBSOLETES" title="链接至此定义">¶</a></dt>
+<dd><p>RPM spec 的 obsoletes 字段。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置被此软件包淘汰（obsoleted）的 RPM 软件包。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_RELOCATABLE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_RELOCATABLE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_RELOCATABLE" title="链接至此定义">¶</a></dt>
+<dd><p>构建一个可重定位的 RPM。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>CPACK_PACKAGE_RELOCATABLE</p>
+</dd>
+</dl>
+<p>如果此变量设置为 TRUE 或 ON，CPack RPM 生成器将尝试构建一个可重定位的 RPM 软件包。可重定位的 RPM 可以使用以下命令安装：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm --prefix or --relocate
+</pre></div>
+</div>
+<p>为了将其安装在其他位置，请参阅 rpm(8)。请注意，如果 <span class="target" id="index-0-variable:CPACK_SET_DESTDIR"></span><a class="reference internal" href="../variable/CPACK_SET_DESTDIR.html#variable:CPACK_SET_DESTDIR" title="CPACK_SET_DESTDIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SET_DESTDIR</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，当前这可能会失败。如果设置了 <span class="target" id="index-1-variable:CPACK_SET_DESTDIR"></span><a class="reference internal" href="../variable/CPACK_SET_DESTDIR.html#variable:CPACK_SET_DESTDIR" title="CPACK_SET_DESTDIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SET_DESTDIR</span></code></a>，您会收到一条警告消息，但如果有文件以绝对路径安装，您会得到意想不到的行为。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_SPEC_INSTALL_POST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_SPEC_INSTALL_POST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_SPEC_INSTALL_POST" title="链接至此定义">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 2.8.12 版本起弃用：</span>请改用 <span class="target" id="index-0-variable:CPACK_RPM_SPEC_MORE_DEFINE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_SPEC_MORE_DEFINE" title="CPACK_RPM_SPEC_MORE_DEFINE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_SPEC_MORE_DEFINE</span></code></a>。</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于覆盖生成的 spec 文件中的 <code class="docutils literal notranslate"><span class="pre">__spec_install_post</span></code> 部分。这会影响软件包创建过程中的安装步骤，而不是软件包安装期间。如需添加要在软件包安装期间执行的操作，请改用 <span class="target" id="index-0-variable:CPACK_RPM_POST_INSTALL_SCRIPT_FILE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_POST_INSTALL_SCRIPT_FILE" title="CPACK_RPM_POST_INSTALL_SCRIPT_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_POST_INSTALL_SCRIPT_FILE</span></code></a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_SPEC_MORE_DEFINE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_SPEC_MORE_DEFINE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_SPEC_MORE_DEFINE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 扩展 spec 定义行。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于向生成的 spec 文件添加任何 <code class="docutils literal notranslate"><span class="pre">%define</span></code> 行。其一个用例是防止剥离可执行文件（但请注意，这也可能会禁用其他默认的安装后处理）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_SPEC_MORE_DEFINE</span><span class="w"> </span><span class="s">"%define __spec_install_post /bin/true"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_DEBUG">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_DEBUG</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_DEBUG" title="链接至此定义">¶</a></dt>
+<dd><p>切换 CPack RPM 生成器调试输出。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可以在调用 cpack 时设置，以便在 CPack RPM 运行期间跟踪调试信息。例如，您可以这样启动 CPack：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -G RPM
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_USER_BINARY_SPECFILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_USER_BINARY_SPECFILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_USER_BINARY_SPECFILE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;componentName&gt;_USER_BINARY_SPECFILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;componentName&gt;_USER_BINARY_SPECFILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<componentName>_USER_BINARY_SPECFILE" title="链接至此定义">¶</a></dt>
+<dd><p>用户提供的 spec 文件。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可由用户设置，以便指定由 CPack RPM 生成器使用的用户二进制 spec 文件，而不是自动生成该文件。指定的文件将通过 configure_file(@ONLY) 进行处理。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_GENERATE_USER_BINARY_SPECFILE_TEMPLATE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_GENERATE_USER_BINARY_SPECFILE_TEMPLATE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_GENERATE_USER_BINARY_SPECFILE_TEMPLATE" title="链接至此定义">¶</a></dt>
+<dd><p>Spec 文件模板。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>如果设置了此项，CPack 将为用户指定的二进制 spec 文件生成一个模板并因错误而停止。例如，这样启动 CPack：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cpack -D CPACK_RPM_GENERATE_USER_BINARY_SPECFILE_TEMPLATE=1 -G RPM
+</pre></div>
+</div>
+<p>用户随后可以使用此文件来手工制作自己的二进制 spec 文件，该文件可以与 <span class="target" id="index-0-variable:CPACK_RPM_USER_BINARY_SPECFILE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_USER_BINARY_SPECFILE" title="CPACK_RPM_USER_BINARY_SPECFILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_USER_BINARY_SPECFILE</span></code></a> 一起使用。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PRE_INSTALL_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PRE_INSTALL_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PRE_INSTALL_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PRE_UNINSTALL_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PRE_UNINSTALL_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PRE_UNINSTALL_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PRE_TRANS_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PRE_TRANS_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PRE_TRANS_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dd><p>包含安装前/卸载前/事务前脚本的文件路径。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于在 spec 文件中嵌入安装前/卸载前/事务前脚本。所引用的脚本文件（或两者）将被读取并直接放在 <code class="docutils literal notranslate"><span class="pre">%pre</span></code> 或 <code class="docutils literal notranslate"><span class="pre">%preun</span></code> 部分之后。如果 <span class="target" id="index-0-variable:CPACK_RPM_COMPONENT_INSTALL"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_COMPONENT_INSTALL" title="CPACK_RPM_COMPONENT_INSTALL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_COMPONENT_INSTALL</span></code></a> 设置为 ON，则每个组件的安装/卸载/事务脚本可以使用 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PRE_INSTALL_SCRIPT_FILE</span></code>、<code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PRE_UNINSTALL_SCRIPT_FILE</span></code> 和 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PRE_TRANS_SCRIPT_FILE</span></code> 进行覆盖。可以使用以下命令验证包含了哪些脚本片段：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm -qp --scripts  package.rpm
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增：</span><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PRE_TRANS_SCRIPT_FILE</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_POST_INSTALL_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_POST_INSTALL_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_POST_INSTALL_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_POST_TRANS_SCRIPT_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_POST_TRANS_SCRIPT_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_POST_TRANS_SCRIPT_FILE" title="链接至此定义">¶</a></dt>
+<dd><p>包含安装后/卸载后/事务后脚本的文件路径。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于在 spec 文件中嵌入安装后/卸载后/事务后脚本。所引用的脚本文件（或两者）将被读取并直接放在 <code class="docutils literal notranslate"><span class="pre">%post</span></code> 或 <code class="docutils literal notranslate"><span class="pre">%postun</span></code> 部分之后。如果 <span class="target" id="index-1-variable:CPACK_RPM_COMPONENT_INSTALL"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_COMPONENT_INSTALL" title="CPACK_RPM_COMPONENT_INSTALL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_COMPONENT_INSTALL</span></code></a> 设置为 ON，则每个组件的安装/卸载/事务脚本可以使用 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_POST_INSTALL_SCRIPT_FILE</span></code>、<code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_POST_UNINSTALL_SCRIPT_FILE</span></code> 和 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_POST_TRANS_SCRIPT_FILE</span></code> 进行覆盖。可以使用以下命令验证包含了哪些脚本片段：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rpm -qp --scripts  package.rpm
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增：</span><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_POST_TRANS_SCRIPT_FILE</span></code> 变量。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_USER_FILELIST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_USER_FILELIST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_USER_FILELIST" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;COMPONENT&gt;_USER_FILELIST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_USER_FILELIST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<COMPONENT>_USER_FILELIST" title="链接至此定义">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于在 spec 文件中显式指定 <code class="docutils literal notranslate"><span class="pre">%(&lt;directive&gt;)</span></code> 文件行。如 <code class="docutils literal notranslate"><span class="pre">%config(noreplace)</span></code> 或任何其他可在 <code class="docutils literal notranslate"><span class="pre">%files</span></code> 部分中找到的指令。由于 CPack RPM 生成器正在生成文件（和目录）列表，<code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_USER_FILELIST</span></code> 列表中的用户指定文件将从生成的列表中删除。引用目录时，不要添加尾随斜杠。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.8 版本新增：</span>您可以在每行使用多个指令，例如 <code class="docutils literal notranslate"><span class="pre">%attr(600,root,root)</span> <span class="pre">%config(noreplace)</span></code>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_CHANGELOG_FILE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_CHANGELOG_FILE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_CHANGELOG_FILE" title="链接至此定义">¶</a></dt>
+<dd><p>RPM 修改日志文件。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于在 spec 文件中嵌入修改日志（changelog）。所引用的文件将被读取并直接放在 <code class="docutils literal notranslate"><span class="pre">%changelog</span></code> 部分之后。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST" title="链接至此定义">¶</a></dt>
+<dd><p>要排除的路径列表。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>默认情况下排除以下路径：</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/init.d</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/include</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/libx32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/lib64</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/aclocal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/doc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>可用于从 CPack RPM 发现的自动生成路径列表中排除路径（目录或文件）。如果用户没有定义此变量，默认值包含一组合理的路径。如果用户定义了此变量，则 CPack RPM 生成器将不会排除任何默认路径。如果您想在默认列表中添加一些路径，可以使用 <span class="target" id="index-0-variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION" title="CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION</span></code></a> 变量。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增：</span>将 <code class="docutils literal notranslate"><span class="pre">/usr/share/aclocal</span></code> 添加到默认排除列表中。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION" title="链接至此定义">¶</a></dt>
+<dd><p>要排除的额外路径列表。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于在初始的默认排除路径列表之外添加更多的排除路径（目录或文件）。请参阅 <span class="target" id="index-0-variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST" title="CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST</span></code></a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_RELOCATION_PATHS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_RELOCATION_PATHS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_RELOCATION_PATHS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>软件包重定位路径列表。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于为每个可重定位的 RPM 指定一个以上的重定位路径。变量包含重定位路径列表，如果路径是相对的，则以 <span class="target" id="index-0-variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX" title="CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PACKAGE_PREFIX</span></code></a> 的值或（如果未提供组件版本）<span class="target" id="index-0-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a> 的值为前缀。此变量不是基于组件的，因为其内容可用于同时为例如二进制目录和文档目录设置不同的路径前缀。只有特定组件需要的路径前缀才会被添加到该组件中——组件必须包含至少一个带有 <span class="target" id="index-0-variable:CPACK_RPM_RELOCATION_PATHS"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_RELOCATION_PATHS" title="CPACK_RPM_RELOCATION_PATHS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_RELOCATION_PATHS</span></code></a> 前缀的文件/目录/符号链接，才能添加该重定位路径。如果没有文件/目录/符号链接位于任何提供的路径前缀位置，则软件包将不包含任何重定位路径。不包含任何重定位路径，或包含位于重定位路径之外的文件/目录/符号链接的软件包，会打印出 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">AUTHOR_WARNING</span></code></a>，指出 RPM 将是部分可重定位的。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;COMPONENT&gt;_PACKAGE_PREFIX">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PACKAGE_PREFIX</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>每个组件的重定位路径安装前缀。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-1-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a></p>
+</dd>
+</dl>
+<p>可用于为可重定位的 RPM 软件包设置每个组件的 <span class="target" id="index-2-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_NO_INSTALL_PREFIX_RELOCATION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_NO_INSTALL_PREFIX_RELOCATION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_NO_INSTALL_PREFIX_RELOCATION" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_NO_&lt;COMPONENT&gt;_INSTALL_PREFIX_RELOCATION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_NO_&lt;COMPONENT&gt;_INSTALL_PREFIX_RELOCATION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_NO_<COMPONENT>_INSTALL_PREFIX_RELOCATION" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>从重定位路径列表中删除默认安装前缀。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><span class="target" id="index-3-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a> 或 <span class="target" id="index-1-variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX" title="CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PACKAGE_PREFIX</span></code></a> 被视为重定位路径之一。</p>
+</dd>
+</dl>
+<p>可用于从可重定位的 RPM 前缀路径中删除 <span class="target" id="index-4-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a> 和 <span class="target" id="index-2-variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX" title="CPACK_RPM_<COMPONENT>_PACKAGE_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;COMPONENT&gt;_PACKAGE_PREFIX</span></code></a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_ADDITIONAL_MAN_DIRS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_ADDITIONAL_MAN_DIRS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_ADDITIONAL_MAN_DIRS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>默认添加的正则表达式取自 <code class="docutils literal notranslate"><span class="pre">brp-compress</span></code> RPM 宏：</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/man/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/man/.*/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/info.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/man/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/man/.*/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/info.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/kerberos/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/X11R6/man/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/lib/perl5/man/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/share/doc/.*/man/man.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/lib/.*/man/man.*</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>可用于设置可能被 <code class="docutils literal notranslate"><span class="pre">brp-compress</span></code> RPM 宏压缩的其他 man 目录。变量内容必须是一个正则表达式列表，指向包含 man 文件的目录或直接指向 man 文件。请注意，为了压缩 man 页面，路径还必须存在于 <code class="docutils literal notranslate"><span class="pre">brp-compress</span></code> RPM 脚本中，并且操作系统必须将 <code class="docutils literal notranslate"><span class="pre">brp-compress</span></code> 脚本添加到 RPM 配置中。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEFAULT_USER">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEFAULT_USER</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEFAULT_USER" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;compName&gt;_DEFAULT_USER">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;compName&gt;_DEFAULT_USER</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<compName>_DEFAULT_USER" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>RPM 内容的默认用户所有权</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">root</span></code></p>
+</dd>
+</dl>
+<p>值应为用户名而不是 UID。请注意，<code class="docutils literal notranslate"><span class="pre">&lt;compName&gt;</span></code> 必须是大写的。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEFAULT_GROUP">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEFAULT_GROUP</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEFAULT_GROUP" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;compName&gt;_DEFAULT_GROUP">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;compName&gt;_DEFAULT_GROUP</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<compName>_DEFAULT_GROUP" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>RPM 内容的默认组所有权</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>root</p>
+</dd>
+</dl>
+<p>值应为组名而不是 GID。请注意，<code class="docutils literal notranslate"><span class="pre">&lt;compName&gt;</span></code> 必须是大写的。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEFAULT_FILE_PERMISSIONS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEFAULT_FILE_PERMISSIONS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEFAULT_FILE_PERMISSIONS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;compName&gt;_DEFAULT_FILE_PERMISSIONS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;compName&gt;_DEFAULT_FILE_PERMISSIONS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<compName>_DEFAULT_FILE_PERMISSIONS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>用于打包文件的默认权限</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>(系统默认)</p>
+</dd>
+</dl>
+<p>接受的值是包含权限的列表。有效的权限包括：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OWNER_READ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OWNER_WRITE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OWNER_EXECUTE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_READ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_WRITE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_EXECUTE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WORLD_READ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WORLD_WRITE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WORLD_EXECUTE</span></code></p></li>
+</ul>
+<p>请注意，<code class="docutils literal notranslate"><span class="pre">&lt;compName&gt;</span></code> 必须是大写的。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEFAULT_DIR_PERMISSIONS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEFAULT_DIR_PERMISSIONS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEFAULT_DIR_PERMISSIONS" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;compName&gt;_DEFAULT_DIR_PERMISSIONS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;compName&gt;_DEFAULT_DIR_PERMISSIONS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<compName>_DEFAULT_DIR_PERMISSIONS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>用于打包目录的默认权限</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>(系统默认)</p>
+</dd>
+</dl>
+<p>接受的值是包含权限的列表。有效权限与 <span class="target" id="index-0-variable:CPACK_RPM_DEFAULT_FILE_PERMISSIONS"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEFAULT_FILE_PERMISSIONS" title="CPACK_RPM_DEFAULT_FILE_PERMISSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEFAULT_FILE_PERMISSIONS</span></code></a> 相同。请注意，<code class="docutils literal notranslate"><span class="pre">&lt;compName&gt;</span></code> 必须是大写的。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_INSTALL_WITH_EXEC">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_INSTALL_WITH_EXEC</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_INSTALL_WITH_EXEC" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>强制在程序和共享库上设置执行权限</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>(系统默认)</p>
+</dd>
+</dl>
+<p>强制设置程序和共享库的所有者、组和世界执行权限。这可用于在 Debian 等共享库未设置执行权限的系统上创建有效的 rpm 软件包。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在为 debuginfo 软件包从二进制文件中分离调试符号期间，会忽略没有执行权限的程序和共享库。</p>
+</div>
+</section>
+<section id="packaging-of-symbolic-links">
+<h2>符号链接的打包<a class="headerlink" href="rpm.html#packaging-of-symbolic-links" title="链接至此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>CPack RPM 生成器支持符号链接的打包。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">execute_process(</span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span>
+<span class="w">  </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">create_symlink</span><span class="w"> </span><span class="nv">&lt;relative_path_location&gt;</span><span class="w"> </span><span class="nv">&lt;symlink_name&gt;</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">FILES</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/</span><span class="nv">&lt;symlink_name&gt;</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;symlink_location&gt;</span><span class="w"> </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nb">libraries</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>符号链接在被添加到软件包之前将得到优化（如果可能，路径将被缩短），或者如果检测到多个重定位路径，则将生成安装后符号链接重定位脚本。</p>
+<p>符号链接可能指向未由同一软件包打包的位置（无论是不同的组件，甚至根本没有打包），但在确定符号链接是应该创建还是存在于安装后脚本中时（取决于重定位路径），这些位置将被视为软件包的一部分。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.6 中变更：</span>指向打包路径之外的符号链接会产生警告，并被视为不可重定位的永久符号链接。旧版本的 CMake 在此情况下会产生错误。</p>
+</div>
+<p>目前存在一些限制：</p>
+<ul class="simple">
+<li><p>对于基于组件的打包，在处理符号链接时不会检查组件间的依赖关系。指向不同组件内容的符号链接被视为与指向未打包位置的处理方式相同。</p></li>
+<li><p>指向通过一个或多个中间符号链接的位置的符号链接不会得到不同的处理——如果中间符号链接也位于可重定位路径上，则在软件包安装期间重新定位它可能会导致初始符号链接指向无效位置。</p></li>
+</ul>
+</section>
+<section id="packaging-of-debug-information">
+<h2>调试信息的打包<a class="headerlink" href="rpm.html#packaging-of-debug-information" title="链接至此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>Debuginfo 软件包包含用于调试已打包二进制文件的调试符号和源文件。</p>
+<p>Debuginfo RPM 打包有一套自己的变量。</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEBUGINFO_PACKAGE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEBUGINFO_PACKAGE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_PACKAGE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_DEBUGINFO_PACKAGE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_DEBUGINFO_PACKAGE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_DEBUGINFO_PACKAGE" title="链接至此定义">¶</a></dt>
+<dd><p>启用 debuginfo RPM 软件包的生成。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>二进制文件在打包前必须包含调试符号，因此对于 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 变量值，请使用 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RelWithDebInfo</span></code>。</p>
+<p>此外，如果设置了 <span class="target" id="index-0-variable:CPACK_STRIP_FILES"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_STRIP_FILES" title="CPACK_STRIP_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_STRIP_FILES</span></code></a>，文件在到达 RPM 生成器之前会被剥离，因此将不包含调试符号，并且不会构建 debuginfo 软件包。请勿与 <span class="target" id="index-1-variable:CPACK_STRIP_FILES"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_STRIP_FILES" title="CPACK_STRIP_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_STRIP_FILES</span></code></a> 一起使用。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>从不含二进制文件的软件包、含二进制文件但无执行权限的软件包或不含调试符号的软件包生成的软件包将导致打包终止。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUILD_SOURCE_DIRS">
+<span class="sig-name descname"><span class="pre">CPACK_BUILD_SOURCE_DIRS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_BUILD_SOURCE_DIRS" title="链接至此定义">¶</a></dt>
+<dd><p>提供从中构建二进制文件的源文件的根目录位置。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>如果设置了 <span class="target" id="index-0-variable:CPACK_RPM_DEBUGINFO_PACKAGE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_PACKAGE" title="CPACK_RPM_DEBUGINFO_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEBUGINFO_PACKAGE</span></code></a>，则为是。</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>对于 CMake 项目，<span class="target" id="index-0-variable:CPACK_BUILD_SOURCE_DIRS"></span><a class="reference internal" href="rpm.html#variable:CPACK_BUILD_SOURCE_DIRS" title="CPACK_BUILD_SOURCE_DIRS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_BUILD_SOURCE_DIRS</span></code></a> 默认设置为指向 <span class="target" id="index-0-variable:CMAKE_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_SOURCE_DIR.html#variable:CMAKE_SOURCE_DIR" title="CMAKE_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_BINARY_DIR.html#variable:CMAKE_BINARY_DIR" title="CMAKE_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code></a> 路径。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>路径前缀不属于 <span class="target" id="index-1-variable:CPACK_BUILD_SOURCE_DIRS"></span><a class="reference internal" href="rpm.html#variable:CPACK_BUILD_SOURCE_DIRS" title="CPACK_BUILD_SOURCE_DIRS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_BUILD_SOURCE_DIRS</span></code></a> 提供的任何位置的源文件将不会出现在 debuginfo 软件包中。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_BUILD_SOURCE_DIRS_PREFIX">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_BUILD_SOURCE_DIRS_PREFIX</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_BUILD_SOURCE_DIRS_PREFIX" title="链接至此定义">¶</a></dt>
+<dd><p>在软件包安装期间源文件将被放置的位置的前缀。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>如果设置了 <span class="target" id="index-1-variable:CPACK_RPM_DEBUGINFO_PACKAGE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_PACKAGE" title="CPACK_RPM_DEBUGINFO_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEBUGINFO_PACKAGE</span></code></a>，则为是。</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/usr/src/debug/${CPACK_PACKAGE_FILE_NAME}</span></code>，对于组件打包，为 <code class="docutils literal notranslate"><span class="pre">/usr/src/debug/${CPACK_PACKAGE_FILE_NAME}-&lt;component&gt;</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>每个源路径前缀都会额外加上 <code class="docutils literal notranslate"><span class="pre">src_&lt;index&gt;</span></code> 后缀，其中 index 是来自 <span class="target" id="index-2-variable:CPACK_BUILD_SOURCE_DIRS"></span><a class="reference internal" href="rpm.html#variable:CPACK_BUILD_SOURCE_DIRS" title="CPACK_BUILD_SOURCE_DIRS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_BUILD_SOURCE_DIRS</span></code></a> 变量使用的路径索引。这会产生 <code class="docutils literal notranslate"><span class="pre">${CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX}/src_&lt;index&gt;</span></code> 替换路径。限制是替换后的路径部分必须短于或等于其替换物的长度。如果不是这种情况，要么必须将 <span class="target" id="index-0-variable:CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX" title="CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_BUILD_SOURCE_DIRS_PREFIX</span></code></a> 变量设置为较短的路径，要么必须将源目录放置在较长的路径上。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS" title="链接至此定义">¶</a></dt>
+<dd><p>应从 debuginfo 软件包中排除的包含源文件的目录。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>默认情况下排除以下路径：</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/src</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/usr/src/debug</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>所列路径由其他 RPM 软件包拥有，因此在卸载 debuginfo 软件包时不应删除它们。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS_ADDITION">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS_ADDITION</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS_ADDITION" title="链接至此定义">¶</a></dt>
+<dd><p>应追加到 <span class="target" id="index-0-variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS" title="CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEBUGINFO_EXCLUDE_DIRS</span></code></a> 以供排除的路径。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>即使设置了组件打包，也创建一个单独的 debuginfo 软件包。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+<p>启用此变量后，即使启用了组件打包，也会生成一个单独的 debuginfo 软件包。</p>
+<p>在结合组件打包使用此功能且有多个组件时，此变量要求设置 <span class="target" id="index-0-variable:CPACK_RPM_MAIN_COMPONENT"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_MAIN_COMPONENT" title="CPACK_RPM_MAIN_COMPONENT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_MAIN_COMPONENT</span></code></a>。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果未设置任何 <span class="target" id="index-0-variable:CPACK_RPM_<component>_DEBUGINFO_PACKAGE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_<component>_DEBUGINFO_PACKAGE" title="CPACK_RPM_<component>_DEBUGINFO_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_&lt;component&gt;_DEBUGINFO_PACKAGE</span></code></a> 变量，则当设置了 <span class="target" id="index-0-variable:CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE" title="CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEBUGINFO_SINGLE_PACKAGE</span></code></a> 时，<span class="target" id="index-2-variable:CPACK_RPM_DEBUGINFO_PACKAGE"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_PACKAGE" title="CPACK_RPM_DEBUGINFO_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_DEBUGINFO_PACKAGE</span></code></a> 会自动设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_DEBUGINFO_FILE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_DEBUGINFO_FILE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_DEBUGINFO_FILE_NAME" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_&lt;component&gt;_DEBUGINFO_FILE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_&lt;component&gt;_DEBUGINFO_FILE_NAME</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_<component>_DEBUGINFO_FILE_NAME" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>Debuginfo 软件包文件名。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p>rpmbuild 工具生成的软件包文件名。</p>
+</dd>
+</dl>
+<p>或者，提供的 debuginfo 软件包文件名必须以 <code class="docutils literal notranslate"><span class="pre">.rpm</span></code> 后缀结尾，并且应不同于其他生成的软件包的文件名。</p>
+<p>变量可以包含 <code class="docutils literal notranslate"><span class="pre">@cpack_component@</span></code> 占位符，如果启用了组件打包，它将被组件名称替换，否则将删除该占位符。</p>
+<p>将该变量设置为 <code class="docutils literal notranslate"><span class="pre">RPM-DEFAULT</span></code> 可用于显式将文件名生成设置为默认。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><span class="target" id="index-0-variable:CPACK_RPM_FILE_NAME"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_FILE_NAME" title="CPACK_RPM_FILE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_FILE_NAME</span></code></a> 也支持 rpmbuild 工具生成的软件包文件名——默认禁用，但可以通过将变量设置为 <code class="docutils literal notranslate"><span class="pre">RPM-DEFAULT</span></code> 来启用。</p>
+</div>
+</section>
+<section id="packaging-of-sources-srpm">
+<h2>源码包（SRPM）的打包<a class="headerlink" href="rpm.html#packaging-of-sources-srpm" title="链接至此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>通过设置 <span class="target" id="index-0-variable:CPACK_RPM_PACKAGE_SOURCES"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_SOURCES" title="CPACK_RPM_PACKAGE_SOURCES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_SOURCES</span></code></a> 变量，同时通常使用 <span class="target" id="index-0-variable:CPACK_INSTALLED_DIRECTORIES"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_INSTALLED_DIRECTORIES" title="CPACK_INSTALLED_DIRECTORIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_INSTALLED_DIRECTORIES</span></code></a> 变量来提供包含 CMakeLists.txt 和源文件的目录，从而启用 SRPM 打包。</p>
+<p>对于 CMake 项目，SRPM 软件包将通过执行以下命令生成：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cpack -G RPM --config ./CPackSourceConfig.cmake
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>生成的 SRPM 软件包预期使用 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 可执行文件构建，并使用 <span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack(1)</span></code></a> 可执行文件打包，因此 CMakeLists.txt 必须位于根源目录中，并且必须能够通过执行 <a class="reference internal" href="../manual/cpack.1.html#cmdoption-cpack-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">cpack</span> <span class="pre">-G</span></code></a> 命令生成二进制 rpm 软件包。在从生成的 SRPM 软件包生成二进制 rpm 软件包时，这两个可执行文件以及 rpmbuild 也必须存在。</p>
+</div>
+<p>一旦生成 SRPM 软件包，就可以通过创建 rpm 生成目录结构并执行 rpmbuild 工具来生成二进制软件包：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mkdir -p build_dir/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+rpmbuild --define "_topdir &lt;path_to_build_dir&gt;" --rebuild &lt;SRPM_file_name&gt;
+</pre></div>
+</div>
+<p>生成的软件包将位于 build_dir/RPMS 目录或其子目录中。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>SRPM 软件包在内部使用 CPack/RPM 生成器来生成二进制软件包，因此 CMakeScripts.txt 可以在 SRPM 到二进制 rpm 的生成步骤中决定软件包应包含的内容以及应如何打包（单体或组件）。CMake 可以通过例如在开始生成二进制 rpm 软件包的过程之前读取软件包管理器设置的环境变量来决定这一点。通过这种方式，单个 SRPM 软件包可用于根据平台的打包规则在不同平台上生成不同的二进制 rpm 软件包。</p>
+</div>
+<p>源码 RPM 打包有一套自己的变量。</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_PACKAGE_SOURCES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_PACKAGE_SOURCES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_PACKAGE_SOURCES" title="链接至此定义">¶</a></dt>
+<dd><p>是否应将内容打包为源码 rpm（默认是二进制 rpm）。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>对于 cmake 项目，<span class="target" id="index-1-variable:CPACK_RPM_PACKAGE_SOURCES"></span><a class="reference internal" href="rpm.html#variable:CPACK_RPM_PACKAGE_SOURCES" title="CPACK_RPM_PACKAGE_SOURCES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RPM_PACKAGE_SOURCES</span></code></a> 变量在生成的 CPackConfig.cmake 文件中设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>，在 CPackSourceConfig.cmake 文件中设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_SOURCE_PKG_BUILD_PARAMS">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_SOURCE_PKG_BUILD_PARAMS</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_SOURCE_PKG_BUILD_PARAMS" title="链接至此定义">¶</a></dt>
+<dd><p>提供给 <span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 可执行文件的附加命令行参数。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_SOURCE_PKG_PACKAGING_INSTALL_PREFIX">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_SOURCE_PKG_PACKAGING_INSTALL_PREFIX</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_SOURCE_PKG_PACKAGING_INSTALL_PREFIX" title="链接至此定义">¶</a></dt>
+<dd><p>打包安装前缀，该前缀将提供在 <span class="target" id="index-5-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a> 变量中，用于生成二进制 RPM 软件包。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>是</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_BUILDREQUIRES">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_BUILDREQUIRES</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_BUILDREQUIRES" title="链接至此定义">¶</a></dt>
+<dd><p>源码 rpm 构建依赖项列表。</p>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于设置源码 RPM 构建依赖项（BuildRequires）。请注意，在设置此变量时，必须将整个值括在引号中，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_BUILDREQUIRES</span><span class="w"> </span><span class="s">"python &gt;= 2.5.0, cmake &gt;= 2.8"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_RPM_REQUIRES_EXCLUDE_FROM">
+<span class="sig-name descname"><span class="pre">CPACK_RPM_REQUIRES_EXCLUDE_FROM</span></span><a class="headerlink" href="rpm.html#variable:CPACK_RPM_REQUIRES_EXCLUDE_FROM" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">强制项<span class="colon">:</span></dt>
+<dd class="field-odd"><p>否</p>
+</dd>
+<dt class="field-even">默认值<span class="colon">：</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>可用于防止依赖项生成器扫描特定文件或目录以查找依赖项。请注意，您可以使用匹配所有目录或文件的正则表达式，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CPACK_RPM_REQUIRES_EXCLUDE_FROM</span><span class="w"> </span><span class="s">"bin/libqsqloci.*\\.so.*"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="rpm.html#">CPack RPM 生成器</a><ul>
+<li><a class="reference internal" href="rpm.html#variables-specific-to-cpack-rpm-generator">CPack RPM 生成器专用变量</a></li>
+<li><a class="reference internal" href="rpm.html#packaging-of-symbolic-links">符号链接的打包</a></li>
+<li><a class="reference internal" href="rpm.html#packaging-of-debug-information">调试信息的打包</a></li>
+<li><a class="reference internal" href="rpm.html#packaging-of-sources-srpm">源码包（SRPM）的打包</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="productbuild.html" title="上一章">CPack productbuild 生成器</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="wix.html" title="下一章">CPack WIX 生成器</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/cpack_gen/rpm.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="wix.html" title="CPack WIX Generator">下一页</a> |</li>
+        <li class="right">
+          <a href="productbuild.html" title="CPack productbuild Generator">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="rpm.html">CPack RPM 生成器</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

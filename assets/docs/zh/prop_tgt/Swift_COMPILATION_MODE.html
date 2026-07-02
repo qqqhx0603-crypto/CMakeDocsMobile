@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Swift_COMPILATION_MODE — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Swift_COMPILATION_MODE.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Swift_DEPENDENCIES_FILE" href="Swift_DEPENDENCIES_FILE.html" />
+    <link rel="prev" title="SUFFIX" href="SUFFIX.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Swift_DEPENDENCIES_FILE.html" title="Swift_DEPENDENCIES_FILE" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="SUFFIX.html" title="SUFFIX" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Swift_COMPILATION_MODE.html">Swift_COMPILATION_MODE</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="swift-compilation-mode">
+<span id="prop_tgt:Swift_COMPILATION_MODE"></span><h1>Swift_COMPILATION_MODE<a class="headerlink" href="Swift_COMPILATION_MODE.html#swift-compilation-mode" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>指定 Swift 编译目标的方式。</p>
+<p>允许的值为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">incremental</span></code></dt><dd><p>将模块中的每个 Swift 源代码文件单独编译，从而在构建过程中实现更好的并行性。编译器会将额外信息输出到构建目录，从而在源代码在重建之间进行小幅更改时提高重建性能。这是在项目更改期间迭代的最佳选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wholemodule</span></code></dt><dd><p>全模块优化编译速度最慢，但会生成最优化过的库。整个上下文加载到编译器的单个实例中，因此模块中的源代码文件之间没有并行性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">singlefile</span></code></dt><dd><p>将 Swift 模块中的每个源代码文件单独编译，从而实现更好的并行性。与 <code class="docutils literal notranslate"><span class="pre">incremental</span></code> 构建模式不同，编译器在构建过程中不会输出任何额外信息，因此在对源代码文件进行小幅更改后的重建速度不会更快。除非是为了解决编译器错误，否则应谨慎使用此选项，优先使用 <code class="docutils literal notranslate"><span class="pre">incremental</span></code> 构建。</p>
+</dd>
+</dl>
+<p>使用 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 来支持按配置指定。例如，以下代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.swift</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">  </span><span class="nb">Swift_COMPILATION_MODE</span><span class="w"> </span><span class="s">"$&lt;IF:$&lt;CONFIG:Release&gt;,wholemodule,incremental&gt;"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在发布配置中将 Swift 编译模式设置为 wholemodule 模式，并在其他配置中将属性设置为 incremental 模式。</p>
+<p>如果已设置，则该属性将从 <span class="target" id="index-0-variable:CMAKE_Swift_COMPILATION_MODE"></span><a class="reference internal" href="../variable/CMAKE_Swift_COMPILATION_MODE.html#variable:CMAKE_Swift_COMPILATION_MODE" title="CMAKE_Swift_COMPILATION_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_Swift_COMPILATION_MODE</span></code></a> 变量的值进行初始化。如果未设置该属性或为空，则 CMake 将默认值 <code class="docutils literal notranslate"><span class="pre">incremental</span></code> 用于指定 swift 编译模式。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>只有当策略 <span class="target" id="index-0-policy:CMP0157"></span><a class="reference internal" href="../policy/CMP0157.html#policy:CMP0157" title="CMP0157"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0157</span></code></a> 在第一个启用 Swift 语言的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令之前设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此属性才有效。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="SUFFIX.html" title="上一章">SUFFIX</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Swift_DEPENDENCIES_FILE.html" title="下一章">Swift_DEPENDENCIES_FILE</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/Swift_COMPILATION_MODE.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Swift_DEPENDENCIES_FILE.html" title="Swift_DEPENDENCIES_FILE">下一页</a> |</li>
+        <li class="right">
+          <a href="SUFFIX.html" title="SUFFIX">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Swift_COMPILATION_MODE.html">Swift_COMPILATION_MODE</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

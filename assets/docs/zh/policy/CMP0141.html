@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0141 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0141.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0140" href="CMP0140.html" />
+    <link rel="prev" title="CMP0142" href="CMP0142.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0140.html" title="CMP0140" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0142.html" title="CMP0142" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0141.html">CMP0141</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0141">
+<span id="policy:CMP0141"></span><h1>CMP0141<a class="headerlink" href="CMP0141.html#cmp0141" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>MSVC 调试信息格式标志由一个抽象层选择。</p>
+<p>针对 MSVC ABI 的编译器具有选择调试信息格式的标志。调试信息格式的选择通常随构建配置而变化。</p>
+<p>在 CMake 3.24 及更早版本中，调试信息格式标志会自动添加到默认的 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 缓存条目中。这允许用户编辑他们的缓存条目以调整这些标志。然而，这种默认标志的存在对于想要以编程方式选择不同调试信息格式的项目来说是有问题的。特别是，它需要使用对 CMake 内置默认值有了解的情况下，对 <span class="target" id="index-1-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 变量进行字符串编辑，以便替换它们。</p>
+<p>CMake 3.25 及更高版本更倾向于将调试信息格式标志从默认的 <span class="target" id="index-2-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 值中移除，并提供一个一等抽象层。可以使用 <span class="target" id="index-0-variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html#variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT" title="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 变量和 <span class="target" id="index-0-prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../prop_tgt/MSVC_DEBUG_INFORMATION_FORMAT.html#prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT" title="MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 目标属性来选择 MSVC 调试信息格式。如果它们未设置，CMake 将在调试配置中使用默认值 <code class="docutils literal notranslate"><span class="pre">$&lt;$&lt;CONFIG:Debug,RelWithDebInfo&gt;:ProgramDatabase&gt;</span></code> 启用调试信息（如果编译器支持），否则使用 <code class="docutils literal notranslate"><span class="pre">$&lt;$&lt;CONFIG:Debug,RelWithDebInfo&gt;:Embedded&gt;</span></code>。</p>
+<p>此策略旨在兼容尚未更新为识别此抽象的项目。策略设置从第一个启用 MSVC ABI 目标语言的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令开始生效。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>一旦策略在项目的顶部生效，该选择将在整个树中被使用。对于在子目录中具有嵌套项目的项目，请务必确认所有内容是否使用所选策略行为正常工作。</p>
+</div>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是将 MSVC 调试信息格式标志放置在默认的 <span class="target" id="index-3-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 缓存条目中，并忽略 <span class="target" id="index-1-variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html#variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT" title="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 抽象层。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是<em>不</em>将 MSVC 调试信息格式标志放置在默认缓存条目中，并使用抽象层。</p>
+<p>此策略是在 CMake 版本 3.25 中引入的。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake 不会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0142.html" title="上一章">CMP0142</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0140.html" title="下一章">CMP0140</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0141.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0140.html" title="CMP0140">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0142.html" title="CMP0142">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0141.html">CMP0141</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

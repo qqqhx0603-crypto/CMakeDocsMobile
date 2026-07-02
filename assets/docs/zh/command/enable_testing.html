@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>enable_testing — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="enable_testing.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="export" href="export.html" />
+    <link rel="prev" title="enable_language" href="enable_language.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="export.html" title="export" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="enable_language.html" title="enable_language" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="enable_testing.html">enable_testing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="enable-testing">
+<span id="command:enable_testing"></span><h1>enable_testing<a class="headerlink" href="enable_testing.html#enable-testing" title="链接到此标题">¶</a></h1>
+<p>为当前目录及其子目录启用测试</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_testing()</span>
+</pre></div>
+</div>
+<p>此命令应在顶级源目录中调用，因为 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 期望在顶级构建目录中找到一个测试文件。</p>
+<p>当 <span class="target" id="index-0-module:CTest"></span><a class="reference internal" href="../module/CTest.html#module:CTest" title="CTest"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CTest</span></code></a> 模块被包含时，此命令也会自动调用，除非 <span class="target" id="index-0-variable:BUILD_TESTING"></span><a class="reference internal" href="../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a> 选项被关闭。</p>
+<p>以下限制适用于 <code class="docutils literal notranslate"><span class="pre">enable_testing()</span></code> 可以调用的位置</p>
+<ul class="simple">
+<li><p>它必须在文件作用域中调用，不能在 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 调用中，也不能在 <span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 内部。</p></li>
+</ul>
+<section id="examples">
+<h2>示例<a class="headerlink" href="enable_testing.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>在以下示例中，此命令的调用是根据项目的使用方式有条件地进行的。例如，当通过 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 模块将 Example 项目作为父项目子目录添加，而父项目定义了自己的测试时，Example 项目的测试将被禁用。</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="enable_testing.html#id1" title="此代码的永久链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">project(</span><span class="nb">Example</span><span class="nf">)</span>
+
+<span class="nf">option(</span><span class="nb">Example_ENABLE_TESTING</span><span class="w"> </span><span class="s">"Enable testing"</span><span class="w"> </span><span class="o">${</span><span class="nt">PROJECT_IS_TOP_LEVEL</span><span class="o">}</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Example_ENABLE_TESTING</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">enable_testing()</span>
+<span class="nf">endif()</span>
+
+<span class="c"># ...</span>
+
+<span class="nf">if(</span><span class="nb">Example_ENABLE_TESTING</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_test(</span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="enable_testing.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:add_test"></span><a class="reference internal" href="add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 命令。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="enable_testing.html#">enable_testing</a><ul>
+<li><a class="reference internal" href="enable_testing.html#examples">示例</a></li>
+<li><a class="reference internal" href="enable_testing.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="enable_language.html" title="上一章">enable_language</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="export.html" title="下一章">export</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/enable_testing.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="export.html" title="export">下一页</a> |</li>
+        <li class="right">
+          <a href="enable_language.html" title="enable_language">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="enable_testing.html">enable_testing</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

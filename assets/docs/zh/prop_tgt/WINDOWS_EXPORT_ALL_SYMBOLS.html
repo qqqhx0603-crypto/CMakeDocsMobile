@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>WINDOWS_EXPORT_ALL_SYMBOLS — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="WINDOWS_EXPORT_ALL_SYMBOLS.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="XCODE_ATTRIBUTE_&lt;an-attribute&gt;" href="XCODE_ATTRIBUTE_an-attribute.html" />
+    <link rel="prev" title="WIN32_EXECUTABLE" href="WIN32_EXECUTABLE.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="XCODE_ATTRIBUTE_an-attribute.html" title="XCODE_ATTRIBUTE_&lt;an-attribute&gt;" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="WIN32_EXECUTABLE.html" title="WIN32_EXECUTABLE" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="WINDOWS_EXPORT_ALL_SYMBOLS.html">WINDOWS_EXPORT_ALL_SYMBOLS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="windows-export-all-symbols">
+<span id="prop_tgt:WINDOWS_EXPORT_ALL_SYMBOLS"></span><h1>WINDOWS_EXPORT_ALL_SYMBOLS<a class="headerlink" href="WINDOWS_EXPORT_ALL_SYMBOLS.html#windows-export-all-symbols" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>此属性仅在 Windows 上的 MS 兼容工具中实现。</p>
+<p>启用此布尔属性，将自动为 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 库（或启用 <span class="target" id="index-0-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的可执行文件）的输入 <code class="docutils literal notranslate"><span class="pre">.obj</span></code> 文件中找到的所有全局符号创建一个模块定义 (<code class="docutils literal notranslate"><span class="pre">.def</span></code>) 文件。该模块定义文件将被传递给链接器，导致所有符号从 <code class="docutils literal notranslate"><span class="pre">.dll</span></code> 导出。</p>
+<p>这简化了将项目移植到 Windows 的过程，减少了对显式 <code class="docutils literal notranslate"><span class="pre">dllexport</span></code> 标记的需求，甚至在 <code class="docutils literal notranslate"><span class="pre">C++</span></code> 类中也是如此。函数符号将自动导出，并可由调用者链接。但是，在消费者中编译代码时，在某些情况下可能需要显式 <code class="docutils literal notranslate"><span class="pre">dllimport</span></code> 标记</p>
+<ul class="simple">
+<li><p>全局<em>数据</em>符号必须使用 <code class="docutils literal notranslate"><span class="pre">__declspec(dllimport)</span></code> 显式标记，才能链接到 <code class="docutils literal notranslate"><span class="pre">.dll</span></code> 中的数据。</p></li>
+<li><p>在编译器生成对虚拟函数表的引用时，例如在具有虚拟函数的类的委托构造函数中，必须使用 <code class="docutils literal notranslate"><span class="pre">__declspec(dllimport)</span></code> 标记整个类，才能链接到 <code class="docutils literal notranslate"><span class="pre">.dll</span></code> 中的 vftable。</p></li>
+<li><p>有关数据符号的更多信息，请参阅 <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/build/reference/export-exports-a-function">MSVC 链接器 /EXPORT 选项</a>。</p></li>
+</ul>
+<p>当此属性启用时，零个或多个 <code class="docutils literal notranslate"><span class="pre">.def</span></code> 文件也可以指定为目标的源文件。这些文件命名的导出将与从对象文件中检测到的导出合并，以生成传递给链接器的单个模块定义文件。这可用于导出 <code class="docutils literal notranslate"><span class="pre">.dll</span></code> 中不在其任何对象文件中的符号，但由链接器从依赖项（例如 <code class="docutils literal notranslate"><span class="pre">msvcrt.lib</span></code>）添加的符号。</p>
+<p>当创建目标时，如果设置了 <span class="target" id="index-0-variable:CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"></span><a class="reference internal" href="../variable/CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS.html#variable:CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS" title="CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS</span></code></a> 变量，则此属性将由该变量的值初始化。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="WIN32_EXECUTABLE.html" title="上一章">WIN32_EXECUTABLE</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="XCODE_ATTRIBUTE_an-attribute.html" title="下一章">XCODE_ATTRIBUTE_&lt;an-attribute&gt;</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/WINDOWS_EXPORT_ALL_SYMBOLS.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="XCODE_ATTRIBUTE_an-attribute.html" title="XCODE_ATTRIBUTE_&lt;an-attribute&gt;">下一页</a> |</li>
+        <li class="right">
+          <a href="WIN32_EXECUTABLE.html" title="WIN32_EXECUTABLE">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="WINDOWS_EXPORT_ALL_SYMBOLS.html">WINDOWS_EXPORT_ALL_SYMBOLS</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

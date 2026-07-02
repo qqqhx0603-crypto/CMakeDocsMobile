@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CPackComponent — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CPackComponent.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPackIFW" href="CPackIFW.html" />
+    <link rel="prev" title="CPack" href="CPack.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CPackIFW.html" title="CPackIFW" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CPack.html" title="CPack" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CPackComponent.html">CPackComponent</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cpackcomponent">
+<span id="module:CPackComponent"></span><h1><a class="toc-backref" href="CPackComponent.html#id1" role="doc-backlink">CPackComponent</a><a class="headerlink" href="CPackComponent.html#cpackcomponent" title="链接到此标题">¶</a></h1>
+<p>此模块提供用于配置二进制安装程序和源程序包组件的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CPackComponent</span><span class="nf">)</span>
+</pre></div>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="CPackComponent.html#cpackcomponent" id="id1">CPackComponent</a></p>
+<ul>
+<li><p><a class="reference internal" href="CPackComponent.html#introduction" id="id2">简介</a></p></li>
+<li><p><a class="reference internal" href="CPackComponent.html#variables" id="id3">变量</a></p></li>
+<li><p><a class="reference internal" href="CPackComponent.html#commands" id="id4">命令</a></p>
+<ul>
+<li><p><a class="reference internal" href="CPackComponent.html#add-component" id="id5">添加组件</a></p></li>
+<li><p><a class="reference internal" href="CPackComponent.html#add-component-group" id="id6">添加组件组</a></p></li>
+<li><p><a class="reference internal" href="CPackComponent.html#add-installation-type" id="id7">添加安装类型</a></p></li>
+<li><p><a class="reference internal" href="CPackComponent.html#configure-downloads" id="id8">配置下载</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="CPackComponent.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="CPackComponent.html#introduction" title="此标题的链接">¶</a></h2>
+<p>此模块也会由 <span class="target" id="index-0-module:CPack"></span><a class="reference internal" href="CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 自动包含。</p>
+<p>CPack 生成的某些二进制安装程序（特别是图形化安装程序）允许用户选择要安装的单个应用程序<em>组件</em>。此模块允许开发人员配置此类组件的打包方式。</p>
+<p>内容通过 CMake <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 参数分配给组件。可以使用下述命令，通过用户友好的名称和描述、组件间依赖关系等对组件进行注释，并以多种方式进行分组，从而自定义生成的安装程序。</p>
+<p>若要为不同的 CPack 生成器指定不同的分组，请使用 CPACK_PROJECT_CONFIG_FILE。</p>
+</section>
+<section id="variables">
+<h2><a class="toc-backref" href="CPackComponent.html#id3" role="doc-backlink">变量</a><a class="headerlink" href="CPackComponent.html#variables" title="链接到此标题">¶</a></h2>
+<p>以下变量会影响组件特定的打包过程：</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENTS_ALL">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENTS_ALL</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENTS_ALL" title="Link to this definition">¶</a></dt>
+<dd><p>要安装的组件列表。</p>
+<p>此变量的默认值由 CPack 计算得出，包含项目中定义的所有组件。用户可以将其设置为仅包含指定的组件。</p>
+<p>除了指定所有需要的组件外，还可以获取所有已定义组件的列表，然后从中移除不需要的组件。可以使用 <span class="target" id="index-0-command:get_cmake_property"></span><a class="reference internal" href="../command/get_cmake_property.html#command:get_cmake_property" title="get_cmake_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_cmake_property()</span></code></a> 命令获取 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 属性，然后使用 <span class="target" id="index-0-command:list"></span><a class="reference internal" href="../command/list.html#remove-item" title="list(remove_item)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list(REMOVE_ITEM)</span></code></a> 命令移除不需要的项。例如，若要使用除 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bar</span></code> 之外的所有已定义组件：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_cmake_property(</span><span class="no">CPACK_COMPONENTS_ALL</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="nf">)</span>
+<span class="nf">list(</span><span class="no">REMOVE_ITEM</span><span class="w"> </span><span class="no">CPACK_COMPONENTS_ALL</span><span class="w"> </span><span class="s">"foo"</span><span class="w"> </span><span class="s">"bar"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_&lt;GENNAME&gt;_COMPONENT_INSTALL">
+<span class="sig-name descname"><span class="pre">CPACK_&lt;GENNAME&gt;_COMPONENT_INSTALL</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_<GENNAME>_COMPONENT_INSTALL" title="Link to this definition">¶</a></dt>
+<dd><p>启用/禁用 CPack 生成器 &lt;GENNAME&gt; 的组件安装。</p>
+<p>每个 CPack 生成器（RPM、DEB、ARCHIVE、NSIS、DMG 等）都有传统的默认行为。例如，RPM 构建为单体式，而 NSIS 构建为组件式。可以通过将此变量设置为 0/1 或 OFF/ON 来更改默认行为。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENTS_GROUPING">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENTS_GROUPING</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENTS_GROUPING" title="Link to this definition">¶</a></dt>
+<dd><p>指定对于支持组件的多包 CPack 生成器，组件应如何分组。</p>
+<p>一些生成器（如 RPM 或 ARCHIVE (TGZ, ZIP, ...)）在存在组件时可能会生成多个包文件，具体取决于该变量的值：</p>
+<ul class="simple">
+<li><p>ONE_PER_GROUP（默认）：每个组件组创建一个包</p></li>
+<li><p>IGNORE：每个组件创建一个包（忽略分组）</p></li>
+<li><p>ALL_COMPONENTS_IN_ONE：创建一个包含所有请求组件的单个包</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_DISPLAY_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_DISPLAY_NAME</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_DISPLAY_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>组件的显示名称。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_DESCRIPTION">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_DESCRIPTION</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_DESCRIPTION" title="Link to this definition">¶</a></dt>
+<dd><p>组件的描述。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_GROUP">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_GROUP</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_GROUP" title="Link to this definition">¶</a></dt>
+<dd><p>组件所属的组。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_DEPENDS">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_DEPENDS</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_DEPENDS" title="Link to this definition">¶</a></dt>
+<dd><p>此组件所依赖的依赖项（组件列表）。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_HIDDEN">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_HIDDEN</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_HIDDEN" title="Link to this definition">¶</a></dt>
+<dd><p>如果此组件对用户隐藏，则为 True。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_REQUIRED">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_REQUIRED</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_REQUIRED" title="Link to this definition">¶</a></dt>
+<dd><p>如果此组件是必需的，则为 True。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMPONENT_&lt;compName&gt;_DISABLED">
+<span class="sig-name descname"><span class="pre">CPACK_COMPONENT_&lt;compName&gt;_DISABLED</span></span><a class="headerlink" href="CPackComponent.html#variable:CPACK_COMPONENT_<compName>_DISABLED" title="Link to this definition">¶</a></dt>
+<dd><p>如果默认情况下未选择安装此组件，则为 True。</p>
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2><a class="toc-backref" href="CPackComponent.html#id4" role="doc-backlink">命令 (Commands)</a><a class="headerlink" href="CPackComponent.html#commands" title="链接到此标题">¶</a></h2>
+<section id="add-component">
+<h3><a class="toc-backref" href="CPackComponent.html#id5" role="doc-backlink">添加组件</a><a class="headerlink" href="CPackComponent.html#add-component" title="链接到此标题">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:cpack_add_component">
+<span class="sig-name descname"><span class="pre">cpack_add_component</span></span><a class="headerlink" href="CPackComponent.html#command:cpack_add_component" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>描述一个安装组件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cpack_add_component(</span><span class="nb">compname</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">DISPLAY_NAME</span><span class="w"> </span><span class="nb">name</span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nb">description</span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">HIDDEN</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DISABLED</span><span class="w"> </span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">GROUP</span><span class="w"> </span><span class="nb">group</span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">comp1</span><span class="w"> </span><span class="nb">comp2</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">INSTALL_TYPES</span><span class="w"> </span><span class="nb">type1</span><span class="w"> </span><span class="nb">type2</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">DOWNLOADED</span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">ARCHIVE_FILE</span><span class="w"> </span><span class="nb">filename</span><span class="p">]</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">PLIST</span><span class="w"> </span><span class="nb">filename</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">compname</span></code> 是安装组件的名称，由一个或多个 CMake <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 参数定义。使用 <code class="docutils literal notranslate"><span class="pre">cpack_add_component</span></code> 命令，可以设置安装组件的名称、描述和其他属性。还可以将组件分配给组件组。</p>
+<p>DISPLAY_NAME 是组件的显示名称，用于图形化安装程序中显示组件名称。该值可以是任何字符串。</p>
+<p>DESCRIPTION 是组件的详细描述，用于图形化安装程序中向用户提供有关组件的额外信息。描述可以使用 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 作为换行符跨多行显示。通常，这些描述不应超过几行。</p>
+<p>HIDDEN 表示此组件在图形化安装程序中将被隐藏，因此用户无法直接更改其安装状态。</p>
+<p>REQUIRED 表示此组件是必需的，因此将始终安装。它在图形化安装程序中可见，但无法取消选中。（通常，必需组件会以灰色显示）。</p>
+<p>DISABLED 表示此组件在默认情况下应被禁用（未选中）。用户可以自由选择安装此组件，除非它同时被设置为 HIDDEN。</p>
+<p>DEPENDS 列出了此组件所依赖的组件。如果选择了此组件，则必须同时选择列表中列出的所有组件。依赖信息被编码在安装程序本身中，以确保用户无法安装不一致的组件集。</p>
+<p>GROUP 指定此组件所属的组件组名称。如果不提供，该组件将作为独立组件，不属于任何组件组。组件组通过下述 cpack_add_component_group 命令进行描述。</p>
+<p>INSTALL_TYPES 列出了此组件所属的安装类型。当选择这些安装类型之一时，将自动选中此组件。安装类型通过下述 cpack_add_install_type 命令进行描述。</p>
+<p>DOWNLOADED 表示此组件应由安装程序实时下载，而不是打包在安装程序内部。有关更多信息，请参阅 cpack_configure_downloads 命令。</p>
+<p>ARCHIVE_FILE 为 CPack 创建的用于下载组件的归档文件提供名称。如果未提供，CPack 将根据 CPACK_PACKAGE_FILE_NAME 和组件名称创建文件名。有关更多信息，请参阅 cpack_configure_downloads。</p>
+<p>PLIST 给出了在使用 productbuild 生成器时传递给 pkgbuild 的 <code class="docutils literal notranslate"><span class="pre">--component-plist</span></code> 参数的文件名。</p>
+</section>
+<section id="add-component-group">
+<h3><a class="toc-backref" href="CPackComponent.html#id6" role="doc-backlink">添加组件组</a><a class="headerlink" href="CPackComponent.html#add-component-group" title="链接到此标题">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:cpack_add_component_group">
+<span class="sig-name descname"><span class="pre">cpack_add_component_group</span></span><a class="headerlink" href="CPackComponent.html#command:cpack_add_component_group" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>描述一组相关的 CPack 安装组件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cpack_add_component_group(</span><span class="nb">groupname</span>
+<span class="w">                         </span><span class="p">[</span><span class="no">DISPLAY_NAME</span><span class="w"> </span><span class="nb">name</span><span class="p">]</span>
+<span class="w">                         </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nb">description</span><span class="p">]</span>
+<span class="w">                         </span><span class="p">[</span><span class="no">PARENT_GROUP</span><span class="w"> </span><span class="nb">parent</span><span class="p">]</span>
+<span class="w">                         </span><span class="p">[</span><span class="no">EXPANDED</span><span class="p">]</span>
+<span class="w">                         </span><span class="p">[</span><span class="no">BOLD_TITLE</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>cpack_add_component_group 描述了一组安装组件，它们在选项列表中会被放置在一起。通常，组件组允许用户通过单个组级选项选择/取消选择组内的所有组件。使用组件组可以降低具有许多选项的安装程序的复杂性。groupname 是用于在 cpack_add_component 命令的 GROUP 参数中标识该组的任意名称，该参数用于将组件放置在组中。组名不能与任何组件名称冲突。</p>
+<p>DISPLAY_NAME 是组件组的显示名称，用于图形化安装程序中显示组件组名称。该值可以是任何字符串。</p>
+<p>DESCRIPTION 是组件组的详细描述，用于图形化安装程序中向用户提供有关该组内组件的额外信息。描述可以使用 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 作为换行符跨多行显示。通常，这些描述不应超过几行。</p>
+<p>PARENT_GROUP（如果提供）命名此组的父组。父组用于建立组的层次结构，提供任意的组层级。</p>
+<p>EXPANDED 表示默认情况下组应显示为“已展开”，以便用户立即看到组内的所有组件。否则，组最初将显示为单个条目。</p>
+<p>BOLD_TITLE 表示组标题应以粗体显示，以引起用户对该组的注意。</p>
+</section>
+<section id="add-installation-type">
+<h3><a class="toc-backref" href="CPackComponent.html#id7" role="doc-backlink">添加安装类型</a><a class="headerlink" href="CPackComponent.html#add-installation-type" title="链接到此标题">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:cpack_add_install_type">
+<span class="sig-name descname"><span class="pre">cpack_add_install_type</span></span><a class="headerlink" href="CPackComponent.html#command:cpack_add_install_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>向图形化安装程序添加一种包含一组预定义组件选择的新安装类型。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cpack_add_install_type(</span><span class="nb">typename</span>
+<span class="w">                       </span><span class="p">[</span><span class="no">DISPLAY_NAME</span><span class="w"> </span><span class="nb">name</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>cpack_add_install_type 命令标识了一组代表应用程序常见用例的预选组件。例如，“开发者”安装类型可能包含应用程序及其头文件和库文件，而“最终用户”安装类型可能仅包含应用程序的可执行文件。每个组件通过 cpack_add_component 的 INSTALL_TYPES 参数标识其所属的一种或多种安装类型。</p>
+<p>DISPLAY_NAME 是安装类型的显示名称，通常显示在图形化安装程序的下拉框中。该值可以是任何字符串。</p>
+</section>
+<section id="configure-downloads">
+<h3><a class="toc-backref" href="CPackComponent.html#id8" role="doc-backlink">配置下载</a><a class="headerlink" href="CPackComponent.html#configure-downloads" title="链接到此标题">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:cpack_configure_downloads">
+<span class="sig-name descname"><span class="pre">cpack_configure_downloads</span></span><a class="headerlink" href="CPackComponent.html#command:cpack_configure_downloads" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>配置 CPack 在安装过程中实时下载选定的组件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cpack_configure_downloads(</span><span class="nb">site</span>
+<span class="w">                          </span><span class="p">[</span><span class="no">UPLOAD_DIRECTORY</span><span class="w"> </span><span class="nb">dirname</span><span class="p">]</span>
+<span class="w">                          </span><span class="p">[</span><span class="no">ALL</span><span class="p">]</span>
+<span class="w">                          </span><span class="p">[</span><span class="no">ADD_REMOVE</span><span class="p">|</span><span class="no">NO_ADD_REMOVE</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>cpack_configure_downloads 命令配置了安装时对选定组件的下载。对于每个可下载组件，CPack 将创建一个包含该组件内容的归档文件，并应上传到指定站点。当用户选择安装该组件时，安装程序将下载并原位提取该组件。此功能对于创建仅下载所需组件的小型安装程序非常有用，从而节省带宽。此外，这些安装程序体积足够小，可以作为正常安装过程的一部分进行安装，Windows “添加/删除程序”控制面板中的“更改”按钮允许用户在最初安装后添加或移除应用程序的各个部分。在 Windows 上，下载组件功能需要 NSIS 的 ZipDLL 插件，可从以下位置获取：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>http://nsis.sourceforge.net/ZipDLL_plug-in
+</pre></div>
+</div>
+<p>在 macOS 上，支持实时下载组件的安装程序只能在 macOS 10.5 或更高版本的系统上构建和安装。</p>
+<p>site 参数是存放可下载组件归档文件的 URL，例如 <a class="reference external" href="https://cmake.com.cn/files/v3.25/">https://cmake.com.cn/files/v3.25/</a>。所有由 CPack 生成的归档文件都应上传到该位置。</p>
+<p>UPLOAD_DIRECTORY 是本地目录，CPack 将在此目录下为每个组件创建各种归档文件。该目录的内容应上传到 site 参数中给定 URL 可访问的位置。如果省略，CPack 将使用 CMake 二进制目录下的 CPackUploads 目录来存储生成的归档文件。</p>
+<p>ALL 标志表示应下载所有组件。否则，仅下载那些明确标记为 DOWNLOADED 或具有指定 ARCHIVE_FILE 的组件。此外，ALL 选项隐含了 ADD_REMOVE（除非指定了 NO_ADD_REMOVE）。</p>
+<p>ADD_REMOVE 表示 CPack 应安装一个安装程序的副本，该副本可从 Windows 的“添加/删除程序”对话框中调用（通过“修改”按钮），以更改已安装的组件集。NO_ADD_REMOVE 会关闭此行为。此选项在 Mac OS X 上会被忽略。</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CPackComponent.html#">CPackComponent</a><ul>
+<li><a class="reference internal" href="CPackComponent.html#introduction">简介</a></li>
+<li><a class="reference internal" href="CPackComponent.html#variables">变量</a></li>
+<li><a class="reference internal" href="CPackComponent.html#commands">命令</a><ul>
+<li><a class="reference internal" href="CPackComponent.html#add-component">添加组件</a></li>
+<li><a class="reference internal" href="CPackComponent.html#add-component-group">添加组件组</a></li>
+<li><a class="reference internal" href="CPackComponent.html#add-installation-type">添加安装类型</a></li>
+<li><a class="reference internal" href="CPackComponent.html#configure-downloads">配置下载</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CPack.html" title="上一章">CPack</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CPackIFW.html" title="下一章">CPackIFW</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CPackComponent.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CPackIFW.html" title="CPackIFW">下一页</a> |</li>
+        <li class="right">
+          <a href="CPack.html" title="CPack">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CPackComponent.html">CPackComponent</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

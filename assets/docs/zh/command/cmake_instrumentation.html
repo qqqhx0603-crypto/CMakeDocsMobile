@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake_instrumentation — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake_instrumentation.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="create_test_sourcelist" href="create_test_sourcelist.html" />
+    <link rel="prev" title="cmake_file_api" href="cmake_file_api.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="create_test_sourcelist.html" title="create_test_sourcelist" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_file_api.html" title="cmake_file_api" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_instrumentation.html">cmake_instrumentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-instrumentation">
+<span id="command:cmake_instrumentation"></span><h1>cmake_instrumentation<a class="headerlink" href="cmake_instrumentation.html#cmake-instrumentation" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>启用与 <span class="target" id="index-0-manual:cmake-instrumentation(7)"></span><a class="reference internal" href="../manual/cmake-instrumentation.7.html#manual:cmake-instrumentation(7)" title="cmake-instrumentation(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">Instrumentation</span> <span class="pre">API</span></code></a>（CMake 插桩 API）的交互。</p>
+<p>这允许在项目级别配置插桩。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_instrumentation(</span>
+<span class="w">  </span><span class="no">API_VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span>
+<span class="w">  </span><span class="no">DATA_VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">HOOKS</span><span class="w"> </span><span class="nv">&lt;hooks&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CALLBACK</span><span class="w"> </span><span class="nv">&lt;callback&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CUSTOM_CONTENT</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="w"> </span><span class="nv">&lt;content&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>必须始终提供 <code class="docutils literal notranslate"><span class="pre">API_VERSION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DATA_VERSION</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">API_VERSION</span></code> 是整数。目前唯一支持的值是 <code class="docutils literal notranslate"><span class="pre">1</span></code>。有关详细信息，请参阅 <a class="reference internal" href="../manual/cmake-instrumentation.7.html#cmake-instrumentation-api-v1"><span class="std std-ref">API v1</span></a>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">DATA_VERSION</span></code> 是 <code class="docutils literal notranslate"><span class="pre">major</span></code> 或 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> 形式的版本值。目前唯一支持的版本是 <code class="docutils literal notranslate"><span class="pre">1.0</span></code>。有关详细信息，请参阅 <a class="reference internal" href="../manual/cmake-instrumentation.7.html#cmake-instrumentation-data-version"><span class="std std-ref">数据版本</span></a>。</p>
+<p>可选关键字 <code class="docutils literal notranslate"><span class="pre">HOOKS</span></code>、<code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CALLBACK</span></code> 中的每一个都对应 <a class="reference internal" href="../manual/cmake-instrumentation.7.html#cmake-instrumentation-v1-query-files"><span class="std std-ref">v1 查询文件</span></a> 的参数之一。<code class="docutils literal notranslate"><span class="pre">CALLBACK</span></code> 关键字可以多次提供，以创建多个回调。</p>
+<p>每当调用 <code class="docutils literal notranslate"><span class="pre">cmake_instrumentation</span></code> 时，就会在 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/instrumentation/v1/query/generated</span></code> 中生成一个查询文件，以使用提供的参数启用插桩。</p>
+<section id="custom-cmake-content">
+<span id="cmake-instrumentation-custom-content"></span><h2>自定义 CMake 内容<a class="headerlink" href="cmake_instrumentation.html#custom-cmake-content" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CUSTOM_CONTENT</span></code> 参数指定了配置阶段中需要包含在每个 <a class="reference internal" href="../manual/cmake-instrumentation.7.html#cmake-instrumentation-v1-cmake-content-file"><span class="std std-ref">v1 CMake 内容文件</span></a> 中的特定数据。这可用于将插桩数据与有关其配置的特定信息相关联，例如优化级别或其是否属于覆盖率构建的一部分。</p>
+<p><code class="docutils literal notranslate"><span class="pre">CUSTOM_CONTENT</span></code> 需要 <code class="docutils literal notranslate"><span class="pre">name</span></code>、<code class="docutils literal notranslate"><span class="pre">type</span></code> 和 <code class="docutils literal notranslate"><span class="pre">content</span></code> 参数。</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> 是用于标识所报告内容的说明符。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code> 指定了应如何解释该内容。支持的值包括：</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STRING</span></code> 内容为字符串。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BOOL</span></code> 内容应被解释为布尔值。其判定条件与 <code class="docutils literal notranslate"><span class="pre">if()</span></code> 对给定值的判定条件一致（即为 <code class="docutils literal notranslate"><span class="pre">true</span></code>）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LIST</span></code> 内容为需要解析的 CMake <code class="docutils literal notranslate"><span class="pre">;</span></code> 分隔列表。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JSON</span></code> 内容应作为 JSON 字符串进行解析。这可以是数字（如 <code class="docutils literal notranslate"><span class="pre">1</span></code> 或 <code class="docutils literal notranslate"><span class="pre">5.0</span></code>）、带引号的字符串（如 <code class="docutils literal notranslate"><span class="pre">\"string\"</span></code>）、布尔值 <code class="docutils literal notranslate"><span class="pre">true</span></code>/<code class="docutils literal notranslate"><span class="pre">false</span></code>，或者可以使用 <code class="docutils literal notranslate"><span class="pre">string(JSON</span> <span class="pre">...)</span></code> 命令构建的 JSON 对象（如 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">\"key\"</span> <span class="pre">:</span> <span class="pre">\"value\"</span> <span class="pre">}</span></code>）。</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">content</span></code> 是要报告的实际内容。</p>
+</section>
+<section id="example">
+<h2>示例<a class="headerlink" href="cmake_instrumentation.html#example" title="此标题的链接">¶</a></h2>
+<p>以下示例展示了该命令的调用及其对应的 JSON 查询文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_instrumentation(</span>
+<span class="w">  </span><span class="no">API_VERSION</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="no">DATA_VERSION</span><span class="w"> </span><span class="m">1.0</span>
+<span class="w">  </span><span class="no">HOOKS</span><span class="w"> </span><span class="nb">postGenerate</span><span class="w"> </span><span class="nb">preCMakeBuild</span><span class="w"> </span><span class="nb">postCMakeBuild</span>
+<span class="w">  </span><span class="no">OPTIONS</span><span class="w"> </span><span class="nb">staticSystemInformation</span><span class="w"> </span><span class="nb">dynamicSystemInformation</span><span class="w"> </span><span class="nb">trace</span>
+<span class="w">  </span><span class="no">CALLBACK</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">P</span><span class="w"> </span><span class="na">/path/to/handle_data.cmake</span>
+<span class="w">  </span><span class="no">CALLBACK</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">P</span><span class="w"> </span><span class="na">/path/to/handle_data_2.cmake</span>
+<span class="w">  </span><span class="no">CUSTOM_CONTENT</span><span class="w"> </span><span class="nb">myString</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="nb">string</span>
+<span class="w">  </span><span class="no">CUSTOM_CONTENT</span><span class="w"> </span><span class="nb">myList</span><span class="w">   </span><span class="no">LIST</span><span class="w">   </span><span class="s">"item1;item2"</span>
+<span class="w">  </span><span class="no">CUSTOM_CONTENT</span><span class="w"> </span><span class="nb">myObject</span><span class="w"> </span><span class="no">JSON</span><span class="w">   </span><span class="s">"{ \"key\" : \"value\" }"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"hooks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"postGenerate"</span><span class="p">,</span><span class="w"> </span><span class="s2">"preCMakeBuild"</span><span class="p">,</span><span class="w"> </span><span class="s2">"postCMakeBuild"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"staticSystemInformation"</span><span class="p">,</span><span class="w"> </span><span class="s2">"dynamicSystemInformation"</span><span class="p">,</span><span class="w"> </span><span class="s2">"trace"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"callbacks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"/path/to/cmake -P /path/to/handle_data.cmake"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"/path/to/cmake -P /path/to/handle_data_2.cmake"</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这也将导致以下内容包含在每个 <a class="reference internal" href="../manual/cmake-instrumentation.7.html#cmake-instrumentation-v1-cmake-content-file"><span class="std std-ref">v1 CMake 内容文件</span></a> 中：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"custom"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"myString"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"myList"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"item1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"item2"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"myObject"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake_instrumentation.html#">cmake_instrumentation</a><ul>
+<li><a class="reference internal" href="cmake_instrumentation.html#custom-cmake-content">自定义 CMake 内容</a></li>
+<li><a class="reference internal" href="cmake_instrumentation.html#example">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake_file_api.html" title="上一章">cmake_file_api</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="create_test_sourcelist.html" title="下一章">create_test_sourcelist</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/cmake_instrumentation.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="create_test_sourcelist.html" title="create_test_sourcelist">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_file_api.html" title="cmake_file_api">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_instrumentation.html">cmake_instrumentation</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

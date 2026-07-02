@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindHDF5 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindHDF5.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindHg" href="FindHg.html" />
+    <link rel="prev" title="FindGTK2" href="FindGTK2.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindHg.html" title="FindHg" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGTK2.html" title="FindGTK2" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindHDF5.html">FindHDF5</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findhdf5">
+<span id="module:FindHDF5"></span><h1>FindHDF5<a class="headerlink" href="FindHDF5.html#findhdf5" title="链接到此标题">¶</a></h1>
+<p>查找分层数据格式（HDF5），这是一个用于读写自描述阵列数据的库。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果 HDF5 库是使用其基于 CMake 的构建系统构建的，从 HDF5 1.8.15 版本开始，它将提供自己的 CMake 软件包配置文件（<code class="docutils literal notranslate"><span class="pre">hdf5-config.cmake</span></code>），以便与 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的<em>配置模式（config mode）</em>配合使用。默认情况下，该模块会搜索此文件，如果找到，则根据找到的配置返回结果。</p>
+<p>如果未找到上游配置文件，该模块将回退到<em>模块模式（module mode）</em>，并调用通常随 HDF5 库一起安装的 HDF5 包装编译器。根据配置的不同，此包装编译器被命名为 <code class="docutils literal notranslate"><span class="pre">h5cc</span></code>（串行）或 <code class="docutils literal notranslate"><span class="pre">h5pcc</span></code>（并行）。如果找到，将通过 <code class="docutils literal notranslate"><span class="pre">-show</span></code> 参数查询该包装器，以确定构建 HDF5 客户端应用程序所需的编译器和链接器标志。串行版和并行版的 HDF5 包装器都会被考虑。优先使用包含其中任意一个的第一个目录。如果同一目录下同时找到两个版本，默认优先使用串行版本。要更改此行为，请将变量 <code class="docutils literal notranslate"><span class="pre">HDF5_PREFER_PARALLEL</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p>
+<p>除了查找编译 HDF5 应用程序所需的包含目录和库之外，该模块还尝试查找 HDF5 发行版提供的其他工具，这些工具对于回归测试或开发工作流程非常有用。</p>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindHDF5.html#components" title="此标题的链接">¶</a></h2>
+<p>该模块支持可选组件，可以通过 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令指定：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持的组件包括</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">C</span></code></dt><dd><p>查找 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> C 库（C 绑定）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CXX</span></code></dt><dd><p>查找 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> C++ 库（C++ 绑定）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fortran</span></code></dt><dd><p>查找 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> Fortran 库（Fortran 绑定）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HL</span></code></dt><dd><p>此组件可与其他组件结合使用，以查找提供高级函数（high-level functions）的 C、CXX 和/或 Fortran 版高级（HL）HDF5 库变体。</p>
+</dd>
+</dl>
+<p>如果未指定任何组件，该模块默认将搜索 <code class="docutils literal notranslate"><span class="pre">C</span></code> 组件。</p>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindHDF5.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5::HDF5</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了所有已找到的 HDF5 绑定库的使用需求的目标（<code class="docutils literal notranslate"><span class="pre">HDF5_LIBRARIES</span></code>），如果找到 HDF5 及所有必需组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 HDF5 C 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">C</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5_cpp</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 HDF5 C 和 C++ 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">C</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5_fortran</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 HDF5 Fortran 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5_hl</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 HDF5 高级 C 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">C</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5_hl_cpp</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>高级 C++ 库。</p>
+<p>封装了 HDF5 高级 C 和高级 C++ 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::hdf5_hl_fortran</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 HDF5 高级 Fortran 库使用需求的目标，如果找到 HDF5 库及其 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdf5::h5diff</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 <code class="docutils literal notranslate"><span class="pre">h5diff</span></code> 可执行文件使用需求的已导入可执行目标，如果找到 <code class="docutils literal notranslate"><span class="pre">h5diff</span></code>，则可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindHDF5.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）HDF5。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>找到的 HDF5 库的版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_INCLUDE_DIRS</span></code></dt><dd><p>包含使用 HDF5 所需头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_DEFINITIONS</span></code></dt><dd><p>使用 HDF5 所需的编译器定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_LIBRARIES</span></code></dt><dd><p>使用 HDF5 时需要链接的所有已请求绑定的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_HL_LIBRARIES</span></code></dt><dd><p>如果启用了 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则为所有绑定提供 HDF5 高级 API 所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_IS_PARALLEL</span></code></dt><dd><p>布尔值，指示 HDF5 库是否具有并行 IO 支持。</p>
+</dd>
+</dl>
+<p>对于每个已启用的语言绑定组件，将定义相应的 <code class="docutils literal notranslate"><span class="pre">HDF5_&lt;LANG&gt;_LIBRARIES</span></code> 变量，以及可能的 <code class="docutils literal notranslate"><span class="pre">HDF5_&lt;LANG&gt;_DEFINITIONS</span></code>。如果启用了 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，还将定义 <code class="docutils literal notranslate"><span class="pre">HDF5_&lt;LANG&gt;_HL_LIBRARIES</span></code> 变量。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_DEFINITIONS</span></code></dt><dd><p>HDF5 C 绑定所需的编译器定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_DEFINITIONS</span></code></dt><dd><p>HDF5 C++ 绑定所需的编译器定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_DEFINITIONS</span></code></dt><dd><p>HDF5 Fortran 绑定所需的编译器定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_INCLUDE_DIRS</span></code></dt><dd><p>HDF5 C 绑定所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_INCLUDE_DIRS</span></code></dt><dd><p>HDF5 C++ 绑定所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_INCLUDE_DIRS</span></code></dt><dd><p>HDF5 Fortran 绑定所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_LIBRARIES</span></code></dt><dd><p>HDF5 C 绑定所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_LIBRARIES</span></code></dt><dd><p>HDF5 C++ 绑定所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_LIBRARIES</span></code></dt><dd><p>HDF5 Fortran 绑定所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_HL_LIBRARIES</span></code></dt><dd><p>如果启用了 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则为高级 C 绑定所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_HL_LIBRARIES</span></code></dt><dd><p>如果启用了 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则为高级 C++ 绑定所需的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_HL_LIBRARIES</span></code></dt><dd><p>如果启用了 <code class="docutils literal notranslate"><span class="pre">HL</span></code> 组件，则为高级 Fortran 绑定所需的库。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindHDF5.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_COMPILER_EXECUTABLE</span></code></dt><dd><p>HDF5 C 包装编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_COMPILER_EXECUTABLE</span></code></dt><dd><p>HDF5 C++ 包装编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_COMPILER_EXECUTABLE</span></code></dt><dd><p>HDF5 Fortran 包装编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_C_COMPILER_EXECUTABLE_NO_INTERROGATE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>主 C 编译器的路径，该编译器同时也是 HDF5 包装器。此变量仅在<em>模块模式</em>下使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_CXX_COMPILER_EXECUTABLE_NO_INTERROGATE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>主 C++ 编译器的路径，该编译器同时也是 HDF5 包装器。此变量仅在<em>模块模式</em>下使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_Fortran_COMPILER_EXECUTABLE_NO_INTERROGATE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>主 Fortran 编译器的路径，该编译器同时也是 HDF5 包装器。此变量仅在<em>模块模式</em>下使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_DIFF_EXECUTABLE</span></code></dt><dd><p>HDF5 数据集比较工具（<code class="docutils literal notranslate"><span class="pre">h5diff</span></code>）的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindHDF5.html#hints" title="链接到此标题">¶</a></h2>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package(HDF5)</span></code> 之前，可以设置以下变量来引导 HDF5 库的搜索：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_PREFER_PARALLEL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>将其设置为布尔真（true）以优先使用并行 HDF5（默认优先使用串行）。此变量仅在<em>模块模式</em>下使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_FIND_DEBUG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>将其设置为布尔真（true）以获取该模块的额外调试输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_NO_FIND_PACKAGE_CONFIG_FILE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>将其设置为布尔真（true）以跳过查找和使用 CMake 软件包配置文件（<code class="docutils literal notranslate"><span class="pre">hdf5-config.cmake</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HDF5_USE_STATIC_LIBRARIES</span></code></dt><dd><p>设置为布尔值，以决定是否为 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> 及其所有依赖项优先使用静态链接而非动态链接。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.10 新增: </span>支持 Windows 上的 <code class="docutils literal notranslate"><span class="pre">HDF5_USE_STATIC_LIBRARIES</span></code>。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindHDF5.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-finding-hdf5">
+<h3>示例：查找 HDF5<a class="headerlink" href="FindHDF5.html#examples-finding-hdf5" title="链接到此标题">¶</a></h3>
+<p>查找 HDF5</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>指定查找 HDF5 的最低要求版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="m">1.8.15</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 HDF5 并将其设为必需（如果未找到 HDF5，处理将停止并报错）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="m">1.8.15</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>搜索静态 HDF5 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">HDF5_USE_STATIC_LIBRARIES</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="no">HDF5</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>指定组件以查找高级 C 和 C++ 函数</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="no">C</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">HL</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examples-using-hdf5">
+<h3>示例：使用 HDF5<a class="headerlink" href="FindHDF5.html#examples-using-hdf5" title="链接到此标题">¶</a></h3>
+<p>查找 HDF5 并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">HDF5</span><span class="o">::</span><span class="no">HDF5</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>使用 Fortran HDF5 和 HDF5-HL 函数</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Fortran</span><span class="w"> </span><span class="no">HL</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">HDF5</span><span class="o">::</span><span class="no">HDF5</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindHDF5.html#">FindHDF5</a><ul>
+<li><a class="reference internal" href="FindHDF5.html#components">组件</a></li>
+<li><a class="reference internal" href="FindHDF5.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindHDF5.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindHDF5.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindHDF5.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindHDF5.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindHDF5.html#examples-finding-hdf5">示例：查找 HDF5</a></li>
+<li><a class="reference internal" href="FindHDF5.html#examples-using-hdf5">示例：使用 HDF5</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindGTK2.html" title="上一章">FindGTK2</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindHg.html" title="下一章">FindHg</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindHDF5.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindHg.html" title="FindHg">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGTK2.html" title="FindGTK2">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindHDF5.html">FindHDF5</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

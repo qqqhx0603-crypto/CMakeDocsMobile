@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FIXTURES_CLEANUP — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FIXTURES_CLEANUP.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FIXTURES_REQUIRED" href="FIXTURES_REQUIRED.html" />
+    <link rel="prev" title="FAIL_REGULAR_EXPRESSION" href="FAIL_REGULAR_EXPRESSION.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FIXTURES_REQUIRED.html" title="FIXTURES_REQUIRED" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FAIL_REGULAR_EXPRESSION.html" title="FAIL_REGULAR_EXPRESSION" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FIXTURES_CLEANUP.html">FIXTURES_CLEANUP</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fixtures-cleanup">
+<span id="prop_test:FIXTURES_CLEANUP"></span><h1>FIXTURES_CLEANUP<a class="headerlink" href="FIXTURES_CLEANUP.html#fixtures-cleanup" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>指定一个测试被视为清理测试的 fixtures 列表。这些 fixture 名称与测试用例名称不同，并且不需要与关联的测试名称有任何相似之处。</p>
+<p>Fixture 清理测试是具有所有通常测试功能的普通测试。为测试设置 <code class="docutils literal notranslate"><span class="pre">FIXTURES_CLEANUP</span></code> 属性有两个主要效果</p>
+<ul class="simple">
+<li><p>CTest 将确保该测试在列出任何 fixture 的 <span class="target" id="index-0-prop_test:FIXTURES_REQUIRED"></span><a class="reference internal" href="FIXTURES_REQUIRED.html#prop_test:FIXTURES_REQUIRED" title="FIXTURES_REQUIRED"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">FIXTURES_REQUIRED</span></code></a> 属性中的所有其他测试之后执行。</p></li>
+<li><p>如果 CTest 被要求只运行测试子集（例如，使用正则表达式或 <code class="docutils literal notranslate"><span class="pre">--rerun-failed</span></code> 选项），并且清理测试不在要运行的测试集中，如果集合中的任何测试需要列在 <code class="docutils literal notranslate"><span class="pre">FIXTURES_CLEANUP</span></code> 中的任何 fixture，它将自动添加。</p></li>
+</ul>
+<p>清理测试可以在其 <code class="docutils literal notranslate"><span class="pre">FIXTURES_CLEANUP</span></code> 属性中列出多个 fixture。它将为整个 CTest 运行只执行一次，而不是为每个 fixture 执行一次。一个 fixture 也可以定义多个清理测试。如果有多个 fixture 的清理测试，项目可以使用通常的 <span class="target" id="index-0-prop_test:DEPENDS"></span><a class="reference internal" href="DEPENDS.html#prop_test:DEPENDS" title="DEPENDS"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">DEPENDS</span></code></a> 测试属性来控制它们的顺序（如果需要）。</p>
+<p>清理测试可以需要其他 fixture，但不能需要列在其 <code class="docutils literal notranslate"><span class="pre">FIXTURES_CLEANUP</span></code> 属性中的任何 fixture。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Ok: Dependent fixture is different to cleanup</span>
+<span class="nf">set_tests_properties(</span><span class="nb">cleanupFoo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">FIXTURES_CLEANUP</span><span class="w">  </span><span class="nb">Foo</span>
+<span class="w">  </span><span class="no">FIXTURES_REQUIRED</span><span class="w"> </span><span class="nb">Bar</span>
+<span class="nf">)</span>
+
+<span class="c"># Error: cannot require same fixture as cleanup</span>
+<span class="nf">set_tests_properties(</span><span class="nb">cleanupFoo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">FIXTURES_CLEANUP</span><span class="w">  </span><span class="nb">Foo</span>
+<span class="w">  </span><span class="no">FIXTURES_REQUIRED</span><span class="w"> </span><span class="nb">Foo</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>即使该 fixture 的设置或常规测试失败或被跳过，清理测试也会执行。</p>
+<p>请参阅 <span class="target" id="index-1-prop_test:FIXTURES_REQUIRED"></span><a class="reference internal" href="FIXTURES_REQUIRED.html#prop_test:FIXTURES_REQUIRED" title="FIXTURES_REQUIRED"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">FIXTURES_REQUIRED</span></code></a> 以获取关于如何使用测试 fixture 的更完整的讨论。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FAIL_REGULAR_EXPRESSION.html" title="上一章">FAIL_REGULAR_EXPRESSION</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FIXTURES_REQUIRED.html" title="下一章">FIXTURES_REQUIRED</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_test/FIXTURES_CLEANUP.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FIXTURES_REQUIRED.html" title="FIXTURES_REQUIRED">下一页</a> |</li>
+        <li class="right">
+          <a href="FAIL_REGULAR_EXPRESSION.html" title="FAIL_REGULAR_EXPRESSION">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FIXTURES_CLEANUP.html">FIXTURES_CLEANUP</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindwxWindows — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindwxWindows.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPackArchive" href="CPackArchive.html" />
+    <link rel="prev" title="FindVTK" href="FindVTK.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CPackArchive.html" title="CPackArchive" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindVTK.html" title="FindVTK" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindwxWindows.html">FindwxWindows</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findwxwindows">
+<span id="module:FindwxWindows"></span><h1>FindwxWindows<a class="headerlink" href="FindwxWindows.html#findwxwindows" title="链接到此标题">¶</a></h1>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">3.0 版本弃用：</span>已被 <span class="target" id="index-0-module:FindwxWidgets"></span><a class="reference internal" href="FindwxWidgets.html#module:FindwxWidgets" title="FindwxWidgets"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindwxWidgets</span></code></a> 取代。</p>
+</div>
+<p>查找 wxWidgets（前身为 wxWindows）安装，并确定其包含目录和库的位置，以及库名称。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">wxWindows</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持用于单体（monolithic）构建的 wxWidgets 2.6.x 版本，例如那些在 <code class="docutils literal notranslate"><span class="pre">wx/build/msw</span></code> 目录中使用以下方式编译的版本：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>nmake<span class="w"> </span>-f<span class="w"> </span>makefile.vc<span class="w"> </span><span class="nv">BUILD</span><span class="o">=</span>debug<span class="w"> </span><span class="nv">SHARED</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">USE_OPENGL</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">MONOLITHIC</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindwxWindows.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_FOUND</span></code></dt><dd><p>布尔值，表示是否找到了 wxWidgets。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_LIBRARIES</span></code></dt><dd><p>使用 wxWidgets 时链接所需的库。这包括 wxWidgets 库的路径和任何额外的链接器标志，通常源自 Unix/Linux 系统上 <code class="docutils literal notranslate"><span class="pre">wx-config</span> <span class="pre">--libs</span></code> 的输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_WXWINDOWS_CXX_FLAGS</span></code></dt><dd><p>使用 wxWidgets 所需的编译器选项（如果有）。在 Linux 上，这对应于 <code class="docutils literal notranslate"><span class="pre">wx-config</span> <span class="pre">--cxxflags</span></code> 的输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_INCLUDE_DIR</span></code></dt><dd><p>包含 <code class="docutils literal notranslate"><span class="pre">wx/wx.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">wx/setup.h</span></code> 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_LINK_DIRECTORIES</span></code></dt><dd><p>链接目录，对于在类 Unix 平台上设置 <code class="docutils literal notranslate"><span class="pre">rpath</span></code> 非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_DEFINITIONS</span></code></dt><dd><p>使用 wxWidgets 所需的额外编译定义（如果有）。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindwxWindows.html#hints" title="链接到此标题">¶</a></h2>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package(wxWindows)</span></code> 之前，此模块接受以下变量：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_USE_GL</span></code></dt><dd><p>将此变量设置为布尔值 true 以请求 OpenGL 支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HAVE_ISYSTEM</span></code></dt><dd><p>当 C++ 编译器为 GNU (<code class="docutils literal notranslate"><span class="pre">g++</span></code>) 时，将此变量设置为布尔值 true，以使用 <code class="docutils literal notranslate"><span class="pre">-isystem</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 编译器选项。</p>
+</dd>
+</dl>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindwxWindows.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_WX_CAN_COMPILE</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">1.8 版本弃用：</span>已被具有相同值的 <code class="docutils literal notranslate"><span class="pre">WXWINDOWS_FOUND</span></code> 变量取代。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_LIBRARY</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">1.8 版本弃用：</span>已被具有相同值的 <code class="docutils literal notranslate"><span class="pre">WXWINDOWS_LIBRARIES</span></code> 变量取代。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_WX_CXX_FLAGS</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">1.8 版本弃用：</span>已被具有相同值的 <code class="docutils literal notranslate"><span class="pre">CMAKE_WXWINDOWS_CXX_FLAGS</span></code> 变量取代。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WXWINDOWS_INCLUDE_PATH</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">1.8 版本弃用：</span>已被具有相同值的 <code class="docutils literal notranslate"><span class="pre">WXWINDOWS_INCLUDE_DIR</span></code> 变量取代。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindwxWindows.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-finding-wxwidgets-in-earlier-cmake-versions">
+<h3>示例：在较旧的 CMake 版本中查找 wxWidgets<a class="headerlink" href="FindwxWindows.html#example-finding-wxwidgets-in-earlier-cmake-versions" title="链接到此标题">¶</a></h3>
+<p>在较旧的 CMake 版本中，可以通过以下方式找到 wxWidgets (wxWindows)：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">wxWindows</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>若要请求 OpenGL 支持，可以在调用 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 之前设置 <code class="docutils literal notranslate"><span class="pre">WXWINDOWS_USE_GL</span></code> 变量。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">WXWINDOWS_USE_GL</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">wxWindows</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在 CMake 中使用 wxWidgets (wxWindows) 通常是通过包含 <span class="target" id="index-0-module:Use_wxWindows"></span><a class="reference internal" href="Use_wxWindows.html#module:Use_wxWindows" title="Use_wxWindows"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">Use_wxWindows</span></code></a> 模块来完成的，该模块会查找 wxWidgets 并设置相应的库、包含目录和编译器标志。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">Use_wxWindows</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-finding-wxwidgets-as-of-cmake-3-0">
+<h3>示例：自 CMake 3.0 起查找 wxWidgets<a class="headerlink" href="FindwxWindows.html#example-finding-wxwidgets-as-of-cmake-3-0" title="链接到此标题">¶</a></h3>
+<p>从 CMake 3.0 开始，可以使用 <span class="target" id="index-1-module:FindwxWidgets"></span><a class="reference internal" href="FindwxWidgets.html#module:FindwxWidgets" title="FindwxWidgets"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindwxWidgets</span></code></a> 模块来查找 wxWidgets。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">wxWidgets</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindwxWindows.html#">FindwxWindows</a><ul>
+<li><a class="reference internal" href="FindwxWindows.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindwxWindows.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindwxWindows.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindwxWindows.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindwxWindows.html#example-finding-wxwidgets-in-earlier-cmake-versions">示例：在较旧的 CMake 版本中查找 wxWidgets</a></li>
+<li><a class="reference internal" href="FindwxWindows.html#example-finding-wxwidgets-as-of-cmake-3-0">示例：自 CMake 3.0 起查找 wxWidgets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindVTK.html" title="上一章">FindVTK</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CPackArchive.html" title="下一章">CPackArchive</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindwxWindows.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CPackArchive.html" title="CPackArchive">下一页</a> |</li>
+        <li class="right">
+          <a href="FindVTK.html" title="FindVTK">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindwxWindows.html">FindwxWindows</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

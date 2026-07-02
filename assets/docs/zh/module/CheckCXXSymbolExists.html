@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckCXXSymbolExists — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckCXXSymbolExists.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckFortranCompilerFlag" href="CheckFortranCompilerFlag.html" />
+    <link rel="prev" title="CheckCXXSourceRuns" href="CheckCXXSourceRuns.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckFortranCompilerFlag.html" title="CheckFortranCompilerFlag" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckCXXSourceRuns.html" title="CheckCXXSourceRuns" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckCXXSymbolExists.html">CheckCXXSymbolExists</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checkcxxsymbolexists">
+<span id="module:CheckCXXSymbolExists"></span><h1>CheckCXXSymbolExists<a class="headerlink" href="CheckCXXSymbolExists.html#checkcxxsymbolexists" title="链接到此标题">¶</a></h1>
+<p>此模块提供了一个用于检查 C++ 符号是否存在的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckCXXSymbolExists</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckCXXSymbolExists.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_cxx_symbol_exists">
+<span class="sig-name descname"><span class="pre">check_cxx_symbol_exists</span></span><a class="headerlink" href="CheckCXXSymbolExists.html#command:check_cxx_symbol_exists" title="Link to this definition">¶</a></dt>
+<dd><p>检查符号是否作为函数、变量或预处理器宏在 C++ 中存在</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_cxx_symbol_exists(</span><span class="nv">&lt;symbol&gt;</span><span class="w"> </span><span class="nv">&lt;headers&gt;</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>该命令用于检查在包含指定的头文件 <code class="docutils literal notranslate"><span class="pre">&lt;headers&gt;</span></code> 后，<code class="docutils literal notranslate"><span class="pre">&lt;symbol&gt;</span></code> 是否可用，并将结果存储在内部缓存变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。多个头文件可以在一个参数中指定，作为一个使用 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a> 的字符串。</p>
+<p>如果头文件将该符号定义为宏，则视为可用并假设其正常工作。如果符号被声明为函数或变量，该检查还会确保其链接成功（即，该符号必须存在于链接的库或目标文件中）。</p>
+<p>类型、枚举值或 C++ 模板形式的符号无法被识别。对于这些情况，请考虑使用 <span class="target" id="index-0-module:CheckTypeSize"></span><a class="reference internal" href="CheckTypeSize.html#module:CheckTypeSize" title="CheckTypeSize"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckTypeSize</span></code></a> 或 <span class="target" id="index-0-module:CheckSourceCompiles"></span><a class="reference internal" href="CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a> 模块。</p>
+<p>此命令旨在检查 C++ 中出现的符号。对于 C 符号，请改用 <span class="target" id="index-0-module:CheckSymbolExists"></span><a class="reference internal" href="CheckSymbolExists.html#module:CheckSymbolExists" title="CheckSymbolExists"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSymbolExists</span></code></a> 模块。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>该命令对于（潜在的）重载函数符号是不可靠的。由于无法可靠地预测系统环境中的给定函数是否可能被定义为重载函数，或者在其他系统上是否可能是重载函数，亦或未来是否会成为重载函数，因此通常建议使用 <span class="target" id="index-1-module:CheckSourceCompiles"></span><a class="reference internal" href="CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a> 模块来检查任何函数符号（除非确信该函数在其他系统上不会被重载，且未来也不会被重载）。</p>
+</div>
+<p class="rubric">影响检查的变量</p>
+<p>在调用此命令之前，可以设置以下变量来修改检查的运行方式</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_FLAGS</span></code></dt><dd><p>一个以空格分隔的字符串，用于传递给编译器的额外标志。<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a> 在此无效。<span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 及其关联的配置特定变量 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 的内容会自动在这些变量之前添加到编译器命令中。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_DEFINITIONS</span></code></dt><dd><p>分号分隔的编译器定义列表，每个定义的形式为 <code class="docutils literal notranslate"><span class="pre">-DFOO</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-DFOO=bar</span></code>。还将自动添加对检查命令的 result variable 参数指定的名称的定义。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_INCLUDES</span></code></dt><dd><p>要传递给编译器的头文件搜索路径的分号分隔列表。这些将是唯一使用的头文件搜索路径；将忽略 <span class="target" id="index-0-prop_dir:INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_dir/INCLUDE_DIRECTORIES.html#prop_dir:INCLUDE_DIRECTORIES" title="INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code></a> 目录属性的内容。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_OPTIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>要添加到链接命令的选项的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_DIRECTORIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>要传递给链接器的库搜索路径的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>如果此变量评估为布尔真值，则与检查关联的所有状态消息都将被抑制。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckCXXSymbolExists.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>以下示例展示了如何使用此模块检查预处理器宏 <code class="docutils literal notranslate"><span class="pre">SEEK_SET</span></code> 和来自 <code class="docutils literal notranslate"><span class="pre">&lt;cstdio&gt;</span></code> 头文件的 C++ 函数 <code class="docutils literal notranslate"><span class="pre">std::fopen()</span></code> 是否存在。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckCXXSymbolExists</span><span class="nf">)</span>
+
+<span class="c"># Check for macro SEEK_SET</span>
+<span class="nf">check_cxx_symbol_exists(</span><span class="no">SEEK_SET</span><span class="w"> </span><span class="s">"cstdio"</span><span class="w"> </span><span class="no">HAVE_SEEK_SET</span><span class="nf">)</span>
+
+<span class="c"># Check for function std::fopen</span>
+<span class="nf">check_cxx_symbol_exists(</span><span class="nb">std</span><span class="o">::</span><span class="nb">fopen</span><span class="w"> </span><span class="s">"cstdio"</span><span class="w"> </span><span class="no">HAVE_STD_FOPEN</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="CheckCXXSymbolExists.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-1-module:CheckSymbolExists"></span><a class="reference internal" href="CheckSymbolExists.html#module:CheckSymbolExists" title="CheckSymbolExists"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSymbolExists</span></code></a> 模块，用于检查 C 符号是否存在。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckCXXSymbolExists.html#">CheckCXXSymbolExists</a><ul>
+<li><a class="reference internal" href="CheckCXXSymbolExists.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckCXXSymbolExists.html#examples">示例</a></li>
+<li><a class="reference internal" href="CheckCXXSymbolExists.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckCXXSourceRuns.html" title="上一章">CheckCXXSourceRuns</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckFortranCompilerFlag.html" title="下一章">CheckFortranCompilerFlag</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckCXXSymbolExists.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckFortranCompilerFlag.html" title="CheckFortranCompilerFlag">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckCXXSourceRuns.html" title="CheckCXXSourceRuns">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckCXXSymbolExists.html">CheckCXXSymbolExists</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

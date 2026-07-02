@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindDCMTK — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindDCMTK.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindDevIL" href="FindDevIL.html" />
+    <link rel="prev" title="FindCygwin" href="FindCygwin.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindDevIL.html" title="FindDevIL" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCygwin.html" title="FindCygwin" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindDCMTK.html">FindDCMTK</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="finddcmtk">
+<span id="module:FindDCMTK"></span><h1>FindDCMTK<a class="headerlink" href="FindDCMTK.html#finddcmtk" title="链接到此标题">¶</a></h1>
+<p>查找 DICOM ToolKit (DCMTK) 库和应用程序</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">DCMTK</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>DCMTK 是一套实现了 DICOM 标准（医学数字成像和通信）大部分功能的库和应用程序。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>该模块现在能够查找无论是否导出 <code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code> 文件的 DCMTK 版本。</p>
+<p>自 <a class="reference external" href="https://git.dcmtk.org/?p=dcmtk.git;a=commit;h=662ae187c493c6b9a73dd5e3875372cebd0c11fe">3.6.1_20140617</a> 版本起，DCMTK 支持并安装了 <a class="reference internal" href="../manual/cmake-packages.7.html#config-file-packages"><span class="std std-ref">包配置文件</span></a> (<code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code>)，以便在 <em>配置模式 (config mode)</em> 下通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令使用。</p>
+<p>该模块现在应用一个两步处理过程：</p>
+<ul class="simple">
+<li><p>第 1 步：尝试查找提供 <code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code> 文件的 DCMTK 版本；如果找到，则直接返回结果，不再执行后续操作。</p></li>
+<li><p>第 2 步：如果第 1 步失败，该模块将回退到 <em>模块模式 (module mode)</em>（即搜索标准路径）并设置 <code class="docutils literal notranslate"><span class="pre">DCMTK_*</span></code> 结果变量。</p></li>
+</ul>
+<p>在所有客户端更新到更新版本的 DCMTK 之前，构建系统将需要支持不同版本的 DCMTK。</p>
+<p>在任何给定系统上，对于安装在系统上（例如通过系统包管理器）或本地（例如自定义安装，或通过 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 模块）的 DCMTK，可以考虑以下组合：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>情况</p></th>
+<th class="head"><p>系统 DCMTK</p></th>
+<th class="head"><p>本地 DCMTK</p></th>
+<th class="head"><p>支持？</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>N/A</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>N/A</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>N/A</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>N/A</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>是 (*)</p></td>
+</tr>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>G</p></td>
+<td><p>[ ] DCMTKConfig</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>[X] DCMTKConfig</p></td>
+<td><p>是</p></td>
+</tr>
+</tbody>
+</table>
+<p>图例</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(*)</dt><dd><p>请参阅 <a class="reference internal" href="FindDCMTK.html#troubleshooting">故障排查</a> 章节。</p>
+</dd>
+<dt>N/A</dt><dd><p>DCMTK 不可用。</p>
+</dd>
+<dt>[ ] DCMTKConfig</dt><dd><p>DCMTK 未导出 <code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code> 文件。</p>
+</dd>
+<dt>[X] DCMTKConfig</dt><dd><p>DCMTK 导出了 <code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code> 文件。</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindDCMTK.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DCMTK_FOUND</span></code></dt><dd><p>布尔值，指示是否找到 DCMTK。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DCMTK_INCLUDE_DIRS</span></code></dt><dd><p>使用 DCMTK 所需头文件的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DCMTK_LIBRARIES</span></code></dt><dd><p>使用 DCMTK 时需要链接的库。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindDCMTK.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DCMTK_DIR</span></code></dt><dd><p>（可选）DCMTK 的源目录。</p>
+</dd>
+</dl>
+</section>
+<section id="troubleshooting">
+<h2>故障排查<a class="headerlink" href="FindDCMTK.html#troubleshooting" title="链接到此标题">¶</a></h2>
+<p class="rubric">如果项目找到了不同版本的 DCMTK 该怎么办？</p>
+<p>按照 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 文档从 CMake 缓存中删除 DCMTK 条目，然后重新运行配置。要在自定义位置查找 DCMTK，请使用诸如 <span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 或 <code class="docutils literal notranslate"><span class="pre">DCMTK_DIR</span></code> 之类的变量。</p>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindDCMTK.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-finding-dcmtk">
+<h3>示例：查找 DCMTK<a class="headerlink" href="FindDCMTK.html#example-finding-dcmtk" title="链接到此标题">¶</a></h3>
+<p>使用此模块查找 DCMTK</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">DCMTK</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-finding-dcmtk-without-this-module">
+<h3>示例：不使用此模块查找 DCMTK<a class="headerlink" href="FindDCMTK.html#example-finding-dcmtk-without-this-module" title="链接到此标题">¶</a></h3>
+<p>要显式使用 <code class="docutils literal notranslate"><span class="pre">DCMTKConfig.cmake</span></code> 包配置文件（尽可能推荐此方式）并在不使用此模块的情况下在 <em>配置模式</em> 下查找 DCMTK，可以向 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 提供 <code class="docutils literal notranslate"><span class="pre">NO_MODULE</span></code> 选项。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">DCMTK</span><span class="w"> </span><span class="no">NO_MODULE</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-creating-imported-target">
+<h3>示例：创建导入目标<a class="headerlink" href="FindDCMTK.html#example-creating-imported-target" title="链接到此标题">¶</a></h3>
+<p>在以下示例中，使用此模块搜索 DCMTK，并有条件地创建了一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (imported target)</span></a>，以提供可轻松链接到项目目标的 DCMTK 使用需求。例如，如果 DCMTK 是在 <em>配置模式</em> 下找到的，则 <code class="docutils literal notranslate"><span class="pre">DCMTK::DCMTK</span></code> 导入目标将通过找到的配置文件提供。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">DCMTK</span><span class="nf">)</span>
+
+<span class="c"># Upstream DCMTKConfig.cmake already provides DCMTK::DCMTK imported target</span>
+<span class="nf">if(</span><span class="no">DCMTK_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="no">DCMTK</span><span class="o">::</span><span class="no">DCMTK</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_library(</span><span class="no">DCMTK</span><span class="o">::</span><span class="no">DCMTK</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set_target_properties(</span>
+<span class="w">    </span><span class="no">DCMTK</span><span class="o">:</span><span class="no">DCMTK</span>
+<span class="w">    </span><span class="no">PROPERTIES</span>
+<span class="w">      </span><span class="no">INTERFACE_LINK_LIBRARIES</span><span class="w"> </span><span class="s">"${DCMTK_LIBRARIES}"</span>
+<span class="w">      </span><span class="no">INTERFACE_INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="s">"${DCMTK_INCLUDE_DIRS}"</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">DCMTK</span><span class="o">::</span><span class="no">DCMTK</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindDCMTK.html#">FindDCMTK</a><ul>
+<li><a class="reference internal" href="FindDCMTK.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindDCMTK.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindDCMTK.html#troubleshooting">故障排查</a></li>
+<li><a class="reference internal" href="FindDCMTK.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindDCMTK.html#example-finding-dcmtk">示例：查找 DCMTK</a></li>
+<li><a class="reference internal" href="FindDCMTK.html#example-finding-dcmtk-without-this-module">示例：不使用此模块查找 DCMTK</a></li>
+<li><a class="reference internal" href="FindDCMTK.html#example-creating-imported-target">示例：创建导入目标</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindCygwin.html" title="上一章">FindCygwin</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindDevIL.html" title="下一章">FindDevIL</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindDCMTK.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindDevIL.html" title="FindDevIL">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCygwin.html" title="FindCygwin">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindDCMTK.html">FindDCMTK</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

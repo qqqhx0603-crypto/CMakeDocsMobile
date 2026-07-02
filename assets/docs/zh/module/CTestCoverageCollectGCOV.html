@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CTestCoverageCollectGCOV — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CTestCoverageCollectGCOV.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CTestUseLaunchers" href="CTestUseLaunchers.html" />
+    <link rel="prev" title="CTest" href="CTest.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CTestUseLaunchers.html" title="CTestUseLaunchers" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CTest.html" title="CTest" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTestCoverageCollectGCOV.html">CTestCoverageCollectGCOV</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctestcoveragecollectgcov">
+<span id="module:CTestCoverageCollectGCOV"></span><h1>CTestCoverageCollectGCOV<a class="headerlink" href="CTestCoverageCollectGCOV.html#ctestcoveragecollectgcov" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>此模块旨在用于 CTest 仪表板脚本，并提供一个命令来生成包含代码覆盖率报告的压缩包。</p>
+<p>在 CTest 脚本中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CTestCoverageCollectGCOV</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CTestCoverageCollectGCOV.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:ctest_coverage_collect_gcov">
+<span class="sig-name descname"><span class="pre">ctest_coverage_collect_gcov</span></span><a class="headerlink" href="CTestCoverageCollectGCOV.html#command:ctest_coverage_collect_gcov" title="Link to this definition">¶</a></dt>
+<dd><p>运行 <code class="docutils literal notranslate"><span class="pre">gcov</span></code> 并为 CDash 打包一个 tar 文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_coverage_collect_gcov(</span>
+<span class="w">  </span><span class="no">TARBALL</span><span class="w"> </span><span class="nv">&lt;tar-file&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">TARBALL_COMPRESSION</span><span class="w"> </span><span class="nv">&lt;compression&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SOURCE</span><span class="w"> </span><span class="nv">&lt;source-dir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BUILD</span><span class="w"> </span><span class="nv">&lt;build-dir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">GCOV_COMMAND</span><span class="w"> </span><span class="nv">&lt;gcov-command&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">GCOV_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">GLOB</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DELETE</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令会对构建树中找到的所有 <code class="docutils literal notranslate"><span class="pre">.gcda</span></code> 文件运行 <code class="docutils literal notranslate"><span class="pre">gcov</span></code>，并将生成的 <code class="docutils literal notranslate"><span class="pre">.gcov</span></code> 文件打包成一个 tar 文件，同时包含以下内容：</p>
+<ul class="simple">
+<li><p><em>data.json</em> 文件，定义了供 CDash 使用的源目录和构建目录。</p></li>
+<li><p><em>Labels.json</em> 文件，指示在源文件上设置的任何 <span class="target" id="index-0-prop_sf:LABELS"></span><a class="reference internal" href="../prop_sf/LABELS.html#prop_sf:LABELS" title="LABELS"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">LABELS</span></code></a>。</p></li>
+<li><p><em>uncovered</em> 目录，包含由 <span class="target" id="index-0-variable:CTEST_EXTRA_COVERAGE_GLOB"></span><a class="reference internal" href="../variable/CTEST_EXTRA_COVERAGE_GLOB.html#variable:CTEST_EXTRA_COVERAGE_GLOB" title="CTEST_EXTRA_COVERAGE_GLOB"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_EXTRA_COVERAGE_GLOB</span></code></a> 找到的任何未覆盖文件。</p></li>
+</ul>
+<p>生成的 tar 文件可以使用 <span class="target" id="index-0-command:ctest_submit"></span><a class="reference internal" href="../command/ctest_submit.html#command:ctest_submit" title="ctest_submit(cdash_upload)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_submit(CDASH_UPLOAD)</span></code></a> 命令提交到 CDash 进行显示。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TARBALL</span> <span class="pre">&lt;tar-file&gt;</span></code></dt><dd><p>指定要创建的 <code class="docutils literal notranslate"><span class="pre">.tar</span></code> 文件的位置，以便稍后上传到 CDash。相对路径将相对于顶级构建目录进行解释。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARBALL_COMPRESSION</span> <span class="pre">&lt;compression&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>指定 <code class="docutils literal notranslate"><span class="pre">TARBALL</span></code> 数据文件的压缩算法。使用此选项可以在提交到 CDash 之前减小数据文件的大小。<code class="docutils literal notranslate"><span class="pre">&lt;compression&gt;</span></code> 应为以下值之一：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">GZIP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BZIP2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LZMA</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LZMA2</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>这是 <code class="docutils literal notranslate"><span class="pre">XZ</span></code> 的别名。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XZ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ZSTD</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FROM_EXT</span></code></p></li>
+<li><p>CMake 计算结果为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 的表达式。</p></li>
+</ul>
+<p>默认值为 <code class="docutils literal notranslate"><span class="pre">BZIP2</span></code>。</p>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">FROM_EXT</span></code>，结果文件将根据 <code class="docutils literal notranslate"><span class="pre">&lt;tar-file&gt;</span></code> 的文件扩展名进行压缩（例如，<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> 将使用 <code class="docutils literal notranslate"><span class="pre">GZIP</span></code> 压缩）。会产生压缩输出的文件扩展名包括：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tgz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tar.bzip2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tbz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tar.xz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.txz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tar.lzma</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tlzma</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tar.zst</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.tzst</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE</span> <span class="pre">&lt;source-dir&gt;</span></code></dt><dd><p>指定构建的顶级源目录。默认值为 <span class="target" id="index-0-variable:CTEST_SOURCE_DIRECTORY"></span><a class="reference internal" href="../variable/CTEST_SOURCE_DIRECTORY.html#variable:CTEST_SOURCE_DIRECTORY" title="CTEST_SOURCE_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_SOURCE_DIRECTORY</span></code></a> 的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">&lt;build-dir&gt;</span></code></dt><dd><p>指定构建的顶级构建目录。默认值为 <span class="target" id="index-0-variable:CTEST_BINARY_DIRECTORY"></span><a class="reference internal" href="../variable/CTEST_BINARY_DIRECTORY.html#variable:CTEST_BINARY_DIRECTORY" title="CTEST_BINARY_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_BINARY_DIRECTORY</span></code></a> 的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GCOV_COMMAND</span> <span class="pre">&lt;gcov-command&gt;</span></code></dt><dd><p>指定机器上 <code class="docutils literal notranslate"><span class="pre">gcov</span></code> 命令的完整路径。默认值为 <span class="target" id="index-0-variable:CTEST_COVERAGE_COMMAND"></span><a class="reference internal" href="../variable/CTEST_COVERAGE_COMMAND.html#variable:CTEST_COVERAGE_COMMAND" title="CTEST_COVERAGE_COMMAND"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_COVERAGE_COMMAND</span></code></a> 的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GCOV_OPTIONS</span> <span class="pre">&lt;options&gt;...</span></code></dt><dd><p>指定传递给 gcov 的选项。<code class="docutils literal notranslate"><span class="pre">gcov</span></code> 命令的运行方式为 <code class="docutils literal notranslate"><span class="pre">gcov</span> <span class="pre">&lt;options&gt;...</span> <span class="pre">-o</span> <span class="pre">&lt;gcov-dir&gt;</span> <span class="pre">&lt;file&gt;.gcda</span></code>。如果未指定，默认选项仅为 <code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">-x</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLOB</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>递归搜索 <code class="docutils literal notranslate"><span class="pre">&lt;build-dir&gt;</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">.gcda</span></code> 文件，而不是通过读取 <code class="docutils literal notranslate"><span class="pre">CMakeFiles/TargetDirectories.txt</span></code>（由 CMake 在生成阶段生成的文件）来确定搜索位置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DELETE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>在覆盖率文件被打包进 <code class="docutils literal notranslate"><span class="pre">.tar</span></code> 后将其删除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><p>禁止显示此命令本应打印出的非错误消息。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.3 版本加入: </span>增加了对 <span class="target" id="index-0-variable:CTEST_CUSTOM_COVERAGE_EXCLUDE"></span><a class="reference internal" href="../variable/CTEST_CUSTOM_COVERAGE_EXCLUDE.html#variable:CTEST_CUSTOM_COVERAGE_EXCLUDE" title="CTEST_CUSTOM_COVERAGE_EXCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_CUSTOM_COVERAGE_EXCLUDE</span></code></a> 变量的支持。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CTestCoverageCollectGCOV.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>在 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-S</span></code></a> 脚本中生成打包为 <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> 文件的代码覆盖率数据</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">script.cmake</span></code></span><a class="headerlink" href="CTestCoverageCollectGCOV.html#id1" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CTestCoverageCollectGCOV</span><span class="nf">)</span>
+
+<span class="nf">ctest_coverage_collect_gcov(</span>
+<span class="w">  </span><span class="no">TARBALL</span><span class="w"> </span><span class="s">"${CTEST_BINARY_DIRECTORY}/gcov.tar.gz"</span>
+<span class="w">  </span><span class="no">TARBALL_COMPRESSION</span><span class="w"> </span><span class="s">"GZIP"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CTestCoverageCollectGCOV.html#">CTestCoverageCollectGCOV</a><ul>
+<li><a class="reference internal" href="CTestCoverageCollectGCOV.html#commands">命令</a></li>
+<li><a class="reference internal" href="CTestCoverageCollectGCOV.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CTest.html" title="上一章">CTest</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CTestUseLaunchers.html" title="下一章">CTestUseLaunchers</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CTestCoverageCollectGCOV.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CTestUseLaunchers.html" title="CTestUseLaunchers">下一页</a> |</li>
+        <li class="right">
+          <a href="CTest.html" title="CTest">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTestCoverageCollectGCOV.html">CTestCoverageCollectGCOV</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

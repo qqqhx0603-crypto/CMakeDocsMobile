@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0053 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0053.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0052" href="CMP0052.html" />
+    <link rel="prev" title="CMP0054" href="CMP0054.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0052.html" title="CMP0052" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0054.html" title="CMP0054" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0053.html">CMP0053</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0053">
+<span id="policy:CMP0053"></span><h1>CMP0053<a class="headerlink" href="CMP0053.html#cmp0053" title="链接到此标题">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为已在 CMake 4.0 版本中移除。此策略必须通过调用 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 或 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 来设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>简化变量引用和转义序列的求值。</p>
+<p>CMake 3.1 引入了一种更快速的实现方式，用于对 <a class="reference internal" href="../manual/cmake-language.7.html#variable-references"><span class="std std-ref">变量引用 (Variable References)</span></a> 和 <a class="reference internal" href="../manual/cmake-language.7.html#escape-sequences"><span class="std std-ref">转义序列 (Escape Sequences)</span></a> 进行求值（相关文档记录在 <span class="target" id="index-0-manual:cmake-language(7)"></span><a class="reference internal" href="../manual/cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-language(7)</span></code></a> 手册中）。虽然在大多数情况下其行为与旧版实现完全相同，但为了简化逻辑，清理了一些极端情况。具体如下：</p>
+<ul>
+<li><p>由 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 和 <span class="target" id="index-0-command:string"></span><a class="reference internal" href="../command/string.html#configure" title="string(CONFIGURE)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(CONFIGURE)</span></code></a> 命令定义的 <code class="docutils literal notranslate"><span class="pre">@VAR@</span></code> 引用语法展开，现在不再在其他上下文中执行。</p></li>
+<li><p>字面量 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 引用语法只能包含字母数字字符（<code class="docutils literal notranslate"><span class="pre">A-Z</span></code>, <code class="docutils literal notranslate"><span class="pre">a-z</span></code>, <code class="docutils literal notranslate"><span class="pre">0-9</span></code>）以及字符 <code class="docutils literal notranslate"><span class="pre">_</span></code>, <code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code> 和 <code class="docutils literal notranslate"><span class="pre">+</span></code>。注意，在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为中技术上允许使用 <code class="docutils literal notranslate"><span class="pre">$</span></code>，但对于 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为而言它是无效的。这是由于 <code class="docutils literal notranslate"><span class="pre">CMP0053</span></code> 实现过程中的疏忽所致，因此不建议将其用作字面量变量引用。名称中包含其他字符的变量仍然可以通过间接方式引用，例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">varname</span><span class="w"> </span><span class="s">"otherwise &amp; disallowed $ characters"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"${${varname}}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>不再考虑策略 <span class="target" id="index-0-policy:CMP0010"></span><a class="reference internal" href="CMP0010.html#policy:CMP0010" title="CMP0010"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0010</span></code></a> 的设置，因此不正确的变量引用语法将始终被视为错误。</p></li>
+<li><p>允许对变量名中更多的字符进行转义。以前，只有 <code class="docutils literal notranslate"><span class="pre">()#"</span> <span class="pre">\@^</span></code> 是有效的转义字符。现在，遵循 <span class="target" id="index-1-manual:cmake-language(7)"></span><a class="reference internal" href="../manual/cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-language(7)</span></code></a> 手册中 <a class="reference internal" href="../manual/cmake-language.7.html#escape-sequences"><span class="std std-ref">转义序列</span></a> 一节的 <code class="docutils literal notranslate"><span class="pre">escape_identity</span></code> 产生式，任何非字母数字、非分号、非 NUL 的字符都可以被转义。</p></li>
+</ul>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是保留变量引用和转义序列的旧有行为。<code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为则是使用更简化的变量展开和转义序列求值规则。</p>
+<p>此策略在 CMake 版本 3.1 中引入。在 CMake 版本 4.0 中移除之前，可以通过 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 来设置。如果未设置，CMake 会发出警告并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0054.html" title="上一章">CMP0054</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0052.html" title="下一章">CMP0052</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0053.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0052.html" title="CMP0052">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0054.html" title="CMP0054">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0053.html">CMP0053</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

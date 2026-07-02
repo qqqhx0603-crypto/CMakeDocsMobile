@@ -1,0 +1,554 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>add_custom_command — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="add_custom_command.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="add_custom_target" href="add_custom_target.html" />
+    <link rel="prev" title="add_compile_options" href="add_compile_options.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="add_custom_target.html" title="add_custom_target" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="add_compile_options.html" title="add_compile_options" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_custom_command.html">add_custom_command</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="add-custom-command">
+<span id="command:add_custom_command"></span><h1>add_custom_command<a class="headerlink" href="add_custom_command.html#add-custom-command" title="链接到此标题">¶</a></h1>
+<p>向生成的构建系统添加自定义构建规则。</p>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="add_custom_command.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="add_custom_command.html#generating-files">Generating Files</a>
+  add_custom_command(<a class="reference internal" href="add_custom_command.html#output">OUTPUT</a> &lt;output1&gt; [&lt;output2&gt; ...]
+                     COMMAND &lt;command1&gt; [ARGS] [&lt;args1&gt;...]
+                     [...])
+
+<a class="reference internal" href="add_custom_command.html#build-events">Build Events</a>
+  add_custom_command(<a class="reference internal" href="add_custom_command.html#target">TARGET</a> &lt;target&gt;
+                     PRE_BUILD | PRE_LINK | POST_BUILD
+                     [...])</pre>
+</section>
+<section id="generating-files">
+<h2>生成文件<a class="headerlink" href="add_custom_command.html#generating-files" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="output">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">add_custom_command(</span></span><span class="no"><span class="pre">OUTPUT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output1&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;output2&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="w"> </span><span class="no"><span class="pre">COMMAND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command1&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ARGS</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;args1&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="add_custom_command.html#output" title="Link to this definition">¶</a></dt>
+<dd><p>添加自定义命令以产生输出</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span><span class="no">OUTPUT</span><span class="w"> </span><span class="nv">&lt;output1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;output2&gt;</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">                   </span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;command1&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">ARGS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;args1&gt;...</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;command2&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">ARGS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;args2&gt;...</span><span class="p">]]</span><span class="w"> </span><span class="p">...</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">MAIN_DEPENDENCY</span><span class="w"> </span><span class="nb">depend</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">DEPENDS</span><span class="w"> </span><span class="nv">&lt;depends&gt;...</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">BYPRODUCTS</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">IMPLICIT_DEPENDS</span><span class="w"> </span><span class="nv">&lt;lang1&gt;</span><span class="w"> </span><span class="nv">&lt;depend1&gt;</span>
+<span class="w">                                    </span><span class="p">[</span><span class="nv">&lt;lang2&gt;</span><span class="w"> </span><span class="nv">&lt;depend2&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMENT</span><span class="w"> </span><span class="nv">&lt;comment&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">DEPFILE</span><span class="w"> </span><span class="nv">&lt;depfile&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">JOB_POOL</span><span class="w"> </span><span class="nv">&lt;job_pool&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">JOB_SERVER_AWARE</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">VERBATIM</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">APPEND</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">USES_TERMINAL</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">CODEGEN</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMAND_EXPAND_LISTS</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">DEPENDS_EXPLICIT_ONLY</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令定义了生成指定 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 文件的指令。如果在同一目录（<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件）中创建了某个目标，并将自定义命令的任何输出指定为源文件，则该目标将获得一条在构建时使用该命令生成文件的规则。</p>
+<p>不要在可能并行构建的多个独立目标中列出同一个输出，否则规则实例可能会冲突。相反，应使用 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 命令来驱动该命令，并让其他目标依赖于该目标。请参阅下文的 <a class="reference internal" href="add_custom_command.html#example-generating-files-for-multiple-targets">示例：为多个目标生成文件</a>。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">APPEND</span></code></dt><dd><p>将 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项的值附加到第一个指定的输出对应的自定义命令中。必须先前已调用过带有相同输出的此命令。</p>
+<p>如果之前的调用通过生成器表达式指定了输出，则当前调用指定的输出在解析生成器表达式后必须至少在一个配置中匹配。在这种情况下，附加的命令和依赖项将应用于所有配置。</p>
+<p>当给出 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 时，<code class="docutils literal notranslate"><span class="pre">COMMENT</span></code>、<code class="docutils literal notranslate"><span class="pre">MAIN_DEPENDENCY</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code> 选项目前会被忽略，但未来可能会被使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>指定预期由该命令产生、但其修改时间不一定比依赖项更新的文件。如果副产品名称是相对路径，它将被解释为相对于当前源目录对应的构建树目录。每个副产品文件都将自动标记为 <span class="target" id="index-0-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a> 源文件属性。</p>
+<p><em>有关此功能背后的动机，请参阅策略</em> <span class="target" id="index-0-policy:CMP0058"></span><a class="reference internal" href="../policy/CMP0058.html#policy:CMP0058" title="CMP0058"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0058</span></code></a>。</p>
+<p><span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#command:add_custom_command" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器支持显式指定副产品，以告知 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 构建工具在副产品缺失时如何重新生成它们。当其他构建规则（例如自定义命令）依赖于这些副产品时，此功能也非常有用。Ninja 要求任何被其他规则依赖的生成文件必须拥有构建规则，即使是仅为了确保顺序的依赖项，也要确保副产品在依赖方构建之前可用。</p>
+<p><a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 将在执行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> 时移除 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 和其他 <span class="target" id="index-1-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a> 文件。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-0-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。所有副产品必须在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span><code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 的参数可以使用受限的 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。不允许使用与目标相关的表达式。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.28 版本更改: </span>在使用 <a class="reference internal" href="target_sources.html#file-sets"><span class="std std-ref">文件集 (File Sets)</span></a> 的目标中，自定义命令的副产品现在被视为私有，除非它们在非私有文件集中列出。参阅策略 <span class="target" id="index-0-policy:CMP0154"></span><a class="reference internal" href="../policy/CMP0154.html#policy:CMP0154" title="CMP0154"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0154</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND</span></code></dt><dd><p>指定在构建时执行的命令行。通常至少会给出一个 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code>，但某些模式可能会省略它，例如使用 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 在单独的调用中添加命令。</p>
+<p>如果指定了多个 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code>，它们将按顺序执行，但<em>不一定</em>会被组合成一个有状态的 shell 或批处理脚本。要运行完整的脚本，请使用 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令或 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="file.html#generate" title="file(generate)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GENERATE)</span></code></a> 命令来创建它，然后指定一个 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 来启动它。</p>
+<p>可选的 <code class="docutils literal notranslate"><span class="pre">ARGS</span></code> 参数仅为了向后兼容，将被忽略。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 指定了一个可执行目标名称（由 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 命令创建），在以下任一条件为真时，它将自动替换为构建时创建的可执行文件的位置：</p>
+<ul>
+<li><p>该目标未进行交叉编译（即 <span class="target" id="index-0-variable:CMAKE_CROSSCOMPILING"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING.html#variable:CMAKE_CROSSCOMPILING" title="CMAKE_CROSSCOMPILING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING</span></code></a> 变量未设置为 true）。</p></li>
+<li><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增: </span>目标正在进行交叉编译且提供了模拟器（即其 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 目标属性已设置）。在这种情况下，<span class="target" id="index-1-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 的内容将被前置到目标可执行文件路径之前的命令中。</p>
+</div>
+</li>
+</ul>
+<p>如果上述条件均不满足，则假设该命令名称是在构建时可于 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 中找到的程序。</p>
+<p><code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 的参数可以使用 <span class="target" id="index-1-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。使用 <span class="target" id="index-0-genex:TARGET_FILE"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:TARGET_FILE" title="TARGET_FILE"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">TARGET_FILE</span></code></a> 生成器表达式可以在命令行稍后处引用目标位置（即作为命令参数，而非作为要执行的命令）。</p>
+<p>每当以下基于目标的生成器表达式被用作执行命令或在命令参数中提到时，将自动添加一个目标级依赖，以便所述目标将在任何使用此自定义命令的目标之前构建（参阅策略 <span class="target" id="index-0-policy:CMP0112"></span><a class="reference internal" href="../policy/CMP0112.html#policy:CMP0112" title="CMP0112"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0112</span></code></a>）。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGET_FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGET_LINKER_FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGET_SONAME_FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TARGET_PDB_FILE</span></code></p></li>
+</ul>
+<p>此目标级依赖不会添加文件级依赖，因此不会导致自定义命令在可执行文件被重新编译时重新运行。请使用 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项列出目标名称以添加此类文件级依赖。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMENT</span></code></dt><dd><p>在构建时执行命令之前显示给定的消息。如果给出了 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code>，此消息将被忽略，但未来版本可能会使用它。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版本新增: </span><code class="docutils literal notranslate"><span class="pre">COMMENT</span></code> 的参数可以使用 <span class="target" id="index-2-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code></dt><dd><p>指定命令所依赖的文件。每个参数转换为依赖项的方式如下：</p>
+<ol class="arabic simple">
+<li><p>如果参数是目标名称（由 <span class="target" id="index-1-command:add_custom_target"></span><a class="reference internal" href="add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a>、<span class="target" id="index-1-command:add_executable"></span><a class="reference internal" href="add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 创建），则会创建一个目标级依赖，以确保该目标在任何使用此自定义命令的目标之前构建。此外，如果目标是可执行文件或库，则会创建一个文件级依赖，导致自定义命令在目标重新编译时重新运行。</p></li>
+<li><p>如果参数是绝对路径，则对该路径创建文件级依赖。</p></li>
+<li><p>如果参数是已添加到目标或已设置源文件属性的源文件名称，则对该源文件创建文件级依赖。</p></li>
+<li><p>如果参数是相对路径且存在于当前源目录中，则对当前源目录中的该文件创建文件级依赖。</p></li>
+<li><p>否则，对相对于当前二进制目录的该路径创建文件级依赖。</p></li>
+</ol>
+<p>如果任何依赖项是同一目录（<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件）中另一个自定义命令的 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code>，CMake 会自动将另一个自定义命令引入到构建此命令的目标中。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版本新增: </span>如果任何依赖项在同一目录中被列为目标或其构建事件的 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code>，则添加一个目标级依赖以确保副产品可用。</p>
+</div>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code>，则命令将在 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 缺失时运行；如果命令实际上没有创建 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code>，则该规则将始终运行。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.1 版本新增: </span><code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 的参数可以使用 <span class="target" id="index-3-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND_EXPAND_LISTS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 参数中的列表将被展开（包括通过 <span class="target" id="index-4-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 创建的列表），允许正确展开类似 <code class="docutils literal notranslate"><span class="pre">${CC}</span> <span class="pre">"-I$&lt;JOIN:$&lt;TARGET_PROPERTY:foo,INCLUDE_DIRECTORIES&gt;,;-I&gt;"</span> <span class="pre">foo.cc</span></code> 的 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 参数。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-1-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。如果附加命令需要设置此选项，则必须在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置它。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CODEGEN</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>将自定义命令添加到全局的 <code class="docutils literal notranslate"><span class="pre">codegen</span></code> 目标，该目标可用于执行自定义命令，同时避免构建图的大部分内容。</p>
+<p>此选项仅受 <a class="reference internal" href="../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 和 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 支持，其他生成器会忽略它。此外，仅当策略 <span class="target" id="index-0-policy:CMP0171"></span><a class="reference internal" href="../policy/CMP0171.html#policy:CMP0171" title="CMP0171"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0171</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，才允许使用此选项。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-2-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。它只能在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IMPLICIT_DEPENDS</span></code></dt><dd><p>请求扫描输入文件的隐式依赖项。给定的语言指定了应使用其相应依赖扫描器的编程语言。目前仅支持 <code class="docutils literal notranslate"><span class="pre">C</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 语言扫描器。必须为 <code class="docutils literal notranslate"><span class="pre">IMPLICIT_DEPENDS</span></code> 列表中的每个文件指定语言。从扫描中发现的依赖项会在构建时添加到自定义命令的依赖项中。请注意，<code class="docutils literal notranslate"><span class="pre">IMPLICIT_DEPENDS</span></code> 选项目前仅支持 Makefile 生成器，其他生成器将忽略它。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此选项不能与 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 选项同时指定。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JOB_POOL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>为 <span class="target" id="index-1-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器指定一个 <span class="target" id="index-0-prop_gbl:JOB_POOLS"></span><a class="reference internal" href="../prop_gbl/JOB_POOLS.html#prop_gbl:JOB_POOLS" title="JOB_POOLS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">池 (pool)</span></code></a>。与隐含 <code class="docutils literal notranslate"><span class="pre">console</span></code> 池的 <code class="docutils literal notranslate"><span class="pre">USES_TERMINAL</span></code> 不兼容。使用未由 <span class="target" id="index-1-prop_gbl:JOB_POOLS"></span><a class="reference internal" href="../prop_gbl/JOB_POOLS.html#prop_gbl:JOB_POOLS" title="JOB_POOLS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">JOB_POOLS</span></code></a> 定义的池会导致 ninja 在构建时报错。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-3-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。任务池只能在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时指定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JOB_SERVER_AWARE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>指定该命令具备 GNU Make 作业服务器感知能力。</p>
+<p>对于 <span class="target" id="index-0-generator:Unix Makefiles"></span><a class="reference internal" href="../generator/Unix&#32;Makefiles.html#generator:Unix Makefiles" title="Unix Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code></a>、<span class="target" id="index-0-generator:MSYS Makefiles"></span><a class="reference internal" href="../generator/MSYS&#32;Makefiles.html#generator:MSYS Makefiles" title="MSYS Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">MSYS</span> <span class="pre">Makefiles</span></code></a> 和 <span class="target" id="index-0-generator:MinGW Makefiles"></span><a class="reference internal" href="../generator/MinGW&#32;Makefiles.html#generator:MinGW Makefiles" title="MinGW Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">MinGW</span> <span class="pre">Makefiles</span></code></a> 生成器，这会给配方行添加 <code class="docutils literal notranslate"><span class="pre">+</span></code> 前缀。更多信息请参阅 <a class="reference external" href="https://gnu.net.cn/software/make/manual/html_node/MAKE-Variable.html">GNU Make 文档</a>。</p>
+<p>此选项会被其他生成器静默忽略。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-4-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。作业服务器感知只能在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时指定。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">MAIN_DEPENDENCY</span></code></dt><dd><p>指定该命令的主要输入源文件。这被视为与传递给 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项的任何值相同，但同时也向 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 指示该自定义命令在何处挂载。每个源文件最多只能有一个命令将其指定为主依赖项。编译命令（即用于库或可执行文件的编译）被视为隐式主依赖项，会被自定义命令规范静默覆盖。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code>，此选项目前会被忽略，但未来版本可能会使用它。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code></dt><dd><p>指定命令预期产生的输出文件。每个输出文件都将自动标记为 <span class="target" id="index-2-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a> 源文件属性。如果自定义命令的输出实际上并未作为磁盘上的文件创建，则应将其标记为 <span class="target" id="index-0-prop_sf:SYMBOLIC"></span><a class="reference internal" href="../prop_sf/SYMBOLIC.html#prop_sf:SYMBOLIC" title="SYMBOLIC"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SYMBOLIC</span></code></a> 源文件属性。</p>
+<p>如果输出文件名是相对路径，则其绝对路径的确定方法是解释为相对于：</p>
+<ol class="arabic simple">
+<li><p>当前源目录对应的构建目录（<span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>），或</p></li>
+<li><p>当前源目录（<span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a>）。</p></li>
+</ol>
+<p>除非源代码树中的路径在当前目录中的其他地方被提及为绝对源文件路径，否则首选构建目录中的路径。</p>
+<p>输出文件路径不能包含 <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> 字符。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span><code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 的参数可以使用受限的 <span class="target" id="index-5-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。不允许使用与目标相关的表达式。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.28 版本更改: </span>在使用 <a class="reference internal" href="target_sources.html#file-sets"><span class="std std-ref">文件集 (File Sets)</span></a> 的目标中，自定义命令的输出现在被视为私有，除非它们在非私有文件集中列出。参阅策略 <span class="target" id="index-1-policy:CMP0154"></span><a class="reference internal" href="../policy/CMP0154.html#policy:CMP0154" title="CMP0154"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0154</span></code></a>。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.30 版本更改: </span>输出文件路径现在可以使用 <code class="docutils literal notranslate"><span class="pre">#</span></code> 字符，除了使用 <span class="target" id="index-0-generator:Borland Makefiles"></span><a class="reference internal" href="../generator/Borland&#32;Makefiles.html#generator:Borland Makefiles" title="Borland Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Borland</span> <span class="pre">Makefiles</span></code></a> 生成器时。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>如果可能，该命令将获得对终端的直接访问权限。对于 <span class="target" id="index-2-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器，这会将命令置于 <code class="docutils literal notranslate"><span class="pre">console</span></code> <span class="target" id="index-2-prop_gbl:JOB_POOLS"></span><a class="reference internal" href="../prop_gbl/JOB_POOLS.html#prop_gbl:JOB_POOLS" title="JOB_POOLS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">池 (pool)</span></code></a> 中。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-5-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。如果附加的命令需要访问终端，则必须在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置此选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERBATIM</span></code></dt><dd><p>命令的所有参数都将为构建工具进行适当的转义，以便被调用的命令能接收到原样参数。请注意，在 <code class="docutils literal notranslate"><span class="pre">add_custom_command</span></code> 看到参数之前，CMake 语言处理器已经使用了一层转义。建议使用 <code class="docutils literal notranslate"><span class="pre">VERBATIM</span></code>，因为它能确保正确的行为。如果不提供 <code class="docutils literal notranslate"><span class="pre">VERBATIM</span></code>，其行为取决于平台，因为对工具特定的特殊字符没有保护。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-6-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。如果附加的命令需要被视为 <code class="docutils literal notranslate"><span class="pre">VERBATIM</span></code>，则必须在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置它。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code></dt><dd><p>在给定的当前工作目录中执行命令。如果它是相对路径，则解释为相对于当前源目录对应的构建树目录。如果未指定，则设置为 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code>，此选项目前会被忽略，但未来版本可能会使用它。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增: </span><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code> 的参数可以使用 <span class="target" id="index-6-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>指定一个包含自定义命令依赖项的依赖文件 (depfile)。它通常由自定义命令本身发出。此关键字仅可在生成器支持的情况下使用，如下详述。</p>
+<p>预期的格式与 <code class="docutils literal notranslate"><span class="pre">gcc</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">-M</span></code> 选项生成的格式兼容，与生成器或平台无关。</p>
+<p>使用具有常规扩展的 <a class="reference external" href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> 符号指定的正式语法如下：</p>
+<pre><strong id="grammar-token-depfile-depfile">depfile</strong>       ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-rule"><code class="xref docutils literal notranslate"><span class="pre">rule</span></code></a>*
+<strong id="grammar-token-depfile-rule">rule</strong>          ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-targets"><code class="xref docutils literal notranslate"><span class="pre">targets</span></code></a> (':' (<a class="reference internal" href="add_custom_command.html#grammar-token-depfile-separator"><code class="xref docutils literal notranslate"><span class="pre">separator</span></code></a> <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-dependencies"><code class="xref docutils literal notranslate"><span class="pre">dependencies</span></code></a>?)?)? <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-eol"><code class="xref docutils literal notranslate"><span class="pre">eol</span></code></a>
+<strong id="grammar-token-depfile-targets">targets</strong>       ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-target"><code class="xref docutils literal notranslate"><span class="pre">target</span></code></a> (<a class="reference internal" href="add_custom_command.html#grammar-token-depfile-separator"><code class="xref docutils literal notranslate"><span class="pre">separator</span></code></a> <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-target"><code class="xref docutils literal notranslate"><span class="pre">target</span></code></a>)* <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-separator"><code class="xref docutils literal notranslate"><span class="pre">separator</span></code></a>*
+<strong id="grammar-token-depfile-target">target</strong>        ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-pathname"><code class="xref docutils literal notranslate"><span class="pre">pathname</span></code></a>
+<strong id="grammar-token-depfile-dependencies">dependencies</strong>  ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-dependency"><code class="xref docutils literal notranslate"><span class="pre">dependency</span></code></a> (<a class="reference internal" href="add_custom_command.html#grammar-token-depfile-separator"><code class="xref docutils literal notranslate"><span class="pre">separator</span></code></a> <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-dependency"><code class="xref docutils literal notranslate"><span class="pre">dependency</span></code></a>)* <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-separator"><code class="xref docutils literal notranslate"><span class="pre">separator</span></code></a>*
+<strong id="grammar-token-depfile-dependency">dependency</strong>    ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-pathname"><code class="xref docutils literal notranslate"><span class="pre">pathname</span></code></a>
+<strong id="grammar-token-depfile-separator">separator</strong>     ::= (<a class="reference internal" href="add_custom_command.html#grammar-token-depfile-space"><code class="xref docutils literal notranslate"><span class="pre">space</span></code></a> | <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-line_continue"><code class="xref docutils literal notranslate"><span class="pre">line_continue</span></code></a>)+
+<strong id="grammar-token-depfile-line_continue">line_continue</strong> ::= '\' <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-eol"><code class="xref docutils literal notranslate"><span class="pre">eol</span></code></a>
+<strong id="grammar-token-depfile-space">space</strong>         ::= ' ' | '\t'
+<strong id="grammar-token-depfile-pathname">pathname</strong>      ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-character"><code class="xref docutils literal notranslate"><span class="pre">character</span></code></a>+
+<strong id="grammar-token-depfile-character">character</strong>     ::= <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-std_character"><code class="xref docutils literal notranslate"><span class="pre">std_character</span></code></a> | <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-dollar"><code class="xref docutils literal notranslate"><span class="pre">dollar</span></code></a> | <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-hash"><code class="xref docutils literal notranslate"><span class="pre">hash</span></code></a> | <a class="reference internal" href="add_custom_command.html#grammar-token-depfile-whitespace"><code class="xref docutils literal notranslate"><span class="pre">whitespace</span></code></a>
+<strong id="grammar-token-depfile-std_character">std_character</strong> ::= &lt;any character except '$', '#' or ' '&gt;
+<strong id="grammar-token-depfile-dollar">dollar</strong>        ::= '$$'
+<strong id="grammar-token-depfile-hash">hash</strong>          ::= '\#'
+<strong id="grammar-token-depfile-whitespace">whitespace</strong>    ::= '\ '
+<strong id="grammar-token-depfile-eol">eol</strong>           ::= '\r'? '\n'
+</pre>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>作为 <code class="docutils literal notranslate"><span class="pre">pathname</span></code> 的一部分，任何斜杠和反斜杠都被解释为目录分隔符。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增: </span><span class="target" id="index-3-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器从该关键字首次添加时起就支持 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.17 版本新增: </span>添加了 <span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 生成器，其中包含了对 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 关键字的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span>增加了对 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 的支持。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>对于 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a>，<code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 不能与 <code class="docutils literal notranslate"><span class="pre">IMPLICIT_DEPENDS</span></code> 选项同时指定。</p>
+</div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增: </span>添加了对 VS 2012 及以上版本的 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 以及 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器的支持。同时也添加了对 <span class="target" id="index-7-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.29 版本新增: </span>如果文件未列在 <code class="docutils literal notranslate"><span class="pre">OUTPUTS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 中，<a class="reference internal" href="../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 现在会将依赖项合并到其“依赖日志 (deps log)”数据库中。</p>
+</div>
+<p>对除上述列表之外的生成器使用 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 是错误的。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 参数是相对的，它应相对于 <span class="target" id="index-2-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>，且 <code class="docutils literal notranslate"><span class="pre">DEPFILE</span></code> 内部的任何相对路径也应相对于 <span class="target" id="index-3-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。参阅策略 <span class="target" id="index-0-policy:CMP0116"></span><a class="reference internal" href="../policy/CMP0116.html#policy:CMP0116" title="CMP0116"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0116</span></code></a>，该策略对于 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a>、<a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 和 <span class="target" id="index-1-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器始终为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-7-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。依赖文件只能在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">DEPENDS_EXPLICIT_ONLY</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p>表示命令的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 参数代表了该命令所需的所有文件，不需要隐式依赖项。</p>
+<p>如果没有此选项，如果任何目标使用了自定义命令的输出，CMake 将把该目标的依赖项视为自定义命令的隐式依赖项，以防该自定义命令需要这些目标隐式创建的文件。</p>
+<p>通过将 <span class="target" id="index-0-variable:CMAKE_ADD_CUSTOM_COMMAND_DEPENDS_EXPLICIT_ONLY"></span><a class="reference internal" href="../variable/CMAKE_ADD_CUSTOM_COMMAND_DEPENDS_EXPLICIT_ONLY.html#variable:CMAKE_ADD_CUSTOM_COMMAND_DEPENDS_EXPLICIT_ONLY" title="CMAKE_ADD_CUSTOM_COMMAND_DEPENDS_EXPLICIT_ONLY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ADD_CUSTOM_COMMAND_DEPENDS_EXPLICIT_ONLY</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，可以在所有自定义命令上启用此选项。</p>
+<p>此关键字不能与 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 一起使用（参阅策略 <span class="target" id="index-8-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>）。它只能在第一次调用 <code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT...)</span></code> 时设置。</p>
+<p>只有 <a class="reference internal" href="../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 真正使用此信息来消除不必要的隐式依赖项。</p>
+<p>另请参阅 <span class="target" id="index-0-prop_tgt:OPTIMIZE_DEPENDENCIES"></span><a class="reference internal" href="../prop_tgt/OPTIMIZE_DEPENDENCIES.html#prop_tgt:OPTIMIZE_DEPENDENCIES" title="OPTIMIZE_DEPENDENCIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OPTIMIZE_DEPENDENCIES</span></code></a> 目标属性，它可能在某些场景下提供减少目标依赖影响的另一种方法。</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="examples-generating-files">
+<h2>示例：生成文件<a class="headerlink" href="add_custom_command.html#examples-generating-files" title="链接到此标题">¶</a></h2>
+<p>自定义命令可用于生成源文件。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">out.c</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">someTool</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/in.txt</span>
+<span class="w">                   </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">out.c</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/in.txt</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">myLib</span><span class="w"> </span><span class="nb">out.c</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>添加了一个自定义命令以运行 <code class="docutils literal notranslate"><span class="pre">someTool</span></code> 来生成 <code class="docutils literal notranslate"><span class="pre">out.c</span></code>，然后将生成的源代码作为库的一部分进行编译。每当 <code class="docutils literal notranslate"><span class="pre">in.txt</span></code> 发生变化时，生成规则就会重新运行。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span>可以使用生成器表达式来指定针对不同配置的输出。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="s">"out-$&lt;CONFIG&gt;.c"</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">someTool</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/in.txt</span>
+<span class="w">                   </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="s">"out-$&lt;CONFIG&gt;.c"</span>
+<span class="w">                   </span><span class="p">-</span><span class="nb">c</span><span class="w"> </span><span class="s">"$&lt;CONFIG&gt;"</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/in.txt</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">myLib</span><span class="w"> </span><span class="s">"out-$&lt;CONFIG&gt;.c"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>添加了一个自定义命令以运行 <code class="docutils literal notranslate"><span class="pre">someTool</span></code> 来生成 <code class="docutils literal notranslate"><span class="pre">out-&lt;config&gt;.c</span></code>（其中 <code class="docutils literal notranslate"><span class="pre">&lt;config&gt;</span></code> 是构建配置），然后将生成的源代码作为库的一部分进行编译。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.31 版本新增: </span>使用 <code class="docutils literal notranslate"><span class="pre">CODEGEN</span></code> 选项可将自定义命令的输出添加到内置的 <code class="docutils literal notranslate"><span class="pre">codegen</span></code> 目标。这对于在不构建整个项目的情况下使生成的代码可用于静态分析非常有用。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">someTool</span><span class="w"> </span><span class="nb">someTool.c</span><span class="nf">)</span>
+
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">out.c</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">someTool</span><span class="w"> </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">out.c</span>
+<span class="w">  </span><span class="no">CODEGEN</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">myLib</span><span class="w"> </span><span class="nb">out.c</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>用户可以构建 <code class="docutils literal notranslate"><span class="pre">codegen</span></code> 目标来生成 <code class="docutils literal notranslate"><span class="pre">out.c</span></code>。<code class="docutils literal notranslate"><span class="pre">someTool</span></code> 会作为依赖项被构建，但 <code class="docutils literal notranslate"><span class="pre">myLib</span></code> 根本不会被构建。</p>
+</div>
+<section id="example-generating-files-for-multiple-targets">
+<h3>示例：为多个目标生成文件<a class="headerlink" href="add_custom_command.html#example-generating-files-for-multiple-targets" title="链接到此标题">¶</a></h3>
+<p>如果多个独立目标需要相同的自定义命令输出，它必须附加到一个单一的自定义目标上，且它们都依赖于该自定义目标。考虑以下示例：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">table.csv</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">makeTable</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/input.dat</span>
+<span class="w">                    </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">table.csv</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/input.dat</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_custom_target(</span><span class="nb">generate_table_csv</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">table.csv</span><span class="nf">)</span>
+
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">foo.cxx</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">genFromTable</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="nb">table.csv</span><span class="w"> </span><span class="p">-</span><span class="nb">case</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">foo.cxx</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">table.csv</span><span class="w">           </span><span class="c"># file-level dependency</span>
+<span class="w">          </span><span class="nb">generate_table_csv</span><span class="w">  </span><span class="c"># target-level dependency</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cxx</span><span class="nf">)</span>
+
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">bar.cxx</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">genFromTable</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="nb">table.csv</span><span class="w"> </span><span class="p">-</span><span class="nb">case</span><span class="w"> </span><span class="nb">bar</span><span class="w"> </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">bar.cxx</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">table.csv</span><span class="w">           </span><span class="c"># file-level dependency</span>
+<span class="w">          </span><span class="nb">generate_table_csv</span><span class="w">  </span><span class="c"># target-level dependency</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">bar</span><span class="w"> </span><span class="nb">bar.cxx</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>输出 <code class="docutils literal notranslate"><span class="pre">foo.cxx</span></code> 仅由目标 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 需要，输出 <code class="docutils literal notranslate"><span class="pre">bar.cxx</span></code> 仅由目标 <code class="docutils literal notranslate"><span class="pre">bar</span></code> 需要，但<em>两个</em>目标在传递上都需要 <code class="docutils literal notranslate"><span class="pre">table.csv</span></code>。由于 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bar</span></code> 是可能并发构建的独立目标，我们通过将 <code class="docutils literal notranslate"><span class="pre">table.csv</span></code> 的自定义命令放入一个单独的目标 <code class="docutils literal notranslate"><span class="pre">generate_table_csv</span></code> 中，来防止它们竞争生成该文件。生成 <code class="docutils literal notranslate"><span class="pre">foo.cxx</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bar.cxx</span></code> 的自定义命令各自指定了对 <code class="docutils literal notranslate"><span class="pre">generate_table_csv</span></code> 的目标级依赖，因此使用它们的目标 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bar</span></code> 在 <code class="docutils literal notranslate"><span class="pre">generate_table_csv</span></code> 目标构建完成之前不会构建。</p>
+</section>
+</section>
+<section id="build-events">
+<h2>构建事件<a class="headerlink" href="add_custom_command.html#build-events" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="target">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">add_custom_command(</span></span><span class="no"><span class="pre">TARGET</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;target&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">PRE_BUILD</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="no"><span class="pre">PRE_LINK</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="no"><span class="pre">POST_BUILD</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="add_custom_command.html#target" title="Link to this definition">¶</a></dt>
+<dd><p>向诸如库或可执行文件的目标添加构建事件。这对于在构建目标之前或之后执行操作非常有用。该命令成为目标的一部分，且仅在目标自身被构建时执行。如果目标已构建，则该命令不会执行。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span>
+<span class="w">                   </span><span class="no">PRE_BUILD</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">PRE_LINK</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">POST_BUILD</span>
+<span class="w">                   </span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;command1&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">ARGS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;args1&gt;...</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;command2&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">ARGS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;args2&gt;...</span><span class="p">]]</span><span class="w"> </span><span class="p">...</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">BYPRODUCTS</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMENT</span><span class="w"> </span><span class="nv">&lt;comment&gt;</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">VERBATIM</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">COMMAND_EXPAND_LISTS</span><span class="p">]</span>
+<span class="w">                   </span><span class="p">[</span><span class="no">USES_TERMINAL</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此操作定义了一个将与构建指定 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 关联的新命令。<code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 必须在当前目录中定义；在其他目录中定义的目标不能被指定。</p>
+<p>命令发生的时间取决于指定了以下哪项：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_BUILD</span></code></dt><dd><p>此选项对于 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 具有独特的行为。使用 Visual Studio 生成器时，该命令将在目标内的任何其他规则执行之前运行。对于所有其他生成器，此选项的行为与 <code class="docutils literal notranslate"><span class="pre">PRE_LINK</span></code> 相同。因此，建议避免使用 <code class="docutils literal notranslate"><span class="pre">PRE_BUILD</span></code>，除非确信正在使用 Visual Studio 生成器。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_LINK</span></code></dt><dd><p>在源代码编译之后，但在链接二进制文件或运行静态库的归档工具之前运行。对于由 <span class="target" id="index-2-command:add_custom_target"></span><a class="reference internal" href="add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 命令创建的目标，此操作未定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_BUILD</span></code></dt><dd><p>在目标内的所有其他规则执行完毕后运行。</p>
+</dd>
+</dl>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">TARGET</span></code> 形式时，项目应始终指定上述三个关键字之一。参阅策略 <span class="target" id="index-9-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>。</p>
+<p>上述签名中显示的所有其他关键字与 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="add_custom_command.html#output" title="add_custom_command(output)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT)</span></code></a> 形式的命令具有相同的含义。至少必须给出一个 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code>，参阅策略 <span class="target" id="index-10-policy:CMP0175"></span><a class="reference internal" href="../policy/CMP0175.html#policy:CMP0175" title="CMP0175"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0175</span></code></a>。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>由于可以在自定义命令中使用生成器表达式，因此可以定义在特定配置下评估为空字符串的 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 行或整个自定义命令。对于 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>，这些命令行或自定义命令将针对特定配置省略，且不会添加任何“空字符串命令”。</p>
+<p>这允许为每个配置添加单独的构建事件。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增: </span>支持与目标相关的生成器表达式。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.29 版本新增: </span><code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#alias-targets"><span class="std std-ref">别名目标 (ALIAS target)</span></a>。</p>
+</div>
+</section>
+<section id="examples-build-events">
+<h2>示例：构建事件<a class="headerlink" href="add_custom_command.html#examples-build-events" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">POST_BUILD</span></code> 事件可用于在链接后对二进制文件进行后处理。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">myExe</span><span class="w"> </span><span class="nb">myExe.c</span><span class="nf">)</span>
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">myExe</span><span class="w"> </span><span class="no">POST_BUILD</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">someHasher</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="s">"$&lt;TARGET_FILE:myExe&gt;"</span>
+<span class="w">                     </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="s">"$&lt;TARGET_FILE:myExe&gt;.hash"</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将在链接后运行 <code class="docutils literal notranslate"><span class="pre">someHasher</span></code>，在可执行文件旁边产生一个 <code class="docutils literal notranslate"><span class="pre">.hash</span></code> 文件。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span>可以使用生成器表达式来指定每种配置下的副产品。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">myPlugin</span><span class="w"> </span><span class="no">MODULE</span><span class="w"> </span><span class="nb">myPlugin.c</span><span class="nf">)</span>
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">myPlugin</span><span class="w"> </span><span class="no">POST_BUILD</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">someHasher</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="s">"$&lt;TARGET_FILE:myPlugin&gt;"</span>
+<span class="w">                     </span><span class="p">--</span><span class="nb">as-code</span><span class="w"> </span><span class="s">"myPlugin-hash-$&lt;CONFIG&gt;.c"</span>
+<span class="w">  </span><span class="no">BYPRODUCTS</span><span class="w"> </span><span class="s">"myPlugin-hash-$&lt;CONFIG&gt;.c"</span>
+<span class="w">  </span><span class="no">VERBATIM</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">myExe</span><span class="w"> </span><span class="nb">myExe.c</span><span class="w"> </span><span class="s">"myPlugin-hash-$&lt;CONFIG&gt;.c"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将在链接 <code class="docutils literal notranslate"><span class="pre">myPlugin</span></code> 之后运行 <code class="docutils literal notranslate"><span class="pre">someHasher</span></code>，例如生成一个包含检查 <code class="docutils literal notranslate"><span class="pre">myPlugin</span></code> 哈希值代码的 <code class="docutils literal notranslate"><span class="pre">.c</span></code> 文件，以便 <code class="docutils literal notranslate"><span class="pre">myExe</span></code> 可执行文件在加载之前可以使用它进行验证。</p>
+</div>
+</section>
+<section id="ninja-multi-config">
+<h2>Ninja 多配置<a class="headerlink" href="add_custom_command.html#ninja-multi-config" title="此标题的永久链接">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span><code class="docutils literal notranslate"><span class="pre">add_custom_command</span></code> 支持 <span class="target" id="index-1-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 生成器的跨配置功能。有关更多信息，请参阅生成器文档。</p>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="add_custom_command.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-3-command:add_custom_target"></span><a class="reference internal" href="add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="add_custom_command.html#">add_custom_command</a><ul>
+<li><a class="reference internal" href="add_custom_command.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="add_custom_command.html#generating-files">生成文件</a></li>
+<li><a class="reference internal" href="add_custom_command.html#examples-generating-files">示例：生成文件</a><ul>
+<li><a class="reference internal" href="add_custom_command.html#example-generating-files-for-multiple-targets">示例：为多个目标生成文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="add_custom_command.html#build-events">构建事件</a></li>
+<li><a class="reference internal" href="add_custom_command.html#examples-build-events">示例：构建事件</a></li>
+<li><a class="reference internal" href="add_custom_command.html#ninja-multi-config">Ninja 多配置</a></li>
+<li><a class="reference internal" href="add_custom_command.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="add_compile_options.html" title="上一章">add_compile_options</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="add_custom_target.html" title="下一章">add_custom_target</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/add_custom_command.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="add_custom_target.html" title="add_custom_target">下一页</a> |</li>
+        <li class="right">
+          <a href="add_compile_options.html" title="add_compile_options">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_custom_command.html">add_custom_command</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

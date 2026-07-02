@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>get_property — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="get_property.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="if" href="if.html" />
+    <link rel="prev" title="get_filename_component" href="get_filename_component.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="if.html" title="if" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="get_filename_component.html" title="get_filename_component" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="get_property.html">get_property</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="get-property">
+<span id="command:get_property"></span><h1>get_property<a class="headerlink" href="get_property.html#get-property" title="链接到此标题">¶</a></h1>
+<p>获取一个属性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_property(</span><span class="nv">&lt;variable&gt;</span>
+<span class="w">             </span><span class="p">&lt;</span><span class="no">GLOBAL</span><span class="w">                                                  </span><span class="p">|</span>
+<span class="w">              </span><span class="no">DIRECTORY</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w">                                       </span><span class="p">|</span>
+<span class="w">              </span><span class="no">TARGET</span><span class="w">    </span><span class="nv">&lt;target&gt;</span><span class="w">                                      </span><span class="p">|</span>
+<span class="w">              </span><span class="no">FILE_SET</span><span class="w">  </span><span class="nv">&lt;file_set&gt;</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="w">                    </span><span class="p">|</span>
+<span class="w">              </span><span class="no">SOURCE</span><span class="w">    </span><span class="nv">&lt;source&gt;</span>
+<span class="w">                        </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">TARGET_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">|</span>
+<span class="w">              </span><span class="no">INSTALL</span><span class="w">   </span><span class="nv">&lt;file&gt;</span><span class="w">                                        </span><span class="p">|</span>
+<span class="w">              </span><span class="no">TEST</span><span class="w">      </span><span class="nv">&lt;test&gt;</span>
+<span class="w">                        </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w">                             </span><span class="p">|</span>
+<span class="w">              </span><span class="no">CACHE</span><span class="w">     </span><span class="nv">&lt;entry&gt;</span><span class="w">                                       </span><span class="p">|</span>
+<span class="w">              </span><span class="no">VARIABLE</span><span class="p">&gt;</span>
+<span class="w">             </span><span class="no">PROPERTY</span><span class="w"> </span><span class="nv">&lt;name&gt;</span>
+<span class="w">             </span><span class="p">[</span><span class="no">SET</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DEFINED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">BRIEF_DOCS</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">FULL_DOCS</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>从指定作用域的一个对象中获取一个属性。</p>
+<p>第一个参数指定用于存储结果的变量。第二个参数确定要从中获取属性的作用域。它必须是以下选项之一：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code></dt><dd><p>作用域是唯一的，不需要名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code></dt><dd><p>作用域默认为当前目录，但可以通过完整路径或相对路径 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 来指定另一个（已被 CMake 处理过的）目录。相对路径被视为相对于当前源目录。另请参阅 <span class="target" id="index-0-command:get_directory_property"></span><a class="reference internal" href="get_directory_property.html#command:get_directory_property" title="get_directory_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_directory_property()</span></code></a> 命令。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span> <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以引用二进制目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>作用域必须指定一个现有的目标。另请参阅 <span class="target" id="index-0-command:get_target_property"></span><a class="reference internal" href="get_target_property.html#command:get_target_property" title="get_target_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_target_property()</span></code></a> 命令。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>作用域必须指定一个现有的文件集。</p>
+<p>以下选项是必需的：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><p>附加该文件集的目标。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE</span></code></dt><dd><p>作用域必须指定一个源文件。默认情况下，源文件属性将从当前源目录的作用域中读取。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本加入：</span>目录作用域可以通过以下子选项之一进行覆盖：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>源文件属性将从 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 目录的作用域中读取。CMake 必须已经知晓该目录，要么通过调用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 添加过该目录，要么 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 本身就是顶层目录。相对路径被视为相对于当前源目录。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span> <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以引用二进制目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET_DIRECTORY</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><p>源文件属性将从创建 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 时所在的目录作用域中读取（因此 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 必须已经存在）。</p>
+</dd>
+</dl>
+</div>
+<p>另请参阅 <span class="target" id="index-0-command:get_source_file_property"></span><a class="reference internal" href="get_source_file_property.html#command:get_source_file_property" title="get_source_file_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_source_file_property()</span></code></a> 命令。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>作用域必须指定一个已安装的文件路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST</span></code></dt><dd><p>作用域必须指定一个现有的测试。另请参阅 <span class="target" id="index-0-command:get_test_property"></span><a class="reference internal" href="get_test_property.html#command:get_test_property" title="get_test_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_test_property()</span></code></a> 命令。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.28 版本加入：</span>目录作用域可以通过以下子选项进行覆盖：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>测试属性将从 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 目录的作用域中读取。CMake 必须已经知晓该目录，要么通过调用 <span class="target" id="index-1-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 添加过该目录，要么 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 本身就是顶层目录。相对路径被视为相对于当前源目录。<code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以引用二进制目录。</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CACHE</span></code></dt><dd><p>作用域必须指定一个缓存条目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VARIABLE</span></code></dt><dd><p>作用域是唯一的，不需要名称。</p>
+</dd>
+</dl>
+<p>必需的 <code class="docutils literal notranslate"><span class="pre">PROPERTY</span></code> 选项后面紧跟要获取的属性名称。如果该属性未设置，则返回时调用作用域中的命名 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 将被取消设置，尽管某些属性支持从父作用域继承（如果定义为那种行为，请参阅 <span class="target" id="index-0-command:define_property"></span><a class="reference internal" href="define_property.html#command:define_property" title="define_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">define_property()</span></code></a>）。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">SET</span></code> 选项，该变量将被设置为一个布尔值，指示该属性是否已被设置。如果给出了 <code class="docutils literal notranslate"><span class="pre">DEFINED</span></code> 选项，该变量将被设置为一个布尔值，指示该属性是否已被定义（例如通过 <span class="target" id="index-1-command:define_property"></span><a class="reference internal" href="define_property.html#command:define_property" title="define_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">define_property()</span></code></a> 命令）。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">BRIEF_DOCS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FULL_DOCS</span></code>，则变量被设置为包含所请求属性文档的字符串。如果对尚未定义的属性请求文档，则返回 <code class="docutils literal notranslate"><span class="pre">NOTFOUND</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>全局可见的源文件属性 <span class="target" id="index-0-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a>。有关详细信息，请参阅其文档。</p>
+</div>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="get_property.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:define_property"></span><a class="reference internal" href="define_property.html#command:define_property" title="define_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">define_property()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:set_property"></span><a class="reference internal" href="set_property.html#command:set_property" title="set_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_property()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="get_property.html#">get_property</a><ul>
+<li><a class="reference internal" href="get_property.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="get_filename_component.html" title="上一章">get_filename_component</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="if.html" title="下一章">if</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/get_property.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="if.html" title="if">下一页</a> |</li>
+        <li class="right">
+          <a href="get_filename_component.html" title="get_filename_component">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="get_property.html">get_property</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

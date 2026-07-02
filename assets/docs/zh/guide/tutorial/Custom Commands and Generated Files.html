@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第七步：自定义命令与生成文件 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 8: Testing and CTest" href="Testing&#32;and&#32;CTest.html" />
+    <link rel="prev" title="Step 6: In-Depth System Introspection" href="In-Depth&#32;System&#32;Introspection.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Testing&#32;and&#32;CTest.html" title="Step 8: Testing and CTest" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="In-Depth&#32;System&#32;Introspection.html" title="Step 6: In-Depth System Introspection" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html">第 7 步：自定义命令和生成的文件</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-7-custom-commands-and-generated-files">
+<span id="guide:tutorial/Custom Commands and Generated Files"></span><h1>第七步：自定义命令与生成文件<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#step-7-custom-commands-and-generated-files" title="链接到此标题">¶</a></h1>
+<p>代码生成是一种通用机制，用于将编程语言扩展到其语言模型限制之外。CMake 对 Qt 的元对象编译器（Meta-Object Compiler）有顶级支持，但很少有其他代码生成器值得投入这种程度的精力。</p>
+<p>相反，代码生成器通常是定制的且针对特定用途。CMake 提供了描述代码生成器用法的工具，因此项目可以根据其个人需求添加支持。</p>
+<p>在这一步中，我们将使用 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 在教程项目中添加对代码生成器的支持。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#background" title="链接到此标题">¶</a></h2>
+<p>构建过程中的任何步骤通常都可以根据其输入和输出进行描述。CMake 假设代码生成器和其他自定义进程遵循相同的原则。通过这种方式，代码生成器与编译器、链接器和工具链的其他元素的作用完全相同；当输入比输出更新时（或者输出不存在），将运行用户指定的命令来更新输出。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此模型假设进程的输出在运行前是已知的。CMake 无法描述输出的名称和位置取决于输入<em>内容</em>的代码生成器。虽然存在各种黑客手段将此功能引入 CMake，但它们超出了本教程的范围。</p>
+</div>
+<p>描述代码生成器（或任何自定义进程）通常分为两部分。首先，输入和输出的描述独立于 CMake 目标模型，仅关注生成过程本身。其次，将输出与 CMake 目标关联起来，以将其插入到 CMake 目标模型中。</p>
+<p>对于源文件，这就像将生成的文件添加到 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code>、<code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OBJECT</span></code> 库的源列表中一样简单。对于仅头文件的生成器，通常需要使用通过 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 创建的中间目标，将头文件生成添加到构建阶段（因为 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库没有构建步骤）。</p>
+</section>
+<section id="exercise-1-using-a-code-generator">
+<h2>练习 1 - 使用代码生成器<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#exercise-1-using-a-code-generator" title="链接到此标题">¶</a></h2>
+<p>描述代码生成器的主要机制是 <span class="target" id="index-1-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 命令。就 <span class="target" id="index-2-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 而言，“命令”要么是构建环境中可用的可执行文件，要么是 CMake 可执行目标名称。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">Tool</span><span class="nf">)</span>
+<span class="c"># ...</span>
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">Generated.cxx</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">Tool</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="nb">input.txt</span><span class="w"> </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">Generated.cxx</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">Tool</span><span class="w"> </span><span class="nb">input.txt</span>
+<span class="w">  </span><span class="no">VERBATIM</span>
+<span class="nf">)</span>
+<span class="c"># ...</span>
+<span class="nf">add_library(</span><span class="nb">GeneratedObject</span><span class="w"> </span><span class="no">OBJECT</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">GeneratedObject</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">Generated.cxx</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>除了 <code class="docutils literal notranslate"><span class="pre">VERBATIM</span></code> 之外，大多数关键字都是不言自明的。由于在现代语境下解释起来毫无意义的历史原因，此参数实际上是强制性的。好奇的读者可以查阅 <span class="target" id="index-3-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 文档以获取更多详细信息。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Tool</span></code> 可执行目标同时出现在 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 参数中。虽然 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 足以让代码正确构建，但将 <code class="docutils literal notranslate"><span class="pre">Tool</span></code> 本身作为自定义命令的依赖项，可以确保如果 <code class="docutils literal notranslate"><span class="pre">Tool</span></code> 更新，自定义命令将重新运行。</p>
+<p>对于仅头文件的生成，需要额外的命令，因为库本身没有构建步骤。我们可以使用 <span class="target" id="index-1-command:add_custom_target"></span><a class="reference internal" href="../../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 为库创建一个“人工”构建步骤。然后，我们使用 <span class="target" id="index-0-command:add_dependencies"></span><a class="reference internal" href="../../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a> 命令强制自定义目标在任何链接该库的目标之前运行。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_target(</span><span class="nb">RunGenerator</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">Generated.h</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">GeneratedLib</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">GeneratedLib</span>
+<span class="w">  </span><span class="no">INTERFACE</span>
+<span class="w">    </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">    </span><span class="no">BASE_DIRS</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span>
+<span class="w">    </span><span class="no">FILES</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/Generated.h</span>
+<span class="nf">)</span>
+
+<span class="nf">add_dependencies(</span><span class="nb">GeneratedLib</span><span class="w"> </span><span class="nb">RunGenerator</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>我们将 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>（一个命名我们的构件所放置的构建树中当前位置的变量）添加到基础目录中，因为这是我们将要运行代码生成器的工作目录。出于构建目的，列出 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 是不必要的，此处列出仅为了清晰起见。</p>
+</div>
+<section id="goal">
+<h3>目标<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>将预先计算的平方根生成表添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库中。</p>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_sources"></span><a class="reference internal" href="../../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a></p></li>
+<li><p><span class="target" id="index-4-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a></p></li>
+<li><p><span class="target" id="index-2-command:add_custom_target"></span><a class="reference internal" href="../../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:add_dependencies"></span><a class="reference internal" href="../../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/MakeTable/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/MathFunctions.cxx</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库已被修改，以便在给定小于 10 的数字时使用预先计算的表。然而，硬编码的表并不十分准确，仅包含最接近的截断整数值。</p>
+<p><code class="docutils literal notranslate"><span class="pre">MakeTable.cxx</span></code> 源文件描述了一个将生成更好表的程序。它以单个参数作为输入，即要生成的表的文件名。</p>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">10</span></code>。</p>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>无需特殊配置，像往常一样配置和构建即可。注意 <code class="docutils literal notranslate"><span class="pre">MakeTable</span></code> 可执行文件在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 之前进行序列化构建。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出现在是否对小于 10 的值使用了预先计算的表。</p>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们添加一个新的可执行文件来生成表，并将 <code class="docutils literal notranslate"><span class="pre">MakeTable.cxx</span></code> 文件作为源文件添加。</p>
+<details><summary>TODO 1-2：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-maketable-cmakelists-txt-add-executable">
+<div class="code-block-caption"><span class="caption-text">TODO 1-2：MathFunctions/MakeTable/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-maketable-cmakelists-txt-add-executable" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">MakeTable</span><span class="nf">)</span>
+
+<span class="nf">target_sources(</span><span class="nb">MakeTable</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">MakeTable.cxx</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后我们添加一个生成该表的自定义命令，以及一个依赖于该表的自定义目标。</p>
+<details><summary>TODO 3-4：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-maketable-cmakelists-txt-add-custom-command">
+<div class="code-block-caption"><span class="caption-text">TODO 3-4：MathFunctions/MakeTable/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-maketable-cmakelists-txt-add-custom-command" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">SqrtTable.h</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">MakeTable</span><span class="w"> </span><span class="nb">SqrtTable.h</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">MakeTable</span>
+<span class="w">  </span><span class="no">VERBATIM</span>
+<span class="nf">)</span>
+
+<span class="nf">add_custom_target(</span><span class="nb">RunMakeTable</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">SqrtTable.h</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>我们需要添加一个接口库，描述将出现在 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 中的输出。<code class="docutils literal notranslate"><span class="pre">FILES</span></code> 参数是可选的。</p>
+<details><summary>TODO 5-6：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-maketable-cmakelists-txt-add-library">
+<div class="code-block-caption"><span class="caption-text">TODO 5-6：MathFunctions/MakeTable/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-maketable-cmakelists-txt-add-library" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">SqrtTable</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
+
+<span class="nf">target_sources(</span><span class="nb">SqrtTable</span>
+<span class="w">  </span><span class="no">INTERFACE</span>
+<span class="w">    </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">    </span><span class="no">BASE_DIRS</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span>
+<span class="w">    </span><span class="no">FILES</span>
+<span class="w">      </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/SqrtTable.h</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>现在所有目标都已描述完毕，我们可以通过将它们与 <span class="target" id="index-2-command:add_dependencies"></span><a class="reference internal" href="../../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a> 关联，强制自定义目标在接口库的任何依赖项之前运行。</p>
+<details><summary>TODO 7：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-maketable-cmakelists-txt-add-dependencies">
+<div class="code-block-caption"><span class="caption-text">TODO 7：MathFunctions/MakeTable/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-maketable-cmakelists-txt-add-dependencies" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_dependencies(</span><span class="nb">SqrtTable</span><span class="w"> </span><span class="nb">RunMakeTable</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>我们准备好将接口库添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 的链接库中，并将整个 <code class="docutils literal notranslate"><span class="pre">MakeTable</span></code> 文件夹添加到项目中。</p>
+<details><summary>TODO 8-9: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-link-sqrttable">
+<div class="code-block-caption"><span class="caption-text">TODO 8：MathFunctions/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-cmakelists-txt-link-sqrttable" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">MathFunctions</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">MathLogger</span>
+<span class="w">    </span><span class="nb">SqrtTable</span>
+
+<span class="w">  </span><span class="no">PUBLIC</span>
+<span class="w">    </span><span class="nb">OpAdd</span>
+<span class="w">    </span><span class="nb">OpMul</span>
+<span class="w">    </span><span class="nb">OpSub</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-add-maketable">
+<div class="code-block-caption"><span class="caption-text">TODO 9：MathFunctions/CMakeLists.txt</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-cmakelists-txt-add-maketable" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_subdirectory(</span><span class="nb">MakeTable</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们更新 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库本身，以利用生成的表。</p>
+<details><summary>TODO 10：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-include-sqrttable">
+<div class="code-block-caption"><span class="caption-text">TODO 10：MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#mathfunctions-mathfunctions-cxx-include-sqrttable" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;SqrtTable.h&gt;</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="nf">table_sqrt</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#">第 7 步：自定义命令和生成的文件</a><ul>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#background">背景</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#exercise-1-using-a-code-generator">练习 1 - 使用代码生成器</a><ul>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#goal">目标</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html#solution">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="In-Depth&#32;System&#32;Introspection.html" title="上一章">第六步：深入系统自省</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Testing&#32;and&#32;CTest.html" title="下一章">第 8 步：测试和 CTest</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/Custom&#32;Commands&#32;and&#32;Generated&#32;Files.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Testing&#32;and&#32;CTest.html" title="Step 8: Testing and CTest">下一页</a> |</li>
+        <li class="right">
+          <a href="In-Depth&#32;System&#32;Introspection.html" title="Step 6: In-Depth System Introspection">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html">第 7 步：自定义命令和生成的文件</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

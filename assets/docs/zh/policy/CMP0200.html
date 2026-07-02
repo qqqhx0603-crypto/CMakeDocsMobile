@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0200 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0200.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0199" href="CMP0199.html" />
+    <link rel="prev" title="CMP0201" href="CMP0201.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0199.html" title="CMP0199" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0201.html" title="CMP0201" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0200.html">CMP0200</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0200">
+<span id="policy:CMP0200"></span><h1>CMP0200<a class="headerlink" href="CMP0200.html#cmp0200" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>导入目标（imported targets）的定位和配置选择更加一致。</p>
+<p>CMake 历史上选择导入目标所用配置的方式，优先考虑候选配置的位置属性，仅将 <span class="target" id="index-0-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 作为后备选项。这可能导致不正确的配置选择，尤其是对于 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库。</p>
+<p>CMake 4.2 及更高版本将 <span class="target" id="index-1-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 视为可用配置的最终列表，无论是否为该库提供了特定于配置的位置。此外，当未指定特定于配置的位置时，CMake 将尊重非特定于配置的位置。</p>
+<p>此策略为依赖于历史行为的项目提供了兼容性。策略设置应用于目标，并在创建导入目标时记录。因此，导入的包可能会覆盖消费者为其创建的目标所设置的策略。特别是，从“通用包规范”（Common Package Specification）包中导入的目标始终使用 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。</p>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是保留历史行为。而 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为则根据公布的可用配置列表优先进行选择。两种行为都在下文中有详细描述。</p>
+<p>此策略在 CMake 4.2 版本中引入。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，CMake 将发出警告并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+<section id="mapped-configuration-selection">
+<h2>映射配置选择<a class="headerlink" href="CMP0200.html#mapped-configuration-selection" title="链接到此标题">¶</a></h2>
+<p>如果 <span class="target" id="index-0-prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/MAP_IMPORTED_CONFIG_CONFIG.html#prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>" title="MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a>（其中 <code class="docutils literal notranslate"><span class="pre">&lt;CONFIG&gt;</span></code> 是消费目标的配置）在导入目标上被设置，CMake 过去会从该列表中选择第一个提供特定于配置位置的配置。如果不存在这样的配置，且导入目标是 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库，CMake 会选择消费目标的配置。否则，CMake 会认为该目标没有合适的配置。</p>
+<p>对于不提供位置的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库，这导致 CMake 总是选择消费目标的配置，并有效地忽略了 <span class="target" id="index-1-prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/MAP_IMPORTED_CONFIG_CONFIG.html#prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>" title="MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a>。这种行为与提供位置的导入目标的配置选择方式不一致。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为下，CMake 会从映射中选择出现在 <span class="target" id="index-2-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 中的第一个配置。如果未设置 <span class="target" id="index-3-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a>，CMake 会选择映射中第一个“可用”的配置。对于非 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库，“可用”意味着有一个位置（无论是特定于配置的还是与配置无关的）是可用的。<code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库始终被认为是“可用”的。</p>
+<p>如果没有找到匹配项，CMake 会认为该目标没有合适的配置。</p>
+</section>
+<section id="non-mapped-configuration-selection">
+<h2>非映射配置选择<a class="headerlink" href="CMP0200.html#non-mapped-configuration-selection" title="链接到此标题">¶</a></h2>
+<p>如果未设置 <span class="target" id="index-2-prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/MAP_IMPORTED_CONFIG_CONFIG.html#prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>" title="MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a>，CMake 过去会从以下选项中选择第一个提供位置的配置：</p>
+<ul class="simple">
+<li><p>消费目标的配置，或者</p></li>
+<li><p>空配置，或者</p></li>
+<li><p><span class="target" id="index-4-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 中的配置列表。</p></li>
+</ul>
+<p>作为一种实现产物，这导致 CMake 为不提供位置的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库选择了 <span class="target" id="index-5-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 中的<em>最后一个</em>配置。同样，这种行为与提供位置的导入目标的配置选择方式不一致。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为下，如果设置了 <span class="target" id="index-6-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a>，如果其中存在消费目标的配置，CMake 将选择它，否则将选择第一个导入的配置。如果<em>未</em>设置 <span class="target" id="index-7-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a>，如果消费目标的配置是“可用”的（如上一节所定义），CMake 将选择它；否则，CMake 会认为该目标没有合适的配置。</p>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CMP0200.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>考虑以下导入的库：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">test</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="nf">set_target_properties(</span><span class="nb">test</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="s">"RELEASE;DEBUG"</span>
+<span class="w">  </span><span class="no">INTERFACE_COMPILE_DEFINITIONS</span><span class="w"> </span><span class="s">"$&lt;$&lt;CONFIG:debug&gt;:DEBUG&gt;"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>在 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 策略下，CMake 将为任何链接到 <code class="docutils literal notranslate"><span class="pre">test</span></code> 的目标选择 <code class="docutils literal notranslate"><span class="pre">test</span></code> 的 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 配置（从而定义符号 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>），因为 CMake 不认为任何配置是“有效的”，并且作为一种实现产物，最后考虑的配置会被接受。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 策略下，如果消费项目以 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 以外的任何配置构建（请记住配置匹配是不区分大小写的），则将选择 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 配置。这是因为如果消费者的配置也是 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>，则会优先选择 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>；否则，由于 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 在 <span class="target" id="index-8-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 中排在第一位，并且其出现使其成为 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库的“有效”配置，因此将优先选择 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code>。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMP0200.html#">CMP0200</a><ul>
+<li><a class="reference internal" href="CMP0200.html#mapped-configuration-selection">映射配置选择</a></li>
+<li><a class="reference internal" href="CMP0200.html#non-mapped-configuration-selection">非映射配置选择</a></li>
+<li><a class="reference internal" href="CMP0200.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0201.html" title="上一章">CMP0201</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0199.html" title="下一章">CMP0199</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0200.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0199.html" title="CMP0199">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0201.html" title="CMP0201">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0200.html">CMP0200</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>GenerateExportHeader — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="GenerateExportHeader.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="GNUInstallDirs" href="GNUInstallDirs.html" />
+    <link rel="prev" title="FortranCInterface" href="FortranCInterface.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="GNUInstallDirs.html" title="GNUInstallDirs" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FortranCInterface.html" title="FortranCInterface" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GenerateExportHeader.html">GenerateExportHeader</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="generateexportheader">
+<span id="module:GenerateExportHeader"></span><h1>GenerateExportHeader<a class="headerlink" href="GenerateExportHeader.html#generateexportheader" title="指向此标题的链接">¶</a></h1>
+<p>此模块提供了用于生成头文件的命令，该头文件包含用于控制 C/C++ 符号可见性的预处理器宏定义。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增： </span>支持 C 项目。旧版本仅支持 C++ 项目。</p>
+</div>
+<p>在开发 C 或 C++ 项目（尤其是跨平台项目）时，符号可见性决定了哪些函数、类、全局变量、模板和其他符号对库的使用者可见。</p>
+<p>例如，在 Windows 上，构建共享库时必须显式标记符号为 <code class="docutils literal notranslate"><span class="pre">__declspec(dllexport)</span></code>，而在使用它时标记为 <code class="docutils literal notranslate"><span class="pre">__declspec(dllimport)</span></code>。其他平台可能会使用如 <code class="docutils literal notranslate"><span class="pre">__attribute__((visibility("default")))</span></code> 等属性。</p>
+<p>此模块简化了用于管理这些需求的预处理器宏的创建和使用，避免了源代码中重复且易错的 <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> 代码块。</p>
+<p>某些符号可见性也可以通过编译器选项来控制。在 CMake 中，目标属性（如 <span class="target" id="index-0-prop_tgt:<LANG>_VISIBILITY_PRESET"></span><a class="reference internal" href="../prop_tgt/LANG_VISIBILITY_PRESET.html#prop_tgt:<LANG>_VISIBILITY_PRESET" title="<LANG>_VISIBILITY_PRESET"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_VISIBILITY_PRESET</span></code></a> 和 <span class="target" id="index-0-prop_tgt:VISIBILITY_INLINES_HIDDEN"></span><a class="reference internal" href="../prop_tgt/VISIBILITY_INLINES_HIDDEN.html#prop_tgt:VISIBILITY_INLINES_HIDDEN" title="VISIBILITY_INLINES_HIDDEN"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VISIBILITY_INLINES_HIDDEN</span></code></a>）可在适当时启用编译器可见性标志。另请参阅相关的便捷变量 <span class="target" id="index-0-variable:CMAKE_<LANG>_VISIBILITY_PRESET"></span><a class="reference internal" href="../variable/CMAKE_LANG_VISIBILITY_PRESET.html#variable:CMAKE_<LANG>_VISIBILITY_PRESET" title="CMAKE_<LANG>_VISIBILITY_PRESET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_VISIBILITY_PRESET</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_VISIBILITY_INLINES_HIDDEN"></span><a class="reference internal" href="../variable/CMAKE_VISIBILITY_INLINES_HIDDEN.html#variable:CMAKE_VISIBILITY_INLINES_HIDDEN" title="CMAKE_VISIBILITY_INLINES_HIDDEN"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VISIBILITY_INLINES_HIDDEN</span></code></a>，以便在当前作用域内为所有目标启用这些设置。它们通常与此模块结合使用，以进一步简化 C/C++ 代码，从而无需在源代码中使用某些预处理器宏。</p>
+<section id="commands">
+<h2>命令<a class="headerlink" href="GenerateExportHeader.html#commands" title="链接到此标题">¶</a></h2>
+<p>本模块提供以下命令</p>
+<section id="generating-export-header">
+<h3>生成导出头文件<a class="headerlink" href="GenerateExportHeader.html#generating-export-header" title="指向此标题的链接">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:generate_export_header">
+<span class="sig-name descname"><span class="pre">generate_export_header</span></span><a class="headerlink" href="GenerateExportHeader.html#command:generate_export_header" title="指向此定义的链接">¶</a></dt>
+<dd><p>生成一个适合包含在源代码中的头文件，其中包含用于控制符号可见性的预处理器<em>导出</em>宏。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">generate_export_header(</span>
+<span class="w">  </span><span class="nv">&lt;target&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BASE_NAME</span><span class="w"> </span><span class="nv">&lt;base-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXPORT_FILE_NAME</span><span class="w"> </span><span class="nv">&lt;export-file-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXPORT_MACRO_NAME</span><span class="w"> </span><span class="nv">&lt;export-macro-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_EXPORT_MACRO_NAME</span><span class="w"> </span><span class="nv">&lt;no-export-macro-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DEPRECATED_MACRO_NAME</span><span class="w"> </span><span class="nv">&lt;deprecated-macro-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DEFINE_NO_DEPRECATED</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_DEPRECATED_MACRO_NAME</span><span class="w"> </span><span class="nv">&lt;no-deprecated-macro-name&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">STATIC_DEFINE</span><span class="w"> </span><span class="nv">&lt;static-define&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PREFIX_NAME</span><span class="w"> </span><span class="nv">&lt;prefix&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CUSTOM_CONTENT_FROM_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INCLUDE_GUARD_NAME</span><span class="w"> </span><span class="nv">&lt;include-guard-name&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>默认情况下，此命令会在当前二进制目录（<span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>）中生成一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;target-name-lowercase&gt;_export.h</span></code> 的头文件。此头文件定义了一组预处理器宏，用于在不同平台和构建类型（例如静态或共享构建）中将 API 符号标记为导出、隐藏或已弃用。由于它会影响公共 API 声明，因此该文件应与库的公共头文件一起安装。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_EXPORT</span></code>：标记要导出或导入的符号，使其在构建或使用共享库时作为公共 API 的一部分可见。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_NO_EXPORT</span></code>：标记不应导出的符号。如果 <span class="target" id="index-1-prop_tgt:<LANG>_VISIBILITY_PRESET"></span><a class="reference internal" href="../prop_tgt/LANG_VISIBILITY_PRESET.html#prop_tgt:<LANG>_VISIBILITY_PRESET" title="<LANG>_VISIBILITY_PRESET"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_VISIBILITY_PRESET</span></code></a> 目标属性设置为 <code class="docutils literal notranslate"><span class="pre">hidden</span></code>，则在源代码中使用此宏通常是冗余的。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_DEPRECATED</span></code>：将符号标记为已弃用。当使用此类符号时，编译器会在编译时发出警告。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_DEPRECATED_EXPORT</span></code>：结合了导出/导入和弃用标记，适用于既是公共 API 一部分又已弃用的符号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_DEPRECATED_NO_EXPORT</span></code>：标记不应导出的已弃用符号（内部且已弃用）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_NO_DEPRECATED</span></code>：一个可在源代码中使用的宏，用于通过预处理器逻辑从构建中有条件地排除弃用的代码部分。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;</span></code> 部分默认派生自目标的大写名称或显式提供的 <code class="docutils literal notranslate"><span class="pre">&lt;base-name&gt;</span></code>。所有宏名称都可以使用可选参数进行自定义。</p>
+<p class="rubric">参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code></dt><dd><p>要为其生成导出头文件的目标的名称。支持的目标类型：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">STATIC</span></code> 库（在这种情况下，导出相关的宏定义为空值）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 库</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 库</p></li>
+<li><div class="versionadded">
+<p><span class="versionmodified added">3.1 版本新增： </span><code class="docutils literal notranslate"><span class="pre">OBJECT</span></code> 库</p>
+</div>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BASE_NAME</span> <span class="pre">&lt;base-name&gt;</span></code></dt><dd><p>如果指定，它将覆盖默认的文件名和宏名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_FILE_NAME</span> <span class="pre">&lt;export-file-name&gt;</span></code></dt><dd><p>如果指定，它将生成的导出头文件的完整路径和名称（默认为 <code class="docutils literal notranslate"><span class="pre">&lt;base-name-lowercase&gt;_export.h</span></code>）覆盖为 <code class="docutils literal notranslate"><span class="pre">&lt;export-file-name&gt;</span></code>。如果给定时为相对路径，它将被解释为相对于当前二进制目录（<span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_MACRO_NAME</span> <span class="pre">&lt;export-macro-name&gt;</span></code></dt><dd><p>如果指定，它将覆盖导出指令的默认宏名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_EXPORT_MACRO_NAME</span> <span class="pre">&lt;no-export-macro-name&gt;</span></code></dt><dd><p>如果指定，<code class="docutils literal notranslate"><span class="pre">&lt;no-export-macro-name&gt;</span></code> 将用于表示不应导出项目的属性的宏名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPRECATED_MACRO_NAME</span> <span class="pre">&lt;deprecated-macro-name&gt;</span></code></dt><dd><p>如果指定，将使用以下名称：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;deprecated-macro-name&gt;</span></code> （用于标记已弃用符号的宏）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;deprecated-macro-name&gt;_EXPORT</span></code> （用于带有导出标记的已弃用符号的宏）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;deprecated-macro-name&gt;_NO_EXPORT</span></code> （用于带有禁止导出标记的已弃用符号的宏）</p></li>
+</ul>
+<p>代替默认名称格式 <code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_DEPRECATED{,_EXPORT,_NO_EXPORT}</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEFINE_NO_DEPRECATED</span></code></dt><dd><p>如果指定，这将定义一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_NO_DEPRECATED</span></code> 的宏。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_DEPRECATED_MACRO_NAME</span> <span class="pre">&lt;no-deprecated-macro-name&gt;</span></code></dt><dd><p>与 <code class="docutils literal notranslate"><span class="pre">DEFINE_NO_DEPRECATED</span></code> 选项结合使用。如果指定，则使用名为 <code class="docutils literal notranslate"><span class="pre">&lt;no-deprecated-macro-name&gt;</span></code> 的宏，而不是默认的 <code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_NO_DEPRECATED</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STATIC_DEFINE</span> <span class="pre">&lt;static-define&gt;</span></code></dt><dd><p>如果指定，将使用 <code class="docutils literal notranslate"><span class="pre">&lt;static-define&gt;</span></code> 宏名称而不是默认的 <code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_STATIC_DEFINE</span></code>。此宏控制生成头文件中静态库的符号导出行为。它通常用于通过单个生成的导出头文件从相同源构建库的共享和静态变体时。当为静态库定义此宏时，导出相关的宏将扩展为空。这在 Windows 上也很重要，因为只有共享库才需要符号修饰，而静态库则不需要。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PREFIX_NAME</span> <span class="pre">&lt;prefix&gt;</span></code></dt><dd><p>如果指定，则在所有生成的宏名称前加上附加的 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUSTOM_CONTENT_FROM_VARIABLE</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果指定，来自 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的值将被附加到生成头文件的预处理器宏定义之后。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_GUARD_NAME</span> <span class="pre">&lt;include-guard-name&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>如果指定，<code class="docutils literal notranslate"><span class="pre">&lt;include-guard-name&gt;</span></code> 将用作预处理器宏名称，以防止多次包含生成的头文件，取代默认名称 <code class="docutils literal notranslate"><span class="pre">&lt;export-macro-name&gt;_H</span></code>。</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">&lt;base-name-lowercase&gt;_export.h</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id1" title="指向此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef &lt;include-guard-name&gt;</span>
+<span class="cp">#define &lt;include-guard-name&gt;</span>
+<span class="c1">// ...</span>
+<span class="cp">#endif </span><span class="cm">/* &lt;include-guard-name&gt; */</span>
+</pre></div>
+</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="deprecated-command">
+<h3>已弃用的命令<a class="headerlink" href="GenerateExportHeader.html#deprecated-command" title="指向此标题的链接">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:add_compiler_export_flags">
+<span class="sig-name descname"><span class="pre">add_compiler_export_flags</span></span><a class="headerlink" href="GenerateExportHeader.html#command:add_compiler_export_flags" title="指向此定义的链接">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.0 版本弃用： </span>请改用目标属性 <span class="target" id="index-2-prop_tgt:<LANG>_VISIBILITY_PRESET"></span><a class="reference internal" href="../prop_tgt/LANG_VISIBILITY_PRESET.html#prop_tgt:<LANG>_VISIBILITY_PRESET" title="<LANG>_VISIBILITY_PRESET"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_VISIBILITY_PRESET</span></code></a> 和 <span class="target" id="index-1-prop_tgt:VISIBILITY_INLINES_HIDDEN"></span><a class="reference internal" href="../prop_tgt/VISIBILITY_INLINES_HIDDEN.html#prop_tgt:VISIBILITY_INLINES_HIDDEN" title="VISIBILITY_INLINES_HIDDEN"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VISIBILITY_INLINES_HIDDEN</span></code></a>。</p>
+</div>
+<p>添加 C++ 编译器选项 <code class="docutils literal notranslate"><span class="pre">-fvisibility=hidden</span></code> （如果支持，还包括 <code class="docutils literal notranslate"><span class="pre">-fvisibility-inlines-hidden</span></code>），以默认隐藏所有符号，该选项将被添加到 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 变量或指定的变量中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_compiler_export_flags(</span><span class="p">[</span><span class="nv">&lt;output_variable&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令在 Windows 上是空操作，因为 Windows 不需要额外的编译器标志来支持导出。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;output-variable&gt;</span></code></dt><dd><p>可选变量名，它将填充为一串空格分隔的 C++ 编译选项，这些选项是启用当前编译器/架构的可见性支持所必需的。如果指定了此参数，则不会修改 <span class="target" id="index-1-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 变量。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="GenerateExportHeader.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-generating-export-header">
+<h3>示例：生成导出头文件<a class="headerlink" href="GenerateExportHeader.html#example-generating-export-header" title="指向此标题的链接">¶</a></h3>
+<p>以下示例演示了如何使用此模块在当前二进制目录中生成导出头文件（<code class="docutils literal notranslate"><span class="pre">example_export.h</span></code>），并在名为 <code class="docutils literal notranslate"><span class="pre">example</span></code> 的 C++ 库中使用它来控制符号可见性。生成的头文件定义了预处理器宏 <code class="docutils literal notranslate"><span class="pre">EXAMPLE_EXPORT</span></code>、<code class="docutils literal notranslate"><span class="pre">EXAMPLE_NO_EXPORT</span></code>、<code class="docutils literal notranslate"><span class="pre">EXAMPLE_DEPRECATED</span></code>、<code class="docutils literal notranslate"><span class="pre">EXAMPLE_DEPRECATED_EXPORT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">EXAMPLE_DEPRECATED_NO_EXPORT</span></code>，并与库的其他公共头文件一起安装。</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.24</span><span class="nf">)</span>
+<span class="nf">project(</span><span class="nb">GenerateExportHeaderExample</span><span class="nf">)</span>
+
+<span class="c"># Set default visibility of all symbols to hidden</span>
+<span class="nf">set(</span><span class="no">CMAKE_CXX_VISIBILITY_PRESET</span><span class="w"> </span><span class="s">"hidden"</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">CMAKE_VISIBILITY_INLINES_HIDDEN</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">example</span><span class="nf">)</span>
+
+<span class="hll"><span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+</span><span class="hll"><span class="nf">generate_export_header(</span><span class="nb">example</span><span class="nf">)</span>
+</span>
+<span class="nf">target_sources(</span>
+<span class="w">  </span><span class="nb">example</span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">example.cxx</span>
+<span class="w">  </span><span class="no">PUBLIC</span>
+<span class="w">    </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">      </span><span class="no">FILES</span><span class="w"> </span><span class="nb">example.h</span>
+<span class="w">    </span><span class="no">FILE_SET</span><span class="w"> </span><span class="nb">generated_headers</span>
+<span class="w">      </span><span class="no">TYPE</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">      </span><span class="no">BASE_DIRS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span>
+<span class="w">      </span><span class="no">FILES</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/example_export.h</span>
+<span class="nf">)</span>
+
+<span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">example</span>
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="nb">generated_headers</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>并在 ABI 头文件中</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.h</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id3" title="指向此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"example_export.h"</span>
+
+<span class="c1">// This class is part of the public API and is exported</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EXAMPLE_EXPORT</span><span class="w"> </span><span class="n">SomeClass</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">SomeClass</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">doSomething</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// This method is deprecated</span>
+<span class="w">  </span><span class="n">EXAMPLE_DEPRECATED</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">legacyMethod</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="c1">// This function is exported and deprecated</span>
+<span class="n">EXAMPLE_DEPRECATED_EXPORT</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">legacyPublicFunction</span><span class="p">();</span>
+
+<span class="c1">// This function is deprecated but not exported</span>
+<span class="n">EXAMPLE_DEPRECATED</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">legacyInternalFunction</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id4" title="指向此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"example.h"</span>
+
+<span class="n">SomeClass</span><span class="o">::</span><span class="n">SomeClass</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">SomeClass::doSomething</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"SomeClass::doSomething() called"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">SomeClass::legacyMethod</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"SomeClass::legacyMethod() is deprecated"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">legacyPublicFunction</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"legacyPublicFunction() is deprecated"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">internalLegacyFunction</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"legacyInternalFunction() is deprecated"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examples-customizing-generated-header">
+<h3>示例：自定义生成的头文件<a class="headerlink" href="GenerateExportHeader.html#examples-customizing-generated-header" title="指向此标题的链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BASE_NAME</span></code> 参数可用于覆盖生成的文件名和宏名称。以下内容将生成一个名为 <code class="docutils literal notranslate"><span class="pre">other_name_export.h</span></code> 的文件，其中包含导出相关的宏，如 <code class="docutils literal notranslate"><span class="pre">OTHER_NAME_EXPORT</span></code>、<code class="docutils literal notranslate"><span class="pre">OTHER_NAME_NO_EXPORT</span></code>、<code class="docutils literal notranslate"><span class="pre">OTHER_NAME_DEPRECATED</span></code> 等。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="w"> </span><span class="no">BASE_NAME</span><span class="w"> </span><span class="s">"other_name"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">BASE_NAME</span></code> 可以通过指定其他命令选项来覆盖。例如，以下代码创建了一个宏 <code class="docutils literal notranslate"><span class="pre">OTHER_NAME_EXPORT</span></code>，而不是 <code class="docutils literal notranslate"><span class="pre">EXAMPLE_EXPORT</span></code>，但其他宏和生成的头文件名设置为默认值。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="w"> </span><span class="no">EXPORT_MACRO_NAME</span><span class="w"> </span><span class="s">"OTHER_NAME_EXPORT"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>以下示例创建了 <code class="docutils literal notranslate"><span class="pre">KDE_DEPRECATED</span></code> 宏，而不是默认的 <code class="docutils literal notranslate"><span class="pre">EXAMPLE_DEPRECATED</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="w"> </span><span class="no">DEPRECATED_MACRO_NAME</span><span class="w"> </span><span class="s">"KDE_DEPRECATED"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DEFINE_NO_DEPRECATED</span></code> 选项可用于定义一个宏，该宏可用于从预处理器输出中删除已弃用的代码。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">EXCLUDE_DEPRECATED</span><span class="w"> </span><span class="s">"Exclude deprecated parts of the library"</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">EXCLUDE_DEPRECATED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">NO_BUILD_DEPRECATED</span><span class="w"> </span><span class="no">DEFINE_NO_DEPRECATED</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="w"> </span><span class="o">${</span><span class="nt">NO_BUILD_DEPRECATED</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.h</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id5" title="指向此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">EXAMPLE_EXPORT</span><span class="w"> </span><span class="n">SomeClass</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="cp">#ifndef EXAMPLE_NO_DEPRECATED</span>
+<span class="w">  </span><span class="n">EXAMPLE_DEPRECATED</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">legacyMethod</span><span class="p">();</span>
+<span class="cp">#endif</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id6" title="指向此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef EXAMPLE_NO_DEPRECATED</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">SomeClass::legacyMethod</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="p">}</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PREFIX_NAME</span></code> 参数可用于在所有生成的宏名称前添加前缀。例如，以下内容将生成诸如 <code class="docutils literal notranslate"><span class="pre">VTK_SOMELIB_EXPORT</span></code> 等宏。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">somelib</span><span class="w"> </span><span class="no">PREFIX_NAME</span><span class="w"> </span><span class="s">"VTK_"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">CUSTOM_CONTENT_FROM_VARIABLE</span></code> 参数将额外内容附加到生成的头文件中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">content</span><span class="w"> </span><span class="s s-Multiline">[[#include "project_api.h"]]</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="w"> </span><span class="no">CUSTOM_CONTENT_FROM_VARIABLE</span><span class="w"> </span><span class="nb">content</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-building-shared-and-static-library">
+<h3>示例：构建共享库和静态库<a class="headerlink" href="GenerateExportHeader.html#example-building-shared-and-static-library" title="指向此标题的链接">¶</a></h3>
+<p>在以下示例中，共享库和静态库由相同的源构建，并定义了 <code class="docutils literal notranslate"><span class="pre">&lt;MACRO&gt;_STATIC_DEFINE</span></code> 宏编译定义，以确保同一个生成的导出头文件适用于两者。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example_shared</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">example_static</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">example_shared</span><span class="w"> </span><span class="no">BASE_NAME</span><span class="w"> </span><span class="s">"example"</span><span class="nf">)</span>
+
+<span class="c"># Define macro to disable export attributes for static build</span>
+<span class="nf">target_compile_definitions(</span><span class="nb">example_static</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">EXAMPLE_STATIC_DEFINE</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-upgrading-deprecated-command">
+<h3>示例：升级已弃用的命令<a class="headerlink" href="GenerateExportHeader.html#example-upgrading-deprecated-command" title="指向此标题的链接">¶</a></h3>
+<p>在较旧版本的 CMake 中，使用 <code class="docutils literal notranslate"><span class="pre">add_compiler_export_flags()</span></code> 命令来添加符号可见性编译选项。</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id7" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+
+<span class="nf">add_compiler_export_flags(</span><span class="nb">flags</span><span class="nf">)</span>
+<span class="nf">string(</span><span class="no">REPLACE</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="s">";"</span><span class="w"> </span><span class="nb">flags</span><span class="w"> </span><span class="s">"${flags}"</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">example</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">COMPILE_OPTIONS</span><span class="w"> </span><span class="s">"${flags}"</span><span class="nf">)</span>
+
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>在新的代码中，使用以下目标属性来实现相同的功能：</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="GenerateExportHeader.html#id8" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+
+<span class="nf">set_target_properties(</span>
+<span class="w">  </span><span class="nb">example</span>
+<span class="w">  </span><span class="no">PROPERTIES</span>
+<span class="w">    </span><span class="no">CXX_VISIBILITY_PRESET</span><span class="w"> </span><span class="nb">hidden</span>
+<span class="w">    </span><span class="no">VISIBILITY_INLINES_HIDDEN</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="nf">)</span>
+
+<span class="nf">generate_export_header(</span><span class="nb">example</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="GenerateExportHeader.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-prop_tgt:DEFINE_SYMBOL"></span><a class="reference internal" href="../prop_tgt/DEFINE_SYMBOL.html#prop_tgt:DEFINE_SYMBOL" title="DEFINE_SYMBOL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DEFINE_SYMBOL</span></code></a> 目标属性用于自定义生成头文件所使用的预处理器宏名称。此宏决定了库头文件是在库自身的编译期间包含，还是由另一个项目使用（例如安装后）时包含。</p></li>
+<li><p><span class="target" id="index-0-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性。</p></li>
+<li><p><span class="target" id="index-0-prop_tgt:WINDOWS_EXPORT_ALL_SYMBOLS"></span><a class="reference internal" href="../prop_tgt/WINDOWS_EXPORT_ALL_SYMBOLS.html#prop_tgt:WINDOWS_EXPORT_ALL_SYMBOLS" title="WINDOWS_EXPORT_ALL_SYMBOLS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">WINDOWS_EXPORT_ALL_SYMBOLS</span></code></a> 目标属性。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="GenerateExportHeader.html#">GenerateExportHeader</a><ul>
+<li><a class="reference internal" href="GenerateExportHeader.html#commands">命令</a><ul>
+<li><a class="reference internal" href="GenerateExportHeader.html#generating-export-header">生成导出头文件</a></li>
+<li><a class="reference internal" href="GenerateExportHeader.html#deprecated-command">已弃用的命令</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="GenerateExportHeader.html#examples">示例</a><ul>
+<li><a class="reference internal" href="GenerateExportHeader.html#example-generating-export-header">示例：生成导出头文件</a></li>
+<li><a class="reference internal" href="GenerateExportHeader.html#examples-customizing-generated-header">示例：自定义生成的头文件</a></li>
+<li><a class="reference internal" href="GenerateExportHeader.html#example-building-shared-and-static-library">示例：构建共享库和静态库</a></li>
+<li><a class="reference internal" href="GenerateExportHeader.html#example-upgrading-deprecated-command">示例：升级已弃用的命令</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="GenerateExportHeader.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FortranCInterface.html" title="上一章">FortranCInterface</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="GNUInstallDirs.html" title="下一章">GNUInstallDirs</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/GenerateExportHeader.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="GNUInstallDirs.html" title="GNUInstallDirs">下一页</a> |</li>
+        <li class="right">
+          <a href="FortranCInterface.html" title="FortranCInterface">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GenerateExportHeader.html">GenerateExportHeader</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

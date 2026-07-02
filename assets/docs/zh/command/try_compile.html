@@ -1,0 +1,455 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>try_compile — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="try_compile.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="try_run" href="try_run.html" />
+    <link rel="prev" title="target_sources" href="target_sources.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="try_run.html" title="try_run" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="target_sources.html" title="target_sources" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="try_compile.html">try_compile</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="try-compile">
+<span id="command:try_compile"></span><h1><a class="toc-backref" href="try_compile.html#id3" role="doc-backlink">try_compile</a><a class="headerlink" href="try_compile.html#try-compile" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="try_compile.html#try-compile" id="id3">try_compile</a></p>
+<ul>
+<li><p><a class="reference internal" href="try_compile.html#try-compiling-whole-projects" id="id4">尝试编译整个项目</a></p></li>
+<li><p><a class="reference internal" href="try_compile.html#try-compiling-source-files" id="id5">尝试编译源文件</a></p></li>
+<li><p><a class="reference internal" href="try_compile.html#options" id="id6">选项</a></p></li>
+<li><p><a class="reference internal" href="try_compile.html#other-behavior-settings" id="id7">其他行为设置</a></p></li>
+<li><p><a class="reference internal" href="try_compile.html#see-also" id="id8">另请参阅</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>尝试构建一些代码。</p>
+<section id="try-compiling-whole-projects">
+<span id="id1"></span><h2><a class="toc-backref" href="try_compile.html#id4" role="doc-backlink">尝试编译整个项目</a><a class="headerlink" href="try_compile.html#try-compiling-whole-projects" title="链接到此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_compile(</span><span class="nv">&lt;compileResultVar&gt;</span><span class="w"> </span><span class="no">PROJECT</span><span class="w"> </span><span class="nv">&lt;projectName&gt;</span>
+<span class="w">            </span><span class="no">SOURCE_DIR</span><span class="w"> </span><span class="nv">&lt;srcdir&gt;</span>
+<span class="w">            </span><span class="p">[</span><span class="no">BINARY_DIR</span><span class="w"> </span><span class="nv">&lt;bindir&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;targetName&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LOG_DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;text&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">NO_CACHE</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">NO_LOG</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>尝试构建一个项目。构建成功时在 <code class="docutils literal notranslate"><span class="pre">&lt;compileResultVar&gt;</span></code> 中返回 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，构建失败时返回 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>。</p>
+<p>在这种形式中，<code class="docutils literal notranslate"><span class="pre">&lt;srcdir&gt;</span></code> 应包含一个完整的 CMake 项目，其中包括 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件及所有源文件。命令运行后，<code class="docutils literal notranslate"><span class="pre">&lt;bindir&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;srcdir&gt;</span></code> 不会被删除。指定 <code class="docutils literal notranslate"><span class="pre">&lt;targetName&gt;</span></code> 以构建特定目标，而不是 <code class="docutils literal notranslate"><span class="pre">all</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ALL_BUILD</span></code> 目标。关于其他选项的含义，请参阅下文。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.24 变更: </span>描述平台设置的 CMake 变量，以及 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_PLATFORM_VARIABLES.html#variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES" title="CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_PLATFORM_VARIABLES</span></code></a> 变量中列出的变量，会被传播到项目的构建配置中。请参阅策略 <span class="target" id="index-0-policy:CMP0137"></span><a class="reference internal" href="../policy/CMP0137.html#policy:CMP0137" title="CMP0137"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0137</span></code></a>。在此之前，这仅由 <a class="reference internal" href="try_compile.html#try-compiling-source-files"><span class="std std-ref">源文件</span></a> 签名完成。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.26 新增: </span>如果不指定 <code class="docutils literal notranslate"><span class="pre">NO_LOG</span></code> 选项，此命令会记录一个 <a class="reference internal" href="../manual/cmake-configure-log.7.html#try-compile-configure-log-event"><span class="std std-ref">configure-log try_compile 事件</span></a>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.30 新增: </span>如果设置了 <span class="target" id="index-0-prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"></span><a class="reference internal" href="../prop_gbl/PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE.html#prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE" title="PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE</span></code></a> 全局属性，则 <span class="target" id="index-0-variable:CMAKE_PROJECT_TOP_LEVEL_INCLUDES"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html#variable:CMAKE_PROJECT_TOP_LEVEL_INCLUDES" title="CMAKE_PROJECT_TOP_LEVEL_INCLUDES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_TOP_LEVEL_INCLUDES</span></code></a> 会被传播到项目的构建配置中。</p>
+</div>
+<p>该命令为 3.25 之前的 CMake 版本提供了一个替代签名。为了清晰起见，推荐使用上述签名。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_compile(</span><span class="nv">&lt;compileResultVar&gt;</span><span class="w"> </span><span class="nv">&lt;bindir&gt;</span><span class="w"> </span><span class="nv">&lt;srcdir&gt;</span>
+<span class="w">            </span><span class="nv">&lt;projectName&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;targetName&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="try-compiling-source-files">
+<span id="id2"></span><h2><a class="toc-backref" href="try_compile.html#id5" role="doc-backlink">尝试编译源文件</a><a class="headerlink" href="try_compile.html#try-compiling-source-files" title="链接到此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_compile(</span><span class="nv">&lt;compileResultVar&gt;</span>
+<span class="w">            </span><span class="p">[</span><span class="no">SOURCES_TYPE</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">{</span><span class="no">SOURCES</span><span class="w"> </span><span class="nv">&lt;srcfile&gt;...</span><span class="w">                 </span><span class="p">|</span>
+<span class="w">             </span><span class="no">SOURCE_FROM_CONTENT</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;content&gt;</span><span class="w"> </span><span class="p">|</span>
+<span class="w">             </span><span class="no">SOURCE_FROM_VAR</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="w">         </span><span class="p">|</span>
+<span class="w">             </span><span class="no">SOURCE_FROM_FILE</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="w">       </span><span class="p">}...</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LOG_DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;text&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">NO_CACHE</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">NO_LOG</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">COMPILE_DEFINITIONS</span><span class="w"> </span><span class="nv">&lt;defs&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LINK_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LINK_LIBRARIES</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LINKER_LANGUAGE</span><span class="w"> </span><span class="nv">&lt;lang&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">COPY_FILE</span><span class="w"> </span><span class="nv">&lt;fileName&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COPY_FILE_ERROR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD</span><span class="w"> </span><span class="nv">&lt;std&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD_REQUIRED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_EXTENSIONS</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>尝试从一个或多个源文件构建可执行文件或静态库。二进制类型由变量 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a> 决定。构建成功时，布尔值 <code class="docutils literal notranslate"><span class="pre">true</span></code> 将存入 <code class="docutils literal notranslate"><span class="pre">&lt;compileResultVar&gt;</span></code>；构建失败时存入布尔值 <code class="docutils literal notranslate"><span class="pre">false</span></code>（除非指定了 <code class="docutils literal notranslate"><span class="pre">NO_CACHE</span></code>，否则该结果会被缓存）。</p>
+<p>在这种形式中，必须提供一个或多个源文件。此外，<code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_*</span></code> 中的一个必须在其他关键字之前出现。</p>
+<p>如果 <span class="target" id="index-1-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a> 未设置或设置为 <code class="docutils literal notranslate"><span class="pre">EXECUTABLE</span></code>，则源文件必须包含 <code class="docutils literal notranslate"><span class="pre">main</span></code> 定义，且 CMake 将创建一个 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件以将源文件构建为可执行文件。如果 <span class="target" id="index-2-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">STATIC_LIBRARY</span></code>，则会构建一个静态库，且不需要 <code class="docutils literal notranslate"><span class="pre">main</span></code> 定义。对于可执行文件，生成的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件将包含类似以下内容</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_definitions(</span><span class="nv">&lt;expanded COMPILE_DEFINITIONS from caller&gt;</span><span class="nf">)</span>
+<span class="nf">include_directories(</span><span class="o">${</span><span class="nt">INCLUDE_DIRECTORIES</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">link_directories(</span><span class="o">${</span><span class="nt">LINK_DIRECTORIES</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">cmTryCompileExec</span><span class="w"> </span><span class="nv">&lt;srcfile&gt;...</span><span class="nf">)</span>
+<span class="nf">target_link_options(</span><span class="nb">cmTryCompileExec</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nv">&lt;LINK_OPTIONS from caller&gt;</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">cmTryCompileExec</span><span class="w"> </span><span class="o">${</span><span class="nt">LINK_LIBRARIES</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>对于每个 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 操作，CMake 都会自动在 <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/CMakeFiles/CMakeScratch</span></code> 下生成一个名称未指定的唯一目录。除非将 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-debug-trycompile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debug-trycompile</span></code></a> 传递给 <strong class="program">cmake</strong>，否则这些目录会被自动清理。在任何 <strong class="program">cmake</strong> 执行开始时，之前运行留下的此类目录也会被无条件清理。</p>
+<p>该命令为 3.25 之前的 CMake 版本提供了一个替代签名。为了清晰起见，推荐使用上述签名。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_compile(</span><span class="nv">&lt;compileResultVar&gt;</span><span class="w"> </span><span class="nv">&lt;bindir&gt;</span><span class="w"> </span><span class="p">{</span><span class="nv">&lt;srcfile&gt;</span><span class="p">|</span><span class="no">SOURCES</span><span class="w"> </span><span class="nv">&lt;srcfile&gt;...</span><span class="p">}</span>
+<span class="w">            </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">COMPILE_DEFINITIONS</span><span class="w"> </span><span class="nv">&lt;defs&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LINK_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">LINK_LIBRARIES</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="no">COPY_FILE</span><span class="w"> </span><span class="nv">&lt;fileName&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COPY_FILE_ERROR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD</span><span class="w"> </span><span class="nv">&lt;std&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD_REQUIRED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_EXTENSIONS</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在此版本中，<code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 将使用 <code class="docutils literal notranslate"><span class="pre">&lt;bindir&gt;/CMakeFiles/CMakeTmp</span></code> 进行操作，所有此类文件都会被自动清理。为了调试，可以将 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-debug-trycompile"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debug-trycompile</span></code></a> 传递给 <strong class="program">cmake</strong> 以避免此清理。然而，如果多次连续的 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 操作使用相同的 <code class="docutils literal notranslate"><span class="pre">&lt;bindir&gt;</span></code>，它们将重用这个单一的输出目录，这意味着您一次只能调试一个此类 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 调用。建议使用较新的签名以简化对多个 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 操作的调试。</p>
+</section>
+<section id="options">
+<span id="try-compile-options"></span><h2><a class="toc-backref" href="try_compile.html#id6" role="doc-backlink">选项</a><a class="headerlink" href="try_compile.html#options" title="链接到此标题">¶</a></h2>
+<p>上述签名的选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FLAGS</span> <span class="pre">&lt;flags&gt;...</span></code></dt><dd><p>指定 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-DVAR:TYPE=VALUE</span></code></a> 形式的标志，这些标志将传递给用于驱动测试构建的 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行。上述示例展示了如何使用变量 <code class="docutils literal notranslate"><span class="pre">COMPILE_DEFINITIONS</span></code>、<code class="docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code>、<code class="docutils literal notranslate"><span class="pre">LINK_DIRECTORIES</span></code>、<code class="docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">LINK_OPTIONS</span></code> 的值。编译器选项可以通过 <code class="docutils literal notranslate"><span class="pre">CMAKE_FLAGS</span> <span class="pre">-DCOMPILE_DEFINITIONS=-Werror</span></code> 传入。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPILE_DEFINITIONS</span> <span class="pre">&lt;defs&gt;...</span></code></dt><dd><p>指定要传递给生成的测试项目中 <span class="target" id="index-0-command:add_definitions"></span><a class="reference internal" href="add_definitions.html#command:add_definitions" title="add_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_definitions()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">-Ddefinition</span></code> 参数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COPY_FILE</span> <span class="pre">&lt;fileName&gt;</span></code></dt><dd><p>将生成的内置可执行文件或静态库复制到给定的 <code class="docutils literal notranslate"><span class="pre">&lt;fileName&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COPY_FILE_ERROR</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">COPY_FILE</span></code> 之后使用，将尝试复制文件时遇到的任何错误信息存入变量 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span> <span class="pre">&lt;libs&gt;...</span></code></dt><dd><p>指定在生成的项目中要链接的库。库列表可以引用系统库以及调用项目中的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>。</p>
+<p>如果指定了此选项，则提供给 <code class="docutils literal notranslate"><span class="pre">CMAKE_FLAGS</span></code> 选项的任何 <code class="docutils literal notranslate"><span class="pre">-DLINK_LIBRARIES=...</span></code> 值都将被忽略。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.29 新增: </span>也支持导入库的别名目标。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LINK_OPTIONS</span> <span class="pre">&lt;options&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>指定链接步骤选项，这些选项将根据生成的项目中的 <span class="target" id="index-3-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a> 变量，传递给 <span class="target" id="index-0-command:target_link_options"></span><a class="reference internal" href="target_link_options.html#command:target_link_options" title="target_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_options()</span></code></a> 或用于设置 <span class="target" id="index-0-prop_tgt:STATIC_LIBRARY_OPTIONS"></span><a class="reference internal" href="../prop_tgt/STATIC_LIBRARY_OPTIONS.html#prop_tgt:STATIC_LIBRARY_OPTIONS" title="STATIC_LIBRARY_OPTIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">STATIC_LIBRARY_OPTIONS</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LINKER_LANGUAGE</span> <span class="pre">&lt;lang&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>指定生成的项目的 <span class="target" id="index-0-prop_tgt:LINKER_LANGUAGE"></span><a class="reference internal" href="../prop_tgt/LINKER_LANGUAGE.html#prop_tgt:LINKER_LANGUAGE" title="LINKER_LANGUAGE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINKER_LANGUAGE</span></code></a> 目标属性。当同时使用多种语言的源文件时，请将其设置为包含程序入口点（例如 <code class="docutils literal notranslate"><span class="pre">main</span></code>）的源文件的语言。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_DESCRIPTION</span> <span class="pre">&lt;text&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>指定一个非空的文本描述，说明检查的目的。这会记录在 <span class="target" id="index-0-manual:cmake-configure-log(7)"></span><a class="reference internal" href="../manual/cmake-configure-log.7.html#manual:cmake-configure-log(7)" title="cmake-configure-log(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-configure-log(7)</span></code></a> 条目中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_CACHE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;compileResultVar&gt;</span></code> 将存储在普通变量中，而不是缓存条目中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;compileResultVar&gt;</span></code> 通常被缓存，以便可以使用一种简单的模式来避免在随后的 CMake 执行中重复进行测试。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="no">DEFINED</span><span class="w"> </span><span class="no">RESULTVAR</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># ...(check-specific setup code)...</span>
+<span class="w">  </span><span class="nf">try_compile(</span><span class="no">RESULTVAR</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># ...(check-specific logging and cleanup code)...</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>如果防护变量和结果变量不相同（例如，测试是更大检查的一部分），则 <code class="docutils literal notranslate"><span class="pre">NO_CACHE</span></code> 可能有助于避免将中间结果变量泄漏到缓存中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_LOG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>不要为此调用记录 <span class="target" id="index-1-manual:cmake-configure-log(7)"></span><a class="reference internal" href="../manual/cmake-configure-log.7.html#manual:cmake-configure-log(7)" title="cmake-configure-log(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-configure-log(7)</span></code></a> 条目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><p>将构建过程的输出存储在给定的变量中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_CONTENT</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;content&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;content&gt;</span></code> 写入操作目录中名为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的文件。这可以用于在文件内容动态指定时，绕过单独编写源文件的需要。指定的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 不允许包含路径组件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_CONTENT</span></code> 可以被多次指定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_FILE</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 复制到操作目录中名为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的文件。这可用于将文件整合到操作目录中，如果某个已经存在的源文件（即作为项目源代码库中的独立文件）需要引用由 <code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_*</span></code> 创建的其他文件，这会很有用。（否则，<code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 通常更方便。）指定的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 不允许包含路径组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_VAR</span> <span class="pre">&lt;name&gt;</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 的内容写入操作目录中名为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的文件。这与 <code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_CONTENT</span></code> 相同，但从指定的 CMake 变量中获取内容，而不是直接从文本获取，这在通过包装 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 的函数传递参数时很有用。指定的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 不允许包含路径组件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_VAR</span></code> 可以被多次指定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCES_TYPE</span> <span class="pre">&lt;type&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>源文件可以使用 <code class="docutils literal notranslate"><span class="pre">SOURCES_TYPE</span></code> 参数进行分类。一旦指定，所有后续指定的源文件将被视为该类型，直到给定另一个 <code class="docutils literal notranslate"><span class="pre">SOURCES_TYPE</span></code> 为止。可用类型包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">NORMAL</span></code></dt><dd><p>源文件不会被添加到生成的项目中的任何 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CXX_MODULE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>源文件被添加到生成的项目中类型为 <code class="docutils literal notranslate"><span class="pre">CXX_MODULES</span></code> 的 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 中。</p>
+</dd>
+</dl>
+<p>源文件的默认类型是 <code class="docutils literal notranslate"><span class="pre">NORMAL</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD</span> <span class="pre">&lt;std&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>指定生成的项目的 <span class="target" id="index-0-prop_tgt:C_STANDARD"></span><a class="reference internal" href="../prop_tgt/C_STANDARD.html#prop_tgt:C_STANDARD" title="C_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C_STANDARD</span></code></a>、<span class="target" id="index-0-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_STANDARD</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJC_STANDARD"></span><a class="reference internal" href="../prop_tgt/OBJC_STANDARD.html#prop_tgt:OBJC_STANDARD" title="OBJC_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJC_STANDARD</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJCXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/OBJCXX_STANDARD.html#prop_tgt:OBJCXX_STANDARD" title="OBJCXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJCXX_STANDARD</span></code></a> 或 <span class="target" id="index-0-prop_tgt:CUDA_STANDARD"></span><a class="reference internal" href="../prop_tgt/CUDA_STANDARD.html#prop_tgt:CUDA_STANDARD" title="CUDA_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CUDA_STANDARD</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD_REQUIRED</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>指定生成的项目的 <span class="target" id="index-0-prop_tgt:C_STANDARD_REQUIRED"></span><a class="reference internal" href="../prop_tgt/C_STANDARD_REQUIRED.html#prop_tgt:C_STANDARD_REQUIRED" title="C_STANDARD_REQUIRED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C_STANDARD_REQUIRED</span></code></a>、<span class="target" id="index-0-prop_tgt:CXX_STANDARD_REQUIRED"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD_REQUIRED.html#prop_tgt:CXX_STANDARD_REQUIRED" title="CXX_STANDARD_REQUIRED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_STANDARD_REQUIRED</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJC_STANDARD_REQUIRED"></span><a class="reference internal" href="../prop_tgt/OBJC_STANDARD_REQUIRED.html#prop_tgt:OBJC_STANDARD_REQUIRED" title="OBJC_STANDARD_REQUIRED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJC_STANDARD_REQUIRED</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJCXX_STANDARD_REQUIRED"></span><a class="reference internal" href="../prop_tgt/OBJCXX_STANDARD_REQUIRED.html#prop_tgt:OBJCXX_STANDARD_REQUIRED" title="OBJCXX_STANDARD_REQUIRED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJCXX_STANDARD_REQUIRED</span></code></a> 或 <span class="target" id="index-0-prop_tgt:CUDA_STANDARD_REQUIRED"></span><a class="reference internal" href="../prop_tgt/CUDA_STANDARD_REQUIRED.html#prop_tgt:CUDA_STANDARD_REQUIRED" title="CUDA_STANDARD_REQUIRED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CUDA_STANDARD_REQUIRED</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_EXTENSIONS</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>指定生成的项目的 <span class="target" id="index-0-prop_tgt:C_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/C_EXTENSIONS.html#prop_tgt:C_EXTENSIONS" title="C_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C_EXTENSIONS</span></code></a>、<span class="target" id="index-0-prop_tgt:CXX_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/CXX_EXTENSIONS.html#prop_tgt:CXX_EXTENSIONS" title="CXX_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_EXTENSIONS</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJC_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/OBJC_EXTENSIONS.html#prop_tgt:OBJC_EXTENSIONS" title="OBJC_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJC_EXTENSIONS</span></code></a>、<span class="target" id="index-0-prop_tgt:OBJCXX_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/OBJCXX_EXTENSIONS.html#prop_tgt:OBJCXX_EXTENSIONS" title="OBJCXX_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">OBJCXX_EXTENSIONS</span></code></a> 或 <span class="target" id="index-0-prop_tgt:CUDA_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/CUDA_EXTENSIONS.html#prop_tgt:CUDA_EXTENSIONS" title="CUDA_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CUDA_EXTENSIONS</span></code></a> 目标属性。</p>
+</dd>
+</dl>
+</section>
+<section id="other-behavior-settings">
+<h2><a class="toc-backref" href="try_compile.html#id7" role="doc-backlink">其他行为设置</a><a class="headerlink" href="try_compile.html#other-behavior-settings" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.4 新增: </span>如果设置了，以下变量将传递到生成的 try_compile CMakeLists.txt 中，以使用默认值初始化编译目标属性</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_CUDA_RUNTIME_LIBRARY"></span><a class="reference internal" href="../variable/CMAKE_CUDA_RUNTIME_LIBRARY.html#variable:CMAKE_CUDA_RUNTIME_LIBRARY" title="CMAKE_CUDA_RUNTIME_LIBRARY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_RUNTIME_LIBRARY</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_ENABLE_EXPORTS.html#variable:CMAKE_ENABLE_EXPORTS" title="CMAKE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ENABLE_EXPORTS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_EXECUTABLE_ENABLE_EXPORTS.html#variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS" title="CMAKE_EXECUTABLE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTABLE_ENABLE_EXPORTS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS.html#variable:CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS" title="CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_EXE_LINKER_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_EXE_LINKER_FLAGS.html#variable:CMAKE_EXE_LINKER_FLAGS" title="CMAKE_EXE_LINKER_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXE_LINKER_FLAGS</span></code></a>，除非使用 4.0 之前的 CMake 版本且未将策略 <span class="target" id="index-0-policy:CMP0056"></span><a class="reference internal" href="../policy/CMP0056.html#policy:CMP0056" title="CMP0056"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0056</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_<LANG>_LINK_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINK_FLAGS.html#variable:CMAKE_<LANG>_LINK_FLAGS" title="CMAKE_<LANG>_LINK_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINK_FLAGS</span></code></a>，除非使用 4.3 之前的 CMake 版本且未将策略 <span class="target" id="index-0-policy:CMP0210"></span><a class="reference internal" href="../policy/CMP0210.html#policy:CMP0210" title="CMP0210"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0210</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_LINK_SEARCH_START_STATIC"></span><a class="reference internal" href="../variable/CMAKE_LINK_SEARCH_START_STATIC.html#variable:CMAKE_LINK_SEARCH_START_STATIC" title="CMAKE_LINK_SEARCH_START_STATIC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINK_SEARCH_START_STATIC</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_LINK_SEARCH_END_STATIC"></span><a class="reference internal" href="../variable/CMAKE_LINK_SEARCH_END_STATIC.html#variable:CMAKE_LINK_SEARCH_END_STATIC" title="CMAKE_LINK_SEARCH_END_STATIC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINK_SEARCH_END_STATIC</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_MSVC_RUNTIME_LIBRARY"></span><a class="reference internal" href="../variable/CMAKE_MSVC_RUNTIME_LIBRARY.html#variable:CMAKE_MSVC_RUNTIME_LIBRARY" title="CMAKE_MSVC_RUNTIME_LIBRARY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MSVC_RUNTIME_LIBRARY</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_POSITION_INDEPENDENT_CODE"></span><a class="reference internal" href="../variable/CMAKE_POSITION_INDEPENDENT_CODE.html#variable:CMAKE_POSITION_INDEPENDENT_CODE" title="CMAKE_POSITION_INDEPENDENT_CODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POSITION_INDEPENDENT_CODE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_WATCOM_RUNTIME_LIBRARY"></span><a class="reference internal" href="../variable/CMAKE_WATCOM_RUNTIME_LIBRARY.html#variable:CMAKE_WATCOM_RUNTIME_LIBRARY" title="CMAKE_WATCOM_RUNTIME_LIBRARY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_WATCOM_RUNTIME_LIBRARY</span></code></a></p></li>
+</ul>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.14 变更: </span>如果 <span class="target" id="index-0-policy:CMP0083"></span><a class="reference internal" href="../policy/CMP0083.html#policy:CMP0083" title="CMP0083"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0083</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，为了在链接时获得正确的行为，必须在调用 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 命令之前调用 <span class="target" id="index-0-module:CheckPIESupported"></span><a class="reference internal" href="../module/CheckPIESupported.html#module:CheckPIESupported" title="CheckPIESupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckPIESupported</span></code></a> 模块中的 <code class="docutils literal notranslate"><span class="pre">check_pie_supported()</span></code> 命令。</p>
+</div>
+<p>一些策略会根据需要自动在生成的测试项目中设置，以尊重调用项目的状态</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-policy:CMP0065"></span><a class="reference internal" href="../policy/CMP0065.html#policy:CMP0065" title="CMP0065"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0065</span></code></a> (在 4.0 之前的 CMake 版本中)</p></li>
+<li><p><span class="target" id="index-1-policy:CMP0083"></span><a class="reference internal" href="../policy/CMP0083.html#policy:CMP0083" title="CMP0083"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0083</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0091"></span><a class="reference internal" href="../policy/CMP0091.html#policy:CMP0091" title="CMP0091"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0091</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0104"></span><a class="reference internal" href="../policy/CMP0104.html#policy:CMP0104" title="CMP0104"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0104</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0123"></span><a class="reference internal" href="../policy/CMP0123.html#policy:CMP0123" title="CMP0123"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0123</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0126"></span><a class="reference internal" href="../policy/CMP0126.html#policy:CMP0126" title="CMP0126"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0126</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0128"></span><a class="reference internal" href="../policy/CMP0128.html#policy:CMP0128" title="CMP0128"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0128</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0136"></span><a class="reference internal" href="../policy/CMP0136.html#policy:CMP0136" title="CMP0136"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0136</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0141"></span><a class="reference internal" href="../policy/CMP0141.html#policy:CMP0141" title="CMP0141"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0141</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0155"></span><a class="reference internal" href="../policy/CMP0155.html#policy:CMP0155" title="CMP0155"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0155</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0157"></span><a class="reference internal" href="../policy/CMP0157.html#policy:CMP0157" title="CMP0157"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0157</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0181"></span><a class="reference internal" href="../policy/CMP0181.html#policy:CMP0181" title="CMP0181"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0181</span></code></a></p></li>
+<li><p><span class="target" id="index-0-policy:CMP0184"></span><a class="reference internal" href="../policy/CMP0184.html#policy:CMP0184" title="CMP0184"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0184</span></code></a></p></li>
+<li><p><span class="target" id="index-1-policy:CMP0210"></span><a class="reference internal" href="../policy/CMP0210.html#policy:CMP0210" title="CMP0210"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0210</span></code></a></p></li>
+</ul>
+<p>设置变量 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_CONFIGURATION"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_CONFIGURATION.html#variable:CMAKE_TRY_COMPILE_CONFIGURATION" title="CMAKE_TRY_COMPILE_CONFIGURATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_CONFIGURATION</span></code></a> 以选择构建配置</p>
+<ul class="simple">
+<li><p>对于多配置生成器，这会选择要构建的配置。</p></li>
+<li><p>对于单配置生成器，这会在测试项目中设置 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a>。</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.6 新增: </span>设置 <span class="target" id="index-4-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a> 变量以指定用于源文件签名的目标类型。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.6 新增: </span>设置 <span class="target" id="index-1-variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_PLATFORM_VARIABLES.html#variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES" title="CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_PLATFORM_VARIABLES</span></code></a> 变量以指定必须传播到测试项目中的变量。此变量旨在仅在工具链文件中使用，并且仅由 <code class="docutils literal notranslate"><span class="pre">try_compile()</span></code> 命令用于源文件形式时生效，而不是当给定整个项目时。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.8 变更: </span>如果 <span class="target" id="index-0-policy:CMP0067"></span><a class="reference internal" href="../policy/CMP0067.html#policy:CMP0067" title="CMP0067"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0067</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，或者使用了 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD_REQUIRED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_EXTENSIONS</span></code> 选项中的任何一个，则语言标准变量会被尊重</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_C_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_C_STANDARD.html#variable:CMAKE_C_STANDARD" title="CMAKE_C_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_C_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_C_STANDARD_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_C_STANDARD_REQUIRED.html#variable:CMAKE_C_STANDARD_REQUIRED" title="CMAKE_C_STANDARD_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_C_STANDARD_REQUIRED</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_C_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_C_EXTENSIONS.html#variable:CMAKE_C_EXTENSIONS" title="CMAKE_C_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_C_EXTENSIONS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CXX_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_CXX_STANDARD.html#variable:CMAKE_CXX_STANDARD" title="CMAKE_CXX_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CXX_STANDARD_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_CXX_STANDARD_REQUIRED.html#variable:CMAKE_CXX_STANDARD_REQUIRED" title="CMAKE_CXX_STANDARD_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD_REQUIRED</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CXX_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_CXX_EXTENSIONS.html#variable:CMAKE_CXX_EXTENSIONS" title="CMAKE_CXX_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_EXTENSIONS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJC_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_OBJC_STANDARD.html#variable:CMAKE_OBJC_STANDARD" title="CMAKE_OBJC_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJC_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJC_STANDARD_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_OBJC_STANDARD_REQUIRED.html#variable:CMAKE_OBJC_STANDARD_REQUIRED" title="CMAKE_OBJC_STANDARD_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJC_STANDARD_REQUIRED</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJC_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_OBJC_EXTENSIONS.html#variable:CMAKE_OBJC_EXTENSIONS" title="CMAKE_OBJC_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJC_EXTENSIONS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJCXX_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_OBJCXX_STANDARD.html#variable:CMAKE_OBJCXX_STANDARD" title="CMAKE_OBJCXX_STANDARD" title="CMAKE_OBJCXX_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJCXX_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJCXX_STANDARD_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_OBJCXX_STANDARD_REQUIRED.html#variable:CMAKE_OBJCXX_STANDARD_REQUIRED" title="CMAKE_OBJCXX_STANDARD_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJCXX_STANDARD_REQUIRED</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_OBJCXX_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_OBJCXX_EXTENSIONS.html#variable:CMAKE_OBJCXX_EXTENSIONS" title="CMAKE_OBJCXX_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJCXX_EXTENSIONS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CUDA_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_CUDA_STANDARD.html#variable:CMAKE_CUDA_STANDARD" title="CMAKE_CUDA_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CUDA_STANDARD_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_CUDA_STANDARD_REQUIRED.html#variable:CMAKE_CUDA_STANDARD_REQUIRED" title="CMAKE_CUDA_STANDARD_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_STANDARD_REQUIRED</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CUDA_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_CUDA_EXTENSIONS.html#variable:CMAKE_CUDA_EXTENSIONS" title="CMAKE_CUDA_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_EXTENSIONS</span></code></a></p></li>
+</ul>
+<p>它们的值用于在生成的项目中设置相应的目标属性（除非被明确的选项覆盖）。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.14 变更: </span>对于 <span class="target" id="index-0-generator:Green Hills MULTI"></span><a class="reference internal" href="../generator/Green&#32;Hills&#32;MULTI.html#generator:Green Hills MULTI" title="Green Hills MULTI"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Green</span> <span class="pre">Hills</span> <span class="pre">MULTI</span></code></a> 生成器，GHS 工具集和目标系统定制缓存变量也会被传播到测试项目中。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 新增: </span>可以设置 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_NO_PLATFORM_VARIABLES"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_NO_PLATFORM_VARIABLES.html#variable:CMAKE_TRY_COMPILE_NO_PLATFORM_VARIABLES" title="CMAKE_TRY_COMPILE_NO_PLATFORM_VARIABLES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_NO_PLATFORM_VARIABLES</span></code></a> 变量以禁止将平台变量传递到测试项目中。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.25 新增: </span>如果 <span class="target" id="index-1-policy:CMP0141"></span><a class="reference internal" href="../policy/CMP0141.html#policy:CMP0141" title="CMP0141"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0141</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，可以使用 <span class="target" id="index-0-variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html#variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT" title="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 来指定 MSVC 调试信息格式。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.30 新增: </span>如果设置了 <span class="target" id="index-1-prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"></span><a class="reference internal" href="../prop_gbl/PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE.html#prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE" title="PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE</span></code></a> 全局属性，则在使用 <a class="reference internal" href="try_compile.html#try-compiling-whole-projects"><span class="std std-ref">整个项目签名</span></a> 时，<span class="target" id="index-1-variable:CMAKE_PROJECT_TOP_LEVEL_INCLUDES"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html#variable:CMAKE_PROJECT_TOP_LEVEL_INCLUDES" title="CMAKE_PROJECT_TOP_LEVEL_INCLUDES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_TOP_LEVEL_INCLUDES</span></code></a> 会被传播到测试项目的构建配置中。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.0 新增: </span>如果 <span class="target" id="index-1-policy:CMP0184"></span><a class="reference internal" href="../policy/CMP0184.html#policy:CMP0184" title="CMP0184"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0184</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，可以使用 <span class="target" id="index-0-variable:CMAKE_MSVC_RUNTIME_CHECKS"></span><a class="reference internal" href="../variable/CMAKE_MSVC_RUNTIME_CHECKS.html#variable:CMAKE_MSVC_RUNTIME_CHECKS" title="CMAKE_MSVC_RUNTIME_CHECKS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MSVC_RUNTIME_CHECKS</span></code></a> 来指定启用的 MSVC 运行时检查。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.3 新增: </span>如果 <span class="target" id="index-2-policy:CMP0210"></span><a class="reference internal" href="../policy/CMP0210.html#policy:CMP0210" title="CMP0210"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0210</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，<span class="target" id="index-1-variable:CMAKE_<LANG>_LINK_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINK_FLAGS.html#variable:CMAKE_<LANG>_LINK_FLAGS" title="CMAKE_<LANG>_LINK_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINK_FLAGS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINK_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINK_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_LINK_FLAGS_<CONFIG>" title="CMAKE_<LANG>_LINK_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINK_FLAGS_&lt;CONFIG&gt;</span></code></a> 会被传播到测试项目的构建配置中。</p>
+</div>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="try_compile.html#id8" role="doc-backlink">参见</a><a class="headerlink" href="try_compile.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:try_run"></span><a class="reference internal" href="try_run.html#command:try_run" title="try_run"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_run()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="try_compile.html#">try_compile</a><ul>
+<li><a class="reference internal" href="try_compile.html#try-compiling-whole-projects">尝试编译整个项目</a></li>
+<li><a class="reference internal" href="try_compile.html#try-compiling-source-files">尝试编译源文件</a></li>
+<li><a class="reference internal" href="try_compile.html#options">选项</a></li>
+<li><a class="reference internal" href="try_compile.html#other-behavior-settings">其他行为设置</a></li>
+<li><a class="reference internal" href="try_compile.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="target_sources.html" title="上一章">target_sources</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="try_run.html" title="下一章">try_run</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/try_compile.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="try_run.html" title="try_run">下一页</a> |</li>
+        <li class="right">
+          <a href="target_sources.html" title="target_sources">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="try_compile.html">try_compile</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

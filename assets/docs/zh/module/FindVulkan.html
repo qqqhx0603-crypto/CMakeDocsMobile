@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindVulkan — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindVulkan.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindWget" href="FindWget.html" />
+    <link rel="prev" title="FindTIFF" href="FindTIFF.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindWget.html" title="FindWget" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindTIFF.html" title="FindTIFF" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindVulkan.html">FindVulkan</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findvulkan">
+<span id="module:FindVulkan"></span><h1>FindVulkan<a class="headerlink" href="FindVulkan.html#findvulkan" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>查找 Vulkan（一种低开销、跨平台的 3D 图形和计算 API）以及通常由 Vulkan SDK 提供的相关开发工具。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Vulkan</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>Vulkan 包含常用的实用程序，例如着色器编译器和 SPIR-V 工具（如 DXC、<code class="docutils literal notranslate"><span class="pre">glslc</span></code>、<code class="docutils literal notranslate"><span class="pre">glslang</span></code> 等），这些工具支持基于 Vulkan 的开发工作流。</p>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindVulkan.html#components" title="此标题的链接">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>该模块支持多个可选组件，可以通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令指定这些组件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Vulkan</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>每个组件都提供对应的导入目标 (imported target)。支持的组件包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">glslc</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找 SPIR-V 编译器。为了向后兼容，即使未明确请求，此可选组件也会自动包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">glslangValidator</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找用于将 GLSL 和 HLSL 着色器编译为 SPIR-V 的 <code class="docutils literal notranslate"><span class="pre">glslangValidator</span></code> 工具。为了向后兼容，即使未明确请求，此可选组件也会自动包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">glslang</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找 Khronos 参考前端着色器解析器和 SPIR-V 代码生成库（<code class="docutils literal notranslate"><span class="pre">glslang</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shaderc_combined</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找用于 Vulkan 着色器编译的 Google 静态库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SPIRV-Tools</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找用于分析和转换 SPIR-V 模块的 Khronos 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MoltenVK</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>查找 Khronos MoltenVK 库。该库在 macOS 上可用，并在 Apple Metal 图形框架之上实现了 Vulkan API 的一个子集。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dxc</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>查找 DirectX 着色器编译器 (DXC)，包括库和命令行工具。请注意，Visual Studio 也提供 DXC 工具，但通常需要 Vulkan SDK 中包含的版本以进行 Vulkan 开发，因为它启用了 Vulkan 功能。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">volk</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>查找 Vulkan 元加载器 <code class="docutils literal notranslate"><span class="pre">volk</span></code> 库，这是一种向量优化后的内核库。</p>
+</dd>
+</dl>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindVulkan.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::Vulkan</span></code></dt><dd><p>封装了主要 Vulkan 库使用需求的目标，如果找到了 Vulkan，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::glslc</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>封装了 GLSLC SPIR-V 编译器使用需求的导入可执行目标，如果找到了 <code class="docutils literal notranslate"><span class="pre">glslc</span></code>，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::Headers</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>封装了包含 Vulkan 头文件所需的使用需求的目标。它仅提供包含目录，不链接任何库。这对于在运行时动态加载 Vulkan 库的应用程序非常有用。如果找到了 Vulkan，此目标可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::glslangValidator</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>封装了 <code class="docutils literal notranslate"><span class="pre">glslangValidator</span></code> 使用需求的导入可执行目标，如果找到了此工具，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::glslang</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>封装了 <code class="docutils literal notranslate"><span class="pre">glslang</span></code> 库使用需求的目标，如果 SDK 中找到了 <code class="docutils literal notranslate"><span class="pre">glslang</span></code>，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::shaderc_combined</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>封装了 <code class="docutils literal notranslate"><span class="pre">shaderc_combined</span></code> 库使用需求的目标，如果 SDK 中找到了此库，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::SPIRV-Tools</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>封装了 SPIRV-Tools 库使用需求的目标，如果 SDK 中找到了此库，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::MoltenVK</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>封装了 MoltenVK 库使用需求的目标，如果 SDK 中找到了此库，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::volk</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>封装了 <code class="docutils literal notranslate"><span class="pre">volk</span></code> 库使用需求的目标，如果 SDK 中找到了 <code class="docutils literal notranslate"><span class="pre">volk</span></code>，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::dxc_lib</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>封装了 DirectX 着色器编译器库使用需求的目标，如果 SDK 中找到了 DXC 库，则可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan::dxc_exe</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>提供 DirectX 着色器编译器 CLI 工具使用需求的导入可执行目标，如果 SDK 中包含此工具，则可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindVulkan.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_FOUND</span></code></dt><dd><p>布尔值，表示是否找到了（指定版本的）Vulkan 和所有必需的组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>找到的 Vulkan 版本。该值从 <code class="docutils literal notranslate"><span class="pre">vulkan/vulkan_core.h</span></code> 中检索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_INCLUDE_DIRS</span></code></dt><dd><p>使用主要 Vulkan 库所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_LIBRARIES</span></code></dt><dd><p>使用主要 Vulkan 库时需要链接的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_glslc_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 <code class="docutils literal notranslate"><span class="pre">glslc</span></code> 可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_glslangValidator_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 <code class="docutils literal notranslate"><span class="pre">glslangValidator</span></code> 可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_glslang_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 <code class="docutils literal notranslate"><span class="pre">glslang</span></code> 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_shaderc_combined_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 <code class="docutils literal notranslate"><span class="pre">shaderc_combined</span></code> 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_SPIRV-Tools_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 SPIRV-Tools 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_MoltenVK_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 MoltenVK 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_volk_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 volk 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_dxc_lib_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 DirectX 着色器编译器库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_dxc_exe_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>布尔值，表示 SDK 是否提供了 DirectX 着色器编译器 CLI 工具。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindVulkan.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_INCLUDE_DIR</span></code></dt><dd><p>包含 Vulkan 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_LIBRARY</span></code></dt><dd><p>Vulkan 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_GLSLC_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>GLSL SPIR-V 编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_GLSLANG_VALIDATOR_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">glslangValidator</span></code> 工具的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_glslang_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">glslang</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_shaderc_combined_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">shaderc_combined</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_SPIRV-Tools_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>SPIRV-Tools 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_MoltenVK_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>MoltenVK 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_volk_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">volk</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_dxc_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>DirectX 着色器编译器库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Vulkan_dxc_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>DirectX 着色器编译器 CLI 工具的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindVulkan.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">VULKAN_SDK</span></code></dt><dd><p>可选地设置此环境变量以指定特定架构的 Vulkan SDK 根目录位置。它通常通过在 Shell 环境中执行 Vulkan SDK 目录下的顶层 <code class="docutils literal notranslate"><span class="pre">setup-env.sh</span></code> 脚本来设置。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindVulkan.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 Vulkan 库并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Vulkan</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Vulkan</span><span class="o">::</span><span class="nb">Vulkan</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 Vulkan 库以及附加组件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Vulkan</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">volk</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Vulkan</span><span class="o">::</span><span class="nb">Vulkan</span><span class="w"> </span><span class="nb">Vulkan</span><span class="o">::</span><span class="nb">volk</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindVulkan.html#">FindVulkan</a><ul>
+<li><a class="reference internal" href="FindVulkan.html#components">组件</a></li>
+<li><a class="reference internal" href="FindVulkan.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindVulkan.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindVulkan.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindVulkan.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindVulkan.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindTIFF.html" title="上一章">FindTIFF</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindWget.html" title="下一章">FindWget</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindVulkan.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindWget.html" title="FindWget">下一页</a> |</li>
+        <li class="right">
+          <a href="FindTIFF.html" title="FindTIFF">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindVulkan.html">FindVulkan</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMakePackageConfigHelpers — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMakePackageConfigHelpers.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMakePrintHelpers" href="CMakePrintHelpers.html" />
+    <link rel="prev" title="CMakeFindDependencyMacro" href="CMakeFindDependencyMacro.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMakePrintHelpers.html" title="CMakePrintHelpers" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMakeFindDependencyMacro.html" title="CMakeFindDependencyMacro" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakePackageConfigHelpers.html">CMakePackageConfigHelpers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmakepackageconfighelpers">
+<span id="module:CMakePackageConfigHelpers"></span><h1>CMakePackageConfigHelpers<a class="headerlink" href="CMakePackageConfigHelpers.html#cmakepackageconfighelpers" title="链接到此标题">¶</a></h1>
+<p>该模块提供了用于创建 <a class="reference internal" href="../guide/using-dependencies/index.html#libraries-providing-config-file-packages"><span class="std std-ref">配置文件 (config files)</span></a> 的辅助命令，其他项目可以包含这些文件以查找并使用该软件包。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakePackageConfigHelpers</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="generating-a-package-configuration-file">
+<h2>生成软件包配置文件<a class="headerlink" href="CMakePackageConfigHelpers.html#generating-a-package-configuration-file" title="链接到此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:configure_package_config_file">
+<span class="sig-name descname"><span class="pre">configure_package_config_file</span></span><a class="headerlink" href="CMakePackageConfigHelpers.html#command:configure_package_config_file" title="Link to this definition">¶</a></dt>
+<dd><p>为项目创建一个配置文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">configure_package_config_file(</span><span class="nv">&lt;input&gt;</span><span class="w"> </span><span class="nv">&lt;output&gt;</span>
+<span class="w">  </span><span class="no">INSTALL_DESTINATION</span><span class="w"> </span><span class="nv">&lt;path&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PATH_VARS</span><span class="w"> </span><span class="nv">&lt;var1&gt;</span><span class="w"> </span><span class="nv">&lt;var2&gt;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="nv">&lt;varN&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_SET_AND_CHECK_MACRO</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_CHECK_REQUIRED_COMPONENTS_MACRO</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INSTALL_PREFIX</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 应该用来代替普通的 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令，用于在安装项目或库时创建 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;-config.cmake</span></code> 文件。它通过避免在已安装的 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件中使用硬编码路径，来帮助实现软件包的可重定位性。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件中，可能包含如下代码，以使使用该项目的项目能够获知安装目录：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">FOO_INCLUDE_DIR</span><span class="w">   </span><span class="s">"@CMAKE_INSTALL_FULL_INCLUDEDIR@"</span><span class="w"> </span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">FOO_DATA_DIR</span><span class="w">   </span><span class="s">"@CMAKE_INSTALL_PREFIX@/@RELATIVE_DATA_INSTALL_DIR@"</span><span class="w"> </span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">FOO_ICONS_DIR</span><span class="w">   </span><span class="s">"@CMAKE_INSTALL_PREFIX@/share/icons"</span><span class="w"> </span><span class="nf">)</span>
+<span class="c">#...logic to determine installedPrefix from the own location...</span>
+<span class="nf">set(</span><span class="no">FOO_CONFIG_DIR</span><span class="w">  </span><span class="s">"${installedPrefix}/@CONFIG_INSTALL_DIR@"</span><span class="w"> </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>上述四种选项都不够理想。前三种硬编码了绝对目录位置。第四种情况只有在确定 <code class="docutils literal notranslate"><span class="pre">installedPrefix</span></code> 的逻辑正确，且 <code class="docutils literal notranslate"><span class="pre">CONFIG_INSTALL_DIR</span></code> 包含相对路径时才有效，而这在通常情况下无法保证。其后果是生成的 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件在 Windows 和 macOS 下表现不佳，因为这些系统的用户习惯于在安装时选择二进制包的安装位置，而不依赖于构建/CMake 时设置的 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a>。</p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 可以解决此问题。如果使用得当，它能使生成的 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件具有可重定位性。用法：</p>
+<ol class="arabic simple">
+<li><p>像往常一样编写一个 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake.in</span></code> 文件。</p></li>
+<li><p>在文件顶部插入一行，仅包含字符串 <code class="docutils literal notranslate"><span class="pre">@PACKAGE_INIT@</span></code>。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">set(FOO_DIR</span> <span class="pre">"@PACKAGE_SOME_INSTALL_DIR@")</span></code> 代替 <code class="docutils literal notranslate"><span class="pre">set(FOO_DIR</span> <span class="pre">"@SOME_INSTALL_DIR@")</span></code>（此行必须位于 <code class="docutils literal notranslate"><span class="pre">@PACKAGE_INIT@</span></code> 之后）。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 代替普通的 <span class="target" id="index-1-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令。</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code> 参数分别是输入和输出文件，用法与 <span class="target" id="index-2-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 相同。</p>
+<p>传递给 <code class="docutils literal notranslate"><span class="pre">INSTALL_DESTINATION</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 必须是 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件将被安装到的目标路径。该路径可以是绝对路径，也可以是相对于 <code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span></code> 的相对路径。</p>
+<p>作为 <code class="docutils literal notranslate"><span class="pre">PATH_VARS</span></code> 给出的变量 <code class="docutils literal notranslate"><span class="pre">&lt;var1&gt;</span></code> 到 <code class="docutils literal notranslate"><span class="pre">&lt;varN&gt;</span></code> 是包含安装目标路径的变量。对于它们中的每一个，宏都会创建一个辅助变量 <code class="docutils literal notranslate"><span class="pre">PACKAGE_&lt;var...&gt;</span></code>。这些辅助变量必须在 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake.in</span></code> 文件中用于设置安装位置。它们由 <code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 计算得出，因此它们总是相对于软件包的安装位置。这适用于相对路径和绝对路径。对于绝对路径，只有当绝对位置是 <code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span></code> 的子目录时才有效。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.30 新增：</span>变量 <code class="docutils literal notranslate"><span class="pre">PACKAGE_PREFIX_DIR</span></code> 总会在 <code class="docutils literal notranslate"><span class="pre">@PACKAGE_INIT@</span></code> 行之后被定义。它将保存基础安装位置的值。通常情况下，应优先使用通过 <code class="docutils literal notranslate"><span class="pre">PATH_VARS</span></code> 机制定义的变量，但 <code class="docutils literal notranslate"><span class="pre">PACKAGE_PREFIX_DIR</span></code> 可用于那些不便由 <code class="docutils literal notranslate"><span class="pre">PATH_VARS</span></code> 处理的情况，例如直接安装到基础安装位置而不是其子目录的文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当生成的文件的使用者使用 CMake 3.29 或更早版本时，<code class="docutils literal notranslate"><span class="pre">PACKAGE_PREFIX_DIR</span></code> 的值可能会被 <span class="target" id="index-0-command:find_dependency"></span><a class="reference internal" href="CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 或 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的调用所更改。如果项目依赖于 <code class="docutils literal notranslate"><span class="pre">PACKAGE_PREFIX_DIR</span></code>，则项目有责任确保 <code class="docutils literal notranslate"><span class="pre">PACKAGE_PREFIX_DIR</span></code> 的值在这些调用期间，或在包含由 <code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 生成的其他文件的任何调用中保持不变。</p>
+</div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 新增：</span>如果传递了 <code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span></code> 参数，它将被用作计算所有相对路径的基础路径。<code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 参数必须是一个绝对路径。如果没有传递此参数，则使用 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量。默认值适用于生成一个用于安装树中使用您软件包的 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件。当生成用于构建树中使用您软件包的 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件时，应使用此选项。</p>
+</div>
+<p>默认情况下，<code class="docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code> 还会生成两个辅助宏 <code class="docutils literal notranslate"><span class="pre">set_and_check()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">check_required_components()</span></code> 到 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">set_and_check()</span></code> 应代替普通的 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令用于设置目录和文件位置。除了设置变量外，它还会检查引用的文件或目录是否确实存在，如果不存在，则以致命错误失败。这确保了生成的 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件不包含错误的引用。添加 <code class="docutils literal notranslate"><span class="pre">NO_SET_AND_CHECK_MACRO</span></code> 选项以防止在 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件中生成 <code class="docutils literal notranslate"><span class="pre">set_and_check()</span></code> 宏。</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_required_components(&lt;PackageName&gt;)</span></code> 应在 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件的末尾调用。此宏检查是否已找到所有请求的非可选组件，如果不是，它会将 <code class="docutils literal notranslate"><span class="pre">Foo_FOUND</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，从而使软件包被视为未找到。它通过测试所有请求的必需组件的 <code class="docutils literal notranslate"><span class="pre">Foo_&lt;Component&gt;_FOUND</span></code> 变量来实现这一点。即使软件包不提供任何组件，也应该调用此宏，以确保用户没有错误地指定组件。添加 <code class="docutils literal notranslate"><span class="pre">NO_CHECK_REQUIRED_COMPONENTS_MACRO</span></code> 选项以防止在 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件中生成 <code class="docutils literal notranslate"><span class="pre">check_required_components()</span></code> 宏。</p>
+<p>另请参阅 <a class="reference internal" href="CMakePackageConfigHelpers.html#cmakepackageconfighelpers-examples"><span class="std std-ref">生成软件包文件示例</span></a>。</p>
+</section>
+<section id="generating-a-package-version-file">
+<h2>生成软件包版本文件<a class="headerlink" href="CMakePackageConfigHelpers.html#generating-a-package-version-file" title="链接到此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:write_basic_package_version_file">
+<span class="sig-name descname"><span class="pre">write_basic_package_version_file</span></span><a class="headerlink" href="CMakePackageConfigHelpers.html#command:write_basic_package_version_file" title="Link to this definition">¶</a></dt>
+<dd><p>为项目创建一个版本文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">write_basic_package_version_file(</span><span class="nv">&lt;filename&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;major.minor.patch&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="no">COMPATIBILITY</span><span class="w"> </span><span class="p">&lt;</span><span class="nb">AnyNewerVersion</span><span class="p">|</span><span class="nb">SameMajorVersion</span><span class="p">|</span><span class="nb">SameMinorVersion</span><span class="p">|</span><span class="nb">ExactVersion</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">ARCH_INDEPENDENT</span><span class="p">]</span><span class="w"> </span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>将文件写入 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>，用作 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code> 文件。有关此类文件的详细信息，请参阅 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的文档。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 是输出文件名，应位于构建树中。<code class="docutils literal notranslate"><span class="pre">&lt;major.minor.patch&gt;</span></code> 是要安装的项目的版本号。</p>
+<p>如果未给出 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code>，则使用 <span class="target" id="index-0-variable:PROJECT_VERSION"></span><a class="reference internal" href="../variable/PROJECT_VERSION.html#variable:PROJECT_VERSION" title="PROJECT_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">PROJECT_VERSION</span></code></a> 变量。如果未设置，则会报错。</p>
+<p><code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code> 模式 <code class="docutils literal notranslate"><span class="pre">AnyNewerVersion</span></code> 意味着如果安装的软件包版本比请求的版本更新或完全相同，则视为兼容。此模式应适用于完全向后兼容的软件包，甚至跨主版本也是如此。如果改为使用 <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code>，则行为与 <code class="docutils literal notranslate"><span class="pre">AnyNewerVersion</span></code> 不同，即主版本号必须与请求的版本相同，例如，如果请求 1.0，则版本 2.0 不被视为兼容。此模式应适用于保证在同一主版本内向后兼容的软件包。如果使用 <code class="docutils literal notranslate"><span class="pre">SameMinorVersion</span></code>，行为与 <code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code> 相同，但主版本号和次版本号都必须与请求的版本相同，例如，如果请求 0.1，则版本 0.2 不兼容。如果使用 <code class="docutils literal notranslate"><span class="pre">ExactVersion</span></code>，则只有当请求的版本号完全匹配其自身版本号（不考虑补丁版本）时，才认为软件包兼容。例如，软件包的 1.2.3 版本仅被认为与请求的 1.2.3 版本兼容。此模式适用于没有兼容性保证的软件包。如果您的项目有更复杂的版本匹配规则，您将需要编写自己的自定义 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code> 文件，而不是使用此宏。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.11 新增：</span><code class="docutils literal notranslate"><span class="pre">SameMinorVersion</span></code> 兼容性模式。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.14 新增：</span>如果给出了 <code class="docutils literal notranslate"><span class="pre">ARCH_INDEPENDENT</span></code>，则即使安装的软件包版本是为与请求的架构不同的架构构建的，它也将被视为兼容。否则，将执行架构检查，仅当架构完全匹配时才认为软件包兼容。例如，如果软件包是为 32 位架构构建的，则只有在 32 位架构上使用它时才被视为兼容，除非给出了 <code class="docutils literal notranslate"><span class="pre">ARCH_INDEPENDENT</span></code>，在这种情况下，软件包被视为在任何架构上都兼容。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">ARCH_INDEPENDENT</span></code> 旨在用于仅头文件库或没有二进制文件的类似软件包。</p>
+</div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.19 新增：</span>由 <code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code> 的 <code class="docutils literal notranslate"><span class="pre">AnyNewerVersion</span></code>、<code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SameMinorVersion</span></code> 参数生成的版本文件会处理版本范围（如果指定了版本范围，请参阅 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令了解详情）。<code class="docutils literal notranslate"><span class="pre">ExactVersion</span></code> 模式与版本范围不兼容，如果指定了版本范围，将显示作者警告。</p>
+</div>
+<p>在内部，此宏执行 <span class="target" id="index-3-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 来创建生成的版本文件。根据 <code class="docutils literal notranslate"><span class="pre">COMPATIBILITY</span></code>，使用相应的 <code class="docutils literal notranslate"><span class="pre">BasicConfigVersion-&lt;COMPATIBILITY&gt;.cmake.in</span></code> 文件。请注意，这些文件是 CMake 内部使用的，您不应自己对它们调用 <span class="target" id="index-4-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a>，但它们可以用作创建更复杂自定义 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code> 文件的起点。</p>
+</section>
+<section id="generating-an-apple-platform-selection-file">
+<h2>生成 Apple 平台选择文件<a class="headerlink" href="CMakePackageConfigHelpers.html#generating-an-apple-platform-selection-file" title="链接到此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:generate_apple_platform_selection_file">
+<span class="sig-name descname"><span class="pre">generate_apple_platform_selection_file</span></span><a class="headerlink" href="CMakePackageConfigHelpers.html#command:generate_apple_platform_selection_file" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>创建一个 Apple 平台选择文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">generate_apple_platform_selection_file(</span><span class="nv">&lt;filename&gt;</span>
+<span class="w">  </span><span class="no">INSTALL_DESTINATION</span><span class="w"> </span><span class="nv">&lt;path&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INSTALL_PREFIX</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">MACOS_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IOS_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IOS_SIMULATOR_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IOS_CATALYST_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">TVOS_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">TVOS_SIMULATOR_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">WATCHOS_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">WATCHOS_SIMULATOR_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">VISIONOS_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">VISIONOS_SIMULATOR_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">ERROR_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>编写一个包含 Apple 平台特定 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 文件的文件，例如用作 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code>。这可以与 <span class="target" id="index-0-command:export"></span><a class="reference internal" href="../command/export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">XCFRAMEWORK_LOCATION</span></code> 参数结合使用，以导出软件包，从而使为任何 Apple 平台构建的项目都可以使用它们。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_DESTINATION</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>调用者安装生成文件的路径，例如通过 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#files" title="install(files)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(FILES)</span></code></a>。该路径可以是相对于 <code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span></code> 的，也可以是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>调用者安装软件包的路径前缀。<code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 参数必须是一个绝对路径。如果没有传递此参数，则使用 <span class="target" id="index-2-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MACOS_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 macOS，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOS_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 iOS，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOS_SIMULATOR_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 iOS 模拟器，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOS_CATALYST_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>如果平台是 iOS Catalyst，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TVOS_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 tvOS，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TVOS_SIMULATOR_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 tvOS 模拟器，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WATCHOS_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 watchOS，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WATCHOS_SIMULATOR_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 watchOS 模拟器，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VISIONOS_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 visionOS，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VISIONOS_SIMULATOR_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果平台是 visionOS 模拟器，则包含的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><p>如果消耗项目是为不受支持的平台构建的，将 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 设置为错误消息。包含者可以使用此信息假装软件包未找到。如果未给出此选项，则默认行为是发出致命错误。</p>
+</dd>
+</dl>
+<p>如果未指定任何可选包含文件，且消耗项目是为相应平台构建的，生成的文件将认为该平台不受支持。其行为由 <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code> 选项确定。</p>
+</dd></dl>
+
+</section>
+<section id="generating-an-apple-architecture-selection-file">
+<h2>生成 Apple 架构选择文件<a class="headerlink" href="CMakePackageConfigHelpers.html#generating-an-apple-architecture-selection-file" title="链接到此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:generate_apple_architecture_selection_file">
+<span class="sig-name descname"><span class="pre">generate_apple_architecture_selection_file</span></span><a class="headerlink" href="CMakePackageConfigHelpers.html#command:generate_apple_architecture_selection_file" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>创建一个 Apple 架构选择文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">generate_apple_architecture_selection_file(</span><span class="nv">&lt;filename&gt;</span>
+<span class="w">  </span><span class="no">INSTALL_DESTINATION</span><span class="w"> </span><span class="nv">&lt;path&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">INSTALL_PREFIX</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SINGLE_ARCHITECTURES</span><span class="w"> </span><span class="nv">&lt;arch&gt;...</span>
+<span class="w">   </span><span class="no">SINGLE_ARCHITECTURE_INCLUDE_FILES</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">UNIVERSAL_ARCHITECTURES</span><span class="w"> </span><span class="nv">&lt;arch&gt;...</span>
+<span class="w">   </span><span class="no">UNIVERSAL_INCLUDE_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">ERROR_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>编写一个文件，根据 <span class="target" id="index-0-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 包含一个 Apple 架构特定的 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 文件，例如从 Apple 特定的 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件中包含。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_DESTINATION</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>调用者安装生成文件的路径，例如通过 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#files" title="install(files)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(FILES)</span></code></a>。该路径可以是相对于 <code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span></code> 的，也可以是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_PREFIX</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>调用者安装软件包的路径前缀。<code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 参数必须是一个绝对路径。如果没有传递此参数，则使用 <span class="target" id="index-3-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SINGLE_ARCHITECTURES</span> <span class="pre">&lt;arch&gt;...</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">SINGLE_ARCHITECTURE_INCLUDE_FILES</span></code> 条目提供的架构。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SINGLE_ARCHITECTURE_INCLUDE_FILES</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><p>架构特定文件。当 <span class="target" id="index-1-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 包含与 <code class="docutils literal notranslate"><span class="pre">SINGLE_ARCHITECTURES</span></code> 的相应条目匹配的单个架构时，将加载其中一个。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UNIVERSAL_ARCHITECTURES</span> <span class="pre">&lt;arch&gt;...</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">UNIVERSAL_INCLUDE_FILE</span></code> 提供的架构。</p>
+<p>该列表可能包含 <code class="docutils literal notranslate"><span class="pre">$(ARCHS_STANDARD)</span></code> 以支持使用 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器进行消耗，但架构也应始终单独列出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UNIVERSAL_INCLUDE_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>当 <span class="target" id="index-2-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 包含 <code class="docutils literal notranslate"><span class="pre">UNIVERSAL_ARCHITECTURES</span></code> 的（非严格）子集且与 <code class="docutils literal notranslate"><span class="pre">SINGLE_ARCHITECTURES</span></code> 中的任何一个都不匹配时加载的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><p>如果消耗项目是为不受支持的架构构建的，将 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 设置为错误消息。包含者可以使用此信息假装软件包未找到。如果未给出此选项，则默认行为是发出致命错误。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="example-generating-package-files">
+<span id="cmakepackageconfighelpers-examples"></span><h2>生成软件包文件示例<a class="headerlink" href="CMakePackageConfigHelpers.html#example-generating-package-files" title="链接到此标题">¶</a></h2>
+<p>同时使用 <span class="target" id="index-0-command:configure_package_config_file"></span><a class="reference internal" href="CMakePackageConfigHelpers.html#command:configure_package_config_file" title="configure_package_config_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_package_config_file()</span></code></a> 和 <span class="target" id="index-0-command:write_basic_package_version_file"></span><a class="reference internal" href="CMakePackageConfigHelpers.html#command:write_basic_package_version_file" title="write_basic_package_version_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">write_basic_package_version_file()</span></code></a> 命令的示例</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakePackageConfigHelpers.html#id1" title="此代码的永久链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">INCLUDE_INSTALL_DIR</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_INCLUDEDIR</span><span class="o">}</span><span class="na">/Foo</span>
+<span class="w">    </span><span class="no">CACHE</span><span class="w"> </span><span class="no">PATH</span><span class="w"> </span><span class="s">"Location of header files"</span><span class="w"> </span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">SYSCONFIG_INSTALL_DIR</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_SYSCONFDIR</span><span class="o">}</span><span class="na">/foo</span>
+<span class="w">    </span><span class="no">CACHE</span><span class="w"> </span><span class="no">PATH</span><span class="w"> </span><span class="s">"Location of configuration files"</span><span class="w"> </span><span class="nf">)</span>
+<span class="c">#...</span>
+<span class="nf">include(</span><span class="nb">CMakePackageConfigHelpers</span><span class="nf">)</span>
+<span class="nf">configure_package_config_file(</span><span class="nb">FooConfig.cmake.in</span>
+<span class="w">  </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/FooConfig.cmake</span>
+<span class="w">  </span><span class="no">INSTALL_DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/Foo</span>
+<span class="w">  </span><span class="no">PATH_VARS</span><span class="w"> </span><span class="no">INCLUDE_INSTALL_DIR</span><span class="w"> </span><span class="no">SYSCONFIG_INSTALL_DIR</span><span class="nf">)</span>
+<span class="nf">write_basic_package_version_file(</span>
+<span class="w">  </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/FooConfigVersion.cmake</span>
+<span class="w">  </span><span class="no">VERSION</span><span class="w"> </span><span class="m">1.2.3</span>
+<span class="w">  </span><span class="no">COMPATIBILITY</span><span class="w"> </span><span class="nb">SameMajorVersion</span><span class="w"> </span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">FILES</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/FooConfig.cmake</span>
+<span class="w">              </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/FooConfigVersion.cmake</span>
+<span class="w">        </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/Foo</span><span class="w"> </span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FooConfig.cmake.in</span></code></span><a class="headerlink" href="CMakePackageConfigHelpers.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">FOO_VERSION</span><span class="w"> </span><span class="nb">x.y.z</span><span class="nf">)</span>
+<span class="p">...</span>
+<span class="no">@PACKAGE_INIT</span><span class="err">@</span>
+<span class="p">...</span>
+<span class="nf">set_and_check(</span><span class="no">FOO_INCLUDE_DIR</span><span class="w"> </span><span class="s">"@PACKAGE_INCLUDE_INSTALL_DIR@"</span><span class="nf">)</span>
+<span class="nf">set_and_check(</span><span class="no">FOO_SYSCONFIG_DIR</span><span class="w"> </span><span class="s">"@PACKAGE_SYSCONFIG_INSTALL_DIR@"</span><span class="nf">)</span>
+
+<span class="nf">check_required_components(</span><span class="nb">Foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#">CMakePackageConfigHelpers</a><ul>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#generating-a-package-configuration-file">生成软件包配置文件</a></li>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#generating-a-package-version-file">生成软件包版本文件</a></li>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#generating-an-apple-platform-selection-file">生成 Apple 平台选择文件</a></li>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#generating-an-apple-architecture-selection-file">生成 Apple 架构选择文件</a></li>
+<li><a class="reference internal" href="CMakePackageConfigHelpers.html#example-generating-package-files">生成软件包文件示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMakeFindDependencyMacro.html" title="上一章">CMakeFindDependencyMacro</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMakePrintHelpers.html" title="下一章">CMakePrintHelpers</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CMakePackageConfigHelpers.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMakePrintHelpers.html" title="CMakePrintHelpers">下一页</a> |</li>
+        <li class="right">
+          <a href="CMakeFindDependencyMacro.html" title="CMakeFindDependencyMacro">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakePackageConfigHelpers.html">CMakePackageConfigHelpers</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

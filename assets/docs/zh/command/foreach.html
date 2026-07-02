@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>foreach — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="foreach.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="function" href="function.html" />
+    <link rel="prev" title="find_program" href="find_program.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="function.html" title="function" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="find_program.html" title="find_program" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="foreach.html">foreach</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="foreach">
+<span id="command:foreach"></span><h1>foreach<a class="headerlink" href="foreach.html#foreach" title="链接到此标题">¶</a></h1>
+<p>针对列表中的每个值评估一组命令。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nv">&lt;loop_var&gt;</span><span class="w"> </span><span class="nv">&lt;items&gt;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nv">&lt;commands&gt;</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;items&gt;</span></code> 是由分号或空格分隔的项目列表。<code class="docutils literal notranslate"><span class="pre">foreach</span></code> 和对应的 <code class="docutils literal notranslate"><span class="pre">endforeach</span></code> 之间的所有命令都会被记录下来，而不会立即执行。一旦评估到 <code class="docutils literal notranslate"><span class="pre">endforeach</span></code>，记录的命令列表就会针对 <code class="docutils literal notranslate"><span class="pre">&lt;items&gt;</span></code> 中的每个项目执行一次。在每次迭代开始时，变量 <code class="docutils literal notranslate"><span class="pre">&lt;loop_var&gt;</span></code> 将被设置为当前项目的值。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;loop_var&gt;</span></code> 的作用域仅限于循环内部。有关详细信息，请参阅策略 <span class="target" id="index-0-policy:CMP0124"></span><a class="reference internal" href="../policy/CMP0124.html#policy:CMP0124" title="CMP0124"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0124</span></code></a>。</p>
+<p>命令 <span class="target" id="index-0-command:break"></span><a class="reference internal" href="break.html#command:break" title="break"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">break()</span></code></a> 和 <span class="target" id="index-0-command:continue"></span><a class="reference internal" href="continue.html#command:continue" title="continue"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">continue()</span></code></a> 提供了跳出常规控制流的方法。</p>
+<p>出于兼容性考虑，<span class="target" id="index-0-command:endforeach"></span><a class="reference internal" href="endforeach.html#command:endforeach" title="endforeach"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endforeach()</span></code></a> 命令允许使用可选的 <code class="docutils literal notranslate"><span class="pre">&lt;loop_var&gt;</span></code> 参数。如果使用该参数，它必须与起始 <code class="docutils literal notranslate"><span class="pre">foreach</span></code> 命令的参数完全一致。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nv">&lt;loop_var&gt;</span><span class="w"> </span><span class="no">RANGE</span><span class="w"> </span><span class="nv">&lt;stop&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在这种变体中，<code class="docutils literal notranslate"><span class="pre">foreach</span></code> 遍历从 0、1 到（包含）非负整数 <code class="docutils literal notranslate"><span class="pre">&lt;stop&gt;</span></code> 的数字。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nv">&lt;loop_var&gt;</span><span class="w"> </span><span class="no">RANGE</span><span class="w"> </span><span class="nv">&lt;start&gt;</span><span class="w"> </span><span class="nv">&lt;stop&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;step&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在这种变体中，<code class="docutils literal notranslate"><span class="pre">foreach</span></code> 以 <code class="docutils literal notranslate"><span class="pre">&lt;step&gt;</span></code> 为步长，遍历从 <code class="docutils literal notranslate"><span class="pre">&lt;start&gt;</span></code> 到最多 <code class="docutils literal notranslate"><span class="pre">&lt;stop&gt;</span></code> 的数字。如果未指定 <code class="docutils literal notranslate"><span class="pre">&lt;step&gt;</span></code>，则步长为 1。三个参数 <code class="docutils literal notranslate"><span class="pre">&lt;start&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;stop&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;step&gt;</span></code> 都必须是非负整数，且 <code class="docutils literal notranslate"><span class="pre">&lt;stop&gt;</span></code> 不能小于 <code class="docutils literal notranslate"><span class="pre">&lt;start&gt;</span></code>；否则，您将进入未记录行为的危险地带，这些行为在未来的版本中可能会发生变化。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nv">&lt;loop_var&gt;</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="p">[</span><span class="no">LISTS</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;lists&gt;</span><span class="p">]]</span><span class="w"> </span><span class="p">[</span><span class="no">ITEMS</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;items&gt;</span><span class="p">]]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在这种变体中，<code class="docutils literal notranslate"><span class="pre">&lt;lists&gt;</span></code> 是由空格或分号分隔的列表变量列表。<code class="docutils literal notranslate"><span class="pre">foreach</span></code> 命令会遍历每个给定列表中的每个项目。<code class="docutils literal notranslate"><span class="pre">ITEMS</span></code> 关键字后面的 <code class="docutils literal notranslate"><span class="pre">&lt;items&gt;</span></code> 将按照 <code class="docutils literal notranslate"><span class="pre">foreach</span></code> 命令的第一种变体进行处理。形式 <code class="docutils literal notranslate"><span class="pre">LISTS</span> <span class="pre">A</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ITEMS</span> <span class="pre">${A}</span></code> 是等效的。如果没有提供 <code class="docutils literal notranslate"><span class="pre">&lt;lists&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;items&gt;</span></code>，循环体将永远不会执行（即它被处理为空）。</p>
+<p>以下示例展示了如何处理 <code class="docutils literal notranslate"><span class="pre">LISTS</span></code> 选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">A</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="m">1</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">B</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">C</span><span class="w"> </span><span class="s">"4 5"</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">D</span><span class="w"> </span><span class="m">6</span><span class="p">;</span><span class="m">7</span><span class="w"> </span><span class="m">8</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">E</span><span class="w"> </span><span class="s">""</span><span class="nf">)</span>
+<span class="nf">foreach(</span><span class="no">X</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="no">A</span><span class="w"> </span><span class="no">B</span><span class="w"> </span><span class="no">C</span><span class="w"> </span><span class="no">D</span><span class="w"> </span><span class="no">E</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"X=${X}"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<p>产生</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- X=0
+-- X=1
+-- X=2
+-- X=3
+-- X=4 5
+-- X=6
+-- X=7
+-- X=8
+</pre></div>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nv">&lt;loop_var&gt;...</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">ZIP_LISTS</span><span class="w"> </span><span class="nv">&lt;lists&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>在这种变体中，<code class="docutils literal notranslate"><span class="pre">&lt;lists&gt;</span></code> 是由空格或分号分隔的列表变量列表。<code class="docutils literal notranslate"><span class="pre">foreach</span></code> 命令同时遍历每个列表，并设置迭代变量如下：</p>
+<ul class="simple">
+<li><p>如果只给定一个 <code class="docutils literal notranslate"><span class="pre">loop_var</span></code>，则它会将一系列 <code class="docutils literal notranslate"><span class="pre">loop_var_N</span></code> 变量设置为来自相应列表的当前项目；</p></li>
+<li><p>如果传递了多个变量名，它会将每个变量设置为来自相应列表的当前项目。迭代变量的数量必须与列表变量的数量相匹配。</p></li>
+</ul>
+<p>如果没有提供 <code class="docutils literal notranslate"><span class="pre">&lt;lists&gt;</span></code>，循环体将永远不会执行（即它被处理为空）。</p>
+<p>以下示例展示了如何处理 <code class="docutils literal notranslate"><span class="pre">ZIP_LISTS</span></code> 选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="nb">English</span><span class="w"> </span><span class="nb">one</span><span class="w"> </span><span class="nb">two</span><span class="w"> </span><span class="nb">three</span><span class="w"> </span><span class="nb">four</span><span class="nf">)</span>
+<span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="nb">Bahasa</span><span class="w"> </span><span class="nb">satu</span><span class="w"> </span><span class="nb">dua</span><span class="w"> </span><span class="nb">tiga</span><span class="nf">)</span>
+
+<span class="nf">foreach(</span><span class="nb">num</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">ZIP_LISTS</span><span class="w"> </span><span class="nb">English</span><span class="w"> </span><span class="nb">Bahasa</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"num_0=${num_0}, num_1=${num_1}"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+
+<span class="nf">foreach(</span><span class="nb">en</span><span class="w"> </span><span class="nb">ba</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">ZIP_LISTS</span><span class="w"> </span><span class="nb">English</span><span class="w"> </span><span class="nb">Bahasa</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"en=${en}, ba=${ba}"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<p>产生</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- num_0=one, num_1=satu
+-- num_0=two, num_1=dua
+-- num_0=three, num_1=tiga
+-- num_0=four, num_1=
+-- en=one, ba=satu
+-- en=two, ba=dua
+-- en=three, ba=tiga
+-- en=four, ba=
+</pre></div>
+</div>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="foreach.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-1-command:break"></span><a class="reference internal" href="break.html#command:break" title="break"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">break()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:continue"></span><a class="reference internal" href="continue.html#command:continue" title="continue"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">continue()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:endforeach"></span><a class="reference internal" href="endforeach.html#command:endforeach" title="endforeach"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endforeach()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:while"></span><a class="reference internal" href="while.html#command:while" title="while"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">while()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="foreach.html#">foreach</a><ul>
+<li><a class="reference internal" href="foreach.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="find_program.html" title="上一章">find_program</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="function.html" title="下一章">function</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/foreach.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="function.html" title="function">下一页</a> |</li>
+        <li class="right">
+          <a href="find_program.html" title="find_program">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="foreach.html">foreach</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

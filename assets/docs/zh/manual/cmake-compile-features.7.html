@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-compile-features(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-compile-features.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-configure-log(7)" href="cmake-configure-log.7.html" />
+    <link rel="prev" title="write_file" href="../command/write_file.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-configure-log.7.html" title="cmake-configure-log(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../command/write_file.html" title="write_file" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-compile-features.7.html">cmake-compile-features(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-compile-features(7)"></span><section id="cmake-compile-features-7">
+<h1><a class="toc-backref" href="cmake-compile-features.7.html#id3" role="doc-backlink">cmake-compile-features(7)</a><a class="headerlink" href="cmake-compile-features.7.html#cmake-compile-features-7" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#cmake-compile-features-7" id="id3">cmake-compile-features(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#introduction" id="id4">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#compile-feature-requirements" id="id5">编译特性需求</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#requiring-language-standards" id="id6">语言标准需求</a></p></li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#availability-of-compiler-extensions" id="id7">编译器扩展的可用性</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#optional-compile-features" id="id8">可选的编译特性</a></p></li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#conditional-compilation-options" id="id9">条件编译选项</a></p></li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#supported-compilers" id="id10">支持的编译器</a></p></li>
+<li><p><a class="reference internal" href="cmake-compile-features.7.html#language-standard-flags" id="id11">语言标准标志</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-compile-features.7.html#id4" role="doc-backlink">简介</a><a class="headerlink" href="cmake-compile-features.7.html#introduction" title="链接到此标题">¶</a></h2>
+<p>项目源代码可能依赖于，或取决于编译器是否支持某些特性。这会产生三种使用场景：<a class="reference internal" href="cmake-compile-features.7.html#compile-feature-requirements">编译特性需求</a>、<a class="reference internal" href="cmake-compile-features.7.html#optional-compile-features">可选编译特性</a> 以及 <a class="reference internal" href="cmake-compile-features.7.html#conditional-compilation-options">条件编译选项</a>。</p>
+<p>虽然特性通常是在编程语言标准中指定的，但 CMake 提供了一个基于细粒度特性处理的初级用户界面，而不是基于引入该特性的语言标准。</p>
+<p><span class="target" id="index-0-prop_gbl:CMAKE_C_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_C_KNOWN_FEATURES.html#prop_gbl:CMAKE_C_KNOWN_FEATURES" title="CMAKE_C_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">CMAKE_C_KNOWN_FEATURES</span></code></a>、<span class="target" id="index-0-prop_gbl:CMAKE_CUDA_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_CUDA_KNOWN_FEATURES.html#prop_gbl:CMAKE_CUDA_KNOWN_FEATURES" title="CMAKE_CUDA_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">CMAKE_CUDA_KNOWN_FEATURES</span></code></a> 以及 <span class="target" id="index-0-prop_gbl:CMAKE_CXX_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html#prop_gbl:CMAKE_CXX_KNOWN_FEATURES" title="CMAKE_CXX_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">CMAKE_CXX_KNOWN_FEATURES</span></code></a> 全局属性包含了 CMake 所知的所有特性，无论编译器是否支持。而 <span class="target" id="index-0-variable:CMAKE_C_COMPILE_FEATURES"></span><a class="reference internal" href="../variable/CMAKE_C_COMPILE_FEATURES.html#variable:CMAKE_C_COMPILE_FEATURES" title="CMAKE_C_COMPILE_FEATURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_C_COMPILE_FEATURES</span></code></a>、<span class="target" id="index-0-variable:CMAKE_CUDA_COMPILE_FEATURES"></span><a class="reference internal" href="../variable/CMAKE_CUDA_COMPILE_FEATURES.html#variable:CMAKE_CUDA_COMPILE_FEATURES" title="CMAKE_CUDA_COMPILE_FEATURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_COMPILE_FEATURES</span></code></a> 以及 <span class="target" id="index-0-variable:CMAKE_CXX_COMPILE_FEATURES"></span><a class="reference internal" href="../variable/CMAKE_CXX_COMPILE_FEATURES.html#variable:CMAKE_CXX_COMPILE_FEATURES" title="CMAKE_CXX_COMPILE_FEATURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_COMPILE_FEATURES</span></code></a> 变量则包含了 CMake 已知编译器所支持的所有特性，且与使用它们所需的语言标准或编译标志无关。</p>
+<p>CMake 已知特性的命名大多遵循与 Clang 特性测试宏相同的约定。但有一些例外，例如 CMake 使用 <code class="docutils literal notranslate"><span class="pre">cxx_final</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cxx_override</span></code>，而不是 Clang 使用的单一 <code class="docutils literal notranslate"><span class="pre">cxx_override_control</span></code>。</p>
+<p>请注意，<code class="docutils literal notranslate"><span class="pre">OBJC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OBJCXX</span></code> 语言没有单独的编译特性属性或变量。它们分别基于 <code class="docutils literal notranslate"><span class="pre">C</span></code> 或 <code class="docutils literal notranslate"><span class="pre">C++</span></code>，因此应使用其对应基础语言的属性和变量。</p>
+</section>
+<section id="compile-feature-requirements">
+<h2><a class="toc-backref" href="cmake-compile-features.7.html#id5" role="doc-backlink">编译特性需求</a><a class="headerlink" href="cmake-compile-features.7.html#compile-feature-requirements" title="链接到此标题">¶</a></h2>
+<p>可以通过 <span class="target" id="index-0-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 命令指定编译特性需求。例如，如果一个目标必须在编译器支持 <span class="target" id="index-1-prop_gbl:CMAKE_CXX_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html#prop_gbl:CMAKE_CXX_KNOWN_FEATURES" title="CMAKE_CXX_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">cxx_constexpr</span></code></a> 特性的情况下进行编译：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">mylib</span><span class="w"> </span><span class="nb">requires_constexpr.cpp</span><span class="nf">)</span>
+<span class="nf">target_compile_features(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_constexpr</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在处理 <code class="docutils literal notranslate"><span class="pre">cxx_constexpr</span></code> 特性的需求时，<span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 将确保所使用的 C++ 编译器支持该特性，并将必要的标志（例如 <code class="docutils literal notranslate"><span class="pre">-std=gnu++11</span></code>）添加到 <code class="docutils literal notranslate"><span class="pre">mylib</span></code> 目标的 C++ 文件编译命令行中。如果编译器不支持该特性，则会发出 <code class="docutils literal notranslate"><span class="pre">FATAL_ERROR</span></code>。</p>
+<p>确切的编译标志和语言标准并非此用例用户界面的组成部分。CMake 会根据为每个目标指定的特性来计算应使用的适当编译标志。</p>
+<p>即使编译器无需标志即可支持特定特性，也会添加此类编译标志。例如，GNU 编译器即使在使用了 <code class="docutils literal notranslate"><span class="pre">-std=gnu++98</span></code> 时也支持可变参数模板（会产生警告）。如果将 <code class="docutils literal notranslate"><span class="pre">cxx_variadic_templates</span></code> 指定为需求，CMake 仍会添加 <code class="docutils literal notranslate"><span class="pre">-std=gnu++11</span></code> 标志。</p>
+<p>在上述示例中，<code class="docutils literal notranslate"><span class="pre">mylib</span></code> 在自身构建时需要 <code class="docutils literal notranslate"><span class="pre">cxx_constexpr</span></code>，但 <code class="docutils literal notranslate"><span class="pre">mylib</span></code> 的消费者并不一定需要使用支持 <code class="docutils literal notranslate"><span class="pre">cxx_constexpr</span></code> 的编译器。如果 <code class="docutils literal notranslate"><span class="pre">mylib</span></code> 的接口确实需要 <code class="docutils literal notranslate"><span class="pre">cxx_constexpr</span></code> 特性（或任何其他已知特性），可以通过 <span class="target" id="index-1-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 签名来指定。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">mylib</span><span class="w"> </span><span class="nb">requires_constexpr.cpp</span><span class="nf">)</span>
+<span class="c"># cxx_constexpr is a usage-requirement</span>
+<span class="nf">target_compile_features(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">cxx_constexpr</span><span class="nf">)</span>
+
+<span class="c"># main.cpp will be compiled with -std=gnu++11 on GNU for cxx_constexpr.</span>
+<span class="nf">add_executable(</span><span class="nb">myexe</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="nb">mylib</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>特性需求会通过链接实现进行传递性评估。关于构建属性和使用需求的传递性行为，请参见 <span class="target" id="index-0-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="cmake-buildsystem.7.html#manual:cmake-buildsystem(7)" title="cmake-buildsystem(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-buildsystem(7)</span></code></a>。</p>
+<section id="requiring-language-standards">
+<span id="id1"></span><h3><a class="toc-backref" href="cmake-compile-features.7.html#id6" role="doc-backlink">语言标准需求</a><a class="headerlink" href="cmake-compile-features.7.html#requiring-language-standards" title="链接到此标题">¶</a></h3>
+<p>在项目中，如果使用了大量来自特定语言标准（例如 C++ 11）的通用特性，可以指定一个元特性（例如 <code class="docutils literal notranslate"><span class="pre">cxx_std_11</span></code>），这要求使用至少支持该标准的编译器模式，甚至可以是更高的标准。这比单独指定所有特性更简单，但不能保证存在任何特定特性。对不支持特性的使用检查将推迟到编译时进行。</p>
+<p>例如，如果项目头文件中广泛使用了 C++ 11 特性，那么客户端必须使用不低于 C++ 11 的编译器模式。这可以通过以下代码请求：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_compile_features(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">cxx_std_11</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在此示例中，CMake 将确保编译器以至少 C++ 11（或 C++ 14、C++ 17……）的模式运行，必要时添加如 <code class="docutils literal notranslate"><span class="pre">-std=gnu++11</span></code> 的标志。这既适用于 <code class="docutils literal notranslate"><span class="pre">mylib</span></code> 内部的源文件，也适用于任何依赖项（可能包含来自 <code class="docutils literal notranslate"><span class="pre">mylib</span></code> 的头文件）。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果编译器的默认标准级别至少等于所请求功能的标准级别，CMake 可能会省略 <code class="docutils literal notranslate"><span class="pre">-std=</span></code> 标志。如果编译器的默认扩展模式与 <span class="target" id="index-0-prop_tgt:<LANG>_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/LANG_EXTENSIONS.html#prop_tgt:<LANG>_EXTENSIONS" title="<LANG>_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_EXTENSIONS</span></code></a> 目标属性不匹配，或者 <span class="target" id="index-0-prop_tgt:<LANG>_STANDARD"></span><a class="reference internal" href="../prop_tgt/LANG_STANDARD.html#prop_tgt:<LANG>_STANDARD" title="<LANG>_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD</span></code></a> 目标属性已设置，则仍可能添加该标志。</p>
+</div>
+</section>
+<section id="availability-of-compiler-extensions">
+<h3><a class="toc-backref" href="cmake-compile-features.7.html#id7" role="doc-backlink">编译器扩展的可用性</a><a class="headerlink" href="cmake-compile-features.7.html#availability-of-compiler-extensions" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-1-prop_tgt:<LANG>_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/LANG_EXTENSIONS.html#prop_tgt:<LANG>_EXTENSIONS" title="<LANG>_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_EXTENSIONS</span></code></a> 目标属性默认采用编译器的默认设置（参见 <span class="target" id="index-0-variable:CMAKE_<LANG>_EXTENSIONS_DEFAULT"></span><a class="reference internal" href="../variable/CMAKE_LANG_EXTENSIONS_DEFAULT.html#variable:CMAKE_<LANG>_EXTENSIONS_DEFAULT" title="CMAKE_<LANG>_EXTENSIONS_DEFAULT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_EXTENSIONS_DEFAULT</span></code></a>）。注意，由于大多数编译器默认启用扩展，这可能会暴露出用户代码或第三方依赖库头文件中的可移植性错误。</p>
+<p><span class="target" id="index-2-prop_tgt:<LANG>_EXTENSIONS"></span><a class="reference internal" href="../prop_tgt/LANG_EXTENSIONS.html#prop_tgt:<LANG>_EXTENSIONS" title="<LANG>_EXTENSIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">&lt;LANG&gt;_EXTENSIONS</span></code></a> 曾经默认为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。请参见 <span class="target" id="index-0-policy:CMP0128"></span><a class="reference internal" href="../policy/CMP0128.html#policy:CMP0128" title="CMP0128"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0128</span></code></a>。</p>
+</section>
+</section>
+<section id="optional-compile-features">
+<h2><a class="toc-backref" href="cmake-compile-features.7.html#id8" role="doc-backlink">可选的编译特性</a><a class="headerlink" href="cmake-compile-features.7.html#optional-compile-features" title="链接到此标题">¶</a></h2>
+<p>如果不希望创建硬性要求，可以优先使用编译特性（如果可用）。这可以通过<em>不</em>使用 <span class="target" id="index-2-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 指定特性，而是通过项目代码中的预处理器条件来检查编译器能力来实现。</p>
+<p>在此用例中，项目可能希望在编译器支持的情况下建立特定的语言标准，并使用预处理器条件来检测实际可用的特性。语言标准可以通过 <a class="reference internal" href="cmake-compile-features.7.html#requiring-language-standards">语言标准需求</a> 使用带有 <code class="docutils literal notranslate"><span class="pre">cxx_std_11</span></code> 等元特性的 <span class="target" id="index-3-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 来建立，或者通过设置 <span class="target" id="index-0-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_STANDARD</span></code></a> 目标属性或 <span class="target" id="index-0-variable:CMAKE_CXX_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_CXX_STANDARD.html#variable:CMAKE_CXX_STANDARD" title="CMAKE_CXX_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code></a> 变量来建立。</p>
+<p>另请参阅策略 <span class="target" id="index-0-policy:CMP0120"></span><a class="reference internal" href="../policy/CMP0120.html#policy:CMP0120" title="CMP0120"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0120</span></code></a> 以及关于弃用的 <span class="target" id="index-0-module:WriteCompilerDetectionHeader"></span><a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#module:WriteCompilerDetectionHeader" title="WriteCompilerDetectionHeader"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">WriteCompilerDetectionHeader</span></code></a> 模块的<a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#wcdh-example-usage"><span class="std std-ref">用法示例</span></a>文档。</p>
+</section>
+<section id="conditional-compilation-options">
+<h2><a class="toc-backref" href="cmake-compile-features.7.html#id9" role="doc-backlink">条件编译选项</a><a class="headerlink" href="cmake-compile-features.7.html#conditional-compilation-options" title="链接到此标题">¶</a></h2>
+<p>库可能会根据所请求的编译特性提供完全不同的头文件。</p>
+<p>例如，<code class="docutils literal notranslate"><span class="pre">with_variadics/interface.h</span></code> 中的头文件可能包含：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">I</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">...</span><span class="w"> </span><span class="n">Is</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Interface</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">I</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Interface</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">accumulate</span><span class="p">()</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">I</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">I</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">...</span><span class="w"> </span><span class="n">Is</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Interface</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">accumulate</span><span class="p">()</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Interface</span><span class="o">&lt;</span><span class="n">Is</span><span class="p">...</span><span class="o">&gt;::</span><span class="n">accumulate</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>而 <code class="docutils literal notranslate"><span class="pre">no_variadics/interface.h</span></code> 中的头文件可能包含：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">I1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">I2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">I3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">I4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Interface</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">accumulate</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">I1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">I2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">I3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">I4</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>编写一个包含类似内容的抽象 <code class="docutils literal notranslate"><span class="pre">interface.h</span></code> 头文件可能是可行的：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifdef HAVE_CXX_VARIADIC_TEMPLATES</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"with_variadics/interface.h"</span>
+<span class="cp">#else</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"no_variadics/interface.h"</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+<p>然而，如果有大量需要抽象的文件，这可能变得难以维护。真正需要的是根据编译器能力使用可选的包含目录。</p>
+<p>CMake 提供了一个 <code class="docutils literal notranslate"><span class="pre">COMPILE_FEATURES</span></code> <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 来实现此类条件。这可以与诸如 <span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="../command/target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 和 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 等构建属性命令结合使用，以设置相应的 <span class="target" id="index-1-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="cmake-buildsystem.7.html#manual:cmake-buildsystem(7)" title="cmake-buildsystem(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">构建系统</span></code></a> 属性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">foo</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">with_variadics</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/with_variadics</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">no_variadics</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/no_variadics</span><span class="nf">)</span>
+<span class="nf">target_include_directories(</span><span class="nb">foo</span>
+<span class="w">  </span><span class="no">INTERFACE</span>
+<span class="w">    </span><span class="s">"$&lt;$&lt;COMPILE_FEATURES:cxx_variadic_templates&gt;:${with_variadics}&gt;"</span>
+<span class="w">    </span><span class="s">"$&lt;$&lt;NOT:$&lt;COMPILE_FEATURES:cxx_variadic_templates&gt;&gt;:${no_variadics}&gt;"</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>消费端代码只需像往常一样链接到 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 目标，并使用特性对应的包含目录：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">consumer_with</span><span class="w"> </span><span class="nb">consumer_with.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">consumer_with</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">consumer_with</span><span class="w"> </span><span class="no">CXX_STANDARD</span><span class="w"> </span><span class="m">11</span><span class="nf">)</span>
+
+<span class="nf">add_executable(</span><span class="nb">consumer_no</span><span class="w"> </span><span class="nb">consumer_no.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">consumer_no</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="supported-compilers">
+<h2><a class="toc-backref" href="cmake-compile-features.7.html#id10" role="doc-backlink">支持的编译器</a><a class="headerlink" href="cmake-compile-features.7.html#supported-compilers" title="链接到此标题">¶</a></h2>
+<p>截至各自指定的版本，CMake 目前能够识别以下 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_<LANG>_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a> 所支持的 <span class="target" id="index-1-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C++ 标准</span></code></a> 和 <span class="target" id="index-2-prop_gbl:CMAKE_CXX_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html#prop_gbl:CMAKE_CXX_KNOWN_FEATURES" title="CMAKE_CXX_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">编译特性</span></code></a>：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AppleClang</span></code>: Xcode 4.4+ 版本的 Apple Clang。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Clang</span></code>: Clang 编译器 2.9+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GNU</span></code>: GNU 编译器 4.4+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSVC</span></code>: Microsoft Visual Studio 2010+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SunPro</span></code>: Oracle SolarisStudio 12.4+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Intel</span></code>: Intel 编译器 12.1+ 版本。</p></li>
+</ul>
+<p>截至各自指定的版本，CMake 目前能够识别以下 <span class="target" id="index-1-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_LANG_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a> 所支持的 <span class="target" id="index-0-prop_tgt:C_STANDARD"></span><a class="reference internal" href="../prop_tgt/C_STANDARD.html#prop_tgt:C_STANDARD" title="C_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C 标准</span></code></a> 和 <span class="target" id="index-1-prop_gbl:CMAKE_C_KNOWN_FEATURES"></span><a class="reference internal" href="../prop_gbl/CMAKE_C_KNOWN_FEATURES.html#prop_gbl:CMAKE_C_KNOWN_FEATURES" title="CMAKE_C_KNOWN_FEATURES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">编译特性</span></code></a>：</p>
+<ul class="simple">
+<li><p>上述列出的所有支持 C++ 的编译器及其对应版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GNU</span></code>: GNU 编译器 3.4+ 版本。</p></li>
+</ul>
+<p>截至各自指定的版本，CMake 目前能够识别以下 <span class="target" id="index-2-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_LANG_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a> 所支持的 <span class="target" id="index-2-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C++ 标准</span></code></a> 及其关联的元特性（例如 <code class="docutils literal notranslate"><span class="pre">cxx_std_11</span></code>）：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Cray</span></code>: Cray Compiler Environment 8.1+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Fujitsu</span></code>: Fujitsu HPC 编译器 4.0+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PGI</span></code>: PGI 12.10+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVHPC</span></code>: NVIDIA HPC 编译器 11.0+ 版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TI</span></code>: Texas Instruments 编译器。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TIClang</span></code>: 基于 Texas Instruments Clang 的编译器。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XL</span></code>: IBM XL 10.1+ 版本。</p></li>
+</ul>
+<p>截至各自指定的版本，CMake 目前能够识别以下 <span class="target" id="index-3-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_LANG_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a> 所支持的 <span class="target" id="index-1-prop_tgt:C_STANDARD"></span><a class="reference internal" href="../prop_tgt/C_STANDARD.html#prop_tgt:C_STANDARD" title="C_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">C 标准</span></code></a> 及其关联的元特性（例如 <code class="docutils literal notranslate"><span class="pre">c_std_99</span></code>）：</p>
+<ul class="simple">
+<li><p>上述列出的所有仅支持 C++ 元特性的编译器及其对应版本。</p></li>
+</ul>
+<p>截至各自指定的版本，CMake 目前能够识别以下 <span class="target" id="index-4-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_LANG_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a> 所支持的 <span class="target" id="index-0-prop_tgt:CUDA_STANDARD"></span><a class="reference internal" href="../prop_tgt/CUDA_STANDARD.html#prop_tgt:CUDA_STANDARD" title="CUDA_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CUDA 标准</span></code></a> 及其关联的元特性（例如 <code class="docutils literal notranslate"><span class="pre">cuda_std_11</span></code>）：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Clang</span></code>: Clang 编译器 5.0+。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span></code>: NVIDIA nvcc 编译器 7.5+。</p></li>
+</ul>
+</section>
+<section id="language-standard-flags">
+<span id="id2"></span><h2><a class="toc-backref" href="cmake-compile-features.7.html#id11" role="doc-backlink">语言标准标志</a><a class="headerlink" href="cmake-compile-features.7.html#language-standard-flags" title="链接到此标题">¶</a></h2>
+<p>为了满足 <span class="target" id="index-4-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 命令或 <span class="target" id="index-0-variable:CMAKE_<LANG>_STANDARD"></span><a class="reference internal" href="../variable/CMAKE_LANG_STANDARD.html#variable:CMAKE_<LANG>_STANDARD" title="CMAKE_<LANG>_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_STANDARD</span></code></a> 变量指定的需求，CMake 可能会向编译器传递语言标准标志，例如 <code class="docutils literal notranslate"><span class="pre">-std=c++11</span></code>。</p>
+<p>对于 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>，CMake 无法精确控制语言标准标志在编译器命令行中的放置位置。对于 <a class="reference internal" href="cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a>、<a class="reference internal" href="cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 以及 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a>，CMake 将语言标准标志放置在来自 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 的语言级标志之后。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在 3.26 版本中更改：</span>语言标准标志被放置在由其他抽象（如 <span class="target" id="index-0-command:target_compile_options"></span><a class="reference internal" href="../command/target_compile_options.html#command:target_compile_options" title="target_compile_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_options()</span></code></a> 命令）指定的标志之前。在 CMake 3.26 之前，语言标准标志是放置在它们之后的。</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-compile-features.7.html#">cmake-compile-features(7)</a><ul>
+<li><a class="reference internal" href="cmake-compile-features.7.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#compile-feature-requirements">编译特性需求</a><ul>
+<li><a class="reference internal" href="cmake-compile-features.7.html#requiring-language-standards">语言标准需求</a></li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#availability-of-compiler-extensions">编译器扩展的可用性</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#optional-compile-features">可选的编译特性</a></li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#conditional-compilation-options">条件编译选项</a></li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#supported-compilers">支持的编译器</a></li>
+<li><a class="reference internal" href="cmake-compile-features.7.html#language-standard-flags">语言标准标志</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../command/write_file.html" title="上一章">write_file</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-configure-log.7.html" title="下一章">cmake-configure-log(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-compile-features.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-configure-log.7.html" title="cmake-configure-log(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="../command/write_file.html" title="write_file">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-compile-features.7.html">cmake-compile-features(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

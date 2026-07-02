@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckSourceCompiles — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckSourceCompiles.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckSourceRuns" href="CheckSourceRuns.html" />
+    <link rel="prev" title="CheckPrototypeDefinition" href="CheckPrototypeDefinition.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckSourceRuns.html" title="CheckSourceRuns" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckPrototypeDefinition.html" title="CheckPrototypeDefinition" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckSourceCompiles.html">CheckSourceCompiles</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checksourcecompiles">
+<span id="module:CheckSourceCompiles"></span><h1>CheckSourceCompiles<a class="headerlink" href="CheckSourceCompiles.html#checksourcecompiles" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>该模块提供了一个用于检查给定语言的源代码能否被构建的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckSourceCompiles.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_source_compiles">
+<span class="sig-name descname"><span class="pre">check_source_compiles</span></span><a class="headerlink" href="CheckSourceCompiles.html#command:check_source_compiles" title="Link to this definition">¶</a></dt>
+<dd><p>一次性检查给定源代码是否能为特定语言进行构建</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_source_compiles(</span>
+<span class="w">  </span><span class="nv">&lt;lang&gt;</span>
+<span class="w">  </span><span class="nv">&lt;code&gt;</span>
+<span class="w">  </span><span class="nv">&lt;variable&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">FAIL_REGEX</span><span class="w"> </span><span class="nv">&lt;regexes&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SRC_EXT</span><span class="w"> </span><span class="nv">&lt;extension&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令检查一次由 <code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code> 提供的源代码是否可以为代码语言 <code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;</span></code> 进行编译（并链接成可执行文件）。检查结果存储在由 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 指定的内部缓存变量中。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;</span></code></dt><dd><p>要检查的源代码语言。支持的语言包括：<code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA</span></code>、<code class="docutils literal notranslate"><span class="pre">Fortran</span></code>、<code class="docutils literal notranslate"><span class="pre">HIP</span></code>、<code class="docutils literal notranslate"><span class="pre">ISPC</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJC</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJCXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Swift</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.21 新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">HIP</span></code> 语言。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.26 新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">Swift</span></code> 语言。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code></dt><dd><p>要检查的源代码。这必须是一个完整的程序，如同写在包含主体块的文件中一样。源代码中使用的所有符号都应在其对应的头文件中按常规声明。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>内部缓存变量的变量名，用于存储检查结果，成功为布尔真，失败为布尔假。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FAIL_REGEX</span> <span class="pre">&lt;regexes&gt;...</span></code></dt><dd><p>如果提供了一个或多个正则表达式模式，则通过检查编译器输出中是否有任何内容与任何指定的正则表达式匹配来确定失败。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SRC_EXT</span> <span class="pre">&lt;extension&gt;</span></code></dt><dd><p>默认情况下，用于检查的内部测试源文件将被赋予与所请求语言匹配的文件扩展名（例如：C 为 <code class="docutils literal notranslate"><span class="pre">.c</span></code>，C++ 为 <code class="docutils literal notranslate"><span class="pre">.cxx</span></code>，Fortran 为 <code class="docutils literal notranslate"><span class="pre">.F90</span></code> 等）。此选项可用于通过 <code class="docutils literal notranslate"><span class="pre">.&lt;extension&gt;</span></code> 覆盖默认扩展名。</p>
+</dd>
+</dl>
+<p class="rubric">影响检查的变量</p>
+<p>在调用此命令之前，可以设置以下变量来修改检查的运行方式</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_FLAGS</span></code></dt><dd><p>一个空格分隔的字符串，包含要传递给编译器的附加标志。<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a> 在此无效。<span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 及其相关的配置特定变量 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 的内容会自动预置到编译器命令中，位于此变量的内容之前。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_DEFINITIONS</span></code></dt><dd><p>分号分隔的编译器定义列表，每个定义的形式为 <code class="docutils literal notranslate"><span class="pre">-DFOO</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-DFOO=bar</span></code>。还将自动添加对检查命令的 result variable 参数指定的名称的定义。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_INCLUDES</span></code></dt><dd><p>要传递给编译器的头文件搜索路径的分号分隔列表。这些将是唯一使用的头文件搜索路径；将忽略 <span class="target" id="index-0-prop_dir:INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_dir/INCLUDE_DIRECTORIES.html#prop_dir:INCLUDE_DIRECTORIES" title="INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code></a> 目录属性的内容。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_OPTIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>要添加到链接命令的选项的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_DIRECTORIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>要传递给链接器的库搜索路径的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>如果此变量评估为布尔真值，则与检查关联的所有状态消息都将被抑制。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_TARGET_TYPE"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_TARGET_TYPE.html#variable:CMAKE_TRY_COMPILE_TARGET_TYPE" title="CMAKE_TRY_COMPILE_TARGET_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_TARGET_TYPE</span></code></a></dt><dd><p>内部使用 `<span class="target" id="index-3-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 命令来执行检查，此变量控制它创建的目标类型。如果此变量设置为 `<code class="docutils literal notranslate"><span class="pre">EXECUTABLE</span></code>`（默认值），则检查会将测试源代码编译并链接成可执行程序。如果设置为 `<code class="docutils literal notranslate"><span class="pre">STATIC_LIBRARY</span></code>`，则测试源代码将被编译但不会被链接。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckSourceCompiles.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-basic-usage">
+<h3>示例：基本用法<a class="headerlink" href="CheckSourceCompiles.html#example-basic-usage" title="此标题的永久链接">¶</a></h3>
+<p>以下示例演示了如何使用此模块检查 C++ 编译器是否支持特定的语言特性。在本例中，检查验证了编译器是否支持 <code class="docutils literal notranslate"><span class="pre">C++11</span></code> lambda 表达式。结果存储在内部缓存变量 <code class="docutils literal notranslate"><span class="pre">HAVE_CXX11_LAMBDAS</span></code> 中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+
+<span class="nf">check_source_compiles(</span><span class="no">CXX</span><span class="w"> </span><span class="s s-Multiline">[[</span>
+<span class="s s-Multiline">  int main()</span>
+<span class="s s-Multiline">  {</span>
+<span class="s s-Multiline">    auto lambda = []() { return 42; };</span>
+<span class="s s-Multiline">    return lambda();</span>
+<span class="s s-Multiline">  }</span>
+<span class="s s-Multiline">]]</span><span class="w"> </span><span class="no">HAVE_CXX11_LAMBDAS</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-checking-code-with-bracket-argument">
+<h3>示例：使用括号参数检查代码<a class="headerlink" href="CheckSourceCompiles.html#example-checking-code-with-bracket-argument" title="链接到此标题">¶</a></h3>
+<p>以下示例展示了如何检查 C 编译器是否支持 <code class="docutils literal notranslate"><span class="pre">noreturn</span></code> 属性。代码使用了 <a class="reference internal" href="../manual/cmake-language.7.html#bracket-argument"><span class="std std-ref">括号参数 (Bracket Argument)</span></a>，以便更轻松地处理嵌入的引号。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+
+<span class="nf">check_source_compiles(</span><span class="no">C</span><span class="w"> </span><span class="s s-Multiline">[[</span>
+<span class="s s-Multiline">  #if !__has_c_attribute(noreturn)</span>
+<span class="s s-Multiline">  #  error "No noreturn attribute"</span>
+<span class="s s-Multiline">  #endif</span>
+<span class="s s-Multiline">  int main(void) { return 0; }</span>
+<span class="s s-Multiline">]]</span><span class="w"> </span><span class="no">HAVE_NORETURN</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-performing-a-check-without-linking">
+<h3>示例：执行不带链接的检查<a class="headerlink" href="CheckSourceCompiles.html#example-performing-a-check-without-linking" title="链接到此标题">¶</a></h3>
+<p>在以下示例中，此模块用于对 Fortran 源代码进行仅编译检查，以验证编译器是否支持 <code class="docutils literal notranslate"><span class="pre">pure</span></code> 过程属性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+
+<span class="nf">block()</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">CMAKE_TRY_COMPILE_TARGET_TYPE</span><span class="w"> </span><span class="s">"STATIC_LIBRARY"</span><span class="nf">)</span>
+
+<span class="w">  </span><span class="nf">check_source_compiles(</span>
+<span class="w">    </span><span class="nb">Fortran</span>
+<span class="w">    </span><span class="s">"pure subroutine foo()</span>
+<span class="s">    end subroutine"</span>
+<span class="w">    </span><span class="no">HAVE_PURE</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endblock()</span>
+</pre></div>
+</div>
+</section>
+<section id="example-isolated-check">
+<h3>示例：独立检查<a class="headerlink" href="CheckSourceCompiles.html#example-isolated-check" title="此标题的链接">¶</a></h3>
+<p>在以下示例中，此模块与 <span class="target" id="index-0-module:CMakePushCheckState"></span><a class="reference internal" href="CMakePushCheckState.html#module:CMakePushCheckState" title="CMakePushCheckState"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePushCheckState</span></code></a> 模块结合使用，以便在检查 PostgreSQL 的 <code class="docutils literal notranslate"><span class="pre">PGVerbosity</span></code> 枚举是否包含 <code class="docutils literal notranslate"><span class="pre">PQERRORS_SQLSTATE</span></code>（PostgreSQL 12 版本起可用）时修改所需的库。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">CMakePushCheckState</span><span class="nf">)</span>
+
+<span class="nf">find_package(</span><span class="nb">PostgreSQL</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">PostgreSQL</span><span class="o">::</span><span class="nb">PostgreSQL</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_push_check_state(</span><span class="no">RESET</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">CMAKE_REQUIRED_LIBRARIES</span><span class="w"> </span><span class="nb">PostgreSQL</span><span class="o">::</span><span class="nb">PostgreSQL</span><span class="nf">)</span>
+
+<span class="w">    </span><span class="nf">check_source_compiles(</span><span class="no">C</span><span class="w"> </span><span class="s s-Multiline">[[</span>
+<span class="s s-Multiline">      #include &lt;libpq-fe.h&gt;</span>
+<span class="s s-Multiline">      int main(void)</span>
+<span class="s s-Multiline">      {</span>
+<span class="s s-Multiline">        PGVerbosity e = PQERRORS_SQLSTATE;</span>
+<span class="s s-Multiline">        (void)e;</span>
+<span class="s s-Multiline">        return 0;</span>
+<span class="s s-Multiline">      }</span>
+<span class="s s-Multiline">    ]]</span><span class="w"> </span><span class="no">HAVE_PQERRORS_SQLSTATE</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_pop_check_state()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="CheckSourceCompiles.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-module:CheckSourceRuns"></span><a class="reference internal" href="CheckSourceRuns.html#module:CheckSourceRuns" title="CheckSourceRuns"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceRuns</span></code></a> 模块用于检查源代码不仅能被构建，还能被运行。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckSourceCompiles.html#">CheckSourceCompiles</a><ul>
+<li><a class="reference internal" href="CheckSourceCompiles.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckSourceCompiles.html#examples">示例</a><ul>
+<li><a class="reference internal" href="CheckSourceCompiles.html#example-basic-usage">示例：基本用法</a></li>
+<li><a class="reference internal" href="CheckSourceCompiles.html#example-checking-code-with-bracket-argument">示例：使用括号参数检查代码</a></li>
+<li><a class="reference internal" href="CheckSourceCompiles.html#example-performing-a-check-without-linking">示例：执行不带链接的检查</a></li>
+<li><a class="reference internal" href="CheckSourceCompiles.html#example-isolated-check">示例：独立检查</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="CheckSourceCompiles.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckPrototypeDefinition.html" title="上一章">CheckPrototypeDefinition</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckSourceRuns.html" title="下一章">CheckSourceRuns</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckSourceCompiles.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckSourceRuns.html" title="CheckSourceRuns">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckPrototypeDefinition.html" title="CheckPrototypeDefinition">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckSourceCompiles.html">CheckSourceCompiles</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

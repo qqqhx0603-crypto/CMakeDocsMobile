@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0199 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0199.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0198" href="CMP0198.html" />
+    <link rel="prev" title="CMP0200" href="CMP0200.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0198.html" title="CMP0198" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0200.html" title="CMP0200" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0199.html">CMP0199</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0199">
+<span id="policy:CMP0199"></span><h1>CMP0199<a class="headerlink" href="CMP0199.html#cmp0199" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p><span class="target" id="index-0-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG:cfgs&gt;</span></code></a> 不匹配未被选中的映射配置。</p>
+<p>从历史上看，当 <span class="target" id="index-1-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG:cfgs&gt;</span></code></a> 生成器表达式出现在导入目标的属性中时，如果 <code class="docutils literal notranslate"><span class="pre">cfgs</span></code> 中的任何一个匹配以下 *任意* 一项，它就会匹配（即求值为 <code class="docutils literal notranslate"><span class="pre">1</span></code>）：</p>
+<ol class="arabic simple">
+<li><p>所消费的导入目标被选中的配置。</p></li>
+<li><p>消费目标的配置。</p></li>
+<li><p>所消费的导入目标的 <span class="target" id="index-0-prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/MAP_IMPORTED_CONFIG_CONFIG.html#prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>" title="MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a> 中包含的 *任意* 配置（其中 <code class="docutils literal notranslate"><span class="pre">&lt;CONFIG&gt;</span></code> 是消费目标的配置），*无论这些配置对于该导入目标是否有效*。</p></li>
+</ol>
+<p>这可能导致本应互斥的表达式被同时求值。如果编译定义的取值旨在由配置决定，这尤其成问题，因为缺乏互斥性可能导致重新定义。</p>
+<p>CMake 4.2 及以上版本倾向于 *仅* 考虑消费目标的配置以及（适用时）导入目标被选中的配置；即上述列表中的 (2) 和 (1)。遗憾的是，由于用户同时依赖这两者，该策略无法完全防止多个唯一的 <code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:cfg&gt;</span></code> 表达式同时匹配。</p>
+<p>此策略为依赖历史行为的项目提供了兼容性。此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是保留上述历史行为。 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是仅考虑消费目标和被消费目标的配置。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此策略仅适用于作为非通用包规范（Common Package Specification）包导入的导入目标的使用需求（usage requirements）的一部分而进行求值的生成器表达式。</p>
+<p>对于非导入目标，历史行为和当前行为均仅考虑消费目标的配置。（非导入目标的选中配置始终是当前的构建配置，它必然与消费目标的配置相同。）</p>
+<p>对于从通用包规范包导入的目标，无论策略设置如何，*仅*考虑被消费的导入目标的配置。</p>
+</div>
+<p>此策略引入于 CMake 4.2 版本。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，CMake 会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CMP0199.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>考虑以下导入库：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">test1</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="nf">set_target_properties(</span><span class="nb">test1</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="s">"DEBUG"</span>
+<span class="w">  </span><span class="no">INTERFACE_COMPILE_DEFINITIONS</span>
+<span class="w">    </span><span class="s">"$&lt;$&lt;CONFIG:debug&gt;:DEBUG&gt;;$&lt;$&lt;CONFIG:release&gt;:RELEASE&gt;"</span>
+<span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">test2</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="nf">set_target_properties(</span><span class="nb">test2</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="s">"TEST"</span>
+<span class="w">  </span><span class="no">INTERFACE_COMPILE_DEFINITIONS</span>
+<span class="w">    </span><span class="s">"$&lt;$&lt;CONFIG:debug&gt;:DEBUG&gt;;$&lt;$&lt;CONFIG:example&gt;:EXAMPLE&gt;;$&lt;$&lt;CONFIG:test&gt;:TEST&gt;"</span>
+<span class="w">  </span><span class="no">MAP_IMPORTED_CONFIG_RELEASE</span><span class="w"> </span><span class="s">"DEBUG;EXAMPLE;TEST"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>假设消费项目以 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 配置构建。 <code class="docutils literal notranslate"><span class="pre">test1</span></code> 的消费者无论策略设置如何，都会看到 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 同时被定义；<code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:debug&gt;</span></code> 求值为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，因为 <code class="docutils literal notranslate"><span class="pre">test1</span></code> 的选中配置是 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>；<code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:release&gt;</span></code> 求值为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，因为消费者的配置是 <code class="docutils literal notranslate"><span class="pre">Release</span></code>（请记住配置匹配是不区分大小写的）。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 策略下，<code class="docutils literal notranslate"><span class="pre">test2</span></code> 的消费者会看到 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>、<code class="docutils literal notranslate"><span class="pre">EXAMPLE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TEST</span></code> 同时被定义；<code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:debug&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:example&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG:test&gt;</span></code> 全部求值为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，因为所有这些配置都出现在 <code class="docutils literal notranslate"><span class="pre">MAP_IMPORTED_CONFIG_RELEASE</span></code> 中。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 策略下，<code class="docutils literal notranslate"><span class="pre">test2</span></code> 的消费者将仅看到 <code class="docutils literal notranslate"><span class="pre">TEST</span></code> 被定义。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMP0199.html#">CMP0199</a><ul>
+<li><a class="reference internal" href="CMP0199.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0200.html" title="上一章">CMP0200</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0198.html" title="下一章">CMP0198</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0199.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0198.html" title="CMP0198">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0200.html" title="CMP0200">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0199.html">CMP0199</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

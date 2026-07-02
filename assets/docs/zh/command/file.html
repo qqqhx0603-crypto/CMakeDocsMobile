@@ -1,0 +1,1103 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>file — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="file.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="find_file" href="find_file.html" />
+    <link rel="prev" title="execute_process" href="execute_process.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="find_file.html" title="find_file" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="execute_process.html" title="execute_process" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="file.html">file</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="file">
+<span id="command:file"></span><h1>file<a class="headerlink" href="file.html#file" title="链接到此标题">¶</a></h1>
+<p>文件操作命令。</p>
+<p>此命令专门用于需要访问文件系统的文件和路径操作。</p>
+<p>对于仅涉及语法层面的其他路径操作，请参阅 <span class="target" id="index-0-command:cmake_path"></span><a class="reference internal" href="cmake_path.html#command:cmake_path" title="cmake_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_path()</span></code></a> 命令。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>子命令 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="file.html#relative-path" title="file(relative_path)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(RELATIVE_PATH)</span></code></a>、<span class="target" id="index-1-command:file"></span><a class="reference internal" href="file.html#to-cmake-path" title="file(to_cmake_path)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(TO_CMAKE_PATH)</span></code></a> 和 <span class="target" id="index-2-command:file"></span><a class="reference internal" href="file.html#to-native-path" title="file(to_native_path)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(TO_NATIVE_PATH)</span></code></a> 已分别被子命令 <span class="target" id="index-1-command:cmake_path"></span><a class="reference internal" href="cmake_path.html#relative-path" title="cmake_path(relative_path)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_path(RELATIVE_PATH)</span></code></a>、<span class="target" id="index-2-command:cmake_path"></span><a class="reference internal" href="cmake_path.html#convert-to-cmake-path-list" title="cmake_path(convert ... to_cmake_path_list)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_path(CONVERT</span> <span class="pre">...</span> <span class="pre">TO_CMAKE_PATH_LIST)</span></code></a> 和 <span class="target" id="index-3-command:cmake_path"></span><a class="reference internal" href="cmake_path.html#convert-to-native-path-list" title="cmake_path(convert ... to_native_path_list)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_path(CONVERT</span> <span class="pre">...</span> <span class="pre">TO_NATIVE_PATH_LIST)</span></code></a> 取代。</p>
+</div>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="file.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="file.html#reading">Reading</a>
+  file(<a class="reference internal" href="file.html#read">READ</a> &lt;filename&gt; &lt;out-var&gt; [...])
+  file(<a class="reference internal" href="file.html#strings">STRINGS</a> &lt;filename&gt; &lt;out-var&gt; [...])
+  file(<a class="reference internal" href="file.html#hash">&lt;HASH&gt;</a> &lt;filename&gt; &lt;out-var&gt;)
+  file(<a class="reference internal" href="file.html#timestamp">TIMESTAMP</a> &lt;filename&gt; &lt;out-var&gt; [...])
+
+<a class="reference internal" href="file.html#writing">Writing</a>
+  file({<a class="reference internal" href="file.html#write">WRITE</a> | <a class="reference internal" href="file.html#append">APPEND</a>} &lt;filename&gt; &lt;content&gt;...)
+  file({<a class="reference internal" href="file.html#touch">TOUCH</a> | <a class="reference internal" href="file.html#touch-nocreate">TOUCH_NOCREATE</a>} &lt;file&gt;...)
+  file(<a class="reference internal" href="file.html#generate">GENERATE</a> OUTPUT &lt;output-file&gt; [...])
+  file(<a class="reference internal" href="file.html#configure">CONFIGURE</a> OUTPUT &lt;output-file&gt; CONTENT &lt;content&gt; [...])
+
+<a class="reference internal" href="file.html#filesystem">Filesystem</a>
+  file({<a class="reference internal" href="file.html#glob">GLOB</a> | <a class="reference internal" href="file.html#glob-recurse">GLOB_RECURSE</a>} &lt;out-var&gt; [...] &lt;globbing-expr&gt;...)
+  file(<a class="reference internal" href="file.html#make-directory">MAKE_DIRECTORY</a> &lt;directories&gt;... [...])
+  file({<a class="reference internal" href="file.html#remove">REMOVE</a> | <a class="reference internal" href="file.html#remove-recurse">REMOVE_RECURSE</a> } &lt;files&gt;...)
+  file(<a class="reference internal" href="file.html#rename">RENAME</a> &lt;oldname&gt; &lt;newname&gt; [...])
+  file(<a class="reference internal" href="file.html#copy-file">COPY_FILE</a> &lt;oldname&gt; &lt;newname&gt; [...])
+  file({<a class="reference internal" href="file.html#copy">COPY</a> | <a class="reference internal" href="file.html#install">INSTALL</a>} &lt;file&gt;... DESTINATION &lt;dir&gt; [...])
+  file(<a class="reference internal" href="file.html#size">SIZE</a> &lt;filename&gt; &lt;out-var&gt;)
+  file(<a class="reference internal" href="file.html#read-symlink">READ_SYMLINK</a> &lt;linkname&gt; &lt;out-var&gt;)
+  file(<a class="reference internal" href="file.html#create-link">CREATE_LINK</a> &lt;original&gt; &lt;linkname&gt; [...])
+  file(<a class="reference internal" href="file.html#chmod">CHMOD</a> &lt;files&gt;... &lt;directories&gt;... PERMISSIONS &lt;permissions&gt;... [...])
+  file(<a class="reference internal" href="file.html#chmod-recurse">CHMOD_RECURSE</a> &lt;files&gt;... &lt;directories&gt;... PERMISSIONS &lt;permissions&gt;... [...])
+
+<a class="reference internal" href="file.html#path-conversion">Path Conversion</a>
+  file(<a class="reference internal" href="file.html#real-path">REAL_PATH</a> &lt;path&gt; &lt;out-var&gt; [BASE_DIRECTORY &lt;dir&gt;] [EXPAND_TILDE])
+  file(<a class="reference internal" href="file.html#relative-path">RELATIVE_PATH</a> &lt;out-var&gt; &lt;directory&gt; &lt;file&gt;)
+  file({<a class="reference internal" href="file.html#to-cmake-path">TO_CMAKE_PATH</a> | <a class="reference internal" href="file.html#to-native-path">TO_NATIVE_PATH</a>} &lt;path&gt; &lt;out-var&gt;)
+
+<a class="reference internal" href="file.html#transfer">Transfer</a>
+  file(<a class="reference internal" href="file.html#download">DOWNLOAD</a> &lt;url&gt; [&lt;file&gt;] [...])
+  file(<a class="reference internal" href="file.html#upload">UPLOAD</a> &lt;file&gt; &lt;url&gt; [...])
+
+<a class="reference internal" href="file.html#locking">Locking</a>
+  file(<a class="reference internal" href="file.html#lock">LOCK</a> &lt;path&gt; [...])
+
+<a class="reference internal" href="file.html#archiving">Archiving</a>
+  file(<a class="reference internal" href="file.html#archive-create">ARCHIVE_CREATE</a> OUTPUT &lt;archive&gt; PATHS &lt;paths&gt;... [...])
+  file(<a class="reference internal" href="file.html#archive-extract">ARCHIVE_EXTRACT</a> INPUT &lt;archive&gt; [...])
+
+<a class="reference internal" href="file.html#handling-runtime-binaries">Handling Runtime Binaries</a>
+  file(<a class="reference internal" href="file.html#get-runtime-dependencies">GET_RUNTIME_DEPENDENCIES</a> [...])</pre>
+</section>
+<section id="reading">
+<h2>读取<a class="headerlink" href="file.html#reading" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="read">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">READ</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">OFFSET</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;offset&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">LIMIT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;max-in&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">HEX</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#read" title="Link to this definition">¶</a></dt>
+<dd><p>从名为 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 的文件中读取内容并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。可选择从给定的 <code class="docutils literal notranslate"><span class="pre">&lt;offset&gt;</span></code> 开始，最多读取 <code class="docutils literal notranslate"><span class="pre">&lt;max-in&gt;</span></code> 字节。使用 <code class="docutils literal notranslate"><span class="pre">HEX</span></code> 选项会将数据转换为十六进制表示形式（适用于二进制数据）。如果指定了 <code class="docutils literal notranslate"><span class="pre">HEX</span></code> 选项，输出中的字母（<code class="docutils literal notranslate"><span class="pre">a</span></code> 到 <code class="docutils literal notranslate"><span class="pre">f</span></code>）将以小写形式表示。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="strings">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">STRINGS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;options&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#strings" title="Link to this definition">¶</a></dt>
+<dd><p>从 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 中解析 ASCII 字符串列表并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。文件中的二进制数据会被忽略。回车符（<code class="docutils literal notranslate"><span class="pre">\r</span></code>, CR）会被忽略。可选参数如下：</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">LENGTH_MAXIMUM</span> <span class="pre">&lt;max-len&gt;</span></code></dt><dd><p>仅考虑长度不超过给定长度的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LENGTH_MINIMUM</span> <span class="pre">&lt;min-len&gt;</span></code></dt><dd><p>仅考虑长度不少于给定长度的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIMIT_COUNT</span> <span class="pre">&lt;max-num&gt;</span></code></dt><dd><p>限制提取的不同字符串的数量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIMIT_INPUT</span> <span class="pre">&lt;max-in&gt;</span></code></dt><dd><p>限制从文件中读取的输入字节数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIMIT_OUTPUT</span> <span class="pre">&lt;max-out&gt;</span></code></dt><dd><p>限制存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中的总字节数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NEWLINE_CONSUME</span></code></dt><dd><p>将换行符（<code class="docutils literal notranslate"><span class="pre">\n</span></code>, LF）视为字符串内容的一部分，而不是作为字符串的终止符。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_HEX_CONVERSION</span></code></dt><dd><p>除非指定此选项，否则 Intel Hex 和 Motorola S-record 文件在读取时会自动转换为二进制。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REGEX</span> <span class="pre">&lt;regex&gt;</span></code></dt><dd><p>仅考虑符合给定正则表达式的字符串，详情请参见 <a class="reference internal" href="string.html#regex-specification"><span class="std std-ref">string(REGEX)</span></a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.29 版本变更: </span>文件中最后一次匹配的捕获组存储在 <span class="target" id="index-0-variable:CMAKE_MATCH_<n>"></span><a class="reference internal" href="../variable/CMAKE_MATCH_n.html#variable:CMAKE_MATCH_<n>" title="CMAKE_MATCH_<n>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MATCH_&lt;n&gt;</span></code></a> 中，类似于 <span class="target" id="index-0-command:string"></span><a class="reference internal" href="string.html#regex-matchall" title="string(regex matchall)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(REGEX</span> <span class="pre">MATCHALL)</span></code></a>。请参阅策略 <span class="target" id="index-0-policy:CMP0159"></span><a class="reference internal" href="../policy/CMP0159.html#policy:CMP0159" title="CMP0159"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0159</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENCODING</span> <span class="pre">&lt;encoding-type&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>考虑给定编码的字符串。目前支持的编码包括：<code class="docutils literal notranslate"><span class="pre">UTF-8</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-16LE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-16BE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-32LE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-32BE</span></code>。如果未提供 <code class="docutils literal notranslate"><span class="pre">ENCODING</span></code> 选项且文件具有字节顺序标记（BOM），则 <code class="docutils literal notranslate"><span class="pre">ENCODING</span></code> 选项默认会遵循该字节顺序标记。</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="versionadded">
+<p><span class="versionmodified added">3.2 版本新增: </span>增加了 <code class="docutils literal notranslate"><span class="pre">UTF-16LE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-16BE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-32LE</span></code>, <code class="docutils literal notranslate"><span class="pre">UTF-32BE</span></code> 编码。</p>
+</div>
+<p>例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">STRINGS</span><span class="w"> </span><span class="nb">myfile.txt</span><span class="w"> </span><span class="nb">myfile</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将输入文件中的每一行作为一个项目存储在变量 <code class="docutils literal notranslate"><span class="pre">myfile</span></code> 的列表中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="hash">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="nv"><span class="pre">&lt;HASH&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#hash" title="Link to this definition">¶</a></dt>
+<dd><p>计算 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 内容的加密哈希，并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。支持的 <code class="docutils literal notranslate"><span class="pre">&lt;HASH&gt;</span></code> 算法名称与 <span class="target" id="index-1-command:string"></span><a class="reference internal" href="string.html#hash" title="string(<hash>)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(&lt;HASH&gt;)</span></code></a> 命令列出的算法相同。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="timestamp">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">TIMESTAMP</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;format&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">UTC</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>计算 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 修改时间的字符串表示形式并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。如果命令无法获取时间戳，变量将设置为空字符串（""）。</p>
+<p>关于 <code class="docutils literal notranslate"><span class="pre">&lt;format&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">UTC</span></code> 选项的说明，请参阅 <span class="target" id="index-2-command:string"></span><a class="reference internal" href="string.html#timestamp" title="string(timestamp)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(TIMESTAMP)</span></code></a> 命令。</p>
+</dd></dl>
+
+</section>
+<section id="writing">
+<h2>写入<a class="headerlink" href="file.html#writing" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="write">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">WRITE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;content&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#write" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="append">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">APPEND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;content&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#append" title="Link to this definition">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;content&gt;</span></code> 写入名为 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 的文件。如果文件不存在，则会创建它。如果文件已存在，<code class="docutils literal notranslate"><span class="pre">WRITE</span></code> 模式会覆盖它，而 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 模式会将内容追加到末尾。如果 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 指定的路径中包含不存在的目录，这些目录也会被创建。</p>
+<p>如果文件是构建输入，请使用 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令，以便仅在文件内容发生变化时更新文件。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="touch">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">TOUCH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#touch" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="touch-nocreate">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">TOUCH_NOCREATE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#touch-nocreate" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>如果文件尚不存在，则创建一个无内容的文件。如果文件已存在，其访问时间和/或修改时间将更新为执行该函数调用的时间。</p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">TOUCH_NOCREATE</span></code> 仅在文件存在时更新其时间，而不创建文件。如果文件不存在，则静默忽略。</p>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">TOUCH</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TOUCH_NOCREATE</span></code>，现有文件的内容不会被修改。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.30 版本变更: </span><code class="docutils literal notranslate"><span class="pre">&lt;files&gt;</span></code> 可以是空列表。CMake 3.29 及更早版本要求至少提供一个文件。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="generate">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">GENERATE</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#generate" title="Link to this definition">¶</a></dt>
+<dd><p>为当前 <span class="target" id="index-0-manual:cmake-generators(7)"></span><a class="reference internal" href="../manual/cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">生成器</span></code></a>支持的每个构建配置生成一个输出文件。评估输入内容中的 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>以产生输出内容。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">GENERATE</span><span class="w"> </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nv">&lt;output-file&gt;</span>
+<span class="w">     </span><span class="p">&lt;</span><span class="no">INPUT</span><span class="w"> </span><span class="nv">&lt;input-file&gt;</span><span class="p">|</span><span class="no">CONTENT</span><span class="w"> </span><span class="nv">&lt;content&gt;</span><span class="p">&gt;</span>
+<span class="w">     </span><span class="p">[</span><span class="no">CONDITION</span><span class="w"> </span><span class="nv">&lt;expression&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">NO_SOURCE_PERMISSIONS</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">USE_SOURCE_PERMISSIONS</span><span class="w"> </span><span class="p">|</span>
+<span class="w">      </span><span class="no">FILE_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permissions&gt;...</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">NEWLINE_STYLE</span><span class="w"> </span><span class="p">[</span><span class="no">UNIX</span><span class="p">|</span><span class="no">DOS</span><span class="p">|</span><span class="no">WIN32</span><span class="p">|</span><span class="no">LF</span><span class="p">|</span><span class="no">CRLF</span><span class="p">]]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CONDITION</span> <span class="pre">&lt;condition&gt;</span></code></dt><dd><p>仅在条件为真时为特定配置生成输出文件。条件在评估生成器表达式后必须为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONTENT</span> <span class="pre">&lt;content&gt;</span></code></dt><dd><p>直接使用明确提供的内容作为输入。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INPUT</span> <span class="pre">&lt;input-file&gt;</span></code></dt><dd><p>使用给定文件的内容作为输入。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.10 版本变更: </span>相对路径会相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a> 的值进行处理。请参阅策略 <span class="target" id="index-0-policy:CMP0070"></span><a class="reference internal" href="../policy/CMP0070.html#policy:CMP0070" title="CMP0070"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0070</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT</span> <span class="pre">&lt;output-file&gt;</span></code></dt><dd><p>指定要生成的输出文件名。使用生成器表达式（如 <span class="target" id="index-0-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code></a>）来指定配置相关的输出文件名。多个配置仅在生成的输出内容完全相同时才可生成相同的文件。否则，<code class="docutils literal notranslate"><span class="pre">&lt;output-file&gt;</span></code> 必须评估为每个配置唯一的名称。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.10 版本变更: </span>相对路径（在评估生成器表达式后）会相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 的值进行处理。请参阅策略 <span class="target" id="index-1-policy:CMP0070"></span><a class="reference internal" href="../policy/CMP0070.html#policy:CMP0070" title="CMP0070"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0070</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>指定在评估需要目标信息的生成器表达式（例如 <span class="target" id="index-0-genex:COMPILE_FEATURES"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMPILE_FEATURES" title="COMPILE_FEATURES"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_FEATURES:...&gt;</span></code></a>, <span class="target" id="index-0-genex:TARGET_PROPERTY"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:TARGET_PROPERTY" title="TARGET_PROPERTY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;TARGET_PROPERTY:prop&gt;</span></code></a>）时要使用的目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>生成的文件的权限默认为标准值 644 (-rw-r--r--)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">INPUT</span></code> 文件的权限转移到生成的文件中。如果不提供三个与权限相关的关键字（<code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code>, <code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code>），这将是默认行为。<code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code> 关键字主要用于让预期的行为在调用处更清晰。在没有 <code class="docutils literal notranslate"><span class="pre">INPUT</span></code> 的情况下指定此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span> <span class="pre">&lt;permissions&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>为生成的文件使用指定的权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NEWLINE_STYLE</span> <span class="pre">&lt;style&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>为生成的文件指定换行符样式。对于 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 换行符，指定 <code class="docutils literal notranslate"><span class="pre">UNIX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LF</span></code>；对于 <code class="docutils literal notranslate"><span class="pre">\r\n</span></code> 换行符，指定 <code class="docutils literal notranslate"><span class="pre">DOS</span></code>、<code class="docutils literal notranslate"><span class="pre">WIN32</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CRLF</span></code>。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>必须提供且仅能提供一个 <code class="docutils literal notranslate"><span class="pre">CONTENT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INPUT</span></code> 选项。特定的 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 文件最多只能在一次 <code class="docutils literal notranslate"><span class="pre">file(GENERATE)</span></code> 调用中被命名。生成的文件仅在内容更改时才会在随后的 cmake 运行中被修改并更新时间戳。</p>
+<p>另请注意，<code class="docutils literal notranslate"><span class="pre">file(GENERATE)</span></code> 直到生成阶段才会创建输出文件。当 <code class="docutils literal notranslate"><span class="pre">file(GENERATE)</span></code> 命令返回时，输出文件尚未被写入，它仅在处理完项目的所有 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件后才会写入。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="configure">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">CONFIGURE</span></span><span class="w"> </span><span class="no"><span class="pre">OUTPUT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output-file&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">CONTENT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;content&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ESCAPE_QUOTES</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">@ONLY</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">NEWLINE_STYLE</span></span><span class="nbsp"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">UNIX</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">DOS</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">WIN32</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">LF</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">CRLF</span></span><span class="p"><span class="pre">]]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#configure" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">CONTENT</span></code> 给定的输入生成输出文件，并替换其中引用的 <code class="docutils literal notranslate"><span class="pre">@VAR@</span></code> 或 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 形式的变量值。替换规则与 <span class="target" id="index-1-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令的行为相同。为了与 <span class="target" id="index-2-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 的行为保持一致，<code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CONTENT</span></code> 均不支持生成器表达式，并且仅在内容更改或文件之前不存在时，输出文件才会被修改并更新时间戳。</p>
+<p>参数为</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT</span> <span class="pre">&lt;output-file&gt;</span></code></dt><dd><p>指定要生成的输出文件名。相对路径会相对于 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 的值进行处理。<code class="docutils literal notranslate"><span class="pre">&lt;output-file&gt;</span></code> 不支持生成器表达式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONTENT</span> <span class="pre">&lt;content&gt;</span></code></dt><dd><p>使用明确作为输入提供的内容。<code class="docutils literal notranslate"><span class="pre">&lt;content&gt;</span></code> 不支持生成器表达式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ESCAPE_QUOTES</span></code></dt><dd><p>使用反斜杠转义任何被替换的引号（C 语言风格）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">@ONLY</span></code></dt><dd><p>限制变量替换仅针对 <code class="docutils literal notranslate"><span class="pre">@VAR@</span></code> 形式的引用。这对于配置使用 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 语法的脚本很有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NEWLINE_STYLE</span> <span class="pre">&lt;style&gt;</span></code></dt><dd><p>为输出文件指定换行符样式。对于 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 换行符，指定 <code class="docutils literal notranslate"><span class="pre">UNIX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LF</span></code>；对于 <code class="docutils literal notranslate"><span class="pre">\r\n</span></code> 换行符，指定 <code class="docutils literal notranslate"><span class="pre">DOS</span></code>、<code class="docutils literal notranslate"><span class="pre">WIN32</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CRLF</span></code>。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="filesystem">
+<h2>文件系统<a class="headerlink" href="file.html#filesystem" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="glob">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">GLOB</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">LIST_DIRECTORIES</span></span><span class="nbsp"> </span><span class="nb"><span class="pre">true</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">false</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RELATIVE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;path&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">CONFIGURE_DEPENDS</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;globbing-expressions&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#glob" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="glob-recurse">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">GLOB_RECURSE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FOLLOW_SYMLINKS</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">LIST_DIRECTORIES</span></span><span class="nbsp"> </span><span class="nb"><span class="pre">true</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">false</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RELATIVE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;path&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">CONFIGURE_DEPENDS</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;globbing-expressions&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#glob-recurse" title="Link to this definition">¶</a></dt>
+<dd><p>生成符合 <code class="docutils literal notranslate"><span class="pre">&lt;globbing-expressions&gt;</span></code> 的文件列表，并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。Glob 表达式类似于正则表达式，但要简单得多。如果指定了 <code class="docutils literal notranslate"><span class="pre">RELATIVE</span></code> 标志，结果将以相对于给定路径的路径返回。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.6 版本变更: </span>结果将按字典顺序排列。</p>
+</div>
+<p>在 Windows 和 macOS 上，即使底层文件系统区分大小写，全局匹配也是不区分大小写的（文件名和 glob 表达式在匹配前都会转换为小写）。在其他平台上，全局匹配区分大小写。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>默认情况下 <code class="docutils literal notranslate"><span class="pre">GLOB</span></code> 会列出目录。如果 <code class="docutils literal notranslate"><span class="pre">LIST_DIRECTORIES</span></code> 设置为 false，结果中将省略目录。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增: </span>如果指定了 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_DEPENDS</span></code> 标志，CMake 将向主构建系统的检查目标添加逻辑，以便在构建时重新运行标记的 <code class="docutils literal notranslate"><span class="pre">GLOB</span></code> 命令。如果任何输出发生变化，CMake 将重新生成构建系统。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>我们不建议使用 GLOB 从源树中收集源文件列表。如果添加或删除源文件时 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件没有发生更改，则生成的构建系统无法知道何时要求 CMake 重新生成。对于某些生成器，<code class="docutils literal notranslate"><span class="pre">CONFIGURE_DEPENDS</span></code> 标志可能无法可靠工作，或者如果将来添加了不支持此功能的新生成器，使用它的项目将会受阻。即使 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_DEPENDS</span></code> 能可靠工作，每次重新构建时进行检查也会产生性能成本。</p>
+</div>
+<p>通配符表达式的示例包括</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">*.cxx</span></code></p></td>
+<td><p>匹配所有扩展名为 <code class="docutils literal notranslate"><span class="pre">cxx</span></code> 的文件</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">*.vt?</span></code></p></td>
+<td><p>匹配所有扩展名为 <code class="docutils literal notranslate"><span class="pre">vta</span></code>, ..., <code class="docutils literal notranslate"><span class="pre">vtz</span></code> 的文件</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">f[3-5].txt</span></code></p></td>
+<td><p>匹配文件 <code class="docutils literal notranslate"><span class="pre">f3.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">f4.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">f5.txt</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">GLOB_RECURSE</span></code> 模式将遍历匹配目录的所有子目录并匹配文件。只有在给定 <code class="docutils literal notranslate"><span class="pre">FOLLOW_SYMLINKS</span></code> 或策略 <span class="target" id="index-0-policy:CMP0009"></span><a class="reference internal" href="../policy/CMP0009.html#policy:CMP0009" title="CMP0009"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0009</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，才会遍历作为符号链接的子目录。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>默认情况下 <code class="docutils literal notranslate"><span class="pre">GLOB_RECURSE</span></code> 从结果列表中省略目录。将 <code class="docutils literal notranslate"><span class="pre">LIST_DIRECTORIES</span></code> 设置为 true 会将目录添加到结果列表中。如果给定 <code class="docutils literal notranslate"><span class="pre">FOLLOW_SYMLINKS</span></code> 或策略 <span class="target" id="index-1-policy:CMP0009"></span><a class="reference internal" href="../policy/CMP0009.html#policy:CMP0009" title="CMP0009"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0009</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则 <code class="docutils literal notranslate"><span class="pre">LIST_DIRECTORIES</span></code> 将符号链接视为目录。</p>
+</div>
+<p>递归通配符的示例包括</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/dir/*.py</span></code></p></td>
+<td><p>匹配 <code class="docutils literal notranslate"><span class="pre">/dir</span></code> 及其子目录中的所有 python 文件</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="make-directory">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">MAKE_DIRECTORY</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;directories&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RESULT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;result&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#make-directory" title="Link to this definition">¶</a></dt>
+<dd><p>根据需要创建给定的目录及其父目录。相对输入路径将相对于当前源目录进行评估。</p>
+<p>选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT</span> <span class="pre">&lt;result&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>成功时将 <code class="docutils literal notranslate"><span class="pre">&lt;result&gt;</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，否则设置为错误消息。如果未指定 <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> 且操作失败，则会发出错误。</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.30 版本变更: </span><code class="docutils literal notranslate"><span class="pre">&lt;directories&gt;</span></code> 可以是空列表。CMake 3.29 及更早版本要求至少提供一个目录。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="remove">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">REMOVE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#remove" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="remove-recurse">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">REMOVE_RECURSE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#remove-recurse" title="Link to this definition">¶</a></dt>
+<dd><p>删除给定的文件。<code class="docutils literal notranslate"><span class="pre">REMOVE_RECURSE</span></code> 模式将删除给定的文件和目录，包括非空目录。如果给定文件不存在，则不发出错误。相对输入路径相对于当前源目录进行评估。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.15 版本变更: </span>空的输入路径会被忽略并发出警告。旧版本的 CMake 会将空字符串解释为相对于当前目录的路径并删除其内容。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="rename">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">RENAME</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;oldname&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;newname&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RESULT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;result&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">NO_REPLACE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#rename" title="Link to this definition">¶</a></dt>
+<dd><p>在文件系统中将文件或目录从 <code class="docutils literal notranslate"><span class="pre">&lt;oldname&gt;</span></code> 移动到 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code>，原子地替换目标。</p>
+<p>选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT</span> <span class="pre">&lt;result&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>成功时将 <code class="docutils literal notranslate"><span class="pre">&lt;result&gt;</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，否则设置为错误消息。如果未指定 <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> 且操作失败，则会发出错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_REPLACE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code> 路径已存在，则不进行替换。如果使用了 <code class="docutils literal notranslate"><span class="pre">RESULT</span> <span class="pre">&lt;result&gt;</span></code>，结果变量将被设置为 <code class="docutils literal notranslate"><span class="pre">NO_REPLACE</span></code>。否则，将发出错误。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="copy-file">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">COPY_FILE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;oldname&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;newname&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RESULT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;result&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ONLY_IF_DIFFERENT</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">INPUT_MAY_BE_RECENT</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#copy-file" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>将文件从 <code class="docutils literal notranslate"><span class="pre">&lt;oldname&gt;</span></code> 复制到 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code>。不支持目录。符号链接会被忽略，<code class="docutils literal notranslate"><span class="pre">&lt;oldfile&gt;</span></code> 的内容会被读取并写入到 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code> 中作为新文件。</p>
+<p>选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT</span> <span class="pre">&lt;result&gt;</span></code></dt><dd><p>成功时将 <code class="docutils literal notranslate"><span class="pre">&lt;result&gt;</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，否则设置为错误消息。如果未指定 <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> 且操作失败，则会发出错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ONLY_IF_DIFFERENT</span></code></dt><dd><p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code> 路径已存在，且文件内容与 <code class="docutils literal notranslate"><span class="pre">&lt;oldname&gt;</span></code> 相同，则不进行替换（这可以避免更新 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code> 的时间戳）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INPUT_MAY_BE_RECENT</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>告诉 CMake 输入文件可能是最近才创建的。这仅在 Windows 上有意义，在 Windows 上，文件创建后可能会在短时间内无法访问。使用此选项，如果权限被拒绝，CMake 将重试读取输入几次。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>此子命令与带有 <code class="docutils literal notranslate"><span class="pre">COPYONLY</span></code> 选项的 <span class="target" id="index-3-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 有些相似。一个重要的区别是 <span class="target" id="index-4-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 会创建对源文件的依赖，因此如果源文件发生变化，CMake 将重新运行。<code class="docutils literal notranslate"><span class="pre">file(COPY_FILE)</span></code> 子命令不会创建此类依赖。</p>
+<p>另请参阅下方提供的 <span class="target" id="index-3-command:file"></span><a class="reference internal" href="file.html#copy" title="file(copy)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(COPY)</span></code></a> 子命令，它提供了更丰富的文件复制功能。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="copy">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">COPY</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#copy" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="install">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">INSTALL</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#install" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">COPY</span></code> 签名将文件、目录和符号链接复制到目标文件夹。相对输入路径相对于当前源目录进行评估，相对目标路径相对于当前构建目录进行评估。复制操作会保留输入文件的时间戳，如果目标位置已存在时间戳相同的文件，则会优化跳过。复制操作会保留输入权限，除非提供了显式权限或 <code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code>（默认是 <code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code>）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="p">&lt;</span><span class="no">COPY</span><span class="p">|</span><span class="no">INSTALL</span><span class="p">&gt;</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span>
+<span class="w">     </span><span class="p">[</span><span class="no">NO_SOURCE_PERMISSIONS</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">USE_SOURCE_PERMISSIONS</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">FILE_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permissions&gt;...</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">DIRECTORY_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permissions&gt;...</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">FOLLOW_SYMLINK_CHAIN</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[</span><span class="no">FILES_MATCHING</span><span class="p">]</span>
+<span class="w">     </span><span class="p">[[</span><span class="no">PATTERN</span><span class="w"> </span><span class="nv">&lt;pattern&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">REGEX</span><span class="w"> </span><span class="nv">&lt;regex&gt;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">[</span><span class="no">EXCLUDE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permissions&gt;...</span><span class="p">]]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>对于简单的文件复制操作，上方的 <span class="target" id="index-4-command:file"></span><a class="reference internal" href="file.html#copy-file" title="file(copy_file)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(COPY_FILE)</span></code></a> 子命令可能更容易使用。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增: </span>如果指定了 <code class="docutils literal notranslate"><span class="pre">FOLLOW_SYMLINK_CHAIN</span></code>，<code class="docutils literal notranslate"><span class="pre">COPY</span></code> 将递归解析给定路径处的符号链接，直到找到真实文件，并在目标路径中为遇到的每个符号链接安装相应的符号链接。对于安装的每个符号链接，解析结果会剥离目录，仅留下文件名，这意味着新的符号链接指向与该符号链接位于同一目录中的文件。此功能在某些 Unix 系统上非常有用，其中库是以一系列版本号符号链接的形式安装的，较不具体的版本指向更具体的版本。<code class="docutils literal notranslate"><span class="pre">FOLLOW_SYMLINK_CHAIN</span></code> 会将所有这些符号链接以及库本身安装到目标目录中。例如，如果您具有以下目录结构</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/opt/foo/lib/libfoo.so.1.2.3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/opt/foo/lib/libfoo.so.1.2</span> <span class="pre">-&gt;</span> <span class="pre">libfoo.so.1.2.3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/opt/foo/lib/libfoo.so.1</span> <span class="pre">-&gt;</span> <span class="pre">libfoo.so.1.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/opt/foo/lib/libfoo.so</span> <span class="pre">-&gt;</span> <span class="pre">libfoo.so.1</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>并且您执行</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">COPY</span><span class="w"> </span><span class="na">/opt/foo/lib/libfoo.so</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">lib</span><span class="w"> </span><span class="no">FOLLOW_SYMLINK_CHAIN</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>这将把所有符号链接以及 <code class="docutils literal notranslate"><span class="pre">libfoo.so.1.2.3</span></code> 本身安装到 <code class="docutils literal notranslate"><span class="pre">lib</span></code> 中。</p>
+</div>
+<p>关于权限、<code class="docutils literal notranslate"><span class="pre">FILES_MATCHING</span></code>、<code class="docutils literal notranslate"><span class="pre">PATTERN</span></code>、<code class="docutils literal notranslate"><span class="pre">REGEX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code> 选项的说明，请参阅 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#directory" title="install(directory)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(DIRECTORY)</span></code></a> 命令。即使使用选项来选择文件子集，复制目录也会保留其内容的结构。</p>
+<p><code class="docutils literal notranslate"><span class="pre">INSTALL</span></code> 签名与 <code class="docutils literal notranslate"><span class="pre">COPY</span></code> 略有不同：它会打印状态消息，并且 <code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code> 是默认值。<span class="target" id="index-1-command:install"></span><a class="reference internal" href="install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令生成的安装脚本使用此签名（包含一些内部使用的未记录选项）。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.22 版本变更: </span>环境变量 <span class="target" id="index-0-envvar:CMAKE_INSTALL_MODE"></span><a class="reference internal" href="../envvar/CMAKE_INSTALL_MODE.html#envvar:CMAKE_INSTALL_MODE" title="CMAKE_INSTALL_MODE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MODE</span></code></a> 可以覆盖 <span class="target" id="index-5-command:file"></span><a class="reference internal" href="file.html#install" title="file(install)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(INSTALL)</span></code></a> 的默认复制行为。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="size">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">SIZE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;filename&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#size" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>确定 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 的文件大小，并将结果放入 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 变量中。要求 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 是指向有效文件的路径且可读。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="read-symlink">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">READ_SYMLINK</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;linkname&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#read-symlink" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>查询符号链接 <code class="docutils literal notranslate"><span class="pre">&lt;linkname&gt;</span></code> 并将其指向的路径存储在结果 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。如果 <code class="docutils literal notranslate"><span class="pre">&lt;linkname&gt;</span></code> 不存在或不是符号链接，CMake 将发出致命错误。</p>
+<p>请注意，此命令返回原始符号链接路径，不会解析相对路径。以下是如何确保获取绝对路径的示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">linkname</span><span class="w"> </span><span class="s">"/path/to/foo.sym"</span><span class="nf">)</span>
+<span class="nf">file(</span><span class="no">READ_SYMLINK</span><span class="w"> </span><span class="s">"${linkname}"</span><span class="w"> </span><span class="nb">result</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="no">IS_ABSOLUTE</span><span class="w"> </span><span class="s">"${result}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">get_filename_component(</span><span class="nb">dir</span><span class="w"> </span><span class="s">"${linkname}"</span><span class="w"> </span><span class="no">DIRECTORY</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="nb">result</span><span class="w"> </span><span class="s">"${dir}/${result}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="create-link">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">CREATE_LINK</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;original&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;linkname&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RESULT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;result&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">COPY_ON_ERROR</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">SYMBOLIC</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#create-link" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>创建指向 <code class="docutils literal notranslate"><span class="pre">&lt;original&gt;</span></code> 的链接 <code class="docutils literal notranslate"><span class="pre">&lt;linkname&gt;</span></code>。默认情况下它是硬链接，但提供 <code class="docutils literal notranslate"><span class="pre">SYMBOLIC</span></code> 选项则会创建符号链接。硬链接要求 <code class="docutils literal notranslate"><span class="pre">original</span></code> 必须存在且是一个文件，不能是目录。如果 <code class="docutils literal notranslate"><span class="pre">&lt;linkname&gt;</span></code> 已存在，它将被覆盖。</p>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;result&gt;</span></code> 变量，则接收操作的状态。成功时设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，否则为错误消息。如果未指定 <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> 且操作失败，则会发出致命错误。</p>
+<p>指定 <code class="docutils literal notranslate"><span class="pre">COPY_ON_ERROR</span></code> 可以在创建链接失败时将文件作为后备方案进行复制。这对于处理 <code class="docutils literal notranslate"><span class="pre">&lt;original&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;linkname&gt;</span></code> 位于不同驱动器或挂载点的情况很有用，因为这种情况不支持硬链接。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更: </span>如果源是目录，4.3 之前的 CMake 会在目标目录不存在时创建目标目录，但不会复制任何文件。CMake 4.3 及更高版本会将源目录内容递归复制到目标位置。请参阅策略 <span class="target" id="index-0-policy:CMP0205"></span><a class="reference internal" href="../policy/CMP0205.html#policy:CMP0205" title="CMP0205"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0205</span></code></a>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="chmod">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">CHMOD</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;directories&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FILE_PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">DIRECTORY_PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#chmod" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>设置指定 <code class="docutils literal notranslate"><span class="pre">&lt;files&gt;...</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;directories&gt;...</span></code> 的权限。有效的权限包括 <code class="docutils literal notranslate"><span class="pre">OWNER_READ</span></code>, <code class="docutils literal notranslate"><span class="pre">OWNER_WRITE</span></code>, <code class="docutils literal notranslate"><span class="pre">OWNER_EXECUTE</span></code>, <code class="docutils literal notranslate"><span class="pre">GROUP_READ</span></code>, <code class="docutils literal notranslate"><span class="pre">GROUP_WRITE</span></code>, <code class="docutils literal notranslate"><span class="pre">GROUP_EXECUTE</span></code>, <code class="docutils literal notranslate"><span class="pre">WORLD_READ</span></code>, <code class="docutils literal notranslate"><span class="pre">WORLD_WRITE</span></code>, <code class="docutils literal notranslate"><span class="pre">WORLD_EXECUTE</span></code>, <code class="docutils literal notranslate"><span class="pre">SETUID</span></code>, <code class="docutils literal notranslate"><span class="pre">SETGID</span></code>。</p>
+<p>关键字的有效组合为</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code></dt><dd><p>所有项目都会被更改。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code></dt><dd><p>仅文件会被更改。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span></code></dt><dd><p>仅目录会被更改。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code> 在文件中覆盖 <code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span></code> 在目录中覆盖 <code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span></code></dt><dd><p>对文件使用 <code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code>，对目录使用 <code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span></code>。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="chmod-recurse">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">CHMOD_RECURSE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;files&gt;...</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;directories&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FILE_PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">DIRECTORY_PERMISSIONS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;permissions&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#chmod-recurse" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>与 <a class="reference internal" href="file.html#chmod"><code class="cmake literal docutils notranslate"><span class="pre">CHMOD</span></code></a> 相同，但会递归更改 <code class="docutils literal notranslate"><span class="pre">&lt;directories&gt;...</span></code> 中存在的文件和目录的权限。</p>
+</dd></dl>
+
+</section>
+<section id="path-conversion">
+<h2>路径转换<a class="headerlink" href="file.html#path-conversion" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="real-path">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">REAL_PATH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;path&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">BASE_DIRECTORY</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;dir&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">EXPAND_TILDE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#real-path" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>计算现有文件或目录的绝对路径，并解析符号链接。可选参数如下：</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BASE_DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>如果提供的 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 是相对路径，则它相对于给定的基础目录 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 进行评估。如果没有提供基础目录，默认基础目录将是 <span class="target" id="index-1-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPAND_TILDE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 是 <code class="docutils literal notranslate"><span class="pre">~</span></code> 或以 <code class="docutils literal notranslate"><span class="pre">~/</span></code> 开头，则 <code class="docutils literal notranslate"><span class="pre">~</span></code> 将被替换为用户的主目录。主目录的路径通过环境变量获得。在 Windows 上，使用 <code class="docutils literal notranslate"><span class="pre">USERPROFILE</span></code> 环境变量，如果未定义 <code class="docutils literal notranslate"><span class="pre">USERPROFILE</span></code>，则回退到 <code class="docutils literal notranslate"><span class="pre">HOME</span></code> 环境变量。在所有其他平台上，仅使用 <code class="docutils literal notranslate"><span class="pre">HOME</span></code>。</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.28 版本变更: </span>在折叠 <code class="docutils literal notranslate"><span class="pre">../</span></code> 组件之前解析所有符号链接。请参阅策略 <span class="target" id="index-0-policy:CMP0152"></span><a class="reference internal" href="../policy/CMP0152.html#policy:CMP0152" title="CMP0152"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0152</span></code></a>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="relative-path">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">RELATIVE_PATH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;directory&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;file&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#relative-path" title="Link to this definition">¶</a></dt>
+<dd><p>计算从 <code class="docutils literal notranslate"><span class="pre">&lt;directory&gt;</span></code> 到 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 的相对路径，并将其存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="to-cmake-path">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">TO_CMAKE_PATH</span></span><span class="w"> </span><span class="s"><span class="pre">"&lt;path&gt;"</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#to-cmake-path" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="to-native-path">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">TO_NATIVE_PATH</span></span><span class="w"> </span><span class="s"><span class="pre">"&lt;path&gt;"</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#to-native-path" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">TO_CMAKE_PATH</span></code> 模式将本机 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 转换为带有正斜杠（<code class="docutils literal notranslate"><span class="pre">/</span></code>）的 CMake 样式路径。输入可以是单个路径或像 <code class="docutils literal notranslate"><span class="pre">$ENV{PATH}</span></code> 这样的系统搜索路径。搜索路径将被转换为 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">TO_NATIVE_PATH</span></code> 模式将 CMake 样式 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 转换为带有特定平台斜杠（Windows 主机上为 <code class="docutils literal notranslate"><span class="pre">\</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">/</span></code>）的本机路径。</p>
+<p>始终在 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 周围使用双引号，以确保它被视为该命令的单个参数。</p>
+</dd></dl>
+
+</section>
+<section id="transfer">
+<h2>传输<a class="headerlink" href="file.html#transfer" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="download">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">DOWNLOAD</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;url&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;file&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;options&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#download" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object cmake" id="upload">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">UPLOAD</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;file&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;url&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;options&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#upload" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 子命令将给定的 <code class="docutils literal notranslate"><span class="pre">&lt;url&gt;</span></code> 下载到本地 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。<code class="docutils literal notranslate"><span class="pre">UPLOAD</span></code> 模式将本地 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 上传到给定的 <code class="docutils literal notranslate"><span class="pre">&lt;url&gt;</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增: </span>如果未为 <code class="docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code> 指定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则不会保存文件。如果您想知道文件是否可以下载（例如，检查它是否存在）而不实际保存它，这很有用。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">UPLOAD</span></code> 的共有选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INACTIVITY_TIMEOUT</span> <span class="pre">&lt;seconds&gt;</span></code></dt><dd><p>在一段时间不活动后终止操作。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><p>将操作的人类可读日志存储在变量中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHOW_PROGRESS</span></code></dt><dd><p>打印进度信息作为状态消息，直到操作完成。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STATUS</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><p>将操作的结果状态存储在变量中。状态是一个以 <code class="docutils literal notranslate"><span class="pre">;</span></code> 分隔的长度为 2 的列表。第一个元素是操作的数字返回值，第二个元素是错误的字符串值。<code class="docutils literal notranslate"><span class="pre">0</span></code> 的数字错误表示操作中没有错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TIMEOUT</span> <span class="pre">&lt;seconds&gt;</span></code></dt><dd><p>在给定的总时间过后终止操作。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USERPWD</span> <span class="pre">&lt;username&gt;:&lt;password&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>设置操作的用户名和密码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HTTPHEADER</span> <span class="pre">&lt;HTTP-header&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">UPLOAD</span></code> 操作的 HTTP 标头。<code class="docutils literal notranslate"><span class="pre">HTTPHEADER</span></code> 可以重复使用以设置多个选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">DOWNLOAD</span><span class="w"> </span><span class="nv">&lt;url&gt;</span>
+<span class="w">     </span><span class="no">HTTPHEADER</span><span class="w"> </span><span class="s">"Authorization: Bearer &lt;auth-token&gt;"</span>
+<span class="w">     </span><span class="no">HTTPHEADER</span><span class="w"> </span><span class="s">"UserAgent: Mozilla/5.0"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NETRC</span> <span class="pre">&lt;level&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>指定是否将 .netrc 文件用于操作。如果未指定此选项，将改用 <span class="target" id="index-0-variable:CMAKE_NETRC"></span><a class="reference internal" href="../variable/CMAKE_NETRC.html#variable:CMAKE_NETRC" title="CMAKE_NETRC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC</span></code></a> 变量的值。</p>
+<p>有效的级别包括</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORED</span></code></dt><dd><p>.netrc 文件被忽略。这是默认值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code></dt><dd><p>The .netrc file is optional, and information in the URL is preferred. The file will be scanned to find which ever information is not specified in the URL.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code></dt><dd><p>The .netrc file is required, and information in the URL is ignored.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NETRC_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">NETRC</span></code> 级别为 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 或 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，请指定一个替代于主目录中默认文件的 .netrc 文件。如果未指定此选项，将改用 <span class="target" id="index-0-variable:CMAKE_NETRC_FILE"></span><a class="reference internal" href="../variable/CMAKE_NETRC_FILE.html#variable:CMAKE_NETRC_FILE" title="CMAKE_NETRC_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC_FILE</span></code></a> 变量的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_VERSION</span> <span class="pre">&lt;min&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>为 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL 指定最低 TLS 版本。如果未指定此选项，将改用 <span class="target" id="index-0-variable:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERSION.html#variable:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 变量或 <span class="target" id="index-0-envvar:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERSION.html#envvar:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 环境变量的值。允许的值请参阅 <span class="target" id="index-1-variable:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERSION.html#variable:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.31 中有更改：</span> 默认值为 TLS 1.2。此前，默认情况下没有强制执行最低版本。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_VERIFY</span> <span class="pre">&lt;ON|OFF&gt;</span></code></dt><dd><p>指定是否验证 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL 的服务器证书。如果未指定此选项，将改用 <span class="target" id="index-0-variable:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERIFY.html#variable:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 变量或 <span class="target" id="index-0-envvar:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERIFY.html#envvar:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 环境变量的值。如果两者都未设置，则默认为 <em>on</em>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.31 中已更改： </span>默认值为开启。先前，默认值为关闭。用户可以通过设置 <span class="target" id="index-1-envvar:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERIFY.html#envvar:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 环境变量为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 来恢复旧的默认值。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增: </span>增加了对 <code class="docutils literal notranslate"><span class="pre">file(UPLOAD)</span></code> 的支持。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_CAINFO</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>为 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL 指定自定义证书颁发机构（CA）文件。如果未指定此选项，将改用 <span class="target" id="index-0-variable:CMAKE_TLS_CAINFO"></span><a class="reference internal" href="../variable/CMAKE_TLS_CAINFO.html#variable:CMAKE_TLS_CAINFO" title="CMAKE_TLS_CAINFO"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_CAINFO</span></code></a> 变量的值。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增: </span>增加了对 <code class="docutils literal notranslate"><span class="pre">file(UPLOAD)</span></code> 的支持。</p>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL，CMake 必须在构建时启用 SSL/TLS 支持。</p>
+<p><code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 的其他选项包括</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPECTED_HASH</span> <span class="pre">&lt;algorithm&gt;=&lt;value&gt;</span></code></dt><dd><p>验证下载内容的哈希是否与期望值匹配，其中 <code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;</span></code> 是 <a class="reference internal" href="file.html#hash"><code class="cmake literal docutils notranslate"><span class="pre">&lt;HASH&gt;</span></code></a> 支持的算法之一。如果文件已存在且哈希匹配，则跳过下载。如果文件已存在且哈希不匹配，则再次下载文件。如果在下载后文件仍不匹配哈希，则操作失败并报错。如果 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 没有提供 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，指定此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPECTED_MD5</span> <span class="pre">&lt;value&gt;</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">EXPECTED_HASH</span> <span class="pre">MD5=&lt;value&gt;</span></code> 的历史简写。如果 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 没有提供 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，指定此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RANGE_START</span> <span class="pre">&lt;value&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>文件中范围起始的偏移量（字节）。可以省略以下载到指定的 <code class="docutils literal notranslate"><span class="pre">RANGE_END</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RANGE_END</span> <span class="pre">&lt;value&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>文件中范围结束的偏移量（字节）。可以省略以下载从指定的 <code class="docutils literal notranslate"><span class="pre">RANGE_START</span></code> 到文件末尾的所有内容。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="locking">
+<h2>锁定<a class="headerlink" href="file.html#locking" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="lock">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">LOCK</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;path&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">DIRECTORY</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RELEASE</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">GUARD</span></span><span class="nbsp"> </span><span class="p"><span class="pre">&lt;</span></span><span class="no"><span class="pre">FUNCTION</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">FILE</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">PROCESS</span></span><span class="p"><span class="pre">&gt;]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RESULT_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">TIMEOUT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;seconds&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#lock" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>如果不存在 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 选项，则锁定由 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 指定的文件；否则锁定文件 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;/cmake.lock</span></code>。文件将根据 <code class="docutils literal notranslate"><span class="pre">GUARD</span></code> 选项定义的范围被锁定（默认值为 <code class="docutils literal notranslate"><span class="pre">PROCESS</span></code>）。<code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 选项可用于显式解锁文件。如果未指定 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 选项，CMake 将等待直到锁定成功或发生致命错误。如果 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，将尝试锁定一次并立即报告结果。如果 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 不为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，CMake 将尝试在 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span> <span class="pre">&lt;seconds&gt;</span></code> 值指定的时间段内锁定文件。如果没有 <code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 选项，任何错误都将被解释为致命错误。否则，结果将存储在 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中，成功时为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，失败时为错误消息。</p>
+<p>请注意，该锁定是建议性的；不能保证其他进程会遵守此锁定，即锁定可以同步两个或多个共享某些可修改资源的 CMake 实例。类似的逻辑适用于 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 选项；锁定父目录并不能阻止其他 <code class="docutils literal notranslate"><span class="pre">LOCK</span></code> 命令锁定任何子目录或文件。</p>
+<p>不允许对同一个文件进行两次锁定尝试。如果中间目录和文件本身不存在，它们将被创建。<code class="docutils literal notranslate"><span class="pre">GUARD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 选项在 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 操作中会被忽略。</p>
+</dd></dl>
+
+</section>
+<section id="archiving">
+<h2>归档<a class="headerlink" href="file.html#archiving" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="archive-create">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">ARCHIVE_CREATE</span></span><span class="nbsp"> </span><span class="no"><span class="pre">OUTPUT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;archive&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">PATHS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;paths&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FORMAT</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;format&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">COMPRESSION</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;compression&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">COMPRESSION_LEVEL</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;compression-level&gt;</span></span><span class="p"><span class="pre">]]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">MTIME</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;mtime&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">THREADS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;number&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">WORKING_DIRECTORY</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;dir&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">VERBOSE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#archive-create" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;paths&gt;</span></code> 中列出的文件和目录创建指定的 <code class="docutils literal notranslate"><span class="pre">&lt;archive&gt;</span></code> 文件。请注意，<code class="docutils literal notranslate"><span class="pre">&lt;paths&gt;</span></code> 必须列出实际的文件或目录；不支持通配符。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">FORMAT</span> <span class="pre">&lt;format&gt;</span></code></dt><dd><p>指定归档格式。<code class="docutils literal notranslate"><span class="pre">&lt;format&gt;</span></code> 的支持值为 <code class="docutils literal notranslate"><span class="pre">7zip</span></code>、<code class="docutils literal notranslate"><span class="pre">gnutar</span></code>、<code class="docutils literal notranslate"><span class="pre">pax</span></code>、<code class="docutils literal notranslate"><span class="pre">paxr</span></code>、<code class="docutils literal notranslate"><span class="pre">raw</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zip</span></code>。如果未给出 <code class="docutils literal notranslate"><span class="pre">FORMAT</span></code>，则默认格式为 <code class="docutils literal notranslate"><span class="pre">paxr</span></code>。</p>
+<p>默认压缩方法取决于格式</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">7zip</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">LZMA</span></code> 压缩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zip</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">Deflate</span></code> 压缩</p></li>
+<li><p>其他格式默认不进行压缩</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPRESSION</span> <span class="pre">&lt;compression&gt;</span></code></dt><dd><p>某些归档格式允许指定压缩类型。<code class="docutils literal notranslate"><span class="pre">7zip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zip</span></code> 归档格式已隐含了特定的压缩类型。其他格式默认不进行压缩，但可以通过 <code class="docutils literal notranslate"><span class="pre">COMPRESSION</span></code> 选项指定。有效的 <code class="docutils literal notranslate"><span class="pre">&lt;compression&gt;</span></code> 值为</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">无</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BZip2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Deflate</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>这是 <code class="docutils literal notranslate"><span class="pre">GZip</span></code> 的别名。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GZip</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LZMA</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LZMA2</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>这是 <code class="docutils literal notranslate"><span class="pre">XZ</span></code> 的别名。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PPMd</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>此压缩方法仅由 <code class="docutils literal notranslate"><span class="pre">7zip</span></code> 归档格式支持。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XZ</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Zstd</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当 <code class="docutils literal notranslate"><span class="pre">FORMAT</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">raw</span></code> 时，仅有一个文件会使用 <code class="docutils literal notranslate"><span class="pre">COMPRESSION</span></code> 指定的类型进行压缩。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">4.3 版本新增：</span><code class="docutils literal notranslate"><span class="pre">7zip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zip</span></code> 格式支持更改默认压缩方式。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPRESSION_LEVEL</span> <span class="pre">&lt;compression-level&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>可以通过 <code class="docutils literal notranslate"><span class="pre">COMPRESSION_LEVEL</span></code> 选项指定压缩级别。<code class="docutils literal notranslate"><span class="pre">&lt;compression-level&gt;</span></code> 应在 0-9 之间，默认值为 0。当提供 <code class="docutils literal notranslate"><span class="pre">COMPRESSION_LEVEL</span></code> 时，必须同时存在 <code class="docutils literal notranslate"><span class="pre">COMPRESSION</span></code> 选项。</p>
+<p>值 <code class="docutils literal notranslate"><span class="pre">0</span></code> 用于指定默认压缩级别。它由归档库后端自动选择，而不是直接由 CMake 本身设置。默认压缩级别可能因归档格式、平台等而异。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版本新增：</span><code class="docutils literal notranslate"><span class="pre">Zstd</span></code> 算法的 <code class="docutils literal notranslate"><span class="pre">&lt;compression-level&gt;</span></code> 可设置为 0-19。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">4.3 版本新增：</span><code class="docutils literal notranslate"><span class="pre">&lt;compression-level&gt;</span></code> 现在也可以为 <code class="docutils literal notranslate"><span class="pre">7zip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zip</span></code> 格式指定。<code class="docutils literal notranslate"><span class="pre">Zstd</span></code> 算法的压缩级别可设置为 0-19（<code class="docutils literal notranslate"><span class="pre">zip</span></code> 格式除外）。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MTIME</span> <span class="pre">&lt;mtime&gt;</span></code></dt><dd><p>指定记录在 tarball 条目中的修改时间。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">THREADS</span> <span class="pre">&lt;number&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 个线程来操作归档。</p>
+<p>如果设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，将使用机器上可用的核心数。请注意，并非所有压缩模式在所有环境下都支持多线程。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>指定执行归档创建操作的目录。<code class="docutils literal notranslate"><span class="pre">&lt;paths&gt;</span></code> 参数中的路径可以相对于此目录。如果未提供此选项，则默认使用当前工作目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code></dt><dd><p>启用归档操作的详细输出。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="archive-extract">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">ARCHIVE_EXTRACT</span></span><span class="w"> </span><span class="no"><span class="pre">INPUT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;archive&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">DESTINATION</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;dir&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">PATTERNS</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;pattern&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">LIST_ONLY</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">VERBOSE</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">TOUCH</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#archive-extract" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>解压或列出指定 <code class="docutils literal notranslate"><span class="pre">&lt;archive&gt;</span></code> 的内容。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>指定解压归档内容的目录。如果该目录不存在，则会创建它。如果未给出 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，则使用当前的二进制目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PATTERNS</span> <span class="pre">&lt;pattern&gt;...</span></code></dt><dd><p>仅解压/列出匹配给定模式之一的文件和目录。支持通配符。如果未给出 <code class="docutils literal notranslate"><span class="pre">PATTERNS</span></code> 选项，则列出或解压整个归档。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIST_ONLY</span></code></dt><dd><p>仅列出归档中的文件，而不解压它们。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TOUCH</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>给予解压后的文件当前本地时间戳，而不是从归档中提取文件时间戳。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code></dt><dd><p>启用解压操作的详细输出。</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>包含路径遍历序列（<code class="docutils literal notranslate"><span class="pre">..</span></code>）或绝对路径的归档条目出于安全考虑会被拒绝。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此子命令的工作目录是 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 目录（已提供或计算得出），除非指定了 <code class="docutils literal notranslate"><span class="pre">LIST_ONLY</span></code>。因此，在脚本模式之外，最好为 <code class="docutils literal notranslate"><span class="pre">INPUT</span></code> 归档提供绝对路径，因为相对路径可能无法在预期的位置解压。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="handling-runtime-binaries">
+<h2>处理运行时二进制文件<a class="headerlink" href="file.html#handling-runtime-binaries" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="get-runtime-dependencies">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">file(</span></span><span class="no"><span class="pre">GET_RUNTIME_DEPENDENCIES</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="file.html#get-runtime-dependencies" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>递归获取给定文件所依赖的库列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">GET_RUNTIME_DEPENDENCIES</span>
+<span class="w">  </span><span class="p">[</span><span class="no">RESOLVED_DEPENDENCIES_VAR</span><span class="w"> </span><span class="nv">&lt;deps_var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">UNRESOLVED_DEPENDENCIES_VAR</span><span class="w"> </span><span class="nv">&lt;unresolved_deps_var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CONFLICTING_DEPENDENCIES_PREFIX</span><span class="w"> </span><span class="nv">&lt;conflicting_deps_prefix&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXECUTABLES</span><span class="w"> </span><span class="nv">&lt;executable_files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">LIBRARIES</span><span class="w"> </span><span class="nv">&lt;library_files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">MODULES</span><span class="w"> </span><span class="nv">&lt;module_files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DIRECTORIES</span><span class="w"> </span><span class="nv">&lt;directories&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BUNDLE_EXECUTABLE</span><span class="w"> </span><span class="nv">&lt;bundle_executable_file&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRE_INCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regexes&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PRE_EXCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regexes&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">POST_INCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regexes&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">POST_EXCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regexes&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">POST_INCLUDE_FILES</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">POST_EXCLUDE_FILES</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>请注意，此子命令不适用于项目配置模式。它旨在在安装时使用，可通过 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 命令生成的代码使用，或通过 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="install.html#code" title="install(code)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(CODE)</span></code></a> 或 <span class="target" id="index-4-command:install"></span><a class="reference internal" href="install.html#script" title="install(script)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SCRIPT)</span></code></a> 提供的代码使用。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">CODE</span><span class="w"> </span><span class="s s-Multiline">[[</span>
+<span class="s s-Multiline">  file(GET_RUNTIME_DEPENDENCIES</span>
+<span class="s s-Multiline">    # ...</span>
+<span class="s s-Multiline">    )</span>
+<span class="s s-Multiline">  ]]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数如下</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RESOLVED_DEPENDENCIES_VAR</span> <span class="pre">&lt;deps_var&gt;</span></code></dt><dd><p>用于存储已解析依赖项列表的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UNRESOLVED_DEPENDENCIES_VAR</span> <span class="pre">&lt;unresolved_deps_var&gt;</span></code></dt><dd><p>用于存储未解析依赖项列表的变量名称。如果未指定此变量且存在任何未解析的依赖项，则会发出错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFLICTING_DEPENDENCIES_PREFIX</span> <span class="pre">&lt;conflicting_deps_prefix&gt;</span></code></dt><dd><p>用于存储冲突依赖项信息变量的前缀。如果在两个不同的目录中找到两个同名文件，则视为依赖项冲突。冲突的文件名列表存储在 <code class="docutils literal notranslate"><span class="pre">&lt;conflicting_deps_prefix&gt;_FILENAMES</span></code> 中。对于每个文件名，找到的路径列表存储在 <code class="docutils literal notranslate"><span class="pre">&lt;conflicting_deps_prefix&gt;_&lt;filename&gt;</span></code> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXECUTABLES</span> <span class="pre">&lt;executable_files&gt;...</span></code></dt><dd><p>要读取依赖项的可执行文件列表。这些通常是用 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 创建的，但不一定必须由 CMake 创建。在 Apple 平台上，这些文件的路径决定了递归解析库时 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 的值。在此处指定任何类型的库（<code class="docutils literal notranslate"><span class="pre">STATIC</span></code>、<code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code>）将导致未定义的行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIBRARIES</span> <span class="pre">&lt;library_files&gt;...</span></code></dt><dd><p>要读取依赖项的库文件列表。这些通常是用 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="add_library.html#command:add_library" title="add_library(shared)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library(SHARED)</span></code></a> 创建的，但不一定必须由 CMake 创建。在此处指定 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code> 库、<code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 库或可执行文件将导致未定义的行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MODULES</span> <span class="pre">&lt;module_files&gt;...</span></code></dt><dd><p>要读取依赖项的可加载模块文件列表。这些通常是用 <span class="target" id="index-1-command:add_library"></span><a class="reference internal" href="add_library.html#command:add_library" title="add_library(module)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library(MODULE)</span></code></a> 创建的，但不一定必须由 CMake 创建。它们通常通过在运行时调用 <code class="docutils literal notranslate"><span class="pre">dlopen()</span></code> 而非在链接时通过 <code class="docutils literal notranslate"><span class="pre">ld</span> <span class="pre">-l</span></code> 使用。在此处指定 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code> 库、<code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 库或可执行文件将导致未定义的行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span> <span class="pre">&lt;directories&gt;...</span></code></dt><dd><p>要搜索依赖项的其他目录列表。在 Linux 平台上，如果未在其他常规路径中找到依赖项，则会搜索这些目录。如果在此类目录中找到依赖项，则会发出警告，因为这意味着该文件是不完整的（它没有列出所有包含其依赖项的目录）。在 Windows 平台上，如果未在其他搜索路径中找到依赖项，则会搜索这些目录，但不会发出警告，因为搜索其他路径是 Windows 依赖项解析的正常部分。在 Apple 平台上，此参数无效。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUNDLE_EXECUTABLE</span> <span class="pre">&lt;bundle_executable_file&gt;</span></code></dt><dd><p>在解析库时被视为“包可执行文件”的文件。在 Apple 平台上，此参数决定了递归解析 <code class="docutils literal notranslate"><span class="pre">LIBRARIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MODULES</span></code> 文件库时 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 的值。它对 <code class="docutils literal notranslate"><span class="pre">EXECUTABLES</span></code> 文件无效。在其他平台上，它也无效。这通常（但不总是）是 <code class="docutils literal notranslate"><span class="pre">EXECUTABLES</span></code> 参数中的可执行文件之一，用于指定包的“主”可执行文件。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>以下参数用于指定包含或排除要解析的库的过滤器。有关其工作原理的完整描述，请参见下文。除非策略 <span class="target" id="index-0-policy:CMP0207"></span><a class="reference internal" href="../policy/CMP0207.html#policy:CMP0207" title="CMP0207"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0207</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，否则文件路径中的目录分隔符可以使用正斜杠进行匹配。</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_INCLUDE_REGEXES</span> <span class="pre">&lt;regexes&gt;...</span></code></dt><dd><p>预包含正则表达式列表，用于过滤尚未解析的依赖项名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_EXCLUDE_REGEXES</span> <span class="pre">&lt;regexes&gt;...</span></code></dt><dd><p>预排除正则表达式列表，用于过滤尚未解析的依赖项名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span> <span class="pre">&lt;regexes&gt;...</span></code></dt><dd><p>后包含正则表达式列表，用于过滤已解析依赖项的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span> <span class="pre">&lt;regexes&gt;...</span></code></dt><dd><p>后排除正则表达式列表，用于过滤已解析依赖项的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_FILES</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>后包含文件名列表，用于过滤已解析依赖项的名称。尝试匹配这些文件名时会解析符号链接。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_FILES</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>后排除文件名列表，用于过滤已解析依赖项的名称。尝试匹配这些文件名时会解析符号链接。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>这些参数可用于在解析依赖项时排除不需要的系统库，或包含特定目录中的库。过滤工作原理如下：</p>
+<ol class="arabic simple">
+<li><p>如果尚未解析的依赖项匹配任何 <code class="docutils literal notranslate"><span class="pre">PRE_INCLUDE_REGEXES</span></code>，则跳过步骤 2 和 3，直接进入步骤 4。</p></li>
+<li><p>如果尚未解析的依赖项匹配任何 <code class="docutils literal notranslate"><span class="pre">PRE_EXCLUDE_REGEXES</span></code>，则该依赖项的解析停止。</p></li>
+<li><p>否则，继续进行依赖项解析。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code> 根据平台的链接规则搜索依赖项（见下文）。</p></li>
+<li><p>如果找到了依赖项，并且其完整路径匹配 <code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span></code> 或 <code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_FILES</span></code> 中的任何一个，则将该完整路径添加到已解析依赖项中，并且 <code class="docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code> 会递归解析该库自身的依赖项。否则，继续进入步骤 6。</p></li>
+<li><p>如果找到了依赖项，但其完整路径匹配 <code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span></code> 或 <code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_FILES</span></code> 中的任何一个，则不会将其添加到已解析依赖项中，并且该依赖项的解析停止。</p></li>
+<li><p>如果找到了依赖项，且其完整路径既不匹配 <code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span></code>、<code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_FILES</span></code>，也不匹配 <code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span></code> 或 <code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_FILES</span></code>，则将该完整路径添加到已解析依赖项中，并且 <code class="docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code> 会递归解析该库自身的依赖项。</p></li>
+</ol>
+<p>不同平台解析依赖项的规则不同。具体细节描述如下。</p>
+<p>在 Linux 平台上，库解析工作原理如下：</p>
+<ol class="arabic simple">
+<li><p>如果依赖文件没有任何 <code class="docutils literal notranslate"><span class="pre">RUNPATH</span></code> 条目，且库存在于依赖文件的 <code class="docutils literal notranslate"><span class="pre">RPATH</span></code> 条目（或其父目录的条目）中（按顺序），则依赖项解析为该文件。</p></li>
+<li><p>否则，如果依赖文件有任何 <code class="docutils literal notranslate"><span class="pre">RUNPATH</span></code> 条目，且库存在于这些条目之一中，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果库存在于 <code class="docutils literal notranslate"><span class="pre">ldconfig</span></code> 列出的目录之一中，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果库存在于 <code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span></code> 条目之一中，则依赖项解析为该文件。在这种情况下，会发出警告，因为在 <code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span></code> 中找到文件意味着依赖文件不完整（它没有列出所有从中提取依赖项的目录）。</p></li>
+<li><p>否则，依赖项未解析。</p></li>
+</ol>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span>在处理给定的根 ELF 文件（可执行文件或共享对象）时，每个遇到的库文件名最多解析一次。如果在依赖树中再次遇到相同的库文件名，则采用原始解析结果。这种行为更接近 Linux 动态加载程序的行为。</p>
+</div>
+<p>在 Windows 平台上，库解析工作原理如下：</p>
+<ol class="arabic">
+<li><p>DLL 依赖项名称转换为小写以匹配过滤器。Windows DLL 名称不区分大小写，某些链接器会混淆 DLL 依赖项名称的大小写。然而，这使得 <code class="docutils literal notranslate"><span class="pre">PRE_INCLUDE_REGEXES</span></code>、<code class="docutils literal notranslate"><span class="pre">PRE_EXCLUDE_REGEXES</span></code>、<code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span></code> 更难正确过滤 DLL 名称——每个正则表达式都必须同时检查大写和小写字母。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">GET_RUNTIME_DEPENDENCIES</span>
+<span class="w">  </span><span class="c"># ...</span>
+<span class="w">  </span><span class="no">PRE_INCLUDE_REGEXES</span><span class="w"> </span><span class="s">"^[Mm][Yy][Ll][Ii][Bb][Rr][Aa][Rr][Yy]\\.[Dd][Ll][Ll]$"</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将 DLL 名称转换为小写允许正则表达式仅匹配小写名称，从而简化了正则表达式。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">file(</span><span class="no">GET_RUNTIME_DEPENDENCIES</span>
+<span class="w">  </span><span class="c"># ...</span>
+<span class="w">  </span><span class="no">PRE_INCLUDE_REGEXES</span><span class="w"> </span><span class="s">"^mylibrary\\.dll$"</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此正则表达式将匹配 <code class="docutils literal notranslate"><span class="pre">mylibrary.dll</span></code>，无论其在磁盘上或依赖文件中的大小写如何。（例如，它将匹配 <code class="docutils literal notranslate"><span class="pre">mylibrary.dll</span></code>、<code class="docutils literal notranslate"><span class="pre">MyLibrary.dll</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MYLIBRARY.DLL</span></code>。）</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更：</span>仅在匹配过滤器时才转换为小写。过滤后报告的结果会保留磁盘上找到的每个 DLL 名称的大小写（如果已解析），否则按依赖二进制文件的引用方式显示。</p>
+<p>在 CMake 3.27 之前，报告结果时 DLL 文件名为小写，但目录部分保留了原始大小写。</p>
+</div>
+</li>
+<li><p>（<strong>尚未实现</strong>）如果依赖文件是 Windows Store 应用，且依赖项已在应用程序的包清单中列为依赖项，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果库与依赖文件存在于同一目录中，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果库存在于操作系统的 <code class="docutils literal notranslate"><span class="pre">system32</span></code> 目录或 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 目录中（按顺序），则依赖项解析为该文件。</p></li>
+<li><p>否则，如果库存在于 <code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span></code> 指定的目录之一中（按列出顺序），则依赖项解析为该文件。在这种情况下，不会发出警告，因为搜索其他目录是 Windows 库解析的正常部分。</p></li>
+<li><p>否则，依赖项未解析。</p></li>
+</ol>
+<p>在 Apple 平台上，库解析工作原理如下：</p>
+<ol class="arabic simple">
+<li><p>如果依赖项以 <code class="docutils literal notranslate"><span class="pre">@executable_path/</span></code> 开头，且正在解析 <code class="docutils literal notranslate"><span class="pre">EXECUTABLES</span></code> 参数，且将 <code class="docutils literal notranslate"><span class="pre">@executable_path/</span></code> 替换为可执行文件目录后生成了现有文件，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果依赖项以 <code class="docutils literal notranslate"><span class="pre">@executable_path/</span></code> 开头，且存在 <code class="docutils literal notranslate"><span class="pre">BUNDLE_EXECUTABLE</span></code> 参数，且将 <code class="docutils literal notranslate"><span class="pre">@executable_path/</span></code> 替换为包可执行文件目录后生成了现有文件，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果依赖项以 <code class="docutils literal notranslate"><span class="pre">@loader_path/</span></code> 开头，且将 <code class="docutils literal notranslate"><span class="pre">@loader_path/</span></code> 替换为依赖文件目录后生成了现有文件，则依赖项解析为该文件。</p></li>
+<li><p>否则，如果依赖项以 <code class="docutils literal notranslate"><span class="pre">@rpath/</span></code> 开头，且将 <code class="docutils literal notranslate"><span class="pre">@rpath/</span></code> 替换为依赖文件的 <code class="docutils literal notranslate"><span class="pre">RPATH</span></code> 条目之一后生成了现有文件，则依赖项解析为该文件。请注意，以 <code class="docutils literal notranslate"><span class="pre">@executable_path/</span></code> 或 <code class="docutils literal notranslate"><span class="pre">@loader_path/</span></code> 开头的 <code class="docutils literal notranslate"><span class="pre">RPATH</span></code> 条目也会将这些项替换为适当的路径。</p></li>
+<li><p>否则，如果依赖项是存在的绝对文件路径，则依赖项解析为该文件。</p></li>
+<li><p>否则，依赖项未解析。</p></li>
+</ol>
+<p>此函数接受多个变量，用于确定用于依赖项解析的工具：</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM">
+<span class="sig-name descname"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM</span></span><a class="headerlink" href="file.html#variable:CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM" title="Link to this definition">¶</a></dt>
+<dd><p>确定文件构建所针对的操作系统和可执行格式。它可以是以下几个值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">linux+elf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">windows+pe</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">macos+macho</span></code></p></li>
+</ul>
+<p>如果未指定此变量，则通过系统内省自动确定。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL">
+<span class="sig-name descname"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL</span></span><a class="headerlink" href="file.html#variable:CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL" title="Link to this definition">¶</a></dt>
+<dd><p>确定用于依赖项解析的工具。根据 <span class="target" id="index-0-variable:CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM"></span><a class="reference internal" href="file.html#variable:CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM" title="CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM</span></code></a> 的值，它可以是以下几个值之一：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">linux+elf</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">objdump</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">windows+pe</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">objdump</span></code> 或 <code class="docutils literal notranslate"><span class="pre">dumpbin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">macos+macho</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">otool</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>如果未指定此变量，则通过系统内省自动确定。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CMAKE_GET_RUNTIME_DEPENDENCIES_COMMAND">
+<span class="sig-name descname"><span class="pre">CMAKE_GET_RUNTIME_DEPENDENCIES_COMMAND</span></span><a class="headerlink" href="file.html#variable:CMAKE_GET_RUNTIME_DEPENDENCIES_COMMAND" title="Link to this definition">¶</a></dt>
+<dd><p>确定用于依赖项解析的工具的路径。这是 <code class="docutils literal notranslate"><span class="pre">objdump</span></code>、<code class="docutils literal notranslate"><span class="pre">dumpbin</span></code> 或 <code class="docutils literal notranslate"><span class="pre">otool</span></code> 的实际路径。</p>
+<p>如果未指定此变量，则根据 <span class="target" id="index-0-variable:CMAKE_OBJDUMP"></span><a class="reference internal" href="../variable/CMAKE_OBJDUMP.html#variable:CMAKE_OBJDUMP" title="CMAKE_OBJDUMP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJDUMP</span></code></a> 变量（如果已设置）确定，否则通过系统内省确定。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增：</span>如果已设置，使用 <span class="target" id="index-1-variable:CMAKE_OBJDUMP"></span><a class="reference internal" href="../variable/CMAKE_OBJDUMP.html#variable:CMAKE_OBJDUMP" title="CMAKE_OBJDUMP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJDUMP</span></code></a>。</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="file.html#">file</a><ul>
+<li><a class="reference internal" href="file.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="file.html#reading">读取</a></li>
+<li><a class="reference internal" href="file.html#writing">写入</a></li>
+<li><a class="reference internal" href="file.html#filesystem">文件系统</a></li>
+<li><a class="reference internal" href="file.html#path-conversion">路径转换</a></li>
+<li><a class="reference internal" href="file.html#transfer">传输</a></li>
+<li><a class="reference internal" href="file.html#locking">锁定</a></li>
+<li><a class="reference internal" href="file.html#archiving">归档</a></li>
+<li><a class="reference internal" href="file.html#handling-runtime-binaries">处理运行时二进制文件</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="execute_process.html" title="上一章">execute_process</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="find_file.html" title="下一章">find_file</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/file.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="find_file.html" title="find_file">下一页</a> |</li>
+        <li class="right">
+          <a href="execute_process.html" title="execute_process">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="file.html">file</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

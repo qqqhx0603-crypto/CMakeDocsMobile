@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake_policy — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake_policy.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="configure_file" href="configure_file.html" />
+    <link rel="prev" title="cmake_pkg_config" href="cmake_pkg_config.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="configure_file.html" title="configure_file" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_pkg_config.html" title="cmake_pkg_config" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_policy.html">cmake_policy</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-policy">
+<span id="command:cmake_policy"></span><h1>cmake_policy<a class="headerlink" href="cmake_policy.html#cmake-policy" title="链接到此标题">¶</a></h1>
+<p>管理 CMake 策略设置。有关已定义策略的信息，请参阅 <span class="target" id="index-0-manual:cmake-policies(7)"></span><a class="reference internal" href="../manual/cmake-policies.7.html#manual:cmake-policies(7)" title="cmake-policies(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-policies(7)</span></code></a> 手册。</p>
+<p>随着 CMake 的发展，有时为了修复错误或改进现有功能的实现，必须改变现有的行为。CMake 策略机制旨在帮助确保现有项目在 CMake 引入行为变更的新版本中仍能构建。每个新策略（行为变更）都会被赋予一个 <code class="docutils literal notranslate"><span class="pre">CMP&lt;NNNN&gt;</span></code> 形式的标识符，其中 <code class="docutils literal notranslate"><span class="pre">&lt;NNNN&gt;</span></code> 是一个整数索引。与每个策略关联的文档描述了 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>（旧）和 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>（新）行为以及引入该策略的原因。项目可以设置每个策略以选择期望的行为。当 CMake 需要知道使用哪种行为时，它会检查项目指定的设置。如果没有任何设置，则默认采用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为，并产生一条警告，要求设置该策略。</p>
+<section id="setting-policies-by-cmake-version">
+<h2>按 CMake 版本设置策略<a class="headerlink" href="cmake_policy.html#setting-policies-by-cmake-version" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cmake_policy</span></code> 命令用于将策略设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。虽然支持单独设置策略，但我们鼓励项目根据 CMake 版本来设置策略。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="version">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_policy(</span></span><span class="no"><span class="pre">VERSION</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;min&gt;</span></span><span class="p"><span class="pre">[...</span></span><span class="nv"><span class="pre">&lt;policy_max&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_policy.html#version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增： </span>可选的 <code class="docutils literal notranslate"><span class="pre">&lt;policy_max&gt;</span></code> 版本。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 和可选的 <code class="docutils literal notranslate"><span class="pre">&lt;policy_max&gt;</span></code> 均为 <code class="docutils literal notranslate"><span class="pre">major.minor[.patch[.tweak]]</span></code> 形式的 CMake 版本号，且 <code class="docutils literal notranslate"><span class="pre">...</span></code> 是字面量。<code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 版本必须至少为 <code class="docutils literal notranslate"><span class="pre">2.4</span></code>，且不得超过运行中的 CMake 版本。<code class="docutils literal notranslate"><span class="pre">&lt;policy_max&gt;</span></code> 版本（如果指定）必须至少为 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 版本，但可以超过运行中的 CMake 版本。如果运行的 CMake 版本低于 3.12，额外的 <code class="docutils literal notranslate"><span class="pre">...</span></code> 点将被视为版本组件分隔符，导致 <code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> 部分被忽略，并保留 3.12 版本之前基于 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 的策略行为。</p>
+<p>这指定了当前的 CMake 代码是为给定的 CMake 版本范围 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;[...&lt;policy_max&gt;]</span></code> 编写的。它将“策略版本”设置为：</p>
+<ul class="simple">
+<li><p>如果指定了范围的 <code class="docutils literal notranslate"><span class="pre">&lt;policy_max&gt;</span></code> 版本，则设置为该版本；或者</p></li>
+<li><p>设置为 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 版本；或者</p></li>
+<li><p>如果 <span class="target" id="index-0-variable:CMAKE_POLICY_VERSION_MINIMUM"></span><a class="reference internal" href="../variable/CMAKE_POLICY_VERSION_MINIMUM.html#variable:CMAKE_POLICY_VERSION_MINIMUM" title="CMAKE_POLICY_VERSION_MINIMUM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POLICY_VERSION_MINIMUM</span></code></a> 变量的值高于前两个版本，则设置为该变量值。</p></li>
+</ul>
+<p>策略版本有效地请求了给定 CMake 版本所偏好的行为，并告知较新的 CMake 版本对它们的新策略发出警告。所有运行中的 CMake 版本已知且在策略版本或更早版本中引入的策略都将被设置为使用 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。在后续版本中引入的所有策略都将保持未设置状态（除非 <span class="target" id="index-0-variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>"></span><a class="reference internal" href="../variable/CMAKE_POLICY_DEFAULT_CMPNNNN.html#variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>" title="CMAKE_POLICY_DEFAULT_CMP<NNNN>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POLICY_DEFAULT_CMP&lt;NNNN&gt;</span></code></a> 变量设置了默认值）。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> <em>并不</em>意味着禁止使用更高版本的 CMake。它仅指定了该项目或模块已进行过主动更新和维护的最高 CMake 版本。</p>
+</div>
+<p>请注意，<span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 命令也会隐式调用 <code class="docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.0 版本变更： </span>移除了对 3.5 之前版本 CMake 的兼容性。在 CMake 4.0 及以上版本中，调用未指定至少 3.5 作为其策略版本（可通过 <code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> 可选指定）的 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 或 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 将产生错误。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更： </span>弃用了对 3.10 之前版本 CMake 的兼容性。在 CMake 3.31 及以上版本中，调用未指定至少 3.10 作为其策略版本（可通过 <code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> 可选指定）的 <span class="target" id="index-2-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 或 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 将产生弃用警告。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更： </span>弃用了对 3.5 之前版本 CMake 的兼容性。在 CMake 3.27 及以上版本中，调用未指定至少 3.5 作为其策略版本（可通过 <code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> 可选指定）的 <span class="target" id="index-3-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 或 <span class="target" id="index-2-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 将产生弃用警告。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.19 版本变更： </span>弃用了对 2.8.12 之前版本 CMake 的兼容性。在 CMake 3.19 及以上版本中，调用未指定至少 2.8.12 作为其策略版本（可通过 <code class="docutils literal notranslate"><span class="pre">...&lt;policy_max&gt;</span></code> 可选指定）的 <span class="target" id="index-4-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 或 <span class="target" id="index-3-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 将产生弃用警告。</p>
+</div>
+</section>
+<section id="setting-policies-explicitly">
+<h2>显式设置策略<a class="headerlink" href="cmake_policy.html#setting-policies-explicitly" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="set">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_policy(</span></span><span class="no"><span class="pre">SET</span></span><span class="w"> </span><span class="no"><span class="pre">CMP</span></span><span class="nv"><span class="pre">&lt;NNNN&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">NEW</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">OLD</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_policy.html#set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>告知 CMake 对给定策略使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。依赖给定策略旧行为的项目可以通过将策略状态设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 来静默策略警告。或者，也可以修改项目以适应新行为，并将策略状态设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+<section id="checking-policy-settings">
+<h2>检查策略设置<a class="headerlink" href="cmake_policy.html#checking-policy-settings" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="get">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_policy(</span></span><span class="no"><span class="pre">GET</span></span><span class="w"> </span><span class="no"><span class="pre">CMP</span></span><span class="nv"><span class="pre">&lt;NNNN&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_policy.html#get" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>检查给定策略是否设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。输出 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的值将为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>（如果已设置），否则为空。</p>
+</section>
+<section id="cmake-policy-stack">
+<h2>CMake 策略栈<a class="headerlink" href="cmake_policy.html#cmake-policy-stack" title="链接到此标题">¶</a></h2>
+<p>CMake 将策略设置保存在一个栈上，因此 <code class="docutils literal notranslate"><span class="pre">cmake_policy</span></code> 命令所做的更改仅影响栈顶。每个子目录都会自动管理策略栈上的一个新条目，以保护其父级和同级目录。CMake 还为通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 和 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令加载的脚本管理一个新条目（除非调用时带有 <code class="docutils literal notranslate"><span class="pre">NO_POLICY_SCOPE</span></code> 选项，另请参阅策略 <span class="target" id="index-0-policy:CMP0011"></span><a class="reference internal" href="../policy/CMP0011.html#policy:CMP0011" title="CMP0011"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0011</span></code></a>）。<code class="docutils literal notranslate"><span class="pre">cmake_policy</span></code> 命令提供了一个用于管理策略栈上自定义条目的接口。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="push">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_policy(</span></span><span class="no"><span class="pre">PUSH</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_policy.html#push" title="Link to this definition">¶</a></dt>
+<dd><p>在策略栈上创建一个新条目。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="pop">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_policy(</span></span><span class="no"><span class="pre">POP</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_policy.html#pop" title="Link to this definition">¶</a></dt>
+<dd><p>移除由 <code class="docutils literal notranslate"><span class="pre">cmake_policy(PUSH)</span></code> 创建的最后一个策略栈条目。</p>
+</dd></dl>
+
+<p>每个 <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> 必须有一个匹配的 <code class="docutils literal notranslate"><span class="pre">POP</span></code> 以清除任何更改。这对于对策略设置进行临时更改非常有用。<span class="target" id="index-5-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a>、<span class="target" id="index-4-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 或 <span class="target" id="index-5-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#set" title="cmake_policy(set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(SET)</span></code></a> 命令的调用仅影响当前策略栈的栈顶。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.25 版本新增： </span><span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block(scope_for policies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block(SCOPE_FOR</span> <span class="pre">POLICIES)</span></code></a> 命令提供了一种更灵活、更安全的方式来管理策略栈。弹出操作会在离开块作用域时自动执行，因此无需在每个 <span class="target" id="index-0-command:return"></span><a class="reference internal" href="return.html#command:return" title="return"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">return()</span></code></a> 之前调用 <span class="target" id="index-6-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#pop" title="cmake_policy(pop)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(POP)</span></code></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># stack management with cmake_policy()</span>
+<span class="nf">function(</span><span class="nb">my_func</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">PUSH</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if</span> <span class="nf">(</span><span class="nv">&lt;cond1&gt;</span><span class="nf">)</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="nf">cmake_policy(</span><span class="no">POP</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">return()</span>
+<span class="w">  </span><span class="nf">elseif(</span><span class="nv">&lt;cond2&gt;</span><span class="nf">)</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="nf">cmake_policy(</span><span class="no">POP</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">return()</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">POP</span><span class="nf">)</span>
+<span class="nf">endfunction()</span>
+
+<span class="c"># stack management with block()/endblock()</span>
+<span class="nf">function(</span><span class="nb">my_func</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">block(</span><span class="no">SCOPE_FOR</span><span class="w"> </span><span class="no">POLICIES</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">if</span> <span class="nf">(</span><span class="nv">&lt;cond1&gt;</span><span class="nf">)</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="nf">return()</span>
+<span class="w">    </span><span class="nf">elseif(</span><span class="nv">&lt;cond2&gt;</span><span class="nf">)</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">      </span><span class="nf">return()</span>
+<span class="w">    </span><span class="nf">endif()</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">  </span><span class="nf">endblock()</span>
+<span class="nf">endfunction()</span>
+</pre></div>
+</div>
+</div>
+<p>通过 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 和 <span class="target" id="index-0-command:macro"></span><a class="reference internal" href="macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a> 命令创建的命令会在它们被创建时记录策略设置，并在它们被调用时使用这些预先记录的策略。如果函数或宏实现设置了策略，这些更改会自动向上传播至调用者，直到它们到达最近的嵌套策略栈条目。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="cmake_policy.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-6-command:cmake_minimum_required"></span><a class="reference internal" href="cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake_policy.html#">cmake_policy</a><ul>
+<li><a class="reference internal" href="cmake_policy.html#setting-policies-by-cmake-version">按 CMake 版本设置策略</a></li>
+<li><a class="reference internal" href="cmake_policy.html#setting-policies-explicitly">显式设置策略</a></li>
+<li><a class="reference internal" href="cmake_policy.html#checking-policy-settings">检查策略设置</a></li>
+<li><a class="reference internal" href="cmake_policy.html#cmake-policy-stack">CMake 策略栈</a></li>
+<li><a class="reference internal" href="cmake_policy.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake_pkg_config.html" title="上一章">cmake_pkg_config</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="configure_file.html" title="下一章">configure_file</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/cmake_policy.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="configure_file.html" title="configure_file">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_pkg_config.html" title="cmake_pkg_config">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_policy.html">cmake_policy</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

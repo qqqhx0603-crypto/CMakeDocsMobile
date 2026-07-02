@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckPIESupported — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckPIESupported.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckPrototypeDefinition" href="CheckPrototypeDefinition.html" />
+    <link rel="prev" title="CheckOBJCXXSourceRuns" href="CheckOBJCXXSourceRuns.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckPrototypeDefinition.html" title="CheckPrototypeDefinition" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckOBJCXXSourceRuns.html" title="CheckOBJCXXSourceRuns" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckPIESupported.html">CheckPIESupported</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checkpiesupported">
+<span id="module:CheckPIESupported"></span><h1>CheckPIESupported<a class="headerlink" href="CheckPIESupported.html#checkpiesupported" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>此模块提供了一个命令，用于检查链接器是否支持可执行文件的地址无关代码（PIE）或非地址无关代码（NO_PIE）。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckPIESupported</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>当设置 <span class="target" id="index-0-prop_tgt:POSITION_INDEPENDENT_CODE"></span><a class="reference internal" href="../prop_tgt/POSITION_INDEPENDENT_CODE.html#prop_tgt:POSITION_INDEPENDENT_CODE" title="POSITION_INDEPENDENT_CODE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code></a> 目标属性时，无论是否使用此模块，在构建库对象时都会添加与 PIC 相关的编译和链接选项，在构建可执行目标对象时会添加与 PIE 相关的编译选项。使用此模块可以确保可执行文件的 <code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性在链接时也能被遵循。</p>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckPIESupported.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_pie_supported">
+<span class="sig-name descname"><span class="pre">check_pie_supported</span></span><a class="headerlink" href="CheckPIESupported.html#command:check_pie_supported" title="Link to this definition">¶</a></dt>
+<dd><p>检查 PIE/NO_PIE 支持情况，并准备所有可执行文件以启用链接时 PIE 选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_pie_supported(</span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;output&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">LANGUAGES</span><span class="w"> </span><span class="nv">&lt;langs&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>选项包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span> <span class="pre">&lt;output&gt;</span></code></dt><dd><p>将任何错误详情设置到 <code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code> 变量中。如果由于使用了之前调用的缓存结果而跳过了检查，即使之前的调用中存在错误，输出也将为空。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span> <span class="pre">&lt;langs&gt;...</span></code></dt><dd><p>检查指定每种语言所使用的链接器。如果未提供此选项，则该命令会检查所有已启用的语言。</p>
+<p>支持 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.23 版本新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">OBJC</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJCXX</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HIP</span></code>。</p>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>要使用 <code class="docutils literal notranslate"><span class="pre">check_pie_supported()</span></code>，必须将策略 <span class="target" id="index-0-policy:CMP0083"></span><a class="reference internal" href="../policy/CMP0083.html#policy:CMP0083" title="CMP0083"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0083</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>；否则将发生致命错误。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2>变量<a class="headerlink" href="CheckPIESupported.html#variables" title="此标题的链接">¶</a></h2>
+<p>对于检查的每种语言，<code class="docutils literal notranslate"><span class="pre">check_pie_supported()</span></code> 命令都会定义两个布尔缓存变量：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_&lt;lang&gt;_LINK_PIE_SUPPORTED</span></code></dt><dd><p>如果链接器支持 <code class="docutils literal notranslate"><span class="pre">PIE</span></code>，则设置为 true，否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_&lt;lang&gt;_LINK_NO_PIE_SUPPORTED</span></code></dt><dd><p>如果链接器支持 <code class="docutils literal notranslate"><span class="pre">NO_PIE</span></code>，则设置为 true，否则为 false。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckPIESupported.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>要在链接时也为可执行目标启用 PIE，请引入此模块，并在设置 <code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性之前调用 <code class="docutils literal notranslate"><span class="pre">check_pie_supported()</span></code>。这将确定每种被检查语言的链接器是否支持 PIE 相关的链接选项。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">CheckPIESupported</span><span class="nf">)</span>
+<span class="nf">check_pie_supported()</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>由于并非所有链接器都需要或支持 PIE 相关的链接选项（例如 <code class="docutils literal notranslate"><span class="pre">MSVC</span></code>），获取任何错误消息对于日志记录可能很有用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">CHECK_START</span><span class="w"> </span><span class="s">"Checking for C linker PIE support"</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">CheckPIESupported</span><span class="nf">)</span>
+<span class="nf">check_pie_supported(</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nb">output</span><span class="w"> </span><span class="no">LANGUAGES</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">CMAKE_C_LINK_PIE_SUPPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">CHECK_PASS</span><span class="w"> </span><span class="s">"yes"</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">CHECK_FAIL</span><span class="w"> </span><span class="s">"no"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">VERBOSE</span><span class="w"> </span><span class="s">"PIE is not supported at link time:\n${output}"</span>
+<span class="w">                  </span><span class="s">"PIE link options will not be passed to linker."</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>在不使用此模块的情况下对可执行目标设置 <code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性，将设置 PIE 相关的编译选项，但不会设置 PIE 相关的链接选项，这在某些情况下可能是不够的。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckPIESupported.html#">CheckPIESupported</a><ul>
+<li><a class="reference internal" href="CheckPIESupported.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckPIESupported.html#variables">变量</a></li>
+<li><a class="reference internal" href="CheckPIESupported.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckOBJCXXSourceRuns.html" title="上一章">CheckOBJCXXSourceRuns</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckPrototypeDefinition.html" title="下一章">CheckPrototypeDefinition</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckPIESupported.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckPrototypeDefinition.html" title="CheckPrototypeDefinition">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckOBJCXXSourceRuns.html" title="CheckOBJCXXSourceRuns">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckPIESupported.html">CheckPIESupported</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

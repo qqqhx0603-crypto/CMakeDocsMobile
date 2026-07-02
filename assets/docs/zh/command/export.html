@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>export — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="export.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="fltk_wrap_ui" href="fltk_wrap_ui.html" />
+    <link rel="prev" title="enable_testing" href="enable_testing.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="fltk_wrap_ui.html" title="fltk_wrap_ui" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="enable_testing.html" title="enable_testing" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="export.html">export</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="export">
+<span id="command:export"></span><h1>export<a class="headerlink" href="export.html#export" title="链接到此标题">¶</a></h1>
+<p>导出目标或包，以便外部项目可以直接从当前项目的构建树中使用它们，而无需进行安装。</p>
+<p>请参阅 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令以从安装树中导出目标。</p>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="export.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block">export(<a class="reference internal" href="export.html#targets">TARGETS</a> &lt;target&gt;... [...])
+export(<a class="reference internal" href="export.html#export">EXPORT</a> &lt;export-name&gt; [...])
+export(<a class="reference internal" href="export.html#package">PACKAGE</a> &lt;PackageName&gt;)
+export(<a class="reference internal" href="export.html#setup">SETUP</a> &lt;export-name&gt; [...])
+export(<a class="reference internal" href="export.html#package-info">PACKAGE_INFO</a> &lt;package-name&gt; [...])
+export(<a class="reference internal" href="export.html#sbom">SBOM</a> &lt;sbom-name&gt; [...])</pre>
+</section>
+<section id="exporting-targets">
+<h2>导出目标<a class="headerlink" href="export.html#exporting-targets" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="targets">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">TARGETS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;target&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="export.html#targets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;namespace&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">APPEND</span><span class="p">]</span><span class="w"> </span><span class="no">FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">EXPORT_LINK_INTERFACE_LIBRARIES</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">CXX_MODULES_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>创建一个文件 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>，该文件可被外部项目包含，以从当前项目的构建树中导入由 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;...</span></code> 命名的目标。这在交叉编译期间非常有用，例如在一个项目中构建可在宿主平台上运行的实用工具可执行文件，然后将其导入到为目标平台编译的另一个项目中。</p>
+<p>此命令创建的文件特定于构建树，永远不应被安装。请参阅 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令以从安装树中导出目标。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span> <span class="pre">&lt;namespace&gt;</span></code></dt><dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;</span></code> 字符串前置到写入文件的所有目标名称中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">APPEND</span></code></dt><dd><p>追加到文件而不是覆盖它。这可用于将多个目标增量导出到同一个文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_LINK_INTERFACE_LIBRARIES</span></code></dt><dd><p>即使在策略 <span class="target" id="index-0-policy:CMP0022"></span><a class="reference internal" href="../policy/CMP0022.html#policy:CMP0022" title="CMP0022"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0022</span></code></a> 设置为 NEW 时，也将名为 <code class="docutils literal notranslate"><span class="pre">(IMPORTED_)?LINK_INTERFACE_LIBRARIES(_&lt;CONFIG&gt;)?</span></code> 的属性内容包含在导出中。这对于支持使用早于 2.8.12 版本的 CMake 的使用者非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CXX_MODULES_DIRECTORY</span> <span class="pre">&lt;directory&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>将 C++ 模块属性导出到给定目录下的文件中。每个文件将根据目标的导出名称（不带任何命名空间）命名。这些文件将自动从导出文件中包含。</p>
+</dd>
+</dl>
+<p>此签名要求所有目标必须显式列出。如果库目标包含在导出中，但其链接的目标未包含在内，则其行为是不确定的。请参阅 <span class="target" id="index-0-command:export"></span><a class="reference internal" href="export.html#command:export" title="export(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(EXPORT)</span></code></a> 签名，以像 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 从安装树导出一样，自动从构建树导出相同的目标。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果 <span class="target" id="index-0-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 中列出了多个架构，<span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 下的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#object-libraries"><span class="std std-ref">对象库 (Object Libraries)</span></a> 具有特殊处理。在这种情况下，它们将被导出为 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#interface-libraries"><span class="std std-ref">接口库 (Interface Libraries)</span></a>，且客户端无法使用目标文件。这足以满足其他在实现中链接到这些对象库的目标的传递使用需求。</p>
+</div>
+<p>此命令从构建树中导出所有 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#build-configurations"><span class="std std-ref">构建配置 (Build Configurations)</span></a>。请参阅 <span class="target" id="index-0-variable:CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_MAP_IMPORTED_CONFIG_CONFIG.html#variable:CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>" title="CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a> 变量，以将从属项目的配置映射到导出的配置。</p>
+<section id="exporting-targets-to-android-mk">
+<h3>将目标导出到 Android.mk<a class="headerlink" href="export.html#exporting-targets-to-android-mk" title="链接到此标题">¶</a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span><span class="w"> </span><span class="no">ANDROID_MK</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>此签名通过创建引用预构建目标的 <code class="docutils literal notranslate"><span class="pre">Android.mk</span></code> 文件，将 CMake 构建的目标导出到 android ndk 构建系统。Android NDK 支持使用预构建库（静态库和共享库）。这允许 CMake 构建项目的库，并使它们可供 ndk 构建系统使用，同时完整包含使用这些库所需的传递依赖项、包含标志和定义。该签名接受一个目标列表，并将它们放入指定的 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Android.mk</span></code> 文件中。此签名仅在所有给定目标的策略 <span class="target" id="index-1-policy:CMP0022"></span><a class="reference internal" href="../policy/CMP0022.html#policy:CMP0022" title="CMP0022"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0022</span></code></a> 为 NEW 时才能使用。如果其中一个目标将该策略设置为 OLD，则会报错。</p>
+</section>
+</section>
+<section id="exporting-targets-matching-install-export">
+<h2>导出匹配 install(EXPORT) 的目标<a class="headerlink" href="export.html#exporting-targets-matching-install-export" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">EXPORT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;export-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;namespace&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">CXX_MODULES_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXPORT_PACKAGE_DEPENDENCIES</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>创建一个文件 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>，该文件可被外部项目包含，以从当前项目的构建树中导入目标。这与 <span class="target" id="index-1-command:export"></span><a class="reference internal" href="export.html#targets" title="export(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(TARGETS)</span></code></a> 签名相同，只是目标无需显式列出。相反，它导出与安装导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 关联的目标。目标安装可以使用 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 选项与导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 关联。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_PACKAGE_DEPENDENCIES</span></code></dt><dd><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>实验性。受 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_EXPORT_PACKAGE_DEPENDENCIES</span></code> 控制。</p>
+</div>
+<p>指定应导出 <span class="target" id="index-0-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用。有关其工作原理的详细信息，请参阅 <span class="target" id="index-4-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a>。</p>
+</dd>
+</dl>
+<section id="exporting-targets-to-the-cps">
+<h3>将目标导出到通用包规范 (Common Package Specification)<a class="headerlink" href="export.html#exporting-targets-to-the-cps" title="链接到此标题">¶</a></h3>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="package-info">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">PACKAGE_INFO</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;package-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="export.html#package-info" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">PACKAGE_INFO</span><span class="w"> </span><span class="nv">&lt;package-name&gt;</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span>
+<span class="w">       </span><span class="p">[</span><span class="no">PROJECT</span><span class="w"> </span><span class="nv">&lt;project-name&gt;</span><span class="p">|</span><span class="no">NO_PROJECT_METADATA</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">APPENDIX</span><span class="w"> </span><span class="nv">&lt;appendix-name&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">LOWER_CASE_FILE</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPAT_VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">VERSION_SCHEMA</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="p">]]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">DEFAULT_TARGETS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">DEFAULT_CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">DEFAULT_LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;description-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">HOMEPAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">CXX_MODULES_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>创建一个符合 <a class="reference external" href="https://cps-org.github.io/cps/">通用包规范 (Common Package Specification)</a> 的文件，该文件可被外部项目包含，以从当前项目的构建树中导入由 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;...</span></code> 命名的目标。请参阅 <span class="target" id="index-5-command:install"></span><a class="reference internal" href="install.html#package-info" title="install(package_info)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PACKAGE_INFO)</span></code></a> 命令以从安装树中导出目标。导入的目标隐式位于 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;</span></code> 命名空间中。</p>
+<p>默认文件名是 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;[-&lt;appendix-name&gt;].cps</span></code>。如果给出了 <code class="docutils literal notranslate"><span class="pre">LOWER_CASE_FILE</span></code> 选项，文件名将使用转换为小写的包名。文件会写入当前构建目录下的 <code class="docutils literal notranslate"><span class="pre">cps/&lt;package-name&gt;</span></code> 子目录。</p>
+<p>有关其他选项的描述，请参阅 <span class="target" id="index-6-command:install"></span><a class="reference internal" href="install.html#package-info" title="install(package_info)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PACKAGE_INFO)</span></code></a>。</p>
+</section>
+<section id="exporting-software-bill-of-materials-sbom-documents">
+<h3>导出软件物料清单 (SBOM) 文档<a class="headerlink" href="export.html#exporting-software-bill-of-materials-sbom-documents" title="链接到此标题">¶</a></h3>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="sbom">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">SBOM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;sbom-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="export.html#sbom" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">SBOM</span><span class="w"> </span><span class="nv">&lt;sbom-name&gt;</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span>
+<span class="w">       </span><span class="p">[</span><span class="no">FORMAT</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">PROJECT</span><span class="w"> </span><span class="nv">&lt;project-name&gt;</span><span class="p">|</span><span class="no">NO_PROJECT_METADATA</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;major&gt;</span><span class="p">[.</span><span class="nv">&lt;minor&gt;</span><span class="p">[.</span><span class="nv">&lt;patch&gt;</span><span class="p">[.</span><span class="nv">&lt;tweak&gt;</span><span class="p">]]]]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;description-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">HOMEPAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">PACKAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>实验性功能。受 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_GENERATE_SBOM</span></code> 控制。</p>
+</div>
+<p>生成一份软件物料清单 (SBOM) 文档，描述导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 中的目标及其在构建树中的依赖项。文件会写入当前构建目录下的 <code class="docutils literal notranslate"><span class="pre">sbom/&lt;sbom-name&gt;</span></code> 子目录。</p>
+<p>有关支持的 SBOM 格式和其它选项的描述，请参阅 <span class="target" id="index-7-command:install"></span><a class="reference internal" href="install.html#sbom" title="install(sbom)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SBOM)</span></code></a>。</p>
+</section>
+</section>
+<section id="exporting-packages">
+<h2>导出包<a class="headerlink" href="export.html#exporting-packages" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="package">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">PACKAGE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;PackageName&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="export.html#package" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">PACKAGE</span><span class="w"> </span><span class="nv">&lt;PackageName&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将当前的构建目录存储在 CMake 用户包注册表中，以供包 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 使用。<span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令在搜索包 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 时可能会考虑此目录。这有助于从属项目在无需用户干预的情况下找到并使用来自当前项目构建树的包。请注意，此命令创建的包注册表条目仅在使用适用于构建树的包配置文件（<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code>）时才有效。在某些情况下（例如打包或系统级安装），不建议写入用户包注册表。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.1 版本变更: </span>如果启用了 <span class="target" id="index-0-variable:CMAKE_EXPORT_NO_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_NO_PACKAGE_REGISTRY.html#variable:CMAKE_EXPORT_NO_PACKAGE_REGISTRY" title="CMAKE_EXPORT_NO_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_NO_PACKAGE_REGISTRY</span></code></a> 变量，则 <code class="docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code> 命令将不执行任何操作。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.15 版本变更: </span>默认情况下，<code class="docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code> 命令不执行任何操作（请参阅策略 <span class="target" id="index-0-policy:CMP0090"></span><a class="reference internal" href="../policy/CMP0090.html#policy:CMP0090" title="CMP0090"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0090</span></code></a>），因为填充用户包注册表会对源树和构建树之外产生影响。设置 <span class="target" id="index-0-variable:CMAKE_EXPORT_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_PACKAGE_REGISTRY.html#variable:CMAKE_EXPORT_PACKAGE_REGISTRY" title="CMAKE_EXPORT_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_PACKAGE_REGISTRY</span></code></a> 变量以将构建目录添加到 CMake 用户包注册表中。</p>
+</div>
+</section>
+<section id="configuring-exports">
+<h2>配置导出<a class="headerlink" href="export.html#configuring-exports" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="setup">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">export(</span></span><span class="no"><span class="pre">SETUP</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;export-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="export.html#setup" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export(</span><span class="no">SETUP</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span>
+<span class="w">       </span><span class="p">[</span><span class="no">PACKAGE_DEPENDENCY</span><span class="w"> </span><span class="nv">&lt;dep&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="nf">ENABLED</span> <span class="nf">(</span><span class="nv">&lt;bool-true&gt;</span><span class="p">|</span><span class="nv">&lt;bool-false&gt;</span><span class="p">|</span><span class="no">AUTO</span><span class="nf">)</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXTRA_ARGS</span><span class="w"> </span><span class="nv">&lt;args&gt;...</span><span class="p">]</span>
+<span class="w">       </span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span>
+<span class="w">       </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">XCFRAMEWORK_LOCATION</span><span class="w"> </span><span class="nv">&lt;location&gt;</span><span class="p">]</span>
+<span class="w">       </span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span>
+<span class="w">       </span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>配置导出的参数。参数如下：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_DEPENDENCY</span> <span class="pre">&lt;dep&gt;</span></code></dt><dd><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>实验性。受 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_EXPORT_PACKAGE_DEPENDENCIES</span></code> 控制。</p>
+</div>
+<p>指定要配置的包依赖项。这会改变在 <span class="target" id="index-2-command:export"></span><a class="reference internal" href="export.html#command:export" title="export(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(EXPORT)</span></code></a> 和 <span class="target" id="index-8-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 期间写入 <span class="target" id="index-1-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用方式。<code class="docutils literal notranslate"><span class="pre">&lt;dep&gt;</span></code> 是要导出的包的名称。此参数接受以下附加参数：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">ENABLED</span></code></dt><dd><p>手动控制是否导出依赖项。它接受以下值：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;bool-true&gt;</span></code></dt><dd><p>任何 CMake 识别为“真”的值。始终导出该依赖项，即使没有导出的目标依赖于它。这可用于手动将 <span class="target" id="index-2-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用添加到导出中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;bool-false&gt;</span></code></dt><dd><p>任何 CMake 识别为“假”的值。从不导出该依赖项，即使有导出的目标依赖于它。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AUTO</span></code></dt><dd><p>仅当导出的目标依赖于它时，才导出该依赖项。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span> <span class="pre">&lt;args&gt;</span></code></dt><dd><p>指定在 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 参数之后传递给 <span class="target" id="index-3-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 的附加参数。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><p>指定在此导出中配置的目标。此参数接受以下附加参数：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">XCFRAMEWORK_LOCATION</span></code></dt><dd><p>指定包含该目标库的 <code class="docutils literal notranslate"><span class="pre">.xcframework</span></code> 的位置。如果指定，生成的代码将检查 <code class="docutils literal notranslate"><span class="pre">.xcframework</span></code> 是否存在，如果存在，它将使用 <code class="docutils literal notranslate"><span class="pre">.xcframework</span></code> 作为其导入位置，而不是已安装的库。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="export.html#">export</a><ul>
+<li><a class="reference internal" href="export.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="export.html#exporting-targets">导出目标</a><ul>
+<li><a class="reference internal" href="export.html#exporting-targets-to-android-mk">将目标导出到 Android.mk</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="export.html#exporting-targets-matching-install-export">导出匹配 install(EXPORT) 的目标</a><ul>
+<li><a class="reference internal" href="export.html#exporting-targets-to-the-cps">将目标导出到通用包规范</a></li>
+<li><a class="reference internal" href="export.html#exporting-software-bill-of-materials-sbom-documents">导出软件物料清单 (SBOM) 文档</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="export.html#exporting-packages">导出包</a></li>
+<li><a class="reference internal" href="export.html#configuring-exports">配置导出</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="enable_testing.html" title="上一章">enable_testing</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="fltk_wrap_ui.html" title="下一章">fltk_wrap_ui</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/export.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="fltk_wrap_ui.html" title="fltk_wrap_ui">下一页</a> |</li>
+        <li class="right">
+          <a href="enable_testing.html" title="enable_testing">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="export.html">export</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

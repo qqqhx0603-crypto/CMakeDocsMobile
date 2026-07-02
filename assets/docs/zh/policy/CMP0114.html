@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0114 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0114.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0113" href="CMP0113.html" />
+    <link rel="prev" title="CMP0115" href="CMP0115.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0113.html" title="CMP0113" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0115.html" title="CMP0115" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0114.html">CMP0114</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0114">
+<span id="policy:CMP0114"></span><h1>CMP0114<a class="headerlink" href="CMP0114.html#cmp0114" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p><span class="target" id="index-0-module:ExternalProject"></span><a class="reference internal" href="../module/ExternalProject.html#module:ExternalProject" title="ExternalProject"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">ExternalProject</span></code></a> 步骤目标完全采用其步骤。</p>
+<p><span class="target" id="index-0-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code> 选项以及 <span class="target" id="index-0-command:externalproject_add_steptargets"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a> 函数可用于为外部项目的各个步骤创建构建目标。</p>
+<p>在 CMake 3.18 及更低版本中，步骤目标存在一些局限性。</p>
+<ul>
+<li><p>步骤目标总是依赖于由 <span class="target" id="index-1-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项所指定的目标，即使并非所有步骤都需要它们。为了允许在没有这些依赖项的情况下创建步骤目标，可以使用 <span class="target" id="index-2-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">INDEPENDENT_STEP_TARGETS</span></code> 选项，或使用 <span class="target" id="index-1-command:externalproject_add_steptargets"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 选项。然而，添加此类“独立”步骤目标仅对特定步骤（如 <code class="docutils literal notranslate"><span class="pre">download</span></code>、<code class="docutils literal notranslate"><span class="pre">update</span></code> 和 <code class="docutils literal notranslate"><span class="pre">patch</span></code>）才有意义，因为它们不需要任何外部项目的构建依赖项。此外，为依赖于非独立步骤的步骤创建独立步骤目标是没有意义的。此类规则并未强制执行，如果不遵守这些规则，项目可能会生成行为令人困惑且依赖于生成器的构建系统。</p></li>
+<li><p>步骤目标持有其实现步骤的自定义命令的副本，这些副本与 <span class="target" id="index-3-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 所创建的主目标中的副本是相互独立的，且主目标并不依赖于这些步骤目标。在同时驱动主目标和步骤目标的并行构建中，步骤命令的多个副本可能会同时运行并发生竞争。</p>
+<p>此外，在策略 <span class="target" id="index-0-policy:CMP0113"></span><a class="reference internal" href="CMP0113.html#policy:CMP0113" title="CMP0113"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0113</span></code></a> 之前，由 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 生成的步骤目标还包含其步骤所依赖的所有自定义命令。即使在串行构建中，这也可能导致这些步骤被重复执行。</p>
+</li>
+</ul>
+<p>在 CMake 3.19 及更高版本中，<span class="target" id="index-1-module:ExternalProject"></span><a class="reference internal" href="../module/ExternalProject.html#module:ExternalProject" title="ExternalProject"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">ExternalProject</span></code></a> 模块倾向于采用改进后的设计来解决这些问题。</p>
+<ul>
+<li><p>如果某个步骤不依赖于由 <span class="target" id="index-4-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 指定的其他目标，则该步骤被归类为“独立”步骤。预定义的步骤默认会自动进行分类。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">download</span></code>、<code class="docutils literal notranslate"><span class="pre">update</span></code> 和 <code class="docutils literal notranslate"><span class="pre">patch</span></code> 步骤是独立的。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">configure</span></code>、<code class="docutils literal notranslate"><span class="pre">build</span></code>、<code class="docutils literal notranslate"><span class="pre">test</span></code> 和 <code class="docutils literal notranslate"><span class="pre">install</span></code> 步骤则不是。</p></li>
+</ul>
+<p>对于自定义步骤，<span class="target" id="index-0-command:externalproject_add_step"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 命令提供了一个 <code class="docutils literal notranslate"><span class="pre">INDEPENDENT</span></code> 选项来将其标记为独立。如果一个步骤依赖于其他非独立步骤，却将其标记为独立，则是错误的。注意，“独立”一词的这种用法仅指独立于外部目标，与步骤对其他步骤的依赖关系无关。</p>
+</li>
+<li><p>由 <span class="target" id="index-5-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code> 选项或 <span class="target" id="index-1-command:externalproject_add_step"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 函数创建的步骤目标，当且仅当其步骤被标记为独立时，它们才是独立的。不再允许使用 <span class="target" id="index-6-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">INDEPENDENT_STEP_TARGETS</span></code> 选项和 <span class="target" id="index-2-command:externalproject_add_steptargets"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 选项。</p></li>
+<li><p>步骤目标一旦创建，就完全负责持有实现其步骤的自定义命令。<span class="target" id="index-7-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 创建的主目标依赖于这些步骤目标，且步骤目标之间也相互依赖。目标级的依赖关系与每个步骤的自定义命令所使用的文件级依赖关系相匹配。</p>
+<p>当使用 <span class="target" id="index-8-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">UPDATE_DISCONNECTED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">TEST_EXCLUDE_FROM_MAIN</span></code> 选项时，或者对自定义步骤使用 <span class="target" id="index-2-command:externalproject_add_step"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_MAIN</span></code> 选项时，可能会自动创建一些步骤目标。这些目标是必需的，用于存放主目标和断开连接的步骤目标通常依赖的步骤。</p>
+</li>
+</ul>
+<p>策略 <code class="docutils literal notranslate"><span class="pre">CMP0114</span></code> 为尚未更新以适配新行为的项目提供了兼容性。<code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为指使用上述 3.18 及更低版本中记录的行为。<code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为指使用上述 3.19 及更高版本所采用的行为。</p>
+<p>此策略在 CMake 版本 3.19 中引入。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake 会发出警告并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0115.html" title="上一章">CMP0115</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0113.html" title="下一章">CMP0113</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0114.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0113.html" title="CMP0113">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0115.html" title="CMP0115">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0114.html">CMP0114</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

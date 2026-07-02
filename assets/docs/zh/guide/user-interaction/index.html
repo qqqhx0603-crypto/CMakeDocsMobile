@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>用户交互指南 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="index.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Using Dependencies Guide" href="../using-dependencies/index.html" />
+    <link rel="prev" title="Step 12: Packaging Debug and Release" href="../tutorial/Packaging&#32;Debug&#32;and&#32;Release.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="../using-dependencies/index.html" title="Using Dependencies Guide" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../tutorial/Packaging&#32;Debug&#32;and&#32;Release.html" title="Step 12: Packaging Debug and Release" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">用户交互指南</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="user-interaction-guide">
+<span id="guide:User Interaction Guide"></span><h1><a class="toc-backref" href="index.html#id2" role="doc-backlink">用户交互指南</a><a class="headerlink" href="index.html#user-interaction-guide" title="链接至此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html#user-interaction-guide" id="id2">用户交互指南</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#introduction" id="id3">简介</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#command-line-cmake-tool" id="id4">命令行 cmake 工具</a></p></li>
+<li><p><a class="reference internal" href="index.html#cmake-gui-tool" id="id5">cmake-gui 工具</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="index.html#generating-a-buildsystem" id="id6">生成构建系统</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#command-line-environment" id="id7">命令行环境</a></p></li>
+<li><p><a class="reference internal" href="index.html#command-line-g-option" id="id8">命令行 <code class="docutils literal notranslate"><span class="pre">-G</span></code> 选项</a></p></li>
+<li><p><a class="reference internal" href="index.html#choosing-a-generator-in-cmake-gui" id="id9">在 cmake-gui 中选择生成器</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="index.html#setting-build-variables" id="id10">设置构建变量</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#setting-variables-on-the-command-line" id="id11">在命令行设置变量</a></p></li>
+<li><p><a class="reference internal" href="index.html#setting-variables-with-cmake-gui" id="id12">在 cmake-gui 中设置变量</a></p></li>
+<li><p><a class="reference internal" href="index.html#the-cmake-cache" id="id13">CMake 缓存</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="index.html#presets" id="id14">预设</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#using-presets-on-the-command-line" id="id15">在命令行中使用预设</a></p></li>
+<li><p><a class="reference internal" href="index.html#using-presets-in-cmake-gui" id="id16">在 cmake-gui 中使用预设</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="index.html#invoking-the-buildsystem" id="id17">调用构建系统</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#selecting-a-target" id="id18">选择目标</a></p></li>
+<li><p><a class="reference internal" href="index.html#specifying-a-build-program" id="id19">指定构建程序</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="index.html#software-installation" id="id20">软件安装</a></p></li>
+<li><p><a class="reference internal" href="index.html#running-tests" id="id21">运行测试</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="index.html#id3" role="doc-backlink">简介</a><a class="headerlink" href="index.html#introduction" title="此标题的链接">¶</a></h2>
+<p>当软件包提供基于 CMake 的构建系统及其源代码时，软件的使用者需要运行 CMake 用户交互工具来进行构建。</p>
+<p>规范的基于 CMake 的构建系统不会在源码目录中创建任何输出，因此通常建议用户执行源码外构建（out-of-source build）并在该目录中进行构建。首先，必须指示 CMake 生成合适的构建系统，然后用户调用构建工具来处理该生成的构建系统。生成的构建系统特定于生成它的机器，且不可重定向。所提供源码包的每一位使用者都必须使用 CMake 为其各自的系统生成特定的构建系统。</p>
+<p>生成的构建系统通常应被视为只读的。作为主要制品，CMake 文件应当完整地描述构建系统，因此在生成构建系统后，不应有理由手动在 IDE 中填充属性。CMake 会定期重写生成的构建系统，因此用户的修改将会被覆盖。</p>
+<p>本手册中描述的功能和用户界面通过提供 CMake 文件，可供所有基于 CMake 的构建系统使用。</p>
+<p>CMake 工具在处理所提供的 CMake 文件时可能会向用户报告错误，例如报告编译器不受支持、编译器不支持所需的编译选项，或无法找到依赖项。用户必须通过选择不同的编译器、<span class="target" id="index-0-guide:Using Dependencies Guide"></span><a class="reference internal" href="../using-dependencies/index.html#guide:Using Dependencies Guide" title="Using Dependencies Guide"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">安装依赖项</span></code></a>、或指示 CMake 在何处找到它们等方式来解决这些错误。</p>
+<section id="command-line-cmake-tool">
+<h3><a class="toc-backref" href="index.html#id4" role="doc-backlink">命令行 cmake 工具</a><a class="headerlink" href="index.html#command-line-cmake-tool" title="链接至此标题">¶</a></h3>
+<p>对于全新的软件源代码，使用 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 的一种简单而典型的方法是创建一个构建目录并在其中调用 cmake</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>some_software-1.4.2
+<span class="gp">$ </span>mkdir<span class="w"> </span>build
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/opt/the/prefix
+<span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.
+<span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>install
+</pre></div>
+</div>
+<p>建议在与源代码不同的目录中进行构建，因为这样可以保持源代码目录的整洁，允许使用多个工具链构建单个源代码，并可以通过简单地删除构建目录来轻松清除构建制品。</p>
+<p>CMake 工具可能会报告针对软件提供者而非使用者的警告。此类警告以“This warning is for project developers”结尾。用户可以通过向 <span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 传递 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-Wno-dev"><code class="xref std std-option docutils literal notranslate"><span class="pre">-Wno-dev</span></code></a> 标志来禁用此类警告。</p>
+</section>
+<section id="cmake-gui-tool">
+<h3><a class="toc-backref" href="index.html#id5" role="doc-backlink">cmake-gui 工具</a><a class="headerlink" href="index.html#cmake-gui-tool" title="链接至此标题">¶</a></h3>
+<p>更习惯 GUI 界面的用户可以使用 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 工具来调用 CMake 并生成构建系统。</p>
+<p>必须首先指定源目录和二进制（构建）目录。始终建议为源码和构建使用不同的目录。</p>
+<img alt="Choosing source and binary directories" src="../../_images/GUI-Source-Binary.png">
+</section>
+</section>
+<section id="generating-a-buildsystem">
+<h2><a class="toc-backref" href="index.html#id6" role="doc-backlink">生成构建系统</a><a class="headerlink" href="index.html#generating-a-buildsystem" title="链接至此标题">¶</a></h2>
+<p>有多种用户界面工具可用于根据 CMake 文件生成构建系统。<span class="target" id="index-0-manual:ccmake(1)"></span><a class="reference internal" href="../../manual/ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a> 和 <span class="target" id="index-1-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 工具引导用户设置各种必要的选项。<span class="target" id="index-2-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 工具可以在命令行上调用以指定选项。本手册描述了可以使用任何用户界面工具设置的选项，尽管每种工具设置选项的模式有所不同。</p>
+<section id="command-line-environment">
+<h3><a class="toc-backref" href="index.html#id7" role="doc-backlink">命令行环境</a><a class="headerlink" href="index.html#command-line-environment" title="链接至此标题">¶</a></h3>
+<p>当通过命令行构建系统（如 <code class="docutils literal notranslate"><span class="pre">Makefiles</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Ninja</span></code>）调用 <span class="target" id="index-3-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 时，必须使用正确的构建环境以确保构建工具可用。CMake 必须能够找到适当的 <span class="target" id="index-0-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">构建工具</span></code></a>、编译器、链接器以及其他所需的工具。</p>
+<p>在 Linux 系统上，适当的工具通常位于系统范围内，可以通过系统包管理器轻松安装。用户提供或安装在非默认位置的其他工具链也可以使用。</p>
+<p>在交叉编译时，某些平台可能需要设置环境变量或提供脚本来设置环境。</p>
+<p>Visual Studio 提供了多个命令行提示符和 <code class="docutils literal notranslate"><span class="pre">vcvarsall.bat</span></code> 脚本，用于为命令行构建系统设置正确的环境。虽然在使用 Visual Studio 生成器时不严格要求使用对应的命令行环境，但这样做也没有任何弊端。</p>
+<p>使用 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 时，可能会安装多个 Xcode 版本。选择使用哪个版本有多种方法，最常见的方法是：</p>
+<ul class="simple">
+<li><p>在 Xcode IDE 的首选项中设置默认版本。</p></li>
+<li><p>通过 <code class="docutils literal notranslate"><span class="pre">xcode-select</span></code> 命令行工具设置默认版本。</p></li>
+<li><p>在运行 CMake 和构建工具时设置 <code class="docutils literal notranslate"><span class="pre">DEVELOPER_DIR</span></code> 环境变量来覆盖默认版本。</p></li>
+</ul>
+<p>为方便起见，<span class="target" id="index-2-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 提供了环境变量编辑器。</p>
+</section>
+<section id="command-line-g-option">
+<h3><a class="toc-backref" href="index.html#id8" role="doc-backlink">命令行 <code class="docutils literal notranslate"><span class="pre">-G</span></code> 选项</a><a class="headerlink" href="index.html#command-line-g-option" title="链接至此标题">¶</a></h3>
+<p>CMake 默认会根据平台选择生成器。通常，默认生成器足以让用户继续进行软件构建。</p>
+<p>用户可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">-G</span></code></a> 选项覆盖默认生成器。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span>Ninja
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-h"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake --help</span></code></a> 的输出包含了一份可供用户选择的 <span class="target" id="index-0-manual:cmake-generators(7)"></span><a class="reference internal" href="../../manual/cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器</span></code></a> 列表。请注意，生成器名称区分大小写。</p>
+<p>在类 Unix 系统（包括 Mac OS X）上，默认使用 <span class="target" id="index-0-generator:Unix Makefiles"></span><a class="reference internal" href="../../generator/Unix&#32;Makefiles.html#generator:Unix Makefiles" title="Unix Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code></a> 生成器。该生成器的变体也可以在 Windows 的各种环境中使用，例如 <span class="target" id="index-0-generator:NMake Makefiles"></span><a class="reference internal" href="../../generator/NMake&#32;Makefiles.html#generator:NMake Makefiles" title="NMake Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">NMake</span> <span class="pre">Makefiles</span></code></a> 和 <span class="target" id="index-0-generator:MinGW Makefiles"></span><a class="reference internal" href="../../generator/MinGW&#32;Makefiles.html#generator:MinGW Makefiles" title="MinGW Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">MinGW</span> <span class="pre">Makefiles</span></code></a> 生成器。这些生成器会生成可以由 <code class="docutils literal notranslate"><span class="pre">make</span></code>、<code class="docutils literal notranslate"><span class="pre">gmake</span></code>、<code class="docutils literal notranslate"><span class="pre">nmake</span></code> 或类似工具执行的 <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> 变体。有关目标环境和工具的更多信息，请参阅各个生成器的文档。</p>
+<p><span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器适用于所有主流平台。<code class="docutils literal notranslate"><span class="pre">ninja</span></code> 是一个在用例上类似于 <code class="docutils literal notranslate"><span class="pre">make</span></code> 的构建工具，但更侧重于性能和效率。</p>
+<p>在 Windows 上，<span class="target" id="index-4-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 可用于为 Visual Studio IDE 生成解决方案。Visual Studio 版本可以通过 IDE 的产品名称（包含四位年份）来指定。对于有时用于指代 Visual Studio 版本的其他方式，也提供了别名，例如对应 VisualC++ 编译器产品版本的两位数字，或两者的组合。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 2019"</span>
+<span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16"</span>
+<span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 可以针对不同的架构。可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">-A</span></code></a> 选项指定目标架构。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake .. -G "Visual Studio 2019" -A x64</span>
+<span class="go">cmake .. -G "Visual Studio 16" -A ARM</span>
+<span class="go">cmake .. -G "Visual Studio 16 2019" -A ARM64</span>
+</pre></div>
+</div>
+<p>在 Apple 上，可以使用 <span class="target" id="index-1-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器为 Xcode IDE 生成项目文件。</p>
+<p>一些 IDE（如 KDevelop4、QtCreator 和 CLion）对基于 CMake 的构建系统有原生支持。这些 IDE 提供了用于选择底层生成器的用户界面，通常是在 <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Ninja</span></code> 生成器之间进行选择。</p>
+<p>注意，在首次调用 CMake 后，无法通过 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">-G</span></code></a> 更改生成器。要更改生成器，必须删除构建目录并从头开始启动构建。</p>
+<p>当生成 Visual Studio 项目和解决方案文件时，在初始运行 <span class="target" id="index-5-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 时还可以使用其他几个选项。</p>
+<p>可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-T"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake -T</span></code></a> 选项指定 Visual Studio 工具集。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="c1"># Build with the clang-cl toolset</span>
+<span class="gp">$ </span>cmake.exe<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span><span class="w"> </span>-A<span class="w"> </span>x64<span class="w"> </span>-T<span class="w"> </span>ClangCL
+<span class="gp">$ </span><span class="c1"># Build targeting Windows XP</span>
+<span class="gp">$ </span>cmake.exe<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span><span class="w"> </span>-A<span class="w"> </span>x64<span class="w"> </span>-T<span class="w"> </span>v120_xp
+</pre></div>
+</div>
+<p>与 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">-A</span></code></a> 选项指定*目标*架构不同，<a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-T"><code class="xref std std-option docutils literal notranslate"><span class="pre">-T</span></code></a> 选项可用于指定所用工具链的详细信息。例如，可以提供 <code class="docutils literal notranslate"><span class="pre">-Thost=x64</span></code> 来选择 64 位版本的宿主工具。以下展示了如何使用 64 位工具并同时为 64 位目标架构进行构建。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span><span class="w"> </span>-A<span class="w"> </span>x64<span class="w"> </span>-Thost<span class="o">=</span>x64
+</pre></div>
+</div>
+</section>
+<section id="choosing-a-generator-in-cmake-gui">
+<h3><a class="toc-backref" href="index.html#id9" role="doc-backlink">在 cmake-gui 中选择生成器</a><a class="headerlink" href="index.html#choosing-a-generator-in-cmake-gui" title="链接至此标题">¶</a></h3>
+<p>“Configure”按钮会触发一个新的对话框，用于选择要使用的 CMake 生成器。</p>
+<img alt="Configuring a generator" src="../../_images/GUI-Configure-Dialog.png">
+<p>命令行上可用的所有生成器在 <span class="target" id="index-3-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 中也都可用。</p>
+<img alt="Choosing a generator" src="../../_images/GUI-Choose-Generator.png">
+<p>当选择 Visual Studio 生成器时，可以使用更多选项来设置要生成的架构。</p>
+<img alt="Choosing an architecture for Visual Studio generators" src="../../_images/VS-Choose-Arch.png">
+</section>
+</section>
+<section id="setting-build-variables">
+<span id="id1"></span><h2><a class="toc-backref" href="index.html#id10" role="doc-backlink">设置构建变量</a><a class="headerlink" href="index.html#setting-build-variables" title="链接至此标题">¶</a></h2>
+<p>软件项目通常要求在调用 CMake 时在命令行上设置变量。下表中列出了一些最常用的 CMake 变量。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>变量</p></th>
+<th class="head"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a></p></td>
+<td><p>搜索 <span class="target" id="index-1-guide:Using Dependencies Guide"></span><a class="reference internal" href="../using-dependencies/index.html#guide:Using Dependencies Guide" title="Using Dependencies Guide"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">依赖包</span></code></a> 的路径</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="target" id="index-0-variable:CMAKE_MODULE_PATH"></span><a class="reference internal" href="../../variable/CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH" title="CMAKE_MODULE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code></a></p></td>
+<td><p>搜索其他 CMake 模块的路径</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a></p></td>
+<td><p>构建配置（如 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Release</span></code>），决定调试/优化标志。这仅适用于单配置构建系统，例如 <a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 和 <a class="reference internal" href="../../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a>。多配置构建系统（例如 <a class="reference internal" href="../../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 和 <span class="target" id="index-2-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a>）会忽略此设置。</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a></p></td>
+<td><p>通过 <code class="docutils literal notranslate"><span class="pre">install</span></code> 构建目标安装软件的位置</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="../../variable/CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a></p></td>
+<td><p>包含交叉编译数据的文件，如 <span class="target" id="index-0-manual:cmake-toolchains(7)"></span><a class="reference internal" href="../../manual/cmake-toolchains.7.html#manual:cmake-toolchains(7)" title="cmake-toolchains(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">工具链和系统根目录</span></code></a>。</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="target" id="index-0-variable:BUILD_SHARED_LIBS"></span><a class="reference internal" href="../../variable/BUILD_SHARED_LIBS.html#variable:BUILD_SHARED_LIBS" title="BUILD_SHARED_LIBS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code></a></p></td>
+<td><p>是否为未指定类型的 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 命令构建动态库而非静态库</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="target" id="index-0-variable:CMAKE_EXPORT_COMPILE_COMMANDS"></span><a class="reference internal" href="../../variable/CMAKE_EXPORT_COMPILE_COMMANDS.html#variable:CMAKE_EXPORT_COMPILE_COMMANDS" title="CMAKE_EXPORT_COMPILE_COMMANDS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_COMPILE_COMMANDS</span></code></a></p></td>
+<td><p>生成一个供 clang 工具使用的 <code class="docutils literal notranslate"><span class="pre">compile_commands.json</span></code> 文件</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="target" id="index-0-variable:CMAKE_EXPORT_BUILD_DATABASE"></span><a class="reference internal" href="../../variable/CMAKE_EXPORT_BUILD_DATABASE.html#variable:CMAKE_EXPORT_BUILD_DATABASE" title="CMAKE_EXPORT_BUILD_DATABASE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_BUILD_DATABASE</span></code></a></p></td>
+<td><p>生成一个供 clang 工具使用的 <code class="docutils literal notranslate"><span class="pre">build_database.json</span></code> 文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>可能还有其他特定于项目的变量可用于控制构建，例如启用或禁用项目的组件。</p>
+<p>CMake 没有提供关于不同构建系统之间如何命名这些变量的规范，除非变量以 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 为前缀，这通常指代 CMake 自身提供的选项，不应在第三方选项中使用（第三方应使用自己的前缀）。<span class="target" id="index-4-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 工具可以按前缀将选项分组显示，因此第三方确保使用自洽的前缀是有意义的。</p>
+<section id="setting-variables-on-the-command-line">
+<h3><a class="toc-backref" href="index.html#id11" role="doc-backlink">在命令行设置变量</a><a class="headerlink" href="index.html#setting-variables-on-the-command-line" title="链接至此标题">¶</a></h3>
+<p>CMake 变量既可以在最初创建构建时在命令行上设置，</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>build
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug
+</pre></div>
+</div>
+<p>也可以在后续调用 <span class="target" id="index-6-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 时设置。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>.<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-U"><code class="xref std std-option docutils literal notranslate"><span class="pre">-U</span></code></a> 标志可用于在 <span class="target" id="index-7-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行上取消设置变量。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>.<span class="w"> </span>-UMyPackage_DIR
+</pre></div>
+</div>
+<p>最初在命令行上创建的 CMake 构建系统可以使用 <span class="target" id="index-5-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 进行修改，反之亦然。</p>
+<p><span class="target" id="index-8-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 工具允许使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-C"><code class="xref std std-option docutils literal notranslate"><span class="pre">-C</span></code></a> 选项指定一个文件来填充初始缓存。这对于简化重复需要相同缓存条目的命令和脚本非常有用。</p>
+</section>
+<section id="setting-variables-with-cmake-gui">
+<h3><a class="toc-backref" href="index.html#id12" role="doc-backlink">在 cmake-gui 中设置变量</a><a class="headerlink" href="index.html#setting-variables-with-cmake-gui" title="链接至此标题">¶</a></h3>
+<p>可以在 cmake-gui 中使用“Add Entry”按钮设置变量。这会触发一个新的对话框来设置变量值。</p>
+<img alt="Editing a cache entry" src="../../_images/GUI-Add-Entry.png">
+<p><span class="target" id="index-6-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 用户界面的主视图可用于编辑现有变量。</p>
+</section>
+<section id="the-cmake-cache">
+<h3><a class="toc-backref" href="index.html#id13" role="doc-backlink">CMake 缓存</a><a class="headerlink" href="index.html#the-cmake-cache" title="链接至此标题">¶</a></h3>
+<p>当执行 CMake 时，它需要找到编译器、工具和依赖项的位置。它还需要能够持续地重新生成构建系统，以使用相同的编译/链接标志和依赖项路径。此类参数也需要由用户可配置，因为它们是特定于用户系统的路径和选项。</p>
+<p>当首次执行时，CMake 会在构建目录中生成一个 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件，其中包含用于此类制品的键值对。用户可以通过运行 <span class="target" id="index-7-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 或 <span class="target" id="index-1-manual:ccmake(1)"></span><a class="reference internal" href="../../manual/ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a> 工具来查看或编辑缓存文件。这些工具提供了一个交互式界面，用于重新配置所提供的软件并重新生成构建系统（在编辑缓存值后需要这样做）。每个缓存条目可能都有一个关联的简短帮助文本，显示在用户界面工具中。</p>
+<p>缓存条目也可能具有类型，以说明应如何在用户界面中呈现它。例如，类型为 <code class="docutils literal notranslate"><span class="pre">BOOL</span></code> 的缓存条目可以通过用户界面中的复选框进行编辑，<code class="docutils literal notranslate"><span class="pre">STRING</span></code> 可以在文本字段中编辑，而 <code class="docutils literal notranslate"><span class="pre">FILEPATH</span></code> 虽然类似于 <code class="docutils literal notranslate"><span class="pre">STRING</span></code>，但还应提供使用文件对话框定位文件系统路径的方法。类型为 <code class="docutils literal notranslate"><span class="pre">STRING</span></code> 的条目可以提供允许值的受限列表，这些值随后会显示在 <span class="target" id="index-8-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 用户界面的下拉菜单中（请参阅 <span class="target" id="index-0-prop_cache:STRINGS"></span><a class="reference internal" href="../../prop_cache/STRINGS.html#prop_cache:STRINGS" title="STRINGS"><code class="xref cmake cmake-prop_cache docutils literal notranslate"><span class="pre">STRINGS</span></code></a> 缓存属性）。</p>
+<p>软件包随附的 CMake 文件也可能使用 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 命令定义布尔切换选项。该命令创建一个包含帮助文本和默认值的缓存条目。此类缓存条目通常特定于所提供的软件，并影响构建的配置，例如是否构建测试和示例、是否在启用异常的情况下构建等。</p>
+</section>
+</section>
+<section id="presets">
+<h2><a class="toc-backref" href="index.html#id14" role="doc-backlink">预设</a><a class="headerlink" href="index.html#presets" title="链接至此标题">¶</a></h2>
+<p>CMake 理解 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 文件及其用户特定版本 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code>，用于保存常用配置设置的预设。这些预设可以设置构建目录、生成器、缓存变量、环境变量和其他命令行选项。所有这些选项都可以被用户覆盖。<code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 格式的完整详细信息列在 <span class="target" id="index-0-manual:cmake-presets(7)"></span><a class="reference internal" href="../../manual/cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-presets(7)</span></code></a> 手册中。</p>
+<section id="using-presets-on-the-command-line">
+<h3><a class="toc-backref" href="index.html#id15" role="doc-backlink">在命令行中使用预设</a><a class="headerlink" href="index.html#using-presets-on-the-command-line" title="链接至此标题">¶</a></h3>
+<p>当使用 <span class="target" id="index-9-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行工具时，可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-preset"><code class="xref std std-option docutils literal notranslate"><span class="pre">--preset</span></code></a> 选项调用预设。如果指定了 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-preset"><code class="xref std std-option docutils literal notranslate"><span class="pre">--preset</span></code></a>，则不需要生成器和构建目录，但可以指定它们来覆盖预设中的值。例如，如果您有以下 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 文件</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"configurePresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ninja-release"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"binaryDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceDir}/build/${presetName}"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"generator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ninja"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"CMAKE_BUILD_TYPE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Release"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>并且您运行以下命令</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S /path/to/source --preset=ninja-release</span>
+</pre></div>
+</div>
+<p>这将在 <code class="docutils literal notranslate"><span class="pre">/path/to/source/build/ninja-release</span></code> 中使用 <span class="target" id="index-1-generator:Ninja"></span><a class="reference internal" href="../../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器生成一个构建目录，并将 <span class="target" id="index-1-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">Release</span></code>。</p>
+<p>如果您想查看可用预设的列表，可以运行</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S /path/to/source --list-presets</span>
+</pre></div>
+</div>
+<p>这将列出 <code class="docutils literal notranslate"><span class="pre">/path/to/source/CMakePresets.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/path/to/source/CMakeUsersPresets.json</span></code> 中可用的预设，而无需生成构建树。</p>
+</section>
+<section id="using-presets-in-cmake-gui">
+<h3><a class="toc-backref" href="index.html#id16" role="doc-backlink">在 cmake-gui 中使用预设</a><a class="headerlink" href="index.html#using-presets-in-cmake-gui" title="链接至此标题">¶</a></h3>
+<p>如果项目有可用的预设（通过 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code>），预设列表将出现在 <span class="target" id="index-9-manual:cmake-gui(1)"></span><a class="reference internal" href="../../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 的源目录和二进制目录之间的下拉菜单中。选择一个预设会设置二进制目录、生成器、环境变量和缓存变量，但所有这些选项在选择预设后都可以被覆盖。</p>
+</section>
+</section>
+<section id="invoking-the-buildsystem">
+<h2><a class="toc-backref" href="index.html#id17" role="doc-backlink">调用构建系统</a><a class="headerlink" href="index.html#invoking-the-buildsystem" title="链接至此标题">¶</a></h2>
+<p>生成构建系统后，可以通过调用特定的构建工具来构建软件。对于 IDE 生成器，这可能涉及将生成的项目文件加载到 IDE 中以调用构建。</p>
+<p>CMake 知道调用构建所需的特定构建工具，因此通常在生成后从命令行构建系统或项目时，可以在构建目录中调用以下命令</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 标志为 <span class="target" id="index-10-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 工具启用了一种特定的操作模式。它调用与 <span class="target" id="index-1-manual:cmake-generators(7)"></span><a class="reference internal" href="../../manual/cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器</span></code></a> 关联的 <span class="target" id="index-1-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAKE_PROGRAM</span></code></a> 命令，或用户配置的构建工具。</p>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 模式还接受参数 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--target</span></code></a> 来指定要构建的特定目标，例如特定的库、可执行文件或自定义目标，或者特定的特殊目标（如 <code class="docutils literal notranslate"><span class="pre">install</span></code>）。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>myexe
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 模式还接受 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build-config"><code class="xref std std-option docutils literal notranslate"><span class="pre">--config</span></code></a> 参数（对于多配置生成器），以指定要构建的特定配置。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>myexe<span class="w"> </span>--config<span class="w"> </span>Release
+</pre></div>
+</div>
+<p>如果生成器生成的构建系统特定于某个配置（在调用 cmake 时使用 <span class="target" id="index-2-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 变量选择），则 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build-config"><code class="xref std std-option docutils literal notranslate"><span class="pre">--config</span></code></a> 选项无效。</p>
+<p>某些构建系统会省略构建期间调用的命令行细节。<a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build-v"><code class="xref std std-option docutils literal notranslate"><span class="pre">--verbose</span></code></a> 标志可用于显示这些命令行。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>myexe<span class="w"> </span>--verbose
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 模式还可以通过在 <code class="docutils literal notranslate"><span class="pre">--</span></code> 之后列出，将特定的命令行选项传递给底层构建工具。这对于向构建工具指定选项很有用（例如在作业失败后继续构建），而 CMake 自身不提供高级用户界面。</p>
+<p>对于所有生成器，在调用 CMake 后都可以运行底层构建工具。例如，在用 <span class="target" id="index-1-generator:Unix Makefiles"></span><a class="reference internal" href="../../generator/Unix&#32;Makefiles.html#generator:Unix Makefiles" title="Unix Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code></a> 生成器生成后可以执行 <code class="docutils literal notranslate"><span class="pre">make</span></code>，或者在用 <span class="target" id="index-2-generator:Ninja"></span><a class="reference internal" href="../../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器生成后执行 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 等。IDE 构建系统通常也提供可调用的命令行工具来构建项目。</p>
+<section id="selecting-a-target">
+<h3><a class="toc-backref" href="index.html#id18" role="doc-backlink">选择目标</a><a class="headerlink" href="index.html#selecting-a-target" title="链接至此标题">¶</a></h3>
+<p>CMake 文件中描述的每个可执行文件和库都是一个构建目标，构建系统也可能描述自定义目标，既可以用于内部用途，也可以供用户使用（例如创建文档）。</p>
+<p>CMake 为所有提供 CMake 文件的构建系统提供了一些内置目标。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">all</span></code></dt><dd><p><a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 和 <a class="reference internal" href="../../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 使用的默认目标。构建构建系统中的所有目标，除了那些被其 <span class="target" id="index-0-prop_tgt:EXCLUDE_FROM_ALL"></span><a class="reference internal" href="../../prop_tgt/EXCLUDE_FROM_ALL.html#prop_tgt:EXCLUDE_FROM_ALL" title="EXCLUDE_FROM_ALL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></a> 目标属性或 <span class="target" id="index-0-prop_dir:EXCLUDE_FROM_ALL"></span><a class="reference internal" href="../../prop_dir/EXCLUDE_FROM_ALL.html#prop_dir:EXCLUDE_FROM_ALL" title="EXCLUDE_FROM_ALL"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></a> 目录属性排除的目标。<code class="docutils literal notranslate"><span class="pre">ALL_BUILD</span></code> 名称用于 <span class="target" id="index-3-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 和 <a class="reference internal" href="../../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">help</span></code></dt><dd><p>列出可用于构建的目标。此目标在使用 <a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 或 <a class="reference internal" href="../../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 时可用，确切的输出因工具而异。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">clean</span></code></dt><dd><p>删除构建的目标文件和其他输出文件。<a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 为每个目录创建一个 <code class="docutils literal notranslate"><span class="pre">clean</span></code> 目标，以便可以清理单个目录。<code class="docutils literal notranslate"><span class="pre">Ninja</span></code> 工具提供了其自己的细粒度 <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">clean</span></code> 系统。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">测试</span></code></dt><dd><p>运行测试。仅当 CMake 文件提供基于 CTest 的测试时，此目标才会自动可用。另请参阅 <a class="reference internal" href="index.html#running-tests">运行测试</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">安装</span></code></dt><dd><p>安装软件。仅当软件使用 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令定义安装规则时，此目标才会自动可用。另请参阅 <a class="reference internal" href="index.html#software-installation">软件安装</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">package</span></code></dt><dd><p>创建二进制包。仅当 CMake 文件提供基于 CPack 的包时，此目标才会自动可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">package_source</span></code></dt><dd><p>创建源码包。仅当 CMake 文件提供基于 CPack 的包时，此目标才会自动可用。</p>
+</dd>
+</dl>
+<p>对于 <a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a>，提供了二进制构建目标的 <code class="docutils literal notranslate"><span class="pre">/fast</span></code> 变体。<code class="docutils literal notranslate"><span class="pre">/fast</span></code> 变体用于构建指定的目标而不考虑其依赖项。不检查依赖项，如果已过期也不会重新构建。<a class="reference internal" href="../../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 在依赖项检查方面足够快，因此该生成器不提供此类目标。</p>
+<p><a class="reference internal" href="../../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 还提供构建目标来预处理、汇编和编译特定目录中的单个文件。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>foo.cpp.i
+<span class="gp">$ </span>make<span class="w"> </span>foo.cpp.s
+<span class="gp">$ </span>make<span class="w"> </span>foo.cpp.o
+</pre></div>
+</div>
+<p>文件扩展名被内置到目标的名称中，因为可能存在名称相同但扩展名不同的另一个文件。但是，也提供了没有文件扩展名的构建目标。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>foo.i
+<span class="gp">$ </span>make<span class="w"> </span>foo.s
+<span class="gp">$ </span>make<span class="w"> </span>foo.o
+</pre></div>
+</div>
+<p>在包含 <code class="docutils literal notranslate"><span class="pre">foo.c</span></code> 和 <code class="docutils literal notranslate"><span class="pre">foo.cpp</span></code> 的构建系统中，构建 <code class="docutils literal notranslate"><span class="pre">foo.i</span></code> 目标将预处理这两个文件。</p>
+</section>
+<section id="specifying-a-build-program">
+<h3><a class="toc-backref" href="index.html#id19" role="doc-backlink">指定构建程序</a><a class="headerlink" href="index.html#specifying-a-build-program" title="链接至此标题">¶</a></h3>
+<p>由 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 模式调用的程序由 <span class="target" id="index-2-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAKE_PROGRAM</span></code></a> 变量确定。对于大多数生成器，不需要配置特定的程序。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>生成器</p></th>
+<th class="head"><p>默认 make 程序</p></th>
+<th class="head"><p>替代方案</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>XCode</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">xcodebuild</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Unix Makefiles</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>NMake Makefiles</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nmake</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">jom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>NMake Makefiles JOM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">jom</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nmake</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MinGW Makefiles</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mingw32-make</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>MSYS Makefiles</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Ninja</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ninja</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Visual Studio</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">msbuild</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Watcom WMake</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wmake</span></code></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">jom</span></code> 工具能够以 <code class="docutils literal notranslate"><span class="pre">NMake</span></code> 风格读取 Makefile 并并行构建，而 <code class="docutils literal notranslate"><span class="pre">nmake</span></code> 工具总是串行构建。使用 <span class="target" id="index-1-generator:NMake Makefiles"></span><a class="reference internal" href="../../generator/NMake&#32;Makefiles.html#generator:NMake Makefiles" title="NMake Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">NMake</span> <span class="pre">Makefiles</span></code></a> 生成器生成后，用户可以运行 <code class="docutils literal notranslate"><span class="pre">jom</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">nmake</span></code>。<a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 模式在将 <span class="target" id="index-3-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAKE_PROGRAM</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">jom</span></code> 且使用 <span class="target" id="index-2-generator:NMake Makefiles"></span><a class="reference internal" href="../../generator/NMake&#32;Makefiles.html#generator:NMake Makefiles" title="NMake Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">NMake</span> <span class="pre">Makefiles</span></code></a> 生成器时，也会使用 <code class="docutils literal notranslate"><span class="pre">jom</span></code>。为了方便起见，提供了 <span class="target" id="index-0-generator:NMake Makefiles JOM"></span><a class="reference internal" href="../../generator/NMake&#32;Makefiles&#32;JOM.html#generator:NMake Makefiles JOM" title="NMake Makefiles JOM"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">NMake</span> <span class="pre">Makefiles</span> <span class="pre">JOM</span></code></a> 生成器，以正常方式查找 <code class="docutils literal notranslate"><span class="pre">jom</span></code> 并将其用作 <span class="target" id="index-4-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAKE_PROGRAM</span></code></a>。为了完整起见，<code class="docutils literal notranslate"><span class="pre">nmake</span></code> 是另一种可以处理 <span class="target" id="index-1-generator:NMake Makefiles JOM"></span><a class="reference internal" href="../../generator/NMake&#32;Makefiles&#32;JOM.html#generator:NMake Makefiles JOM" title="NMake Makefiles JOM"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">NMake</span> <span class="pre">Makefiles</span> <span class="pre">JOM</span></code></a> 生成器输出的工具，但这样做会降低性能。</p>
+</section>
+</section>
+<section id="software-installation">
+<h2><a class="toc-backref" href="index.html#id21" role="doc-backlink">软件安装</a><a class="headerlink" href="index.html#software-installation" title="链接至此标题">¶</a></h2>
+<p>可以在 CMake 缓存中设置 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量，以指定安装所提供软件的位置。如果提供的软件有使用 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令指定的安装规则，它们会将制品安装到该前缀中。在 Windows 上，默认安装位置对应于 <code class="docutils literal notranslate"><span class="pre">ProgramFiles</span></code> 系统目录，该目录可能是架构相关的。在 Unix 宿主机上，<code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> 是默认安装位置。</p>
+<p><span class="target" id="index-2-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量始终指向目标文件系统上的安装前缀。</p>
+<p>在交叉编译或打包场景中，当 sysroot 是只读的或 sysroot 应保持整洁时，可以将 <span class="target" id="index-0-variable:CMAKE_STAGING_PREFIX"></span><a class="reference internal" href="../../variable/CMAKE_STAGING_PREFIX.html#variable:CMAKE_STAGING_PREFIX" title="CMAKE_STAGING_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_STAGING_PREFIX</span></code></a> 变量设置为实际安装文件的位置。</p>
+<p>命令</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr/local<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-DCMAKE_SYSROOT<span class="o">=</span><span class="nv">$HOME</span>/root<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-DCMAKE_STAGING_PREFIX<span class="o">=</span>/tmp/package
+<span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.
+<span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>install
+</pre></div>
+</div>
+<p>会导致文件被安装到宿主机上的 <code class="docutils literal notranslate"><span class="pre">/tmp/package/lib/libfoo.so</span></code> 等路径中。宿主机上的 <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> 位置不受影响。</p>
+<p>一些所提供的软件可能会指定 <code class="docutils literal notranslate"><span class="pre">uninstall</span></code> 规则，但 CMake 本身默认不会生成此类规则。</p>
+</section>
+<section id="running-tests">
+<h2><a class="toc-backref" href="index.html#id22" role="doc-backlink">运行测试</a><a class="headerlink" href="index.html#running-tests" title="链接至此标题">¶</a></h2>
+<p><span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 工具随 CMake 分发版一起提供，用于执行所提供的测试并报告结果。<code class="docutils literal notranslate"><span class="pre">test</span></code> 构建目标用于运行所有可用测试，但 <span class="target" id="index-1-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 工具允许细粒度控制要运行的测试、运行方式以及如何报告结果。在构建目录中执行 <span class="target" id="index-2-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 等同于运行 <code class="docutils literal notranslate"><span class="pre">test</span></code> 目标。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ctest
+</pre></div>
+</div>
+<p>可以传递正则表达式以仅运行匹配该表达式的测试。要仅运行名称中带有 <code class="docutils literal notranslate"><span class="pre">Qt</span></code> 的测试</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ctest<span class="w"> </span>-R<span class="w"> </span>Qt
+</pre></div>
+</div>
+<p>测试也可以通过正则表达式排除。要仅运行名称中不带 <code class="docutils literal notranslate"><span class="pre">Qt</span></code> 的测试</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ctest<span class="w"> </span>-E<span class="w"> </span>Qt
+</pre></div>
+</div>
+<p>测试可以通过向 <span class="target" id="index-3-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 传递 <a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-j"><code class="xref std std-option docutils literal notranslate"><span class="pre">-j</span></code></a> 参数来并行运行。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ctest<span class="w"> </span>-R<span class="w"> </span>Qt<span class="w"> </span>-j8
+</pre></div>
+</div>
+<p>或者，可以设置环境变量 <span class="target" id="index-0-envvar:CTEST_PARALLEL_LEVEL"></span><a class="reference internal" href="../../envvar/CTEST_PARALLEL_LEVEL.html#envvar:CTEST_PARALLEL_LEVEL" title="CTEST_PARALLEL_LEVEL"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_PARALLEL_LEVEL</span></code></a> 以避免传递 <a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-j"><code class="xref std std-option docutils literal notranslate"><span class="pre">-j</span></code></a>。</p>
+<p>默认情况下，<span class="target" id="index-4-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 不会打印来自测试的输出。命令行参数 <a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-V"><code class="xref std std-option docutils literal notranslate"><span class="pre">-V</span></code></a>（或 <code class="docutils literal notranslate"><span class="pre">--verbose</span></code>）启用详细模式以打印来自所有测试的输出。<a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-output-on-failure"><code class="xref std std-option docutils literal notranslate"><span class="pre">--output-on-failure</span></code></a> 选项仅打印失败测试的测试输出。可以将环境变量 <span class="target" id="index-0-envvar:CTEST_OUTPUT_ON_FAILURE"></span><a class="reference internal" href="../../envvar/CTEST_OUTPUT_ON_FAILURE.html#envvar:CTEST_OUTPUT_ON_FAILURE" title="CTEST_OUTPUT_ON_FAILURE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_OUTPUT_ON_FAILURE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，作为向 <span class="target" id="index-5-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 传递 <a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-output-on-failure"><code class="xref std std-option docutils literal notranslate"><span class="pre">--output-on-failure</span></code></a> 选项的替代方案。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="index.html#">用户交互指南</a><ul>
+<li><a class="reference internal" href="index.html#introduction">简介</a><ul>
+<li><a class="reference internal" href="index.html#command-line-cmake-tool">命令行 cmake 工具</a></li>
+<li><a class="reference internal" href="index.html#cmake-gui-tool">cmake-gui 工具</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="index.html#generating-a-buildsystem">生成构建系统</a><ul>
+<li><a class="reference internal" href="index.html#command-line-environment">命令行环境</a></li>
+<li><a class="reference internal" href="index.html#command-line-g-option">命令行 <code class="docutils literal notranslate"><span class="pre">-G</span></code> 选项</a></li>
+<li><a class="reference internal" href="index.html#choosing-a-generator-in-cmake-gui">在 cmake-gui 中选择生成器</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="index.html#setting-build-variables">设置构建变量</a><ul>
+<li><a class="reference internal" href="index.html#setting-variables-on-the-command-line">在命令行设置变量</a></li>
+<li><a class="reference internal" href="index.html#setting-variables-with-cmake-gui">在 cmake-gui 中设置变量</a></li>
+<li><a class="reference internal" href="index.html#the-cmake-cache">CMake 缓存</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="index.html#presets">预设</a><ul>
+<li><a class="reference internal" href="index.html#using-presets-on-the-command-line">在命令行中使用预设</a></li>
+<li><a class="reference internal" href="index.html#using-presets-in-cmake-gui">在 cmake-gui 中使用预设</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="index.html#invoking-the-buildsystem">调用构建系统</a><ul>
+<li><a class="reference internal" href="index.html#selecting-a-target">选择目标</a></li>
+<li><a class="reference internal" href="index.html#specifying-a-build-program">指定构建程序</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="index.html#software-installation">软件安装</a></li>
+<li><a class="reference internal" href="index.html#running-tests">运行测试</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../tutorial/Packaging&#32;Debug&#32;and&#32;Release.html" title="上一章">步骤 12：打包调试版和发布版</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="../using-dependencies/index.html" title="下一章">使用依赖项指南</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/user-interaction/index.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="../using-dependencies/index.html" title="Using Dependencies Guide">下一页</a> |</li>
+        <li class="right">
+          <a href="../tutorial/Packaging&#32;Debug&#32;and&#32;Release.html" title="Step 12: Packaging Debug and Release">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">用户交互指南</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

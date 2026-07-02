@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0150 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0150.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0149" href="CMP0149.html" />
+    <link rel="prev" title="CMP0151" href="CMP0151.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0149.html" title="CMP0149" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0151.html" title="CMP0151" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0150.html">CMP0150</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0150">
+<span id="policy:CMP0150"></span><h1>CMP0150<a class="headerlink" href="CMP0150.html#cmp0150" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p><span class="target" id="index-0-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 和 <span class="target" id="index-0-command:fetchcontent_declare"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 命令将相对路径的 <code class="docutils literal notranslate"><span class="pre">GIT_REPOSITORY</span></code> 视为相对于父项目的远程仓库。</p>
+<p>这些命令的早期版本始终将 <code class="docutils literal notranslate"><span class="pre">GIT_REPOSITORY</span></code> 中的相对路径视为本地路径，但其作为相对基准的目录既没有记录在案也不直观。此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>（旧）行为是将 <code class="docutils literal notranslate"><span class="pre">GIT_REPOSITORY</span></code> 中使用的相对路径解释为相对于以下路径的本地路径：</p>
+<ul class="simple">
+<li><p><span class="target" id="index-1-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 的父目录。</p></li>
+<li><p><span class="target" id="index-1-command:fetchcontent_declare"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_BASE_DIR</span></code>。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">NEW</span></code>（新）行为是从父项目确定远程仓库，并将路径解释为相对于该远程仓库。调用 <span class="target" id="index-2-command:externalproject_add"></span><a class="reference internal" href="../module/ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 或 <span class="target" id="index-2-command:fetchcontent_declare"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 时，<span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a> 的值决定了父项目。远程仓库的选择按照以下顺序进行（使用第一个匹配项）：</p>
+<ul class="simple">
+<li><p>如果父项目检出的分支定义了上游远程仓库，则使用该远程仓库。</p></li>
+<li><p>如果只定义了一个远程仓库，则使用该远程仓库。</p></li>
+<li><p>如果定义了多个远程仓库，且其中一个名为 <code class="docutils literal notranslate"><span class="pre">origin</span></code>，则使用 <code class="docutils literal notranslate"><span class="pre">origin</span></code> 的远程仓库，但同时会发出警告。</p></li>
+</ul>
+<p>如果根据上述条件无法确定合适的远程仓库，将引发致命错误。</p>
+<p>此策略是在 CMake 3.27 版本中引入的。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，当遇到相对路径时，CMake 会发出警告并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0151.html" title="上一章">CMP0151</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0149.html" title="下一章">CMP0149</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0150.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0149.html" title="CMP0149">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0151.html" title="CMP0151">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0150.html">CMP0150</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

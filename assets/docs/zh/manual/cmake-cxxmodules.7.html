@@ -1,0 +1,627 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-cxxmodules(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-cxxmodules.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-developer(7)" href="cmake-developer.7.html" />
+    <link rel="prev" title="cmake-configure-log(7)" href="cmake-configure-log.7.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-developer.7.html" title="cmake-developer(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-configure-log.7.html" title="cmake-configure-log(7)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-cxxmodules.7.html">cmake-cxxmodules(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-cxxmodules(7)"></span><section id="cmake-cxxmodules-7">
+<h1>cmake-cxxmodules(7)<a class="headerlink" href="cmake-cxxmodules.7.html#cmake-cxxmodules-7" title="链接至此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>C++20 引入了“<a class="reference internal" href="cmake-cxxmodules.7.html#term-C-module"><span class="xref std std-term">模块 (modules)</span></a>”的概念。该设计要求<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-system"><span class="xref std std-term">构建系统</span></a>能够安排编译顺序，以可靠地满足 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句。CMake 的实现方式是：在构建过程中让编译器扫描源文件以获取模块依赖关系，整理扫描结果以推断排序约束，并告知<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-tool">构建工具</span></a>如何动态更新构建图。</p>
+<section id="compilation-strategy">
+<h2>编译策略<a class="headerlink" href="cmake-cxxmodules.7.html#compilation-strategy" title="链接至此标题">¶</a></h2>
+<p>有了 C++ 模块，编译一组 C++ 源文件不再是<a class="reference internal" href="cmake-cxxmodules.7.html#term-embarrassingly-parallel"><span class="xref std std-term">极易并行</span></a>的任务了。也就是说，为了提供 C++ 编译器满足其他源文件中 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句所需的“<abbr title="内置模块接口">BMI</abbr>”（或“<abbr title="编译模块接口">CMI</abbr>”），任何给定的源文件可能需要先编译另一个源文件。在使用头文件时，源文件可以共享声明，使得任何使用者都能独立编译。而使用模块时，编译器现在会在编译期间根据源文件内容及其 <code class="docutils literal notranslate"><span class="pre">export</span></code> 语句生成 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。这意味着，为了确保构建正确，且无需在每次源文件更改时都重新生成构建图（运行配置和生成步骤），必须在构建阶段从源文件中确定正确的排序。</p>
+<p><a class="reference internal" href="cmake-cxxmodules.7.html#term-build-system"><span class="xref std std-term">构建系统</span></a>必须能够对构建图中的这些编译进行排序。有多种策略适合此目的，但每种策略都有优缺点。CMake 使用“扫描”步骤策略，这是 CMake 用户在构建环境中能感知到的与模块相关的最明显的变化。CMake 提供了多种方法来控制源文件的扫描行为。</p>
+</section>
+<section id="scanning-control">
+<span id="cxxmodules-scanning-control"></span><h2>扫描控制<a class="headerlink" href="cmake-cxxmodules.7.html#scanning-control" title="链接至此标题">¶</a></h2>
+<p>源文件是否会被扫描以查找 C++ 模块使用情况取决于以下查询。系统会使用第一个能决定是否扫描的查询结果。</p>
+<ul class="simple">
+<li><p>如果源文件属于 <code class="docutils literal notranslate"><span class="pre">CXX_MODULES</span></code> 类型的文件集，它将被扫描。</p></li>
+<li><p>如果目标（target）未至少使用 C++20 标准，则不会扫描。</p></li>
+<li><p>如果源文件的语言不是 <code class="docutils literal notranslate"><span class="pre">CXX</span></code>，则不会扫描。</p></li>
+<li><p>如果设置了 <span class="target" id="index-0-prop_sf:CXX_SCAN_FOR_MODULES"></span><a class="reference internal" href="../prop_sf/CXX_SCAN_FOR_MODULES.html#prop_sf:CXX_SCAN_FOR_MODULES" title="CXX_SCAN_FOR_MODULES"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">CXX_SCAN_FOR_MODULES</span></code></a> 源文件属性，则使用其值。</p></li>
+<li><p>如果设置了 <span class="target" id="index-0-prop_tgt:CXX_SCAN_FOR_MODULES"></span><a class="reference internal" href="../prop_tgt/CXX_SCAN_FOR_MODULES.html#prop_tgt:CXX_SCAN_FOR_MODULES" title="CXX_SCAN_FOR_MODULES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_SCAN_FOR_MODULES</span></code></a> 目标属性，则使用其值。设置 <span class="target" id="index-0-variable:CMAKE_CXX_SCAN_FOR_MODULES"></span><a class="reference internal" href="../variable/CMAKE_CXX_SCAN_FOR_MODULES.html#variable:CMAKE_CXX_SCAN_FOR_MODULES" title="CMAKE_CXX_SCAN_FOR_MODULES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_SCAN_FOR_MODULES</span></code></a> 变量可在创建所有目标时初始化此属性。</p></li>
+<li><p>否则，如果编译器和生成器支持扫描，则扫描该源文件。请参阅策略 <span class="target" id="index-0-policy:CMP0155"></span><a class="reference internal" href="../policy/CMP0155.html#policy:CMP0155" title="CMP0155"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0155</span></code></a>。</p></li>
+</ul>
+<p>请注意，任何被扫描的源文件都将从任何统一构建（unity build，请参阅 <span class="target" id="index-0-prop_tgt:UNITY_BUILD"></span><a class="reference internal" href="../prop_tgt/UNITY_BUILD.html#prop_tgt:UNITY_BUILD" title="UNITY_BUILD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">UNITY_BUILD</span></code></a>）中排除，因为与模块相关的语句只能在 C++ 翻译单元中的一个位置出现。</p>
+</section>
+<section id="compiler-support">
+<h2>编译器支持<a class="headerlink" href="cmake-cxxmodules.7.html#compiler-support" title="链接至此标题">¶</a></h2>
+<p>CMake 支持扫描 C++ 模块源文件的编译器列表包括：</p>
+<ul class="simple">
+<li><p>MSVC 工具集 14.34 及更高版本（随 Visual Studio 17.4 及更高版本提供）</p></li>
+<li><p>LLVM/Clang 16.0 及更高版本</p></li>
+<li><p>GCC 14 及更高版本</p></li>
+</ul>
+</section>
+<section id="import-std-support">
+<h2><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code> 支持<a class="headerlink" href="cmake-cxxmodules.7.html#import-std-support" title="链接至此标题">¶</a></h2>
+<p>对 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code> 的支持仅限于以下工具链和标准库组合：</p>
+<ul>
+<li><p>Clang 18.1.2 及更高版本，配合标准库 <code class="docutils literal notranslate"><span class="pre">libc++</span></code> 或 <code class="docutils literal notranslate"><span class="pre">libstdc++</span></code></p></li>
+<li><p>MSVC 工具集 14.36 及更高版本（随 Visual Studio 17.6 及更高版本提供）</p></li>
+<li><p>GCC 15 及更高版本</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>26.04 之前的 Ubuntu 版本附带了损坏的 <code class="docutils literal notranslate"><span class="pre">libstdc++.modules.json</span></code> 文件。请参阅 <a class="reference external" href="https://bugs.launchpad.net/ubuntu/+source/gcc-15/+bug/2141579">Ubuntu 问题 2141579</a>。</p>
+</div>
+</li>
+</ul>
+<p><span class="target" id="index-0-variable:CMAKE_CXX_COMPILER_IMPORT_STD"></span><a class="reference internal" href="../variable/CMAKE_CXX_COMPILER_IMPORT_STD.html#variable:CMAKE_CXX_COMPILER_IMPORT_STD" title="CMAKE_CXX_COMPILER_IMPORT_STD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_COMPILER_IMPORT_STD</span></code></a> 变量列出了在当前活跃的 C++ 工具链中支持 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code> 的标准版本。</p>
+<p>此外，目前只有 <a class="reference internal" href="cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 支持 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code>，因为 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 不支持为 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标构建 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此支持仅在通过 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_CXX_IMPORT_STD</span></code> 开关启用实验性 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code> 支持时提供。</p>
+</div>
+</section>
+<section id="generator-support">
+<h2>生成器支持<a class="headerlink" href="cmake-cxxmodules.7.html#generator-support" title="链接至此标题">¶</a></h2>
+<p>支持扫描 C++ 模块源文件的生成器列表包括：</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a></p></li>
+<li><p><span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a></p></li>
+<li><p><span class="target" id="index-0-generator:Visual Studio 17 2022"></span><a class="reference internal" href="../generator/Visual&#32;Studio&#32;17&#32;2022.html#generator:Visual Studio 17 2022" title="Visual Studio 17 2022"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">17</span> <span class="pre">2022</span></code></a></p></li>
+<li><p><span class="target" id="index-0-generator:Visual Studio 18 2026"></span><a class="reference internal" href="../generator/Visual&#32;Studio&#32;18&#32;2026.html#generator:Visual Studio 18 2026" title="Visual Studio 18 2026"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">18</span> <span class="pre">2026</span></code></a></p></li>
+</ul>
+<p>请注意，<a class="reference internal" href="cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 需要 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 1.11 或更高版本。</p>
+<section id="limitations">
+<h3>限制<a class="headerlink" href="cmake-cxxmodules.7.html#limitations" title="此标题的永久链接">¶</a></h3>
+<p>当前 CMake 中的 C++ 模块支持存在一些已知局限性。此处不列出编译器的已知局限性或错误，因为它们可能会随时间改变。</p>
+<p>对于所有生成器：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#term-header-unit"><span class="xref std std-term">头文件单元 (Header units)</span></a> 不受支持。</p></li>
+</ul>
+<p>对于 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>：</p>
+<ul class="simple">
+<li><p>仅支持 Visual Studio 2022 和 MSVC 工具集 14.34 (Visual Studio 17.4) 及更新版本。</p></li>
+<li><p>不支持导出或安装 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 或模块信息。</p></li>
+<li><p>不支持从带有 C++ 模块（包括 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code>）的 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标编译 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a>。</p></li>
+<li><p>不会诊断由 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 模块源使用 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 源提供的模块的情况。</p></li>
+</ul>
+<p>此外，作为一项设计选择，CMake 不会为导入的目标表示配置无关的模块映射。<span class="target" id="index-0-prop_tgt:IMPORTED_CXX_MODULES_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CXX_MODULES_CONFIG.html#prop_tgt:IMPORTED_CXX_MODULES_<CONFIG>" title="IMPORTED_CXX_MODULES_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CXX_MODULES_&lt;CONFIG&gt;</span></code></a> 目标属性始终与特定配置绑定。在从/向不感知配置的构建系统导入/导出目标时，这可能会导致一些冲突。未来的工作将缓解这一限制。</p>
+</section>
+</section>
+<section id="usage">
+<h2>用法<a class="headerlink" href="cmake-cxxmodules.7.html#usage" title="链接到此标题">¶</a></h2>
+<section id="troubleshooting-cmake">
+<h3>故障排除<a class="headerlink" href="cmake-cxxmodules.7.html#troubleshooting-cmake" title="链接至此标题">¶</a></h3>
+<p>本节旨在回答有关 CMake 实现的常见问题，并帮助诊断或解释 CMake C++ 模块支持中的错误。</p>
+<section id="file-extension-support">
+<h4>文件扩展名支持<a class="headerlink" href="cmake-cxxmodules.7.html#file-extension-support" title="链接至此标题">¶</a></h4>
+<p>CMake 对任何模块类型的文件扩展名没有强制要求。虽然不同工具链之间存在偏好（例如，MSVC 上为 <code class="docutils literal notranslate"><span class="pre">.ixx</span></code>，Clang 上为 <code class="docutils literal notranslate"><span class="pre">.cppm</span></code>），但并没有普遍公认的扩展名。因此，CMake 仅要求该文件被识别为 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 语言源文件。默认情况下，任何被识别的扩展名都可以，但 <span class="target" id="index-0-prop_sf:LANGUAGE"></span><a class="reference internal" href="../prop_sf/LANGUAGE.html#prop_sf:LANGUAGE" title="LANGUAGE"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">LANGUAGE</span></code></a> 属性也可以与任何其他扩展名一起使用。</p>
+</section>
+<section id="file-name-requirements">
+<h4>文件名要求<a class="headerlink" href="cmake-cxxmodules.7.html#file-name-requirements" title="链接至此标题">¶</a></h4>
+<p>模块的名称与声明该模块的文件名或路径没有任何关系。C++ 标准对此没有要求，CMake 也没有。然而，在缺乏类似 IDE 的“查找符号”功能的开发环境中（例如代码审查平台），在项目中采用某种模式进行命名可能有助于导航。</p>
+</section>
+<section id="scanning-without-modules">
+<h4>无模块扫描<a class="headerlink" href="cmake-cxxmodules.7.html#scanning-without-modules" title="链接至此标题">¶</a></h4>
+<p>对于尚未采用模块的项目，一个常见问题是源文件的冗余扫描。这通常发生在 C++20 项目开始使用 CMake 3.28，或者 3.28 感知项目开始使用 C++20 时。这两种情况最终都会将 <span class="target" id="index-1-policy:CMP0155"></span><a class="reference internal" href="../policy/CMP0155.html#policy:CMP0155" title="CMP0155"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0155</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，从而默认启用 C++20 或更高版本的 C++ 源扫描。项目关闭此功能的最简单方法是在其顶级 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件顶部附近添加：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_CXX_SCAN_FOR_MODULES</span><span class="w"> </span><span class="m">0</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>请注意，它不应放在缓存中，因为它可能会影响通过 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 使用它的项目。此外，还应注意那些可能希望为其自身源文件启用扫描的被引用项目（vendored projects），因为这也将改变它们的默认行为。</p>
+</section>
+</section>
+<section id="debugging-module-builds">
+<h3>调试模块构建<a class="headerlink" href="cmake-cxxmodules.7.html#debugging-module-builds" title="链接至此标题">¶</a></h3>
+<p>本节旨在帮助诊断或解释在 CMake 的 C++ 模块支持的构建侧可能出现的常见错误。</p>
+<section id="import-cycles">
+<h4>导入循环<a class="headerlink" href="cmake-cxxmodules.7.html#import-cycles" title="链接至此标题">¶</a></h4>
+<p>C++ 标准不允许<a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>的 <code class="docutils literal notranslate"><span class="pre">import</span></code> 图中存在循环；因此，CMake 也不允许。目前，CMake 将由<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>根据用于对模块编译排序的<a class="reference internal" href="cmake-cxxmodules.7.html#term-dynamic-dependencies"><span class="xref std std-term">动态依赖</span></a>来检测循环。<a class="reference external" href="https://gitlab.kitware.com/cmake/cmake/-/issues/26119">CMake 问题 26119</a> 跟踪改进此类情况下的用户体验的需求。</p>
+</section>
+<section id="internal-module-partition-extension">
+<h4>内部模块分区扩展<a class="headerlink" href="cmake-cxxmodules.7.html#internal-module-partition-extension" title="链接至此标题">¶</a></h4>
+<p>在初步研究 C++ 模块构建实现时，似乎存在一种代表<a class="reference internal" href="cmake-cxxmodules.7.html#term-partition-unit"><span class="xref std std-term">分区单元</span></a>和<a class="reference internal" href="cmake-cxxmodules.7.html#term-implementation-unit"><span class="xref std std-term">实现单元</span></a>交集的<a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>类型。最初的 CMake 设计包含了对这些翻译单元的特定支持；然而，深入阅读标准后发现，它们实际上并不存在。这些单元本应具有 <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">M:part;</span></code> 作为其模块声明语句。问题在于，这正是用于声明不参与主模块外部接口的模块分区的语法。只有 MSVC 支持这种区别。其他编译器不支持，并将此类文件视为<a class="reference internal" href="cmake-cxxmodules.7.html#term-internal-partition-unit"><span class="xref std std-term">内部分区单元</span></a>，CMake 会引发错误，提示提供模块的 C++ 源文件必须位于类型为 <code class="docutils literal notranslate"><span class="pre">CXX_MODULES</span></code> 的 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 中。</p>
+<p>解决方法是不使用此扩展，因为它在不使用扩展的情况下并不能提供更多的表现力。所有<a class="reference internal" href="cmake-cxxmodules.7.html#term-implementation-unit"><span class="xref std std-term">实现单元</span></a>源文件都应只使用 <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">M;</span></code> 作为其模块声明语句，无论所定义的实体属于哪个分区。例如：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// module-interface.cpp</span>
+<span class="k">export</span><span class="w"> </span><span class="k">module</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">();</span>
+
+<span class="c1">// module-impl.cpp</span>
+<span class="k">module</span><span class="w"> </span><span class="n">M</span><span class="o">:</span><span class="n">part</span><span class="p">;</span><span class="w"> </span><span class="c1">// module M:part; looks like an internal partition</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>应改为使用明确的接口/实现分离。</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// module-interface.cpp</span>
+<span class="k">export</span><span class="w"> </span><span class="k">module</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">();</span>
+
+<span class="c1">// module-impl.cpp</span>
+<span class="k">module</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="module-visibility">
+<h4>模块可见性<a class="headerlink" href="cmake-cxxmodules.7.html#module-visibility" title="链接至此标题">¶</a></h4>
+<p>CMake 在目标之间及目标内部强制执行<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-visibility"><span class="xref std std-term">模块可见性</span></a>。这实质上意味着，从目标 <code class="docutils literal notranslate"><span class="pre">T</span></code> 上的 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 提供的模块（例如 <code class="docutils literal notranslate"><span class="pre">I</span></code>）不能被以下目标导入：</p>
+<ul class="simple">
+<li><p>其他依赖于 <code class="docutils literal notranslate"><span class="pre">T</span></code> 的目标；或</p></li>
+<li><p>目标 <code class="docutils literal notranslate"><span class="pre">T</span></code> 本身，如果模块是从 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 提供的。</p></li>
+</ul>
+<p>这是因为，通常情况下，从一个模块导入的所有实体也必须能被该模块的所有潜在导入者导入。即使模块 <code class="docutils literal notranslate"><span class="pre">I</span></code> 仅在没有 <code class="docutils literal notranslate"><span class="pre">export</span></code> 关键字的模块部分内使用，它也可能以某种方式影响模块内容，使得模块的使用者为了正常工作需要能够传递性地 <code class="docutils literal notranslate"><span class="pre">import</span></code> 它。由于 CMake 使用模块可见性来确定是否安装<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>，因此 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 模块接口单元将不会被安装，这意味着任何导入 <code class="docutils literal notranslate"><span class="pre">I</span></code> 的已安装模块都无法正常工作。</p>
+<p>相反，请仅从<a class="reference internal" href="cmake-cxxmodules.7.html#term-implementation-unit"><span class="xref std std-term">实现单元</span></a>内部导入 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> C++ 模块，因为它们不会暴露给任何模块的使用者。</p>
+</section>
+</section>
+</section>
+<section id="design">
+<h2>设计<a class="headerlink" href="cmake-cxxmodules.7.html#design" title="链接至此标题">¶</a></h2>
+<p>与其它设计相比，CMake 的 C++ 模块支持设计做出了若干权衡。首先，将涵盖 CMake 选择的设计。随后的章节将涵盖未被 CMake 实现选择的替代设计。</p>
+<p>总的来说，这些设计分布在两个轴上：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>显示（Explicit）动态</p></td>
+<td><p>显示（Explicit）静态</p></td>
+<td><p>显示（Explicit）固定</p></td>
+</tr>
+<tr class="row-even"><td><p>隐式（Implicit）动态</p></td>
+<td><p>隐式（Implicit）静态</p></td>
+<td><p>隐式（Implicit）固定</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>显示（Explicit）</strong>构建直接控制哪些模块对每个翻译单元可见。例如，当编译需要模块 <code class="docutils literal notranslate"><span class="pre">M</span></code> 的源文件时，编译器将被提供信息，说明在导入 <code class="docutils literal notranslate"><span class="pre">M</span></code> 模块时应使用的确切 BMI 文件。</p></li>
+<li><p><strong>隐式（Implicit）</strong>构建也可以控制模块可见性，但方法是将 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 分组到目录中，然后搜索这些目录以查找满足源文件中 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句的文件。</p></li>
+<li><p><strong>静态（Static）</strong>构建使用一组静态的构建命令来完成构建。必须支持在构建时向节点添加边。</p></li>
+<li><p><strong>动态（Dynamic）</strong>构建可以在构建期间创建新的构建命令，并调度构建期间发现的任何工作。</p></li>
+<li><p><strong>固定（Fixed）</strong>构建在生成时就已经知晓了所有模块依赖。</p></li>
+</ul>
+<section id="design-goals">
+<h3>设计目标<a class="headerlink" href="cmake-cxxmodules.7.html#design-goals" title="链接至此标题">¶</a></h3>
+<p>CMake 构建 C++ 模块的实现专注于以下设计目标：</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-correct-builds">正确的构建</a></p></li>
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-deterministic-builds">确定性的构建</a></p></li>
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-generated-sources">支持生成的源文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-static-communication">静态通信</a></p></li>
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-minimize-regeneration">最小化重生成</a></p></li>
+</ol>
+<section id="correct-builds">
+<span id="design-goal-correct-builds"></span><h4>正确的构建<a class="headerlink" href="cmake-cxxmodules.7.html#correct-builds" title="链接至此标题">¶</a></h4>
+<p>最重要的是，错误的构建对相关人员来说是一种令人沮丧的经历。一个不能检测错误，反而让存在可检测问题的构建运行到完成的构建，是导致漫长调试过程的绝佳方式。CMake 在避免此类情况上更倾向于谨慎。</p>
+</section>
+<section id="deterministic-builds">
+<span id="design-goal-deterministic-builds"></span><h4>确定性的构建<a class="headerlink" href="cmake-cxxmodules.7.html#deterministic-builds" title="链接至此标题">¶</a></h4>
+<p>鉴于磁盘上的构建状态，应该能够确定下一步将发生什么步骤。这并不意味着构建中可并发运行规则的确切顺序是确定性的，而是意味着要完成的工作集及其结果是确定性的。例如，如果任务 <code class="docutils literal notranslate"><span class="pre">A</span></code> 和 <code class="docutils literal notranslate"><span class="pre">B</span></code> 之间没有依赖关系，那么 <code class="docutils literal notranslate"><span class="pre">A</span></code> 就不应对 <code class="docutils literal notranslate"><span class="pre">B</span></code> 的执行产生影响，反之亦然。</p>
+</section>
+<section id="support-generated-sources">
+<span id="design-goal-generated-sources"></span><h4>支持生成的源文件<a class="headerlink" href="cmake-cxxmodules.7.html#support-generated-sources" title="链接至此标题">¶</a></h4>
+<p>代码生成在 C++ 生态系统中非常普遍，因此只支持在配置时已知内容的文件中的模块是不合适的。如果不支持使用或提供模块的生成源文件，代码生成工具实际上就被切断了模块的使用，且生成源文件的任何依赖项也必须提供非模块化的接口使用方式（即提供头文件）。鉴于所有 C++ 实现都使用<a class="reference internal" href="cmake-cxxmodules.7.html#term-strong-module-ownership"><span class="xref std std-term">强模块所有权</span></a>进行符号重整（name mangling），当此类接口最终引用其他库中的已编译符号时，这就产生了问题。</p>
+</section>
+<section id="static-communication">
+<span id="design-goal-static-communication"></span><h4>静态通信<a class="headerlink" href="cmake-cxxmodules.7.html#static-communication" title="链接至此标题">¶</a></h4>
+<p>构建的不同步骤之间的所有通信都应静态处理。鉴于 CMake 支持的<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>，为需要在编译期间交互的配套工具建立受控生命周期具有挑战性。无论是 <code class="docutils literal notranslate"><span class="pre">make</span></code> 还是 <code class="docutils literal notranslate"><span class="pre">ninja</span></code>，都无法提供一种在构建开始时启动工具并在结束时确保其停止的方法。相反，与编译器的通信通过输入和输出文件进行管理，利用<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>中的依赖项来保持一切更新。这种方法支持标准的构建调试策略，并允许开发者在调查问题时直接运行构建命令，而无需考虑在后台运行的其他工具。</p>
+</section>
+<section id="minimize-regeneration">
+<span id="design-goal-minimize-regeneration"></span><h4>最小化重生成<a class="headerlink" href="cmake-cxxmodules.7.html#minimize-regeneration" title="链接至此标题">¶</a></h4>
+<p>模块化构建的积极开发不应要求在每次更改时都重新生成构建图。这意味着模块依赖必须在构建图可用之后构建。如果没有这一点，<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-correct-builds">正确的构建</a>将需要在每次编辑模块感知源文件时重新生成构建图，因为任何更改都可能改变模块依赖。</p>
+<p>这也意味着所有模块感知的源文件都必须在配置时可知（即使它们尚不存在），以便构建图可以包含用于<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>其依赖项的命令。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>已知的 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 问题可能导致在两次构建之间，当两个源文件之间的依赖顺序反转（例如 <code class="docutils literal notranslate"><span class="pre">a</span></code> 导入 <code class="docutils literal notranslate"><span class="pre">b</span></code> 变为 <code class="docutils literal notranslate"><span class="pre">b</span></code> 导入 <code class="docutils literal notranslate"><span class="pre">a</span></code>）时，错误地检测到依赖循环。详情请参阅 <a class="reference external" href="https://github.com/ninja-build/ninja/issues/2666">ninja 问题 2666</a>。</p>
+</div>
+</section>
+</section>
+<section id="use-case-considerations">
+<h3>用例考虑<a class="headerlink" href="cmake-cxxmodules.7.html#use-case-considerations" title="链接至此标题">¶</a></h3>
+<p>上述设计目标限制了实现方式。此外，CMake 通过诸如 <span class="target" id="index-1-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 和 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 这样的多配置生成器来支持混合配置。本节描述 CMake 如何解决这些限制。</p>
+</section>
+<section id="selected-design">
+<h3>选择的设计<a class="headerlink" href="cmake-cxxmodules.7.html#selected-design" title="链接至此标题">¶</a></h3>
+<p>CMake 使用的通用策略是“<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>”源文件以提取顺序依赖信息，并通过现有边之间的新边来更新构建图。这是通过获取逐源扫描结果（由 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html">P1689R5</a> 文件表示），然后为每个目标结合其依赖项的信息进行“<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理 (collating)</span></a>”来完成的。整理器的主要任务是生成“<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-map"><span class="xref std std-term">模块映射</span></a>”文件，并将其传递给每个编译规则，其中包含满足 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句所需的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 路径，并告知<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>在编译期间满足这些 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句所需的依赖项。整理器还利用构建时信息为模块接口单元、它们的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成 <code class="docutils literal notranslate"><span class="pre">install</span></code> 规则，并为任何具有 C++ 模块的导出目标生成属性。它还强制要求 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 模块不得被其他目标或目标内的任何 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> <a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>使用。</p>
+</section>
+<section id="implementation-details">
+<h3>实现细节<a class="headerlink" href="cmake-cxxmodules.7.html#implementation-details" title="链接至此标题">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>这里描述的实现细节不是稳定接口。每个 CMake 版本都可能修订这些细节，且不承诺兼容性。外部工具链维护者需要为其支持的每个 CMake 版本更新实现。</p>
+</div>
+<p>本节描述 CMake 实际上是如何构建构建图的，各部分之间传递的数据，以及包含该数据的文件。它旨在用作功能文档，并作为调试模块构建时定位各类数据所在位置的指南。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>本节记录了内部实现细节，这些细节对 <span class="target" id="index-0-manual:cmake-toolchains(7)"></span><a class="reference internal" href="cmake-toolchains.7.html#manual:cmake-toolchains(7)" title="cmake-toolchains(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">工具链文件</span></code></a> 作者或调试模块相关问题时可能很有用。项目无需检查或修改此处提到的任何变量、属性、文件或目标。</p>
+</div>
+<section id="toolchain-scanning">
+<h4>工具链（扫描）<a class="headerlink" href="cmake-cxxmodules.7.html#toolchain-scanning" title="链接至此标题">¶</a></h4>
+<p>支持模块的编译器必须同时提供扫描工具。这通常是编译器本身带有一些额外的标志，或者是随编译器提供的工具。扫描的命令模板存储在 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_SCANDEP_SOURCE</span></code> 变量中。命令应将 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html">P1689R5</a> 结果写入 <code class="docutils literal notranslate"><span class="pre">&lt;DYNDEP_FILE&gt;</span></code> 占位符。此外，命令应将任何<a class="reference internal" href="cmake-cxxmodules.7.html#term-discovered-dependencies"><span class="xref std std-term">发现的依赖</span></a>提供给 <code class="docutils literal notranslate"><span class="pre">&lt;DEP_FILE&gt;</span></code> 占位符。这允许<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>在扫描命令的任何依赖项发生更改时重新运行扫描。</p>
+<p>此外，工具链应设置以下变量：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_MAP_FORMAT</span></code>：<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-map"><span class="xref std std-term">模块映射</span></a>格式，描述编译期间导入模块所需的依赖 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件存在的位置。必须是 <code class="docutils literal notranslate"><span class="pre">gcc</span></code>、<code class="docutils literal notranslate"><span class="pre">clang</span></code> 或 <code class="docutils literal notranslate"><span class="pre">msvc</span></code> 之一。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_MAP_FLAG</span></code>：用于通知编译器<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-map"><span class="xref std std-term">模块映射</span></a>文件的参数。它应使用 <code class="docutils literal notranslate"><span class="pre">&lt;MODULE_MAP_FILE&gt;</span></code> 占位符。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_COMPILE_BMI</span></code>：用于从 <a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a> 编译 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的命令模板。当 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_BMI_ONLY_FLAG</span></code> 不能完全作为对象编译模板的附加选项使用时，会使用它。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_BMI_ONLY_FLAG</span></code>：用于仅从<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>编译 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的参数。这用于在使用来自外部项目的模块时，为当前构建使用而编译 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。</p></li>
+</ul>
+<p>如果工具链未提供 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_COMPILE_BMI</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_BMI_ONLY_FLAG</span></code> 变量，它将无法使用 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标提供的模块。</p>
+</section>
+<section id="configure">
+<h4>配置（Configure）<a class="headerlink" href="cmake-cxxmodules.7.html#configure" title="链接至此标题">¶</a></h4>
+<p>在配置步骤中，CMake 需要跟踪哪些源文件关心模块。有关每个源文件如何确定其是否关心模块，请参阅 <a class="reference internal" href="cmake-cxxmodules.7.html#cxxmodules-scanning-control"><span class="std std-ref">扫描控制</span></a>。CMake 在其内部目标表示结构（<code class="docutils literal notranslate"><span class="pre">cmTarget</span></code>）中跟踪这些信息。可以使用 <span class="target" id="index-0-command:target_sources"></span><a class="reference internal" href="../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a>、<span class="target" id="index-0-command:target_compile_features"></span><a class="reference internal" href="../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 和 <span class="target" id="index-0-command:set_property"></span><a class="reference internal" href="../command/set_property.html#command:set_property" title="set_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_property()</span></code></a> 命令修改需要扫描的源文件集。</p>
+<p>此外，目标可以使用 <span class="target" id="index-0-prop_tgt:CXX_MODULE_STD"></span><a class="reference internal" href="../prop_tgt/CXX_MODULE_STD.html#prop_tgt:CXX_MODULE_STD" title="CXX_MODULE_STD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_MODULE_STD</span></code></a> 目标属性来指示在目标的源文件中需要 <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code>。</p>
+</section>
+<section id="generate">
+<h4>生成（Generate）<a class="headerlink" href="cmake-cxxmodules.7.html#generate" title="链接至此标题">¶</a></h4>
+<p>在生成期间，CMake 需要添加额外的规则，以确保提供模块的源文件可以在导入这些模块的源文件之前被构建。由于 CMake 使用<a class="reference internal" href="cmake-cxxmodules.7.html#term-static-build"><span class="xref std std-term">静态构建</span></a>，构建图必须包含所有可能的扫描和模块生成命令。确保模块提供的命令之间的依赖边将确保构建图正确执行。这意味着，虽然所有源文件都可能被扫描，但只有实际使用的模块才会被生成。</p>
+<p>CMake 执行的第一步是为模块提供目标的每次唯一使用生成一个<a class="reference internal" href="cmake-cxxmodules.7.html#term-synthetic-target"><span class="xref std std-term">合成目标 (synthetic target)</span></a>。这些目标基于其他目标，但仅为其他目标提供 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件，而不是对象文件。这是因为 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的兼容性极窄，不能在任意 <code class="docutils literal notranslate"><span class="pre">import</span></code> 实例之间共享。由于工具链的内部工作方式，对于任何单一编译，对于各种标志通常只能有一组设置，包括用于导入模块的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。例如，所使用的 C++ 标准需要在所有模块之间保持一致，但有许多设置可能导致不兼容。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 目前假设所有用法都是兼容的，并且每个目标只会创建一组 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a>。这可能导致构建失败，因为需要多组 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件，但 CMake 只提供了一组。请参阅 <a class="reference external" href="https://gitlab.kitware.com/cmake/cmake/-/issues/25916">CMake 问题 25916</a> 以获取消除此假设的进展。</p>
+</div>
+<p>一旦创建了所有<a class="reference internal" href="cmake-cxxmodules.7.html#term-synthetic-target"><span class="xref std std-term">合成目标</span></a>，CMake 就会查看每个包含可能使用 C++ 模块的源文件的目标，并创建一个命令来<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>它们中的每一个。该命令将输出一个 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html">P1689R5</a> 格式的文件，描述它使用和提供（如果有）的 C++ 模块。它还将创建一个命令来为合格的编译<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>模块依赖。该命令取决于所有合格源文件的<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>结果、目标本身的信息以及任何提供 C++ 模块的依赖目标的<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>结果。<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>步骤使用特定于目标的 <code class="docutils literal notranslate"><span class="pre">CXXDependInfo.json</span></code> 文件，其中包含以下信息：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compiler-*</span></code>：基本的编译器信息（<code class="docutils literal notranslate"><span class="pre">id</span></code>、<code class="docutils literal notranslate"><span class="pre">frontend-variant</span></code> 和 <code class="docutils literal notranslate"><span class="pre">simulate-id</span></code>），用于在为编译器生成路径时生成格式正确的路径。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cxx-modules</span></code>：对象文件到 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 信息的映射，用于强制执行<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-visibility"><span class="xref std std-term">模块可见性</span></a>并为<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>源生成安装规则。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">module-dir</span></code>：放置此目标 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的位置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir-{cur,top}-{src,bld}</span></code>：当前目录（<code class="docutils literal notranslate"><span class="pre">cur</span></code>）和项目顶级（<code class="docutils literal notranslate"><span class="pre">top</span></code>）的源（<code class="docutils literal notranslate"><span class="pre">src</span></code>）和构建（<code class="docutils literal notranslate"><span class="pre">bld</span></code>）目录，用于为<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>动态依赖计算准确的相对路径。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exports</span></code>：导出列表，既包含目标又提供 C++ 模块信息，用于在导出的目标上提供 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标的准确模块属性。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bmi-installation</span></code>：安装信息，用于生成 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的安装脚本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database-info</span></code>：如果通过 <span class="target" id="index-0-prop_tgt:EXPORT_BUILD_DATABASE"></span><a class="reference internal" href="../prop_tgt/EXPORT_BUILD_DATABASE.html#prop_tgt:EXPORT_BUILD_DATABASE" title="EXPORT_BUILD_DATABASE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXPORT_BUILD_DATABASE</span></code></a> 请求，则生成<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-database"><span class="xref std std-term">构建数据库</span></a>信息所需的信息。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sources</span></code>：目标中其他源文件的列表，如果请求，用于添加到<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-database"><span class="xref std std-term">构建数据库</span></a>中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>：目标的配置，用于在生成的导出文件中设置适当的属性。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code>：<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>元数据文件正在描述的语言（例如 C++ 或 Fortran）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include-dirs</span></code> 和 <code class="docutils literal notranslate"><span class="pre">forward-modules-from-target-dirs</span></code>：C++ 中未使用。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">cxx-modules</span></code> 映射中的每个条目记录以下内容：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bmi-only</span></code> (bool)：如果仅 BMI 可用，而非 BMI 源可用，则为 True。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compile-features</span></code> (list[string])：用于构建对象的 <span class="target" id="index-0-manual:cmake-compile-features(7)"></span><a class="reference internal" href="cmake-compile-features.7.html#manual:cmake-compile-features(7)" title="cmake-compile-features(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-compile-features(7)</span></code></a>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compile-options</span></code> (list[string])：用于构建对象的编译选项/标志，派生自 <code class="docutils literal notranslate"><span class="pre">compile-features</span></code> 的除外。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">definitions</span></code> (list[string])：用于构建对象的预处理器定义。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">destination</span></code> (string)：源文件的预期安装目标位置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include-directories</span></code> (list[string])：用于构建对象的包含目录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (string)：拥有源文件的文件集名称。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relative-directory</span></code> (string)：源文件将相对于此基路径重定位到安装目标位置。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code> (string)：源文件的路径。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (string)：拥有源文件的文件集类型。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visibility</span></code> (string)：拥有源文件的文件集可见性。</p></li>
+</ul>
+<p>对于每次编译，CMake 还将提供一个<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-map"><span class="xref std std-term">模块映射</span></a>，该映射将在构建期间由<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令创建。如何将其提供给编译器由 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_MAP_FORMAT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_MODULE_MAP_FLAG</span></code> 工具链变量指定。</p>
+</section>
+<section id="scan">
+<h4>扫描（Scan）<a class="headerlink" href="cmake-cxxmodules.7.html#scan" title="链接至此标题">¶</a></h4>
+<p>编译器应实现<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>命令。这是因为只有编译器本身才能可靠地回答诸如 <code class="docutils literal notranslate"><span class="pre">__has_builtin</span></code> 这样的预处理器谓词，从而在面对编译源文件时可能使用的任意标志的情况下提供准确的模块使用信息。</p>
+<p>CMake 将这些文件命名为 <code class="docutils literal notranslate"><span class="pre">.ddi</span></code> 扩展名，代表“动态依赖信息 (dynamic dependency information)”。这些文件采用 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html">P1689R5</a> 格式，并被<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令用来执行其任务。</p>
+</section>
+<section id="collate">
+<h4>整理（Collate）<a class="headerlink" href="cmake-cxxmodules.7.html#collate" title="链接至此标题">¶</a></h4>
+<p>该<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令执行了使 C++ 模块在构建图中工作的大部分工作。它消耗以下文件作为输入：</p>
+<ul class="simple">
+<li><p>来自生成步骤的 <code class="docutils literal notranslate"><span class="pre">CXXDependInfo.json</span></code></p></li>
+<li><p>来自目标源文件的<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>结果的 <code class="docutils literal notranslate"><span class="pre">.ddi</span></code> 文件</p></li>
+<li><p>来自合格依赖目标的<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令输出的 <code class="docutils literal notranslate"><span class="pre">CXXModules.json</span></code> 文件</p></li>
+</ul>
+<p>它利用来自这些文件的信息生成：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CXX.dd</span></code> 文件，用于告知<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>源文件编译与它导入的模块的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件之间存在的依赖关系。</p></li>
+<li><p>用于依赖目标的<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令的 <code class="docutils literal notranslate"><span class="pre">CXXModules.json</span></code> 文件</p></li>
+<li><p>用于每次编译的 <code class="docutils literal notranslate"><span class="pre">*.modmap</span></code> 文件，以查找导入模块的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">install-cxx-module-bmi-$&lt;CONFIG&gt;.cmake</span></code> 脚本，用于安装任何 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件（被 <code class="docutils literal notranslate"><span class="pre">install</span></code> 脚本包含）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target-*-$&lt;CONFIG&gt;.cmake</span></code> 导出文件，用于目标的任何导出，以提供 <span class="target" id="index-1-prop_tgt:IMPORTED_CXX_MODULES_<CONFIG>"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CXX_MODULES_CONFIG.html#prop_tgt:IMPORTED_CXX_MODULES_<CONFIG>" title="IMPORTED_CXX_MODULES_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CXX_MODULES_&lt;CONFIG&gt;</span></code></a> 属性。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CXX_build_database.json</span></code> <a class="reference internal" href="cmake-cxxmodules.7.html#term-build-database"><span class="xref std std-term">构建数据库</span></a>文件，用于目标设置其 <span class="target" id="index-1-prop_tgt:EXPORT_BUILD_DATABASE"></span><a class="reference internal" href="../prop_tgt/EXPORT_BUILD_DATABASE.html#prop_tgt:EXPORT_BUILD_DATABASE" title="EXPORT_BUILD_DATABASE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXPORT_BUILD_DATABASE</span></code></a> 属性时。</p></li>
+</ul>
+<p>在处理过程中，它强制执行以下保证：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 使用一致。</p></li>
+<li><p>遵守<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-visibility"><span class="xref std std-term">模块可见性</span></a>。</p></li>
+</ul>
+<p>C++ 模块有一条规则，即程序中只能存在一个给定名称的模块。这对于私有模块而言并非完全可强制执行，但对于公共模块是可行的。此强制执行由<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令完成。<code class="docutils literal notranslate"><span class="pre">CXXModules.json</span></code> 文件的一部分是它提供的每个模块所传递性导入的模块集。当一个模块随后被导入时，<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令确保所有给定名称的模块都同意提供该模块的给定 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。</p>
+</section>
+<section id="compile">
+<h4>编译（Compile）<a class="headerlink" href="cmake-cxxmodules.7.html#compile" title="链接至此标题">¶</a></h4>
+<p>编译使用由<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令生成的<a class="reference internal" href="cmake-cxxmodules.7.html#term-module-map"><span class="xref std std-term">模块映射</span></a>文件，在编译期间查找导入的模块。由于 CMake 仅提供由<a class="reference internal" href="cmake-cxxmodules.7.html#term-scan"><span class="xref std std-term">扫描</span></a>命令发现的模块位置，任何被扫描命令错过的模块都不会提供给编译。</p>
+<p>工具链有可能以不兼容为由拒绝 CMake 提供给编译的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。这是因为 CMake 目前假设所有使用都是兼容的。请参阅 <a class="reference external" href="https://gitlab.kitware.com/cmake/cmake/-/issues/25916">CMake 问题 25916</a> 以获取消除此假设的进展。</p>
+</section>
+<section id="install">
+<h4>安装（Install）<a class="headerlink" href="cmake-cxxmodules.7.html#install" title="链接至此标题">¶</a></h4>
+<p>在安装期间，包含在构建期间由<a class="reference internal" href="cmake-cxxmodules.7.html#term-collate"><span class="xref std std-term">整理</span></a>命令编写的安装脚本，以便根据需要安装任何 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。这些需要生成，因为在 CMake 的生成阶段不知道 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件名会是什么（因为 CMake 是以模块名称本身来命名 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件的）。这些安装脚本以 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 关键字包含，因此不完整的构建也可能导致不完整的安装。</p>
+</section>
+</section>
+<section id="alternative-designs">
+<h3>替代设计<a class="headerlink" href="cmake-cxxmodules.7.html#alternative-designs" title="链接至此标题">¶</a></h3>
+<p>存在 CMake 未实现的替代设计。本节旨在简要概述，并解释为什么它们没有被选择用于 CMake 的实现。</p>
+<section id="implicit-builds">
+<h4>隐式构建（Implicit Builds）<a class="headerlink" href="cmake-cxxmodules.7.html#implicit-builds" title="链接至此标题">¶</a></h4>
+<p>隐式构建使用编译时搜索路径执行模块构建，以简化构建的实现。这当然是可以实现的。然而，CMake 的目标将其排除在解决方案之外。</p>
+<p>当构建使用搜索目录管理时，编译器被指示将模块输出文件放入指定目录。这些目录随后作为搜索路径提供给任何允许使用其中模块的编译。</p>
+<p>这种策略存在违反<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-correct-builds">正确的构建</a>目标的风险。这源于搜索目录中存在陈旧文件的风险。由于构建系统不知道实际写入的文件，因此很难知道哪些文件可以删除（例如使用 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">-t</span> <span class="pre">cleandead</span></code> 来删除 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 遇到但不再生成的输出）。如果构建系统除了消费者报告“使用文件 X”之外不知道这些输出，删除中间文件也可能导致构建卡住。</p>
+<p>还需要对共享输出目录的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成命令进行至少某种程度的排序。可以使用单独的目录对模块组进行排序（例如每个目标一个目录）；否则，同一目录中的模块不能假设写入共享目录的其他模块会先完成。如果模块路径根据模块依赖图准确分组，那么迈向直接指定文件的显示构建就只有一小步了。</p>
+</section>
+<section id="static-scanning">
+<h4>静态扫描（Static Scanning）<a class="headerlink" href="cmake-cxxmodules.7.html#static-scanning" title="链接至此标题">¶</a></h4>
+<p>一种<a class="reference internal" href="cmake-cxxmodules.7.html#term-fixed-build"><span class="xref std std-term">固定构建</span></a>在生成构建图时执行扫描，并预先包含必要的依赖项。在 CMake 的情况下，它会在生成阶段查看源文件，并直接将依赖项添加到构建图中。这更有可能适用于既是构建系统又是<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>的场景，在这种场景下，构建图的操纵可以协同完成。</p>
+<p>无论是否集成，该策略都需要一个合适的 C++ 解析器来首先提取信息，或者需要工具链合作来获取它。虽然更简单的 C++ 解析器可以获取模块依赖信息，但依赖项可能隐藏在需要理解才能准确判断的预处理器条件之后。当然，选择不支持 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句周围的预处理器条件也是一种选择，但这可能会严重限制外部库的支持。</p>
+<p>对于 CMake，此策略意味着对模块感知源文件的任何更改可能都需要触发构建图的重生成。良性编辑至少需要触发对更改的导入的“检查”，但如果未更改，可能会跳过实际重生成。这对于既是构建系统又是<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>的情况可能不那么关键，但这直接违反了<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-minimize-regeneration">最小化重生成</a>目标。</p>
+<p>此外，CMake 的<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-generated-sources">支持生成的源文件</a>目标在此策略下将无法支持。CMake 可以推迟扫描直到生成文件可用，但这些源文件在执行此类扫描之前无法编译。这意味着当源文件变得可用时，构建图将有某种无界（但有限）的重生成次数。</p>
+</section>
+<section id="module-mapping-service">
+<h4>模块映射服务（Module Mapping Service）<a class="headerlink" href="cmake-cxxmodules.7.html#module-mapping-service" title="链接至此标题">¶</a></h4>
+<p>另一种策略是在构建旁边运行一个服务，它可以充当放置和发现模块的“预言机”。编译器被指示用“此源文件正在导出模块 X”和“此源文件正在导入模块 Y”之类的问题向服务提问，并分别接收创建或查找 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 的路径。在这种情况下，该服务动态实现了整理逻辑。</p>
+<p>特别值得注意的是，这与<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-deterministic-builds">确定性的构建</a>和<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-static-communication">静态通信</a>目标相冲突，因为磁盘上的状态可能与实际状态不匹配，并且协调<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>本身的生命周期与服务非常困难。主要缺少的功能是当构建会话开始和结束时的某种信号，以便此类服务可以知道它是在什么上下文中回答请求的。还需要有一种方法来恢复会话并检测会话何时失效。目前 CMake 支持的任何<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>都没有此类功能。</p>
+<p>还存在与<a class="reference internal" href="cmake-cxxmodules.7.html#design-goal-correct-builds">正确的构建</a>目标相冲突的危险。当模块被导入时，编译器会等待响应然后再继续。然而，无法保证该名称的（可见）模块甚至存在，因此它可能会无限期等待。在等待编译报告它创建该模块时，它可能会陷入依赖循环，导致编译挂起直到达到某个资源限制（可能是时间，或者模块的所有可能提供者都没有报告该名称的模块）。当这些编译在等待答案时，存在它们如何影响所使用<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-tool"><span class="xref std std-term">构建工具</span></a>的并行限制的问题。等待答案的编译是否计入限制并阻止其他编译启动以潜在地发现该模块？如果不计入，那么这些编译占用的其他资源（例如内存或可用文件描述符）怎么办？</p>
+</section>
+</section>
+</section>
+<section id="possible-future-enhancements">
+<h2>可能的未来增强<a class="headerlink" href="cmake-cxxmodules.7.html#possible-future-enhancements" title="链接至此标题">¶</a></h2>
+<p>本节记录了对 CMake 的 C++ 模块支持的可能未来增强功能。此处没有任何内容是未来实现的保证，顺序也是任意的。</p>
+<section id="batch-scanning">
+<h3>批处理扫描（Batch Scanning）<a class="headerlink" href="cmake-cxxmodules.7.html#batch-scanning" title="链接至此标题">¶</a></h3>
+<p>可以一次扫描目标内的所有源文件，当源文件共享传递性包含时，这应该会更快。这对增量构建确实有副作用，因为目标中任何源文件的更新意味着目标中的所有源文件都会被再次扫描。鉴于扫描可以如此之快，假设未更改的结果不会触发重新编译，做这样的“额外”扫描应该是可以忽略不计的。</p>
+</section>
+<section id="bmi-modification-optimization">
+<h3>BMI 修改优化（BMI Modification Optimization）<a class="headerlink" href="cmake-cxxmodules.7.html#bmi-modification-optimization" title="链接至此标题">¶</a></h3>
+<p>目前，与对象文件一样，即使内容没有改变，编译器也会始终更新 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件。由于模块增加了“非更改”导致（概念上）不必要重新编译的潜在范围，如果 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件未更改，则避免重新编译模块使用者可能会很有用。这可以通过将编译包装在带有 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">copy_if_different</span></code> 通道的传递中来实现，并结合 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 的 <code class="docutils literal notranslate"><span class="pre">restat</span> <span class="pre">=</span> <span class="pre">1</span></code> 功能，以避免在 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件实际上没有更改时重新编译导入者。</p>
+</section>
+<section id="easier-source-specification">
+<span id="id1"></span><h3>更容易的源文件指定（Easier Source Specification）<a class="headerlink" href="cmake-cxxmodules.7.html#easier-source-specification" title="链接至此标题">¶</a></h3>
+<p>CMake 模块支持的最初实现使用了“只需列出源文件；CMake 会弄清楚”的模式。然而，这遇到了与其它元数据要求相关的问题。这些是在实现除了构建模块使用代码之外的 CMake 支持时发现的。</p>
+<p>与单一目标上的<a class="reference internal" href="cmake-cxxmodules.7.html#separate-bmi-generation">单独 BMI 生成</a>冲突，因为这需要在生成时知晓所有 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成规则。</p>
+</section>
+<section id="separate-bmi-generation">
+<span id="id2"></span><h3>单独 BMI 生成（Separate BMI Generation）<a class="headerlink" href="cmake-cxxmodules.7.html#separate-bmi-generation" title="链接至此标题">¶</a></h3>
+<p>CMake 目前使用单一规则来为一次编译生成 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 和对象文件。至少 Clang 支持直接从 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 编译对象。这将是有益的，因为 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成通常比编译要快，并且将 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成作为一个单独的步骤允许导入者在不等待对象也被生成的情况下开始编译。</p>
+<p>在当前的实现中不支持这一点，因为只有 Clang 支持直接从 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成对象。其他编译器要么不支持这种两阶段生成（GCC），要么需要再次从源文件开始对象编译。</p>
+<p>在单一目标上与<a class="reference internal" href="cmake-cxxmodules.7.html#easier-source-specification">更容易的源文件指定</a>冲突，因为 CMake 必须在生成时（而非构建时）知晓所有 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 生成源文件，才能创建两阶段规则。</p>
+</section>
+</section>
+<section id="module-compilation-glossary">
+<h2>模块编译术语表<a class="headerlink" href="cmake-cxxmodules.7.html#module-compilation-glossary" title="链接至此标题">¶</a></h2>
+<dl class="simple glossary">
+<dt id="term-BMI">BMI<a class="headerlink" href="cmake-cxxmodules.7.html#term-BMI" title="链接至此术语">¶</a></dt><dd><p>Built Module Interface（内置模块接口）。模块使用者所需的 C++ 模块接口的编译器生成二进制表示。文件扩展名因编译器而异。</p>
+</dd>
+<dt id="term-CMI">CMI<a class="headerlink" href="cmake-cxxmodules.7.html#term-CMI" title="链接至此术语">¶</a></dt><dd><p>Compiled Module Interface（编译模块接口）。某些编译器使用的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 的替代名称。</p>
+</dd>
+<dt id="term-build-database">构建数据库（build database）<a class="headerlink" href="cmake-cxxmodules.7.html#term-build-database" title="链接至此术语">¶</a></dt><dd><p>包含编译命令、模块依赖和分组信息的 JSON 文件。用于 IDE 集成和构建分析。</p>
+</dd>
+<dt id="term-build-system">构建系统（build system）<a class="headerlink" href="cmake-cxxmodules.7.html#term-build-system" title="链接至此术语">¶</a></dt><dd><p>一种促进软件构建的工具，它包含构建组件如何相互关联的模型。例如 CMake、Meson、build2 等。</p>
+</dd>
+<dt id="term-build-tool">构建工具（build tool）<a class="headerlink" href="cmake-cxxmodules.7.html#term-build-tool" title="链接至此术语">¶</a></dt><dd><p>一种构建图执行工具。例如 <cite>ninja</cite> 和 <cite>make</cite>。一些构建工具本身也是它们自己的<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-system"><span class="xref std std-term">构建系统</span></a>。</p>
+</dd>
+<dt id="term-C-module">C++ 模块（C++ module）<a class="headerlink" href="cmake-cxxmodules.7.html#term-C-module" title="链接至此术语">¶</a></dt><dd><p>一种用于描述软件片段 API 的 C++20 语言功能。旨在作为此目的头文件的替代品。</p>
+</dd>
+<dt id="term-collate">整理（collate）<a class="headerlink" href="cmake-cxxmodules.7.html#term-collate" title="链接至此术语">¶</a></dt><dd><p>从扫描的源文件中聚合模块信息，以确保正确的编译顺序并为构建的其他部分（例如安装或<a class="reference internal" href="cmake-cxxmodules.7.html#term-build-database"><span class="xref std std-term">构建数据库</span></a>）提供元数据的过程。</p>
+</dd>
+<dt id="term-discovered-dependencies">发现的依赖（discovered dependencies）<a class="headerlink" href="cmake-cxxmodules.7.html#term-discovered-dependencies" title="链接至此术语">¶</a></dt><dd><p>在命令处理过程中找到的、不需要显式声明的依赖项。</p>
+</dd>
+<dt id="term-dynamic-dependencies">动态依赖（dynamic dependencies）<a class="headerlink" href="cmake-cxxmodules.7.html#term-dynamic-dependencies" title="链接至此术语">¶</a></dt><dd><p>需要单独指令来检测的依赖项，以便后续指令可以满足其依赖关系。</p>
+</dd>
+<dt id="term-embarrassingly-parallel">embarrassingly parallel<a class="headerlink" href="cmake-cxxmodules.7.html#term-embarrassingly-parallel" title="Link to this term">¶</a></dt><dd><p>由于任务间依赖极少，可以轻松划分为许多可并发执行的独立任务的一组任务。</p>
+</dd>
+<dt id="term-explicit-build">explicit build<a class="headerlink" href="cmake-cxxmodules.7.html#term-explicit-build" title="Link to this term">¶</a></dt><dd><p>一种构建策略，其中模块依赖项是显式指定的，而不是通过发现得到的。</p>
+</dd>
+<dt id="term-fixed-build">fixed build<a class="headerlink" href="cmake-cxxmodules.7.html#term-fixed-build" title="Link to this term">¶</a></dt><dd><p>一种构建策略，其中所有模块依赖项都会被计算并直接插入到构建图中。</p>
+</dd>
+<dt id="term-header-unit">header unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-header-unit" title="Link to this term">¶</a></dt><dd><p>一种通过 <code class="docutils literal notranslate"><span class="pre">import</span></code> 语句而不是 <code class="docutils literal notranslate"><span class="pre">#include</span></code> 预处理器指令使用的头文件。实现可以提供将 <code class="docutils literal notranslate"><span class="pre">#include</span></code> 视为 <code class="docutils literal notranslate"><span class="pre">import</span></code> 的支持。</p>
+</dd>
+<dt id="term-implementation-unit">implementation unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-implementation-unit" title="Link to this term">¶</a></dt><dd><p>一个实现了在模块接口单元中声明的模块实体的 C++ <a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>。</p>
+</dd>
+<dt id="term-implicit-build">implicit build<a class="headerlink" href="cmake-cxxmodules.7.html#term-implicit-build" title="Link to this term">¶</a></dt><dd><p>一种构建策略，其中模块依赖项是通过在编译期间搜索 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a> 文件来发现的。</p>
+</dd>
+<dt id="term-internal-partition-unit">internal partition unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-internal-partition-unit" title="Link to this term">¶</a></dt><dd><p>一个包含分区名称且不会从 <a class="reference internal" href="cmake-cxxmodules.7.html#term-primary-module-interface-unit"><span class="xref std std-term">主模块接口单元</span></a> 导出的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>。</p>
+</dd>
+<dt id="term-module-interface-unit">module interface unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-module-interface-unit" title="Link to this term">¶</a></dt><dd><p>一个使用 <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">module</span></code> 声明模块公共接口的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>。这样的单元可能同时也是 <a class="reference internal" href="cmake-cxxmodules.7.html#term-partition-unit"><span class="xref std std-term">分区单元</span></a>，也可能不是。</p>
+</dd>
+<dt id="term-module-map">module map<a class="headerlink" href="cmake-cxxmodules.7.html#term-module-map" title="Link to this term">¶</a></dt><dd><p>一种将模块名称映射到 BMI 位置的编译器特定文件。</p>
+</dd>
+<dt id="term-module-visibility">module visibility<a class="headerlink" href="cmake-cxxmodules.7.html#term-module-visibility" title="Link to this term">¶</a></dt><dd><p>CMake 基于声明作用域（PUBLIC/PRIVATE）对模块强制执行的访问规则。</p>
+</dd>
+<dt id="term-ODR">ODR<a class="headerlink" href="cmake-cxxmodules.7.html#term-ODR" title="Link to this term">¶</a></dt><dd><p>单一定义规则（One Definition Rule）。C++ 要求任何实体在每个程序中只能定义一次。</p>
+</dd>
+<dt id="term-partition-unit">partition unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-partition-unit" title="Link to this term">¶</a></dt><dd><p>一个描述带有分区名称的模块的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a>（即 <cite>module MODNAME:PARTITION;</cite>）。该分区可能会也可能不会使用 <code class="docutils literal notranslate"><span class="pre">export</span></code> 关键字。如果使用了，它同时也是一个 <a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>；否则，它是一个 <a class="reference internal" href="cmake-cxxmodules.7.html#term-internal-partition-unit"><span class="xref std std-term">内部分区单元</span></a>。</p>
+</dd>
+<dt id="term-primary-module-interface-unit">primary module interface unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-primary-module-interface-unit" title="Link to this term">¶</a></dt><dd><p>一个导出命名模块且不是 <a class="reference internal" href="cmake-cxxmodules.7.html#term-partition-unit"><span class="xref std std-term">分区单元</span></a> 的 <a class="reference internal" href="cmake-cxxmodules.7.html#term-module-interface-unit"><span class="xref std std-term">模块接口单元</span></a>。</p>
+</dd>
+<dt id="term-scan">scan<a class="headerlink" href="cmake-cxxmodules.7.html#term-scan" title="Link to this term">¶</a></dt><dd><p>分析 <a class="reference internal" href="cmake-cxxmodules.7.html#term-translation-unit"><span class="xref std std-term">翻译单元</span></a> 以发现模块导入和导出的过程。</p>
+</dd>
+<dt id="term-static-build">static build<a class="headerlink" href="cmake-cxxmodules.7.html#term-static-build" title="Link to this term">¶</a></dt><dd><p>一种在生成时确定所有编译规则的构建配置。</p>
+</dd>
+<dt id="term-strong-module-ownership">strong module ownership<a class="headerlink" href="cmake-cxxmodules.7.html#term-strong-module-ownership" title="Link to this term">¶</a></dt><dd><p>C++ 实现已采用了一种模型，即模块“拥有”其中声明的符号。实际上，这意味着模块名称被包含在其中声明的实体的符号修饰（symbol mangling）中。</p>
+</dd>
+<dt id="term-synthetic-target">synthetic target<a class="headerlink" href="cmake-cxxmodules.7.html#term-synthetic-target" title="Link to this term">¶</a></dt><dd><p>一种 CMake 生成的构建目标，用于向提供模块的目标的特定使用者提供 <a class="reference internal" href="cmake-cxxmodules.7.html#term-BMI"><span class="xref std std-term">BMI</span></a>。</p>
+</dd>
+<dt id="term-translation-unit">translation unit<a class="headerlink" href="cmake-cxxmodules.7.html#term-translation-unit" title="Link to this term">¶</a></dt><dd><p>C++ 程序编译的最小组件。通常，每个源文件有一个翻译单元。不使用 C++ 模块的 C++ 源文件可以组合成单个翻译单元。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#">cmake-cxxmodules(7)</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#compilation-strategy">编译策略</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#scanning-control">扫描控制</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#compiler-support">编译器支持</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#import-std-support"><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">std</span></code> 支持</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#generator-support">生成器支持</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#limitations">限制</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#usage">用法</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#troubleshooting-cmake">CMake 故障排查</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#file-extension-support">文件扩展名支持</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#file-name-requirements">文件名要求</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#scanning-without-modules">无模块扫描</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#debugging-module-builds">调试模块构建</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#import-cycles">导入循环</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#internal-module-partition-extension">内部模块分区扩展</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#module-visibility">模块可见性</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#design">设计</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#design-goals">设计目标</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#correct-builds">正确的构建</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#deterministic-builds">确定性的构建</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#support-generated-sources">支持生成的源文件</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#static-communication">静态通信</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#minimize-regeneration">最小化重生成</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#use-case-considerations">用例考量</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#selected-design">选定设计</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#implementation-details">实现细节</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#toolchain-scanning">工具链（扫描）</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#configure">配置 (Configure)</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#generate">生成 (Generate)</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#scan">扫描 (Scan)</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#collate">整理 (Collate)</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#compile">编译 (Compile)</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#install">安装 (Install)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#alternative-designs">替代设计</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#implicit-builds">隐式构建</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#static-scanning">静态扫描</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#module-mapping-service">模块映射服务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#possible-future-enhancements">可能的未来增强</a><ul>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#batch-scanning">批量扫描</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#bmi-modification-optimization">BMI 修改优化</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#easier-source-specification">更简单的源规范</a></li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#separate-bmi-generation">独立 BMI 生成</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-cxxmodules.7.html#module-compilation-glossary">模块编译词汇表</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake-configure-log.7.html" title="上一章">cmake-configure-log(7)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-developer.7.html" title="下一章">cmake-developer(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-cxxmodules.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-developer.7.html" title="cmake-developer(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-configure-log.7.html" title="cmake-configure-log(7)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-cxxmodules.7.html">cmake-cxxmodules(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

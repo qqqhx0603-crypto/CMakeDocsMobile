@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>target_precompile_headers — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="target_precompile_headers.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="target_sources" href="target_sources.html" />
+    <link rel="prev" title="target_link_options" href="target_link_options.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="target_sources.html" title="target_sources" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="target_link_options.html" title="target_link_options" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="target_precompile_headers.html">target_precompile_headers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="target-precompile-headers">
+<span id="command:target_precompile_headers"></span><h1>target_precompile_headers<a class="headerlink" href="target_precompile_headers.html#target-precompile-headers" title="链接至此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>添加一个需要预编译的头文件列表。</p>
+<p>预编译头文件可以通过创建某些头文件的部分处理版本，并在编译过程中使用该版本，而不是重复解析原始头文件，从而加快编译速度。</p>
+<section id="main-form">
+<h2>主要形式<a class="headerlink" href="target_precompile_headers.html#main-form" title="链接至此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_precompile_headers(</span><span class="nv">&lt;target&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="no">INTERFACE</span><span class="p">|</span><span class="no">PUBLIC</span><span class="p">|</span><span class="no">PRIVATE</span><span class="p">}</span><span class="w"> </span><span class="nv">&lt;header&gt;...</span>
+<span class="w">  </span><span class="p">[{</span><span class="no">INTERFACE</span><span class="p">|</span><span class="no">PUBLIC</span><span class="p">|</span><span class="no">PRIVATE</span><span class="p">}</span><span class="w"> </span><span class="nv">&lt;header&gt;...</span><span class="p">]...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>该命令将头文件添加到 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 的 <span class="target" id="index-0-prop_tgt:PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/PRECOMPILE_HEADERS.html#prop_tgt:PRECOMPILE_HEADERS" title="PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRECOMPILE_HEADERS</span></code></a> 和/或 <span class="target" id="index-0-prop_tgt:INTERFACE_PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/INTERFACE_PRECOMPILE_HEADERS.html#prop_tgt:INTERFACE_PRECOMPILE_HEADERS" title="INTERFACE_PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_PRECOMPILE_HEADERS</span></code></a> 目标属性中。指定的 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 必须是由 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 等命令创建的，且不能是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#alias-targets"><span class="std std-ref">别名目标 (ALIAS target)</span></a>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code>、<code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 关键字用于指定后续参数的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#target-command-scope"><span class="std std-ref">作用域</span></a>。<code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 项将填充 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 的 <span class="target" id="index-1-prop_tgt:PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/PRECOMPILE_HEADERS.html#prop_tgt:PRECOMPILE_HEADERS" title="PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRECOMPILE_HEADERS</span></code></a> 属性。<code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 项将填充 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 的 <span class="target" id="index-1-prop_tgt:INTERFACE_PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/INTERFACE_PRECOMPILE_HEADERS.html#prop_tgt:INTERFACE_PRECOMPILE_HEADERS" title="INTERFACE_PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_PRECOMPILE_HEADERS</span></code></a> 属性（<a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (IMPORTED targets)</span></a> 仅支持 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 项）。针对同一个 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 的重复调用将按调用顺序追加项目。</p>
+<p>项目通常应避免在将被 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">导出 (exported)</span></code></a> 的目标上使用 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code>，或者至少应该使用 <span class="target" id="index-0-genex:BUILD_INTERFACE"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:BUILD_INTERFACE" title="BUILD_INTERFACE"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;BUILD_INTERFACE:...&gt;</span></code></a> 生成器表达式，以防止预编译头出现在已安装的导出目标中。目标的使用者通常应自行控制他们使用的预编译头，而不应被所使用的目标强加（因为预编译头通常不是使用要求）。一个值得注意的例外是，为了在一个地方定义一组常用的预编译头而创建了一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#interface-libraries"><span class="std std-ref">接口库 (interface library)</span></a>，然后其他目标私有地链接到该接口库。在这种情况下，接口库的存在专门用于将预编译头传播给其使用者，而使用者实际上仍然处于控制之中，因为它决定是否链接到该接口库。</p>
+<p>头文件列表用于生成一个名为 <code class="docutils literal notranslate"><span class="pre">cmake_pch.h|xx</span></code> 的头文件，该文件用于生成预编译头文件（<code class="docutils literal notranslate"><span class="pre">.pch</span></code>, <code class="docutils literal notranslate"><span class="pre">.gch</span></code>, <code class="docutils literal notranslate"><span class="pre">.pchi</span></code>）制品。<code class="docutils literal notranslate"><span class="pre">cmake_pch.h|xx</span></code> 头文件将被强制包含（GCC 使用 <code class="docutils literal notranslate"><span class="pre">-include</span></code>，MSVC 使用 <code class="docutils literal notranslate"><span class="pre">/FI</span></code>）到所有源文件中，因此源文件不需要包含 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">"pch.h"</span></code>。</p>
+<p>以尖括号（例如 <code class="docutils literal notranslate"><span class="pre">&lt;unordered_map&gt;</span></code>）或显式双引号（针对 <span class="target" id="index-0-manual:cmake-language(7)"></span><a class="reference internal" href="../manual/cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-language(7)</span></code></a> 转义，例如 <code class="docutils literal notranslate"><span class="pre">[["other_header.h"]]</span></code>）指定的头文件名将按原样处理，且必须在包含目录中以供编译器查找。其他头文件名（例如 <code class="docutils literal notranslate"><span class="pre">project_header.h</span></code>）被解释为相对于当前源目录（例如 <span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a>），并将按绝对路径包含。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_precompile_headers(</span><span class="nb">myTarget</span>
+<span class="w">  </span><span class="no">PUBLIC</span>
+<span class="w">    </span><span class="nb">project_header.h</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="s s-Multiline">[["other_header.h"]]</span>
+<span class="w">    </span><span class="nv">&lt;unordered_map&gt;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">target_precompile_headers</span></code> 的参数可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的生成器表达式。请参阅 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册以获取可用表达式。<span class="target" id="index-1-genex:COMPILE_LANGUAGE:languages"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE:languages" title="COMPILE_LANGUAGE:languages"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_LANGUAGE:...&gt;</span></code></a> 生成器表达式对于指定仅针对一种语言预编译的特定语言头文件（例如 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 而非 <code class="docutils literal notranslate"><span class="pre">C</span></code>）特别有用。在这种情况下，未显式使用双引号或尖括号的头文件名必须通过绝对路径指定。此外，在生成器表达式中使用尖括号时，请务必将结尾的 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> 编码为 <span class="target" id="index-1-genex:ANGLE-R"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:ANGLE-R" title="ANGLE-R"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;ANGLE-R&gt;</span></code></a>。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_precompile_headers(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">PRIVATE</span>
+<span class="w">  </span><span class="s">"$&lt;$&lt;COMPILE_LANGUAGE:CXX&gt;:${CMAKE_CURRENT_SOURCE_DIR}/cxx_only.h&gt;"</span>
+<span class="w">  </span><span class="s">"$&lt;$&lt;COMPILE_LANGUAGE:C&gt;:&lt;stddef.h$&lt;ANGLE-R&gt;&gt;"</span>
+<span class="w">  </span><span class="s">"$&lt;$&lt;COMPILE_LANGUAGE:CXX&gt;:&lt;cstddef$&lt;ANGLE-R&gt;&gt;"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reusing-precompile-headers">
+<h2>重用预编译头<a class="headerlink" href="target_precompile_headers.html#reusing-precompile-headers" title="链接至此标题">¶</a></h2>
+<p>该命令还支持第二种形式，可用于指定一个目标重用来自另一个目标的预编译头文件制品，而不是生成自己的制品。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_precompile_headers(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="no">REUSE_FROM</span><span class="w"> </span><span class="nv">&lt;other_target&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>这种形式会将 <span class="target" id="index-0-prop_tgt:PRECOMPILE_HEADERS_REUSE_FROM"></span><a class="reference internal" href="../prop_tgt/PRECOMPILE_HEADERS_REUSE_FROM.html#prop_tgt:PRECOMPILE_HEADERS_REUSE_FROM" title="PRECOMPILE_HEADERS_REUSE_FROM"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRECOMPILE_HEADERS_REUSE_FROM</span></code></a> 属性设置为 <code class="docutils literal notranslate"><span class="pre">&lt;other_target&gt;</span></code>，并添加一个依赖项，使得 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 依赖于 <code class="docutils literal notranslate"><span class="pre">&lt;other_target&gt;</span></code>。如果在执行 <code class="docutils literal notranslate"><span class="pre">REUSE_FROM</span></code> 形式时 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 的 <span class="target" id="index-2-prop_tgt:PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/PRECOMPILE_HEADERS.html#prop_tgt:PRECOMPILE_HEADERS" title="PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRECOMPILE_HEADERS</span></code></a> 属性已被设置，CMake 将报错并停止。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">REUSE_FROM</span></code> 形式要求 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;other_target&gt;</span></code> 具有相同的编译器选项、编译器标志和编译器定义集。某些编译器（例如 GCC）如果无法使用预编译头文件，可能会发出警告（<code class="docutils literal notranslate"><span class="pre">-Winvalid-pch</span></code>）。</p>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="target_precompile_headers.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>要禁用特定目标的预编译头，请参阅 <span class="target" id="index-0-prop_tgt:DISABLE_PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/DISABLE_PRECOMPILE_HEADERS.html#prop_tgt:DISABLE_PRECOMPILE_HEADERS" title="DISABLE_PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DISABLE_PRECOMPILE_HEADERS</span></code></a> 目标属性。</p></li>
+<li><p>要防止在编译特定源文件时使用预编译头，请参阅 <span class="target" id="index-0-prop_sf:SKIP_PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_sf/SKIP_PRECOMPILE_HEADERS.html#prop_sf:SKIP_PRECOMPILE_HEADERS" title="SKIP_PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SKIP_PRECOMPILE_HEADERS</span></code></a> 源文件属性。</p></li>
+<li><p><span class="target" id="index-0-command:target_compile_definitions"></span><a class="reference internal" href="target_compile_definitions.html#command:target_compile_definitions" title="target_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_compile_features"></span><a class="reference internal" href="target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_compile_options"></span><a class="reference internal" href="target_compile_options.html#command:target_compile_options" title="target_compile_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_options()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_link_directories"></span><a class="reference internal" href="target_link_directories.html#command:target_link_directories" title="target_link_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_directories()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_link_options"></span><a class="reference internal" href="target_link_options.html#command:target_link_options" title="target_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_options()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_sources"></span><a class="reference internal" href="target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="target_precompile_headers.html#">target_precompile_headers</a><ul>
+<li><a class="reference internal" href="target_precompile_headers.html#main-form">主要形式</a></li>
+<li><a class="reference internal" href="target_precompile_headers.html#reusing-precompile-headers">重用预编译头</a></li>
+<li><a class="reference internal" href="target_precompile_headers.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="target_link_options.html" title="上一章">target_link_options</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="target_sources.html" title="下一章">target_sources</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/target_precompile_headers.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="target_sources.html" title="target_sources">下一页</a> |</li>
+        <li class="right">
+          <a href="target_link_options.html" title="target_link_options">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="target_precompile_headers.html">target_precompile_headers</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

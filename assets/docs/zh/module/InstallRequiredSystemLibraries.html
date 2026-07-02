@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>安装所需的系统库 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="InstallRequiredSystemLibraries.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ProcessorCount" href="ProcessorCount.html" />
+    <link rel="prev" title="GoogleTest" href="GoogleTest.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ProcessorCount.html" title="ProcessorCount" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="GoogleTest.html" title="GoogleTest" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="InstallRequiredSystemLibraries.html">InstallRequiredSystemLibraries</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="installrequiredsystemlibraries">
+<span id="module:InstallRequiredSystemLibraries"></span><h1>安装所需的系统库<a class="headerlink" href="InstallRequiredSystemLibraries.html#installrequiredsystemlibraries" title="链接到此标题">¶</a></h1>
+<p>此模块搜索编译器提供的系统运行时库，并添加用于安装它们的规则。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">InstallRequiredSystemLibraries</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在包含此模块之前，可以设置一些可选变量来调整行为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS</span></code></dt><dd><p>指定可能未被检测到的其他运行时库。包含后，任何检测到的库都将附加到此变量中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP</span></code></dt><dd><p>设置为 TRUE 以跳过调用 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#programs" title="install(programs)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PROGRAMS)</span></code></a> 命令，以便包含者可以指定自己的安装规则，使用 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS</span></code> 的值来获取库列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DEBUG_LIBRARIES</span></code></dt><dd><p>设置为 TRUE 以在可用时使用 MSVC 工具安装调试运行时库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DEBUG_LIBRARIES_ONLY</span></code></dt><dd><p>设置为 TRUE 以仅安装 MSVC 工具的调试运行时库，即使发布运行时库也可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_UCRT_LIBRARIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>设置为 TRUE 以安装 Windows Universal CRT 库，用于应用程序本地部署（例如，部署到 Windows XP）。这仅在使用 Visual Studio 2015 或更高版本的 MSVC 时才有意义。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.9 版本新增：</span>可以设置 <code class="docutils literal notranslate"><span class="pre">CMAKE_WINDOWS_KITS_10_DIR</span></code> <em>环境变量</em> 为绝对路径，以告诉 CMake 在自定义位置查找 Windows 10 SDK。指定的目录预计包含 <code class="docutils literal notranslate"><span class="pre">Redist/ucrt/DLLs/*</span></code> 目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MFC_LIBRARIES</span></code></dt><dd><p>设置为 TRUE 以安装 MSVC MFC 运行时库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_OPENMP_LIBRARIES</span></code></dt><dd><p>设置为 TRUE 以安装 MSVC OpenMP 运行时库</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION</span></code></dt><dd><p>指定 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#programs" title="install(programs)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PROGRAMS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 选项。如果未指定，则默认在 Windows 上为 <code class="docutils literal notranslate"><span class="pre">bin</span></code>，在其他平台上为 <code class="docutils literal notranslate"><span class="pre">lib</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS</span></code></dt><dd><p>设置为 TRUE 以禁用有关不存在的必需库文件的警告。（例如，Visual Studio Express 版本可能不提供可再发行文件。）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_SYSTEM_RUNTIME_COMPONENT</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>指定 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#programs" title="install(programs)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PROGRAMS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项。如果未指定，则不会使用此选项。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增：</span>支持安装 Intel 编译器运行时。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="GoogleTest.html" title="上一章">GoogleTest</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ProcessorCount.html" title="下一章">ProcessorCount</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/InstallRequiredSystemLibraries.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ProcessorCount.html" title="ProcessorCount">下一页</a> |</li>
+        <li class="right">
+          <a href="GoogleTest.html" title="GoogleTest">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="InstallRequiredSystemLibraries.html">InstallRequiredSystemLibraries</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

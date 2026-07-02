@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindPackageHandleStandardArgs — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindPackageHandleStandardArgs.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindPackageMessage" href="FindPackageMessage.html" />
+    <link rel="prev" title="FetchContent" href="FetchContent.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindPackageMessage.html" title="FindPackageMessage" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FetchContent.html" title="FetchContent" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPackageHandleStandardArgs.html">FindPackageHandleStandardArgs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findpackagehandlestandardargs">
+<span id="module:FindPackageHandleStandardArgs"></span><h1>FindPackageHandleStandardArgs<a class="headerlink" href="FindPackageHandleStandardArgs.html#findpackagehandlestandardargs" title="链接到此标题">¶</a></h1>
+<p>此模块提供的命令旨在用于实现 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package(<packagename>)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(&lt;PackageName&gt;)</span></code></a> 调用的 <a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块（Find Modules）</span></a> 中。</p>
+<p>在 CMake 查找模块中加载此模块，使用</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FindFoo.cmake</span></code></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#id1" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="FindPackageHandleStandardArgs.html#commands" title="链接到此标题">¶</a></h2>
+<p>本模块提供以下命令</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:find_package_handle_standard_args"></span><a class="reference internal" href="FindPackageHandleStandardArgs.html#command:find_package_handle_standard_args" title="find_package_handle_standard_args"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:find_package_check_version"></span><a class="reference internal" href="FindPackageHandleStandardArgs.html#command:find_package_check_version" title="find_package_check_version"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package_check_version()</span></code></a></p></li>
+</ul>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:find_package_handle_standard_args">
+<span class="sig-name descname"><span class="pre">find_package_handle_standard_args</span></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#command:find_package_handle_standard_args" title="Link to this definition">¶</a></dt>
+<dd><p>处理 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>、<code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 及与版本相关的参数。</p>
+<p>共有两种函数签名</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package_handle_standard_args(</span>
+<span class="w">  </span><span class="nv">&lt;PackageName&gt;</span>
+<span class="w">  </span><span class="nf">(</span><span class="no">DEFAULT_MSG</span><span class="p">|</span><span class="nv">&lt;custom-failure-message&gt;</span><span class="nf">)</span>
+<span class="w">  </span><span class="nv">&lt;required-vars&gt;...</span>
+<span class="nf">)</span>
+
+<span class="nf">find_package_handle_standard_args(</span>
+<span class="w">  </span><span class="nv">&lt;PackageName&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">REQUIRED_VARS</span><span class="w"> </span><span class="nv">&lt;required-vars&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">VERSION_VAR</span><span class="w"> </span><span class="nv">&lt;version-var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">HANDLE_VERSION_RANGE</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">HANDLE_COMPONENTS</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CONFIG_MODE</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NAME_MISMATCHED</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">REASON_FAILURE_MESSAGE</span><span class="w"> </span><span class="nv">&lt;reason-failure-message&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">FAIL_MESSAGE</span><span class="w"> </span><span class="nv">&lt;custom-failure-message&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">FOUND_VAR</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span><span class="w"> </span><span class="c"># Deprecated</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;required-vars&gt;...</span></code> 中列出的所有变量都包含有效结果（例如有效的文件路径）并且满足任何可选约束，则此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，否则设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>。根据结果以及是否向 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用传递了 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项，可能会显示成功或失败的消息。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code></dt><dd><p>包的名称。例如，按照 <code class="docutils literal notranslate"><span class="pre">Find&lt;PackageName&gt;.cmake</span></code> 查找模块文件名中的写法。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">(DEFAULT_MSG|&lt;custom-failure-message&gt;)</span></code></dt><dd><p>在简单签名中，这指定了失败消息。使用 <code class="docutils literal notranslate"><span class="pre">DEFAULT_MSG</span></code> 可请求计算默认消息（推荐）。在完整签名中无效。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REQUIRED_VARS</span> <span class="pre">&lt;required-vars&gt;...</span></code></dt><dd><p>指定此包所需的变量。它们可能会在生成的失败消息中被提及，以要求用户设置缺失的变量值。因此，这些变量通常应该是缓存条目，如 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARY</span></code>，而不是输出变量如 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARIES</span></code>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.18 中变更: </span>如果指定了 <code class="docutils literal notranslate"><span class="pre">HANDLE_COMPONENTS</span></code>，则可以省略此选项。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION_VAR</span> <span class="pre">&lt;version-var&gt;</span></code></dt><dd><p>指定保存所找到包版本的变量名。此版本将与传递给 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用的（潜在）指定要求版本进行比对，包括其 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 选项。默认消息包含有关要求版本和实际找到版本的信息，无论版本是否符合要求。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HANDLE_VERSION_RANGE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>如果指定了版本范围，则启用对版本范围的处理。如果不使用此选项，当指定了版本范围时，将显示开发人员警告。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HANDLE_COMPONENTS</span></code></dt><dd><p>启用对包组件的处理。在这种情况下，命令将报告哪些组件已找到、哪些缺失；如果任何必需的组件（即非 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 选项之后列出的组件）缺失，则 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量将被设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIG_MODE</span></code></dt><dd><p>指定调用的查找模块是 <code class="docutils literal notranslate"><span class="pre">find_package(&lt;PackageName&gt;</span> <span class="pre">NO_MODULE)</span></code> 调用的包装器。这暗示 <code class="docutils literal notranslate"><span class="pre">VERSION_VAR</span></code> 的值为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION</span></code>。该命令将自动检查是否找到了包配置文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NAME_MISMATCHED</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>指示 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 与 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_NAME"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NAME.html#variable:CMAKE_FIND_PACKAGE_NAME" title="CMAKE_FIND_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NAME</span></code></a> 变量的值不匹配。这通常是一个错误并会引发警告，但在用于大型包的组件时可能是故意的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REASON_FAILURE_MESSAGE</span> <span class="pre">&lt;reason-failure-message&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>指定失败原因的自定义消息，该消息将附加到默认生成的消息之后。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FAIL_MESSAGE</span> <span class="pre">&lt;custom-failure-message&gt;</span></code></dt><dd><p>指定自定义失败消息，而不是使用默认生成的消息。不推荐使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FOUND_VAR</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.3 版本后弃用: </span>不再建议使用此选项。</p>
+</div>
+<p>指定 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;PACKAGENAME&gt;_FOUND</span></code> 作为结果变量。此选项仅为与旧版本 CMake 的向后兼容性而存在，现已被忽略。无论是否使用此选项，两种名称的结果变量现在总是会被设置，以保持兼容性。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 与调用模块的 <span class="target" id="index-1-variable:CMAKE_FIND_PACKAGE_NAME"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NAME.html#variable:CMAKE_FIND_PACKAGE_NAME" title="CMAKE_FIND_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NAME</span></code></a> 不匹配，则会给出不匹配的警告。如果使用旧签名，可以设置 <code class="docutils literal notranslate"><span class="pre">FPHSA_NAME_MISMATCHED</span></code> 变量来绕过该警告；如果使用新签名，则可以使用 <code class="docutils literal notranslate"><span class="pre">NAME_MISMATCHED</span></code> 参数。为了避免强制调用者要求使用更新版本的 CMake，当在新签名中未传递 <code class="docutils literal notranslate"><span class="pre">NAME_MISMATCHED</span></code> 参数时，如果定义了该变量，其值将被使用（但同时使用两者是一个错误）。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:find_package_check_version">
+<span class="sig-name descname"><span class="pre">find_package_check_version</span></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#command:find_package_check_version" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>检查给定的版本是否符合 <span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的版本相关参数。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package_check_version(</span>
+<span class="w">  </span><span class="nv">&lt;version&gt;</span>
+<span class="w">  </span><span class="nv">&lt;result-var&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">HANDLE_VERSION_RANGE</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">RESULT_MESSAGE_VARIABLE</span><span class="w"> </span><span class="nv">&lt;message-var&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code></dt><dd><p>要检查的版本字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>用于保存检查结果的布尔值的变量名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HANDLE_VERSION_RANGE</span></code></dt><dd><p>如果指定了版本范围，则启用对版本范围的处理。如果不使用此选项，当指定了版本范围时，将显示开发人员警告。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT_MESSAGE_VARIABLE</span> <span class="pre">&lt;message-var&gt;</span></code></dt><dd><p>指定一个变量以获取描述检查结果的消息。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindPackageHandleStandardArgs.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-full-signature">
+<h3>示例：完整签名<a class="headerlink" href="FindPackageHandleStandardArgs.html#examples-full-signature" title="链接到此标题">¶</a></h3>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code> 完整签名的示例</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FindLibArchive.cmake</span></code></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+<span class="nf">find_package_handle_standard_args(</span>
+<span class="w">  </span><span class="nb">LibArchive</span>
+<span class="w">  </span><span class="no">REQUIRED_VARS</span><span class="w"> </span><span class="nb">LibArchive_LIBRARY</span><span class="w"> </span><span class="nb">LibArchive_INCLUDE_DIR</span>
+<span class="w">  </span><span class="no">VERSION_VAR</span><span class="w"> </span><span class="nb">LibArchive_VERSION</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>在这种情况下，如果 <code class="docutils literal notranslate"><span class="pre">LibArchive_LIBRARY</span></code> 和 <code class="docutils literal notranslate"><span class="pre">LibArchive_INCLUDE_DIR</span></code> 均有效，则认为找到了 <code class="docutils literal notranslate"><span class="pre">LibArchive</span></code> 包。此外，还将通过使用 <code class="docutils literal notranslate"><span class="pre">LibArchive_VERSION</span></code> 中包含的版本来检查 <code class="docutils literal notranslate"><span class="pre">LibArchive</span></code> 的版本。由于没有给出 <code class="docutils literal notranslate"><span class="pre">FAIL_MESSAGE</span></code>，因此将打印默认消息。</p>
+<p>另一个使用 <code class="docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code> 完整签名的示例</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FindAutomoc4.cmake</span></code></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#id3" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Automoc4</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="no">NO_MODULE</span><span class="w"> </span><span class="no">HINTS</span><span class="w"> </span><span class="na">/opt/automoc4</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+<span class="nf">find_package_handle_standard_args(</span><span class="nb">Automoc4</span><span class="w"> </span><span class="no">CONFIG_MODE</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>在这种情况下，<code class="docutils literal notranslate"><span class="pre">FindAutomoc4.cmake</span></code> 模块包装了对 <code class="docutils literal notranslate"><span class="pre">find_package(Automoc4</span> <span class="pre">NO_MODULE)</span></code> 的调用，并为 <code class="docutils literal notranslate"><span class="pre">automoc4</span></code> 添加了一个额外的搜索目录。然后，对 <code class="docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code> 的调用会生成适当的成功/失败消息。</p>
+</section>
+<section id="example-simple-signature">
+<h3>示例：简单签名<a class="headerlink" href="FindPackageHandleStandardArgs.html#example-simple-signature" title="链接到此标题">¶</a></h3>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code> 简单签名的示例</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FindLibXml2.cmake</span></code></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#id4" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+<span class="nf">find_package_handle_standard_args(</span>
+<span class="w">  </span><span class="nb">LibXml2</span>
+<span class="w">  </span><span class="no">DEFAULT_MSG</span>
+<span class="w">  </span><span class="no">LIBXML2_LIBRARY</span><span class="w"> </span><span class="no">LIBXML2_INCLUDE_DIR</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>在此示例中，如果 <code class="docutils literal notranslate"><span class="pre">LIBXML2_LIBRARY</span></code> 和 <code class="docutils literal notranslate"><span class="pre">LIBXML2_INCLUDE_DIR</span></code> 变量均有效，则认为找到了 <code class="docutils literal notranslate"><span class="pre">LibXml2</span></code> 包。然后 <code class="docutils literal notranslate"><span class="pre">LibXml2_FOUND</span></code> 也会被设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。如果未找到且使用了 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，它将以 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(fatal_error)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(FATAL_ERROR)</span></code></a> 失败，无论是否使用了 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code>。如果找到了，则会报告成功，包括 <code class="docutils literal notranslate"><span class="pre">&lt;required-vars&gt;...</span></code> 中指定的第一个必需变量的内容。在重复运行 CMake 时，同一消息将不会再次打印。</p>
+</section>
+<section id="example-checking-version">
+<h3>示例：版本检查<a class="headerlink" href="FindPackageHandleStandardArgs.html#example-checking-version" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">find_package_check_version()</span></code> 的使用示例</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">FindFoo.cmake</span></code></span><a class="headerlink" href="FindPackageHandleStandardArgs.html#id5" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+<span class="nf">find_package_check_version(</span>
+<span class="w">  </span><span class="m">1.2.3</span>
+<span class="w">  </span><span class="nb">result</span>
+<span class="w">  </span><span class="no">HANDLE_VERSION_RANGE</span>
+<span class="w">  </span><span class="no">RESULT_MESSAGE_VARIABLE</span><span class="w"> </span><span class="nb">reason</span>
+<span class="nf">)</span>
+<span class="nf">if(</span><span class="nb">result</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${reason}"</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="c"># Logic when version check is not successful.</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">WARNING</span><span class="w"> </span><span class="s">"${reason}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindPackageHandleStandardArgs.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>关于如何编写查找模块的详细信息，请参阅 <a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块（Find Modules）</span></a>。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#">FindPackageHandleStandardArgs</a><ul>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#commands">命令</a></li>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#examples-full-signature">示例：完整签名</a></li>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#example-simple-signature">示例：简单签名</a></li>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#example-checking-version">示例：版本检查</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindPackageHandleStandardArgs.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FetchContent.html" title="上一章">FetchContent</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindPackageMessage.html" title="下一章">FindPackageMessage</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindPackageHandleStandardArgs.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindPackageMessage.html" title="FindPackageMessage">下一页</a> |</li>
+        <li class="right">
+          <a href="FetchContent.html" title="FetchContent">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPackageHandleStandardArgs.html">FindPackageHandleStandardArgs</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CPack 外部生成器 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="external.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPack FreeBSD Generator" href="freebsd.html" />
+    <link rel="prev" title="CPack DragNDrop Generator" href="dmg.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="freebsd.html" title="CPack FreeBSD Generator" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="dmg.html" title="CPack DragNDrop Generator" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html" accesskey="U">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="external.html">CPack 外部生成器</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cpack-external-generator">
+<span id="cpack_gen:CPack External Generator"></span><h1>CPack 外部生成器<a class="headerlink" href="external.html#cpack-external-generator" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>CPack 提供了许多生成器，用于为各种平台和打包系统创建安装包。其目的是让 CMake/CPack 成为构建和打包软件项目的完整端到端解决方案。然而，由于技术限制或需要使用特定工具的策略，有时可能无法将 CPack 用于整个打包过程。因此，CPack 提供了“外部”(External) 生成器，允许外部打包软件利用 CPack 提供的一些功能，例如组件安装和依赖关系图。</p>
+<section id="integration-with-external-packaging-tools">
+<h2>与外部打包工具的集成<a class="headerlink" href="external.html#integration-with-external-packaging-tools" title="链接到此标题">¶</a></h2>
+<p>CPack 外部生成器会生成一个包含 CPack 内部元数据的 <code class="docutils literal notranslate"><span class="pre">.json</span></code> 文件，该文件为外部软件提供了关于如何打包该软件的信息。外部打包软件可以自行调用 CPack，读取生成的元数据，并根据需要安装和打包文件。</p>
+<p>或者，CPack 也可以通过 <span class="target" id="index-0-variable:CPACK_EXTERNAL_PACKAGE_SCRIPT"></span><a class="reference internal" href="external.html#variable:CPACK_EXTERNAL_PACKAGE_SCRIPT" title="CPACK_EXTERNAL_PACKAGE_SCRIPT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_PACKAGE_SCRIPT</span></code></a> 中的可选自定义 CMake 脚本来调用外部打包软件。</p>
+<p>当通过 <span class="target" id="index-0-variable:CPACK_EXTERNAL_ENABLE_STAGING"></span><a class="reference internal" href="external.html#variable:CPACK_EXTERNAL_ENABLE_STAGING" title="CPACK_EXTERNAL_ENABLE_STAGING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_ENABLE_STAGING</span></code></a> 变量启用时，安装文件的暂存（Staging）也可以选择由生成器来处理。</p>
+</section>
+<section id="json-format">
+<h2>JSON 格式<a class="headerlink" href="external.html#json-format" title="链接到此标题">¶</a></h2>
+<p>JSON 元数据文件包含 CPack 组件和组件组的列表、传递给 <span class="target" id="index-0-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 和 <span class="target" id="index-0-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a> 的各种选项、组件和组件组之间的依赖关系，以及传递给 CPack 的其他各种选项。</p>
+<p>JSON 的根对象将始终提供两个字段：<code class="docutils literal notranslate"><span class="pre">formatVersionMajor</span></code> 和 <code class="docutils literal notranslate"><span class="pre">formatVersionMinor</span></code>，它们始终是描述生成器输出格式的整数。对输出格式的向后兼容更改（例如，添加以前不存在的新字段）会导致次版本号递增；而不兼容的更改（例如，删除字段或更改其含义）会导致主版本号递增，并将次版本号重置为 0。格式版本始终采用 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> 格式。换句话说，它始终由两个部分组成，中间用句点分隔。</p>
+<p>您可以如下所述通过 <span class="target" id="index-0-variable:CPACK_EXTERNAL_REQUESTED_VERSIONS"></span><a class="reference internal" href="external.html#variable:CPACK_EXTERNAL_REQUESTED_VERSIONS" title="CPACK_EXTERNAL_REQUESTED_VERSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_REQUESTED_VERSIONS</span></code></a> 请求一个或多个特定版本的输出格式。输出格式的主版本号将与请求的主版本号完全匹配，且次版本号将大于或等于请求的次版本号。如果未通过 <span class="target" id="index-1-variable:CPACK_EXTERNAL_REQUESTED_VERSIONS"></span><a class="reference internal" href="external.html#variable:CPACK_EXTERNAL_REQUESTED_VERSIONS" title="CPACK_EXTERNAL_REQUESTED_VERSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_REQUESTED_VERSIONS</span></code></a> 请求任何版本，则默认使用已知的最新主版本。目前，唯一支持的格式是 1.0，如下所述。</p>
+<section id="version-1-0">
+<h3>版本 1.0<a class="headerlink" href="external.html#version-1-0" title="链接到此标题">¶</a></h3>
+<p>除了标准格式字段外，格式版本 1.0 在根目录下还提供以下字段：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">组件</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">components</span></code> 字段是一个对象，其中组件名称作为键，描述组件的对象作为值。组件对象具有以下字段：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>组件名称。这始终与 <code class="docutils literal notranslate"><span class="pre">components</span></code> 对象中的键相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">displayName</span></code></dt><dd><p>传递给 <span class="target" id="index-1-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DISPLAY_NAME</span></code> 字段的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">描述</span></code></dt><dd><p>传递给 <span class="target" id="index-2-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> 字段的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isHidden</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">HIDDEN</span></code> 给 <span class="target" id="index-3-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isRequired</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 给 <span class="target" id="index-4-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isDisabledByDefault</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">DISABLED</span></code> 给 <span class="target" id="index-5-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">group</span></code></dt><dd><p>仅当传递了 <code class="docutils literal notranslate"><span class="pre">GROUP</span></code> 给 <span class="target" id="index-6-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 时才会出现。如果是，该字段是一个包含组件组名称的字符串值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dependencies</span></code></dt><dd><p>一个数组，包含该组件所依赖的其他组件。它包含在传递给 <span class="target" id="index-7-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 参数中的值。如果没有传递 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 参数，则这是一个空列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">installationTypes</span></code></dt><dd><p>一个数组，包含该组件所属的安装类型。它包含在传递给 <span class="target" id="index-8-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">INSTALL_TYPES</span></code> 参数中的值。如果没有传递 <code class="docutils literal notranslate"><span class="pre">INSTALL_TYPES</span></code> 参数，则这是一个空列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isDownloaded</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">DOWNLOADED</span></code> 给 <span class="target" id="index-9-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">archiveFile</span></code></dt><dd><p>传递给 <span class="target" id="index-10-command:cpack_add_component"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component" title="cpack_add_component"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">ARCHIVE_FILE</span></code> 参数的归档文件名。如果没有传递 <code class="docutils literal notranslate"><span class="pre">ARCHIVE_FILE</span></code> 参数，则这是一个空字符串。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">componentGroups</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">componentGroups</span></code> 字段是一个对象，其中组件组名称作为键，描述组件组的对象作为值。组件组对象具有以下字段：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>组件组名称。这始终与 <code class="docutils literal notranslate"><span class="pre">componentGroups</span></code> 对象中的键相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">displayName</span></code></dt><dd><p>传递给 <span class="target" id="index-1-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DISPLAY_NAME</span></code> 字段的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">描述</span></code></dt><dd><p>传递给 <span class="target" id="index-2-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> 字段的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">parentGroup</span></code></dt><dd><p>仅当传递了 <code class="docutils literal notranslate"><span class="pre">PARENT_GROUP</span></code> 给 <span class="target" id="index-3-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a> 时才会出现。如果是，该字段是一个包含组件组的父组名称的字符串值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isExpandedByDefault</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">EXPANDED</span></code> 给 <span class="target" id="index-4-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isBold</span></code></dt><dd><p>如果传递了 <code class="docutils literal notranslate"><span class="pre">BOLD_TITLE</span></code> 给 <span class="target" id="index-5-command:cpack_add_component_group"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_component_group" title="cpack_add_component_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_component_group()</span></code></a>，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">组件</span></code></dt><dd><p>一个数组，包含作为该组直接成员的组件名称（即将此组作为其 <code class="docutils literal notranslate"><span class="pre">GROUP</span></code> 的组件）。子组的组件不包含在内。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">subgroups</span></code></dt><dd><p>一个数组，包含作为该组子组的组件组名称（即将此组作为其 <code class="docutils literal notranslate"><span class="pre">PARENT_GROUP</span></code> 的组）。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">installationTypes</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">installationTypes</span></code> 字段是一个对象，其中安装类型名称作为键，描述安装类型的对象作为值。安装类型对象具有以下字段：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>安装类型名称。这始终与 <code class="docutils literal notranslate"><span class="pre">installationTypes</span></code> 对象中的键相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">displayName</span></code></dt><dd><p>传递给 <span class="target" id="index-0-command:cpack_add_install_type"></span><a class="reference internal" href="../module/CPackComponent.html#command:cpack_add_install_type" title="cpack_add_install_type"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cpack_add_install_type()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DISPLAY_NAME</span></code> 字段的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">索引</span></code></dt><dd><p>安装类型在列表中的整数索引。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">projects</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">projects</span></code> 字段是一个描述构成 CPack 项目的 CMake 项目的对象数组。此字段中的值源自 <span class="target" id="index-0-variable:CPACK_INSTALL_CMAKE_PROJECTS"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_INSTALL_CMAKE_PROJECTS" title="CPACK_INSTALL_CMAKE_PROJECTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_INSTALL_CMAKE_PROJECTS</span></code></a>。在大多数情况下，这仅是一个单一项目。项目对象具有以下字段：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">projectName</span></code></dt><dd><p>传递给 <span class="target" id="index-1-variable:CPACK_INSTALL_CMAKE_PROJECTS"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_INSTALL_CMAKE_PROJECTS" title="CPACK_INSTALL_CMAKE_PROJECTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_INSTALL_CMAKE_PROJECTS</span></code></a> 的项目名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">component</span></code></dt><dd><p>构成该项目的组件或组件集的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directory</span></code></dt><dd><p>CMake 项目的构建目录。这是包含 <code class="docutils literal notranslate"><span class="pre">cmake_install.cmake</span></code> 脚本的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">subDirectory</span></code></dt><dd><p>将项目安装到 CPack 包中的子目录。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">packageName</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_PACKAGE_NAME"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_NAME" title="CPACK_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_NAME</span></code></a> 中给出的包名称。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">packageVersion</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION" title="CPACK_PACKAGE_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION</span></code></a> 中给出的包版本。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">packageDescriptionFile</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION_FILE"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_FILE" title="CPACK_PACKAGE_DESCRIPTION_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></code></a> 中给出的包描述文件。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">packageDescriptionSummary</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY" title="CPACK_PACKAGE_DESCRIPTION_SUMMARY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_SUMMARY</span></code></a> 中给出的包描述摘要。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">buildConfig</span></code></dt><dd><p>通过 <a class="reference internal" href="../manual/cpack.1.html#cmdoption-cpack-C"><code class="xref std std-option docutils literal notranslate"><span class="pre">cpack</span> <span class="pre">-C</span></code></a> 选项提供给 CPack 的构建配置。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">defaultDirectoryPermissions</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS"></span><a class="reference internal" href="../variable/CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS.html#variable:CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS" title="CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS</span></code></a> 中给出的默认目录权限。仅当设置此选项时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">setDestdir</span></code></dt><dd><p>如果 <span class="target" id="index-0-variable:CPACK_SET_DESTDIR"></span><a class="reference internal" href="../variable/CPACK_SET_DESTDIR.html#variable:CPACK_SET_DESTDIR" title="CPACK_SET_DESTDIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SET_DESTDIR</span></code></a> 为 true，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">packagingInstallPrefix</span></code></dt><dd><p><span class="target" id="index-0-variable:CPACK_PACKAGING_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CPACK_PACKAGING_INSTALL_PREFIX.html#variable:CPACK_PACKAGING_INSTALL_PREFIX" title="CPACK_PACKAGING_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGING_INSTALL_PREFIX</span></code></a> 中给出的安装前缀。仅当 <span class="target" id="index-1-variable:CPACK_SET_DESTDIR"></span><a class="reference internal" href="../variable/CPACK_SET_DESTDIR.html#variable:CPACK_SET_DESTDIR" title="CPACK_SET_DESTDIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SET_DESTDIR</span></code></a> 为 true 时才会出现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stripFiles</span></code></dt><dd><p>如果 <span class="target" id="index-0-variable:CPACK_STRIP_FILES"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_STRIP_FILES" title="CPACK_STRIP_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_STRIP_FILES</span></code></a> 为 true，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">warnOnAbsoluteInstallDestination</span></code></dt><dd><p>如果 <span class="target" id="index-0-variable:CPACK_WARN_ON_ABSOLUTE_INSTALL_DESTINATION"></span><a class="reference internal" href="../variable/CPACK_WARN_ON_ABSOLUTE_INSTALL_DESTINATION.html#variable:CPACK_WARN_ON_ABSOLUTE_INSTALL_DESTINATION" title="CPACK_WARN_ON_ABSOLUTE_INSTALL_DESTINATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_WARN_ON_ABSOLUTE_INSTALL_DESTINATION</span></code></a> 为 true，则为 true；否则为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">errorOnAbsoluteInstallDestination</span></code></dt><dd><p>如果 <span class="target" id="index-0-variable:CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION"></span><a class="reference internal" href="../variable/CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION.html#variable:CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION" title="CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION</span></code></a> 为 true，则为 true；否则为 false。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="variables-specific-to-cpack-external-generator">
+<h2>CPack 外部生成器特有的变量<a class="headerlink" href="external.html#variables-specific-to-cpack-external-generator" title="链接到此标题">¶</a></h2>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_EXTERNAL_REQUESTED_VERSIONS">
+<span class="sig-name descname"><span class="pre">CPACK_EXTERNAL_REQUESTED_VERSIONS</span></span><a class="headerlink" href="external.html#variable:CPACK_EXTERNAL_REQUESTED_VERSIONS" title="Link to this definition">¶</a></dt>
+<dd><p>此变量用于请求特定版本的 CPack 外部生成器。它是一个由分号分隔的 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> 值列表。</p>
+<p>如果将此变量设置为非空值，CPack 外部生成器将遍历列表中的每一项，以搜索它知道如何生成的版本。所请求的版本应按客户端软件的偏好降序排列，因为将生成列表中第一个匹配的版本。</p>
+<p>如果生成器拥有一个主版本号与请求的主版本号完全匹配，且次版本号大于或等于请求的次版本号的版本化生成器，则该生成器即知道如何生成该版本。例如，如果 <code class="docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_REQUESTED_VERSIONS</span></code> 包含 1.0，而 CPack 外部生成器知道如何生成 1.1，它将生成 1.1。如果生成器不知道如何生成列表中的某个版本，它会跳过该版本并查看下一个。如果它不知道如何生成任何请求的版本，则会抛出错误。</p>
+<p>如果未设置此变量或该变量为空，CPack 外部生成器将生成它所知道的最高主版本号和次版本号。</p>
+<p>如果在 <code class="docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_REQUESTED_VERSIONS</span></code> 中遇到无效版本（即不匹配 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 为整数），则该版本将被忽略。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_EXTERNAL_ENABLE_STAGING">
+<span class="sig-name descname"><span class="pre">CPACK_EXTERNAL_ENABLE_STAGING</span></span><a class="headerlink" href="external.html#variable:CPACK_EXTERNAL_ENABLE_STAGING" title="Link to this definition">¶</a></dt>
+<dd><p>可将此变量设置为 true 以启用向临时暂存区的可选安装，随后外部打包工具可以拾取并打包这些文件。CPack 用于当前打包任务的顶层目录包含在 <code class="docutils literal notranslate"><span class="pre">CPACK_TOPLEVEL_DIRECTORY</span></code> 中。它在每次运行开始打包前都会自动清理，并可用于外部打包工具所需的自定义临时文件。它还包含启用暂存时 CPack 执行安装的暂存区 <code class="docutils literal notranslate"><span class="pre">CPACK_TEMPORARY_DIRECTORY</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_EXTERNAL_PACKAGE_SCRIPT">
+<span class="sig-name descname"><span class="pre">CPACK_EXTERNAL_PACKAGE_SCRIPT</span></span><a class="headerlink" href="external.html#variable:CPACK_EXTERNAL_PACKAGE_SCRIPT" title="Link to this definition">¶</a></dt>
+<dd><p>此变量可以可选地指定作为 CPack 调用的一部分运行的 CMake 脚本文件的完整路径。它在（可选）暂存完成后调用，并可能运行一个外部打包工具。该脚本可以访问由 CPack 配置文件定义的变量。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_EXTERNAL_BUILT_PACKAGES">
+<span class="sig-name descname"><span class="pre">CPACK_EXTERNAL_BUILT_PACKAGES</span></span><a class="headerlink" href="external.html#variable:CPACK_EXTERNAL_BUILT_PACKAGES" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">CPACK_EXTERNAL_PACKAGE_SCRIPT</span></code> 脚本可以将此列表变量设置为生成的包文件的完整路径。如果设置了 <span class="target" id="index-0-variable:CPACK_PACKAGE_CHECKSUM"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_CHECKSUM" title="CPACK_PACKAGE_CHECKSUM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_CHECKSUM</span></code></a>，CPack 会将这些文件从暂存目录复制回顶级构建目录，并可能生成校验和文件。</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="external.html#">CPack 外部生成器</a><ul>
+<li><a class="reference internal" href="external.html#integration-with-external-packaging-tools">与外部打包工具的集成</a></li>
+<li><a class="reference internal" href="external.html#json-format">JSON 格式</a><ul>
+<li><a class="reference internal" href="external.html#version-1-0">版本 1.0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="external.html#variables-specific-to-cpack-external-generator">CPack 外部生成器特有的变量</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="dmg.html" title="上一章">CPack DragNDrop 生成器</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="freebsd.html" title="下一章">CPack FreeBSD 生成器</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/cpack_gen/external.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="freebsd.html" title="CPack FreeBSD Generator">下一页</a> |</li>
+        <li class="right">
+          <a href="dmg.html" title="CPack DragNDrop Generator">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="external.html">CPack 外部生成器</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

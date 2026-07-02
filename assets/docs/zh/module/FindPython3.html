@@ -1,0 +1,637 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindPython3 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindPython3.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindQt3" href="FindQt3.html" />
+    <link rel="prev" title="FindPython2" href="FindPython2.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindQt3.html" title="FindQt3" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPython2.html" title="FindPython2" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPython3.html">FindPython3</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findpython3">
+<span id="module:FindPython3"></span><h1>FindPython3<a class="headerlink" href="FindPython3.html#findpython3" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>查找 Python 3 解释器、编译器和开发环境（包含目录和库）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Python3</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.19 中添加： </span>当请求版本时，可以指定为简单值或范围。有关版本范围用法和功能的详细说明，请参阅 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令。</p>
+</div>
+<p>支持以下组件</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Interpreter</span></code>：搜索 Python 3 解释器</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Compiler</span></code>：搜索 Python 3 编译器。仅由 IronPython 提供。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Development</span></code>: 搜索开发工件（包含目录和库）。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版新增：</span>此组件包含两个子组件，可以独立指定</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Development.Module</span></code>：搜索用于 Python 3 模块开发的构件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Development.Embed</span></code>：搜索用于 Python 3 嵌入开发的构件。</p></li>
+</ul>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增</span></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Development.SABIModule</span></code>：搜索使用 <a class="reference external" href="https://docs.pythonlang.cn/3/c-api/stable.html">稳定应用程序二进制接口 (Stable Application Binary Interface)</a> 的 Python 3 模块开发构件。此组件仅适用于 <code class="docutils literal notranslate"><span class="pre">3.2</span></code> 及以上版本。</p></li>
+</ul>
+</div>
+</li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.14 中添加</span></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NumPy</span></code>：查找 NumPy 的包含目录。指定此组件也意味着指定 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Development.Module</span></code> 组件。</p></li>
+</ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在版本 4.2 中更改： </span>当策略 <span class="target" id="index-0-policy:CMP0201"></span><a class="reference internal" href="../policy/CMP0201.html#policy:CMP0201" title="CMP0201"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0201</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，<code class="docutils literal notranslate"><span class="pre">Development.Module</span></code> 组件不再被默认包含。</p>
+</div>
+</div>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code>，则假定为 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code>。</p>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件，则它会包含子组件 <code class="docutils literal notranslate"><span class="pre">Development.Module</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Development.Embed</span></code>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在版本 4.1 中更改： </span>在交叉编译模式下（即 <span class="target" id="index-0-variable:CMAKE_CROSSCOMPILING"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING.html#variable:CMAKE_CROSSCOMPILING" title="CMAKE_CROSSCOMPILING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING</span></code></a> 变量被定义为 true），当策略 <span class="target" id="index-0-policy:CMP0190"></span><a class="reference internal" href="../policy/CMP0190.html#policy:CMP0190" title="CMP0190"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0190</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，以下约束适用于请求的组件：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Compiler</span></code> 单独：将搜索主机工件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Compiler</span></code> 搭配 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 或任何子组件：将查找目标构件。在这种情况下，必须定义 <span class="target" id="index-0-variable:CMAKE_CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING_EMULATOR.html#variable:CMAKE_CROSSCOMPILING_EMULATOR" title="CMAKE_CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING_EMULATOR</span></code></a> 变量，并使用它来执行解释器或编译器。</p></li>
+</ul>
+<p>当同时需要主机和目标构件时，应两次调用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令。在这种情况下，<code class="docutils literal notranslate"><span class="pre">Python_ARTIFACTS_PREFIX</span></code> 变量可能很有用。</p>
+</div>
+<p>为确保 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code>、<code class="docutils literal notranslate"><span class="pre">Compiler</span></code>、<code class="docutils literal notranslate"><span class="pre">Development</span></code>（或其任何子组件）和 <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> 组件之间版本的一致性，请同时指定所有组件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package</span> <span class="nf">(</span><span class="nb">Python3</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Interpreter</span><span class="w"> </span><span class="nb">Development</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此模块仅查找 Python 3 版本。此模块可与 <span class="target" id="index-0-module:FindPython2"></span><a class="reference internal" href="FindPython2.html#module:FindPython2" title="FindPython2"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindPython2</span></code></a> 模块同时使用，以便同时使用两个 Python 版本。</p>
+<p>如果 Python 版本对您而言不重要，可以使用 <span class="target" id="index-0-module:FindPython"></span><a class="reference internal" href="FindPython.html#module:FindPython" title="FindPython"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindPython</span></code></a> 模块。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果同时指定了 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Development</span></code>（或其子组件）组件，则此模块仅查找与 CMake 配置定义的平台架构相同的解释器。如果仅指定了 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件，则此限制不适用。</p>
+</div>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindPython3.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">在版本 3.14 中更改： </span>仅当 <span class="target" id="index-0-prop_gbl:CMAKE_ROLE"></span><a class="reference internal" href="../prop_gbl/CMAKE_ROLE.html#prop_gbl:CMAKE_ROLE" title="CMAKE_ROLE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">CMAKE_ROLE</span></code></a> 为 <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code> 时，才会创建 <span class="target" id="index-0-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>。</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::Interpreter</span></code></dt><dd><p>Python 3 解释器。仅当找到 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件时才定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::InterpreterDebug</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>Python 3 调试解释器。仅当找到 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件且定义了 <code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE_DEBUG</span></code> 变量时才定义此目标。该目标仅在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::InterpreterMultiConfig</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>Python 3 解释器。根据上下文（平台、配置），将使用解释器的发布版或调试版。仅当找到 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件时才定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::Compiler</span></code></dt><dd><p>Python 3 编译器。仅当找到 <code class="docutils literal notranslate"><span class="pre">Compiler</span></code> 组件时才定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::Module</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>用于 Python 模块的 Python 3 库。如果找到 <code class="docutils literal notranslate"><span class="pre">Development.Module</span></code> 组件，则定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::SABIModule</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>使用稳定应用程序二进制接口的 Python 3 模块库。如果找到 <code class="docutils literal notranslate"><span class="pre">Development.SABIModule</span></code> 组件，则定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::Python</span></code></dt><dd><p>用于 Python 嵌入的 Python 3 库。如果找到 <code class="docutils literal notranslate"><span class="pre">Development.Embed</span></code> 组件，则定义此目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3::NumPy</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>用于 Python 3 的 NumPy 库。如果找到 <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> 组件，则定义此目标。此外，此目标依赖于 <code class="docutils literal notranslate"><span class="pre">Python3::Module</span></code> 目标。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.2 版本更动：</span>当策略 <span class="target" id="index-1-policy:CMP0201"></span><a class="reference internal" href="../policy/CMP0201.html#policy:CMP0201" title="CMP0201"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0201</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此目标不再将 <code class="docutils literal notranslate"><span class="pre">Python3::Module</span></code> 作为依赖项。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindPython3.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量（请参阅 <a class="reference internal" href="../manual/cmake-developer.7.html#cmake-developer-standard-variable-names"><span class="std std-ref">标准变量名</span></a>）</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FOUND</span></code></dt><dd><p>布尔值，指示系统是否具有所请求的 Python 3 组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_Interpreter_FOUND</span></code></dt><dd><p>布尔值，指示系统是否具有 Python 3 解释器。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE</span></code></dt><dd><p>Python 3 解释器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE_DEBUG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>Python 3 调试解释器的路径。仅在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_INTERPRETER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>Python 3 解释器的路径，定义为 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>，根据上下文（平台、配置）选择 <code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE_DEBUG</span></code> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_INTERPRETER_ID</span></code></dt><dd><dl class="simple">
+<dt>一个解释器独有的短字符串。可能的值包括</dt><dd><ul class="simple">
+<li><p>Python</p></li>
+<li><p>ActivePython</p></li>
+<li><p>Anaconda</p></li>
+<li><p>Canopy</p></li>
+<li><p>IronPython</p></li>
+<li><p>PyPy</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_STDLIB</span></code></dt><dd><p>标准平台独立安装目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">sysconfig.get_path('stdlib')</span></code> 返回的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_STDARCH</span></code></dt><dd><p>标准平台相关安装目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">sysconfig.get_path('platstdlib')</span></code> 返回的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SITELIB</span></code></dt><dd><p>第三方平台独立安装目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">sysconfig.get_path('purelib')</span></code> 返回的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SITEARCH</span></code></dt><dd><p>第三方平台相关安装目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">sysconfig.get_path('platlib')</span></code> 返回的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SOABI</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>模块的扩展后缀。</p>
+<p>从 <code class="docutils literal notranslate"><span class="pre">sysconfig.get_config_var('EXT_SUFFIX')</span></code> 或 <code class="docutils literal notranslate"><span class="pre">sysconfig.get_config_var('SOABI')</span></code> 或 <code class="docutils literal notranslate"><span class="pre">python3-config</span> <span class="pre">--extension-suffix</span></code> 计算得出的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SOSABI</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>使用稳定应用程序二进制接口的模块的扩展后缀。</p>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件，则由 <code class="docutils literal notranslate"><span class="pre">importlib.machinery.EXTENSION_SUFFIXES</span></code> 计算得出。否则，扩展名为 <code class="docutils literal notranslate"><span class="pre">abi3</span></code>（Windows、MSYS 和 CYGWIN 除外，这些平台为空字符串）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_Compiler_FOUND</span></code></dt><dd><p>布尔值，指示系统是否具有 Python 3 编译器。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_COMPILER</span></code></dt><dd><p>Python 3 编译器的路径。仅由 IronPython 提供。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_COMPILER_ID</span></code></dt><dd><dl class="simple">
+<dt>一个编译器独有的短字符串。可能的值包括</dt><dd><ul class="simple">
+<li><p>IronPython</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_DOTNET_LAUNCHER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>.Net 解释器。仅由 <code class="docutils literal notranslate"><span class="pre">IronPython</span></code> 实现使用。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">Python3_Development_FOUND</span></code></p>
+<blockquote>
+<div><p>布尔值，指示系统是否具有 Python 3 开发构件。</p>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_Development.Module_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>布尔值，指示系统是否具有 Python 模块的 Python 3 开发构件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_Development.SABIModule_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>布尔值，指示系统是否具有使用稳定应用程序二进制接口的 Python 模块的 Python 3 开发构件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_Development.Embed_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>布尔值，指示系统是否具有 Python 嵌入的 Python 3 开发构件。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">Python3_INCLUDE_DIRS</span></code></p>
+<blockquote>
+<div><p>Python 3 包含目录。</p>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_DEFINITIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30.3 版本新增。</span></p>
+</div>
+<p>Python 3 预处理器定义。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_DEBUG_POSTFIX</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>调试 Python 模块的后缀。此变量可用于定义 <span class="target" id="index-0-prop_tgt:DEBUG_POSTFIX"></span><a class="reference internal" href="../prop_tgt/DEBUG_POSTFIX.html#prop_tgt:DEBUG_POSTFIX" title="DEBUG_POSTFIX"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DEBUG_POSTFIX</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_LINK_OPTIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>Python 3 链接选项。某些配置需要特定的链接选项才能正确构建和执行。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_LIBRARIES</span></code></dt><dd><p>Python 3 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_LIBRARY_DIRS</span></code></dt><dd><p>Python 3 库目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_RUNTIME_LIBRARY_DIRS</span></code></dt><dd><p>Python 3 运行时库目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SABI_LIBRARIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>用于稳定应用程序二进制接口的 Python 3 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SABI_LIBRARY_DIRS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>Python 3 <code class="docutils literal notranslate"><span class="pre">SABI</span></code> 库目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_RUNTIME_SABI_LIBRARY_DIRS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>Python 3 运行时 <code class="docutils literal notranslate"><span class="pre">SABI</span></code> 库目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_VERSION</span></code></dt><dd><p>Python 3 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_VERSION_MAJOR</span></code></dt><dd><p>Python 3 主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_VERSION_MINOR</span></code></dt><dd><p>Python 3 次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_VERSION_PATCH</span></code></dt><dd><p>Python 3 修补版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_PyPy_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>Python 3 PyPy 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_NumPy_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>布尔值，指示系统是否拥有 NumPy。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_NumPy_INCLUDE_DIRS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>NumPy 包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_NumPy_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>NumPy 版本。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindPython3.html#hints" title="链接到此标题">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_ROOT_DIR</span></code></dt><dd><p>定义 Python 3 安装的根目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_USE_STATIC_LIBS</span></code></dt><dd><ul class="simple">
+<li><p>如果未定义，则按此顺序搜索共享库和静态库。</p></li>
+<li><p>如果设置为 TRUE，则 <strong>仅</strong> 搜索静态库。</p></li>
+<li><p>如果设置为 FALSE，则 <strong>仅</strong> 搜索共享库。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此提示在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 上将被忽略，因为此平台上不可用静态库。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_ABI</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>此变量定义应搜索哪些 ABI（在 <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.pythonlang.cn/pep-3149/"><strong>PEP 3149</strong></a> 中定义）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Python3_FIND_ABI</span></code> 变量是一个 4 元组，按顺序指定 <code class="docutils literal notranslate"><span class="pre">pydebug</span></code> (<code class="docutils literal notranslate"><span class="pre">d</span></code>)、<code class="docutils literal notranslate"><span class="pre">pymalloc</span></code> (<code class="docutils literal notranslate"><span class="pre">m</span></code>)、<code class="docutils literal notranslate"><span class="pre">unicode</span></code> (<code class="docutils literal notranslate"><span class="pre">u</span></code>) 和 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> (<code class="docutils literal notranslate"><span class="pre">t</span></code>) 标志。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增：</span>添加了第四个元素，用于指定 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> 标志（即自由线程 Python），它是可选的。如果未指定，其值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</div>
+<p>每个元素都可以设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ON</span></code>：选择对应的标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OFF</span></code>：不选择对应的标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ANY</span></code>：将搜索两种可能性（<code class="docutils literal notranslate"><span class="pre">ON</span></code> 和 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>）。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果未定义 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_ABI</span></code>，则将搜索任何 ABI，但不包括 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> 标志。</p>
+</div>
+<p>从该 4 元组开始，将按从最专用到最通用的顺序搜索各种 ABI。此外，当为 <code class="docutils literal notranslate"><span class="pre">pydebug</span></code> 和 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> 指定 <code class="docutils literal notranslate"><span class="pre">ANY</span></code> 时，<code class="docutils literal notranslate"><span class="pre">debug</span></code> 和 <code class="docutils literal notranslate"><span class="pre">free</span> <span class="pre">threaded</span></code> 版本将在 <code class="docutils literal notranslate"><span class="pre">non-debug</span></code> 和 <code class="docutils literal notranslate"><span class="pre">non-gil-disabled</span></code> 版本<strong>之后</strong>进行搜索。</p>
+<p>例如，如果我们有：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set</span> <span class="nf">(</span><span class="nb">Python3_FIND_ABI</span><span class="w"> </span><span class="s">"ON"</span><span class="w"> </span><span class="s">"ANY"</span><span class="w"> </span><span class="s">"ANY"</span><span class="w"> </span><span class="s">"ON"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>以下标志组合将按该顺序附加到构件名称中：<code class="docutils literal notranslate"><span class="pre">tdmu</span></code>、<code class="docutils literal notranslate"><span class="pre">tdm</span></code>、<code class="docutils literal notranslate"><span class="pre">tdu</span></code> 和 <code class="docutils literal notranslate"><span class="pre">td</span></code>。</p>
+<p>要搜索任何可能的 ABI：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set</span> <span class="nf">(</span><span class="nb">Python3_FIND_ABI</span><span class="w"> </span><span class="s">"ANY"</span><span class="w"> </span><span class="s">"ANY"</span><span class="w"> </span><span class="s">"ANY"</span><span class="w"> </span><span class="s">"ANY"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将按该顺序使用以下组合：<code class="docutils literal notranslate"><span class="pre">mu</span></code>、<code class="docutils literal notranslate"><span class="pre">m</span></code>、<code class="docutils literal notranslate"><span class="pre">u</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;empty&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">dmu</span></code>、<code class="docutils literal notranslate"><span class="pre">dm</span></code>、<code class="docutils literal notranslate"><span class="pre">du</span></code>、<code class="docutils literal notranslate"><span class="pre">d</span></code>、<code class="docutils literal notranslate"><span class="pre">tmu</span></code>、<code class="docutils literal notranslate"><span class="pre">tm</span></code>、<code class="docutils literal notranslate"><span class="pre">tu</span></code>、<code class="docutils literal notranslate"><span class="pre">t</span></code>、<code class="docutils literal notranslate"><span class="pre">tdmu</span></code>、<code class="docutils literal notranslate"><span class="pre">tdm</span></code>、<code class="docutils literal notranslate"><span class="pre">tdu</span></code> 和 <code class="docutils literal notranslate"><span class="pre">td</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除了 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> 标志外，此提示仅对 <code class="docutils literal notranslate"><span class="pre">POSIX</span></code> 系统有用。因此，在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 系统上，当定义了 <code class="docutils literal notranslate"><span class="pre">Python_FIND_ABI</span></code> 时，来自 <a class="reference external" href="https://pythonlang.cn/">python.org</a> 的 <code class="docutils literal notranslate"><span class="pre">Python</span></code> 发行版仅在每个标志的值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ANY</span></code> 时才会被找到（第四个标志 <code class="docutils literal notranslate"><span class="pre">gil_disabled</span></code> 除外）。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_STRATEGY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>此变量定义查找方式。<code class="docutils literal notranslate"><span class="pre">Python3_FIND_STRATEGY</span></code> 变量可以设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code>：尝试在所有指定位置查找最新版本。如果策略 <span class="target" id="index-0-policy:CMP0094"></span><a class="reference internal" href="../policy/CMP0094.html#policy:CMP0094" title="CMP0094"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0094</span></code></a> 未定义或设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>，则为默认值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOCATION</span></code>：一旦找到满足版本约束的版本，就停止查找。如果策略 <span class="target" id="index-1-policy:CMP0094"></span><a class="reference internal" href="../policy/CMP0094.html#policy:CMP0094" title="CMP0094"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0094</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则为默认值。</p></li>
+</ul>
+<p>另请参阅 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_UNVERSIONED_NAMES</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_REGISTRY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>在 Windows 上，<code class="docutils literal notranslate"><span class="pre">Python3_FIND_REGISTRY</span></code> 变量决定了注册表和环境变量之间的优先顺序。<code class="docutils literal notranslate"><span class="pre">Python3_FIND_REGISTRY</span></code> 变量可以设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code>: 尝试在环境变量之前使用注册表。这是默认值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LAST</span></code>: 尝试在环境变量之后使用注册表。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEVER</span></code>: 从不尝试使用注册表。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_FRAMEWORK</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>在 macOS 上，<code class="docutils literal notranslate"><span class="pre">Python3_FIND_FRAMEWORK</span></code> 变量决定了 Apple 风格和 Unix 风格包组件之间的优先顺序。此变量可以采用与 <span class="target" id="index-0-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 变量相同的值。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>不支持值 <code class="docutils literal notranslate"><span class="pre">ONLY</span></code>，因此将使用 <code class="docutils literal notranslate"><span class="pre">FIRST</span></code> 代替。</p>
+</div>
+<p>如果未定义 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_FRAMEWORK</span></code>，将使用 <span class="target" id="index-1-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 变量（如果有）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_VIRTUALENV</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>此变量定义对由 <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> 或 <code class="docutils literal notranslate"><span class="pre">conda</span></code> 管理的虚拟环境的处理方式。它仅在虚拟环境处于活动状态（即已评估 <code class="docutils literal notranslate"><span class="pre">activate</span></code> 脚本）时有意义。在这种情况下，它优先于 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_REGISTRY</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code> 变量。<code class="docutils literal notranslate"><span class="pre">Python3_FIND_VIRTUALENV</span></code> 变量可以设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code>: 虚拟环境优先于任何其他标准路径用于查找解释器。这是默认值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ONLY</span></code>: 仅使用虚拟环境查找解释器。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STANDARD</span></code>：虚拟环境不用于查找解释器，但始终考虑环境变量 <code class="docutils literal notranslate"><span class="pre">PATH</span></code>。在这种情况下，可以将变量 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_REGISTRY</span></code> (Windows) 或 <code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code> (macOS) 设置为 <code class="docutils literal notranslate"><span class="pre">LAST</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code>，以优先选择虚拟环境中的解释器。</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.17 版新增：</span> 添加了对 <code class="docutils literal notranslate"><span class="pre">conda</span></code> 环境的支持。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果请求了 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件（或其子组件）但未找到，或返回了错误的构件，则同时包含 <code class="docutils literal notranslate"><span class="pre">Interpreter</span></code> 组件也可能有所帮助。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_IMPLEMENTATIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>此变量定义了一个有序列表，其中包含将要搜索的不同实现。<code class="docutils literal notranslate"><span class="pre">Python3_FIND_IMPLEMENTATIONS</span></code> 变量可以包含以下值：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CPython</span></code>：这是标准实现。各种产品，如 <code class="docutils literal notranslate"><span class="pre">Anaconda</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ActivePython</span></code>，都基于此实现。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IronPython</span></code>：此实现使用 <code class="docutils literal notranslate"><span class="pre">CSharp</span></code> 语言为 <code class="docutils literal notranslate"><span class="pre">.NET</span> <span class="pre">Framework</span></code> 提供支持，建立在 <cite>Dynamic Language Runtime</cite>（<code class="docutils literal notranslate"><span class="pre">DLR</span></code>）之上。请参阅 <a class="reference external" href="https://ironpython.pythonlang.cn">IronPython</a>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PyPy</span></code>：此实现使用 <code class="docutils literal notranslate"><span class="pre">RPython</span></code> 语言和 <code class="docutils literal notranslate"><span class="pre">RPython</span> <span class="pre">translation</span> <span class="pre">toolchain</span></code> 来生成 Python 解释器。请参阅 <a class="reference external" href="https://pypy.pythonlang.cn">PyPy</a>。</p></li>
+</ul>
+<p>默认值为</p>
+<ul class="simple">
+<li><p>Windows 平台：<code class="docutils literal notranslate"><span class="pre">CPython</span></code>，<code class="docutils literal notranslate"><span class="pre">IronPython</span></code></p></li>
+<li><p>其他平台：<code class="docutils literal notranslate"><span class="pre">CPython</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此提示在所有提示中优先级最低，因此即使您将 <code class="docutils literal notranslate"><span class="pre">IronPython</span></code> 放在第一位，将 <code class="docutils literal notranslate"><span class="pre">CPython</span></code> 放在第二位，基于 <code class="docutils literal notranslate"><span class="pre">CPython</span></code> 的 Python 产品仍可能被选中。例如，在 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_STRATEGY=LOCATION</span></code> 时，每个位置都将首先搜索 <code class="docutils literal notranslate"><span class="pre">IronPython</span></code>，然后搜索 <code class="docutils literal notranslate"><span class="pre">CPython</span></code>。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当指定 <code class="docutils literal notranslate"><span class="pre">IronPython</span></code> 时，在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台以外的平台上，假定 <code class="docutils literal notranslate"><span class="pre">.Net</span></code> 解释器（即 <code class="docutils literal notranslate"><span class="pre">mono</span></code> 命令）可通过 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 变量获得。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_FIND_UNVERSIONED_NAMES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>此变量定义如何搜索通用名称。目前，它仅适用于解释器的通用名称，即 <code class="docutils literal notranslate"><span class="pre">python3</span></code> 和 <code class="docutils literal notranslate"><span class="pre">python</span></code>。<code class="docutils literal notranslate"><span class="pre">Python3_FIND_UNVERSIONED_NAMES</span></code> 变量可以设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code>：在搜索更专业的名称（例如 <code class="docutils literal notranslate"><span class="pre">python3.5</span></code>）之前搜索通用名称。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LAST</span></code>: 在更专业的名称之后搜索通用名称。这是默认值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEVER</span></code>: 完全不搜索通用名称。</p></li>
+</ul>
+<p>另请参阅 <code class="docutils literal notranslate"><span class="pre">Python3_FIND_STRATEGY</span></code>。</p>
+</dd>
+</dl>
+</section>
+<section id="artifacts-specification">
+<h2>工件规范<a class="headerlink" href="FindPython3.html#artifacts-specification" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>为了解决特殊情况，可以通过设置以下变量直接指定工件</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_EXECUTABLE</span></code></dt><dd><p>解释器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_COMPILER</span></code></dt><dd><p>编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_DOTNET_LAUNCHER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>.Net 解释器。仅由 <code class="docutils literal notranslate"><span class="pre">IronPython</span></code> 实现使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_LIBRARY</span></code></dt><dd><p>库的路径。它将用于计算变量 <code class="docutils literal notranslate"><span class="pre">Python3_LIBRARIES</span></code>、<code class="docutils literal notranslate"><span class="pre">Python3_LIBRARY_DIRS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Python3_RUNTIME_LIBRARY_DIRS</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_SABI_LIBRARY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>稳定应用程序二进制接口库的路径。它将用于计算变量 <code class="docutils literal notranslate"><span class="pre">Python3_SABI_LIBRARIES</span></code>、<code class="docutils literal notranslate"><span class="pre">Python3_SABI_LIBRARY_DIRS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Python3_RUNTIME_SABI_LIBRARY_DIRS</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_INCLUDE_DIR</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Python</span></code> 头文件目录的路径。它将用于计算变量 <code class="docutils literal notranslate"><span class="pre">Python3_INCLUDE_DIRS</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_NumPy_INCLUDE_DIR</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">NumPy</span></code> 头文件目录的路径。它将用于计算变量 <code class="docutils literal notranslate"><span class="pre">Python3_NumPy_INCLUDE_DIRS</span></code>。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>所有路径必须是绝对路径。任何以相对路径指定的工件都将被忽略。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当指定工件时，所有 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 都将被忽略，并且不会为此工件执行搜索。</p>
+<p>如果指定了多个工件，则用户有责任确保各种工件的一致性。</p>
+</div>
+<p>默认情况下，此模块支持在项目不同目录中进行多次调用，并具有不同的版本/组件要求，同时为每次调用提供正确且一致的结果。为支持此行为，CMake 缓存未以传统方式使用，这可能对交互式规范造成问题。因此，为也支持交互式规范，模块行为可以通过以下变量进行控制：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_ARTIFACTS_INTERACTIVE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>选择模块的行为。这是一个布尔变量</p>
+<ul class="simple">
+<li><p>如果设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>：为上述构件规范变量创建 CMake 缓存条目，以便用户可以对其进行交互式编辑。这将禁用对多个版本/组件要求的同时支持。</p></li>
+<li><p>如果设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 或未定义: 启用多个版本/组件要求。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Python3_ARTIFACTS_PREFIX</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>定义一个自定义前缀，将用于定义所有结果变量、目标和命令。通过使用此变量，此模块支持在同一目录中进行多次调用，并具有不同的版本/组件要求。例如，在交叉编译的情况下，需要开发组件，但也可以需要本地 Python 解释器。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Python3</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Development</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="nb">Python3_ARTIFACTS_PREFIX</span><span class="w"> </span><span class="s">"_HOST"</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Python3</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Interpreter</span><span class="nf">)</span>
+
+<span class="c"># Here Python3_HOST_EXECUTABLE and Python3_HOST::Interpreter artifacts are defined</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>为与模块的标准行为保持一致，每次调用 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令时，也会定义各种标准的 <code class="docutils literal notranslate"><span class="pre">_FOUND</span></code> 变量（即没有自定义前缀）。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="commands">
+<h2>命令<a class="headerlink" href="FindPython3.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块定义了命令 <code class="docutils literal notranslate"><span class="pre">Python3_add_library</span></code>（当 <span class="target" id="index-1-prop_gbl:CMAKE_ROLE"></span><a class="reference internal" href="../prop_gbl/CMAKE_ROLE.html#prop_gbl:CMAKE_ROLE" title="CMAKE_ROLE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">CMAKE_ROLE</span></code></a> 为 <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code> 时），其语义与 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 相同，并添加对目标 <code class="docutils literal notranslate"><span class="pre">Python3::Python</span></code> 的依赖，或者在库类型为 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 时，添加对目标 <code class="docutils literal notranslate"><span class="pre">Python3::Module</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Python3::SABIModule</span></code>（当指定 <code class="docutils literal notranslate"><span class="pre">USE_SABI</span></code> 选项时）的依赖，并处理 Python 模块命名规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">Python3_add_library</span> <span class="nf">(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">STATIC</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">MODULE</span><span class="w"> </span><span class="p">[</span><span class="no">USE_SABI</span><span class="w"> </span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">WITH_SOABI</span><span class="p">]]</span>
+<span class="w">                     </span><span class="nv">&lt;source1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;source2&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果未指定库类型，则假定为 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.17 版本新增：</span>对于 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 库类型，如果指定了选项 <code class="docutils literal notranslate"><span class="pre">WITH_SOABI</span></code>，模块后缀将包含 <code class="docutils literal notranslate"><span class="pre">Python3_SOABI</span></code> 值（如果有）。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版本新增：</span>对于 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 类型，如果指定了选项 <code class="docutils literal notranslate"><span class="pre">USE_SABI</span></code>，则将为目标 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 指定预处理器定义 <code class="docutils literal notranslate"><span class="pre">Py_LIMITED_API</span></code>（作为 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code>），其值根据 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 参数计算。对于 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code>，预期的格式是 <code class="docutils literal notranslate"><span class="pre">major[.minor]</span></code>，其中每个组件都是数值。如果指定了 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 组件，则该版本应至少为 <code class="docutils literal notranslate"><span class="pre">3.2</span></code>，这是引入 <a class="reference external" href="https://docs.pythonlang.cn/3/c-api/stable.html">稳定应用程序二进制接口</a> 的版本。仅指定主版本号 <code class="docutils literal notranslate"><span class="pre">3</span></code> 等同于 <code class="docutils literal notranslate"><span class="pre">3.2</span></code>。</p>
+<p>当同时指定选项 <code class="docutils literal notranslate"><span class="pre">WITH_SOABI</span></code> 时，模块后缀将包含 <code class="docutils literal notranslate"><span class="pre">Python3_SOSABI</span></code> 值（如果有）。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增：</span>对于 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 类型，<span class="target" id="index-1-prop_tgt:DEBUG_POSTFIX"></span><a class="reference internal" href="../prop_tgt/DEBUG_POSTFIX.html#prop_tgt:DEBUG_POSTFIX" title="DEBUG_POSTFIX"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DEBUG_POSTFIX</span></code></a> 目标属性将使用 <code class="docutils literal notranslate"><span class="pre">Python3_DEBUG_POSTFIX</span></code> 变量的值进行初始化（如果已定义）。</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindPython3.html#">FindPython3</a><ul>
+<li><a class="reference internal" href="FindPython3.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindPython3.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindPython3.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindPython3.html#artifacts-specification">工件规范</a></li>
+<li><a class="reference internal" href="FindPython3.html#commands">命令</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindPython2.html" title="上一章">FindPython2</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindQt3.html" title="下一章">FindQt3</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindPython3.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindQt3.html" title="FindQt3">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPython2.html" title="FindPython2">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPython3.html">FindPython3</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

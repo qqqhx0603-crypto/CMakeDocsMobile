@@ -1,0 +1,447 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第 6 步：深入系统内省 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="In-Depth&#32;System&#32;Introspection.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 7: Custom Commands and Generated Files" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" />
+    <link rel="prev" title="Step 5: In-Depth CMake Library Concepts" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="In-Depth&#32;System&#32;Introspection.html">第六步：深入系统自省</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-6-in-depth-system-introspection">
+<span id="guide:tutorial/In-Depth System Introspection"></span><h1>第 6 步：深入系统内省<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#step-6-in-depth-system-introspection" title="链接到此标题">¶</a></h1>
+<p>为了发现有关系统环境和工具链的信息，CMake 通常会编译一些小的测试程序，以验证编译器标志、头文件、内置函数或其他语言构造的可用性。</p>
+<p>在这一步中，我们将利用 CMake 在我们自己的项目代码中使用的相同测试程序机制。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#background" title="链接到此标题">¶</a></h2>
+<p>追溯到配置和构建系统最早期的古老技巧，就是通过编译一个使用某项功能的小程序来验证该功能是否可用。</p>
+<p>CMake 使这种做法在许多情况下变得不必要。正如我们将在后续步骤中提到的，如果 CMake 可以找到一个库依赖项，我们就可以依赖它具有我们期望的所有设施（头文件、代码生成器、测试工具等）。相反，如果 CMake 找不到依赖项，尝试使用该依赖项几乎肯定会失败。</p>
+<p>然而，还有其他一些关于工具链的信息是 CMake 无法直接传达的。对于这些高级情况，我们可以编写自己的测试程序和编译命令来检查其可用性。</p>
+<p>CMake 提供了用于简化这些检查的模块。这些模块记录在 <span class="target" id="index-0-manual:cmake-modules(7)"></span><a class="reference internal" href="../../manual/cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 中。任何以 <code class="docutils literal notranslate"><span class="pre">Check</span></code> 开头的模块都是我们可以用来询问工具链和系统环境的系统内省模块。一些值得注意的模块包括：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CheckIncludeFiles</span></code></dt><dd><p>检查一个或多个 C/C++ 头文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CheckCompilerFlag</span></code></dt><dd><p>检查编译器是否支持给定的标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></dt><dd><p>检查是否可以为给定语言构建源代码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CheckIPOSupported</span></code></dt><dd><p>检查编译器是否支持过程间优化（IPO/LTO）。</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="exercise-1-check-include-file">
+<h2>练习 1 - 检查包含文件<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#exercise-1-check-include-file" title="链接到此标题">¶</a></h2>
+<p>一种快速且简单的检查方法是检查特定平台上是否存在给定的头文件，为此 CMake 提供了 <span class="target" id="index-0-module:CheckIncludeFiles"></span><a class="reference internal" href="../../module/CheckIncludeFiles.html#module:CheckIncludeFiles" title="CheckIncludeFiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIncludeFiles</span></code></a>。这最适用于系统和内在头文件，这些头文件可能不由特定包提供，但在许多构建环境中预期是可用的。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIncludeFiles</span><span class="nf">)</span>
+<span class="nf">check_include_files(</span><span class="na">sys/socket.h</span><span class="w"> </span><span class="no">HAVE_SYS_SOCKET_H</span><span class="w"> </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">CXX</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>这些函数在 CMake 中不是立即生效的，必须通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 其关联模块（即 CMakeLang 文件）来添加。许多模块位于 CMake 自身的 <code class="docutils literal notranslate"><span class="pre">Modules</span></code> 文件夹中。这个内置的 <code class="docutils literal notranslate"><span class="pre">Modules</span></code> 文件夹是 CMake 在评估 <span class="target" id="index-1-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令时搜索的地方之一。你可以将这些模块视为标准库头文件，它们预期是可用的。</p>
+</div>
+<p>一旦已知头文件存在，我们就可以使用已经介绍过的条件判断和目标命令的相同机制将其传达给我们的代码。</p>
+<section id="goal">
+<h3>目标<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>检查 x86 SSE2 内在头文件是否可用，如果可用，则使用它来改进 <code class="docutils literal notranslate"><span class="pre">mathfunctions::sqrt</span></code>。</p>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-1-module:CheckIncludeFiles"></span><a class="reference internal" href="../../module/CheckIncludeFiles.html#module:CheckIncludeFiles" title="CheckIncludeFiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIncludeFiles</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:target_compile_definitions"></span><a class="reference internal" href="../../command/target_compile_definitions.html#command:target_compile_definitions" title="target_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/MathFunctions.cxx</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step6</span></code> 目录包含了对 <code class="docutils literal notranslate"><span class="pre">Step5</span></code> 的完整推荐解决方案，以及针对此步骤的相关 <code class="docutils literal notranslate"><span class="pre">TODO</span></code>。它还包含针对各种条件的 <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> 函数的专门实现，你可以在 <code class="docutils literal notranslate"><span class="pre">MathFunctions/MathFunctions.cxx</span></code> 中找到它们。</p>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">3</span></code>。请注意，库中已经添加了一些 <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> 指令，随着我们进行此步骤，这些指令将改变其操作。</p>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>我们可以使用常用的命令进行配置。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>在配置步骤的输出中，我们应该观察到 CMake 正在检查 <code class="docutils literal notranslate"><span class="pre">emmintrin.h</span></code> 头文件。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-- Looking for include file emmintrin.h</span>
+<span class="go">-- Looking for include file emmintrin.h - found</span>
+</pre></div>
+</div>
+<p>如果你的系统上有此头文件，请验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出是否包含关于使用 SSE2 的消息。相反，如果头文件不可用，你应该看到来自 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的常规行为。</p>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们包含并使用 <code class="docutils literal notranslate"><span class="pre">CheckIncludeFiles</span></code> 模块，验证 <code class="docutils literal notranslate"><span class="pre">emmintrin.h</span></code> 头文件是否可用。</p>
+<details><summary>TODO 1：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-check-include-files">
+<div class="code-block-caption"><span class="caption-text">TODO 1: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#mathfunctions-cmakelists-txt-check-include-files" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIncludeFiles</span><span class="nf">)</span>
+<span class="nf">check_include_files(</span><span class="nb">emmintrin.h</span><span class="w"> </span><span class="no">HAS_EMMINTRIN</span><span class="w"> </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">CXX</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后，我们使用检查结果有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 上设置编译定义。</p>
+<details><summary>TODO 2：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-define-use-sse2">
+<div class="code-block-caption"><span class="caption-text">TODO 2: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#mathfunctions-cmakelists-txt-define-use-sse2" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">HAS_EMMINTRIN</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">target_compile_definitions(</span><span class="nb">MathFunctions</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">TUTORIAL_USE_SSE2</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们可以有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库中包含该头文件。</p>
+<details><summary>TODO 3：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-include-sse2">
+<div class="code-block-caption"><span class="caption-text">TODO 3: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#mathfunctions-mathfunctions-cxx-include-sse2" title="链接到此代码">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifdef TUTORIAL_USE_SSE2</span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;emmintrin.h&gt;</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-2-check-source-compiles">
+<h2>练习 2 - 检查源代码编译<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#exercise-2-check-source-compiles" title="链接到此标题">¶</a></h2>
+<p>有时仅检查头文件是不够的。当没有头文件可供检查时（例如编译器内置函数的情况），尤其如此。对于这些场景，我们有 <span class="target" id="index-0-module:CheckSourceCompiles"></span><a class="reference internal" href="../../module/CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckSourceCompiles</span><span class="nf">)</span>
+<span class="nf">check_source_compiles(</span><span class="no">CXX</span>
+<span class="w">  </span><span class="s">"</span>
+<span class="s">    int main() {</span>
+<span class="s">      int a, b, c;</span>
+<span class="s">      __builtin_add_overflow(a, b, &amp;c);</span>
+<span class="s">    }</span>
+<span class="s">  "</span>
+<span class="w">  </span><span class="no">HAS_CHECKED_ADDITION</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>默认情况下，<span class="target" id="index-1-module:CheckSourceCompiles"></span><a class="reference internal" href="../../module/CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a> 会构建并链接一个可执行文件。要检查的代码必须提供一个有效的 <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">main()</span></code> 才能成功。</p>
+</div>
+<p>执行检查后，此系统内省的应用方式与我们讨论过的头文件检查方式相同。</p>
+<section id="id1">
+<h3>目标<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id1" title="此标题的永久链接">¶</a></h3>
+<p>检查 GNU SSE2 内置函数是否可用，如果可用，则使用它们来改进 <code class="docutils literal notranslate"><span class="pre">mathfunctions::sqrt</span></code>。</p>
+</section>
+<section id="id2">
+<h3>有用资源<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id2" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-2-module:CheckSourceCompiles"></span><a class="reference internal" href="../../module/CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:target_compile_definitions"></span><a class="reference internal" href="../../command/target_compile_definitions.html#command:target_compile_definitions" title="target_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code></a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>要编辑的文件<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id3" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>开始<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id4" title="此标题的永久链接">¶</a></h3>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">4</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">5</span></code>。不需要对 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 的实现进行代码更改，因为这些已经提供了。</p>
+</section>
+<section id="id5">
+<h3>构建并运行<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id5" title="此标题的永久链接">¶</a></h3>
+<p>我们只需要重新构建教程即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果检查失败而你认为它应该成功，你需要通过删除 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件来清除 CMake 缓存。如果 CMake 已经有了缓存结果，它将不会在后续运行中重新执行编译检查。</p>
+</div>
+<p>在配置步骤的输出中，我们应该观察到 CMake 正在检查提供的源代码是否编译成功，这将在我们提供给 <code class="docutils literal notranslate"><span class="pre">check_source_compiles()</span></code> 的变量名下报告。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-- Performing Test HAS_GNU_BUILTIN</span>
+<span class="go">-- Performing Test HAS_GNU_BUILTIN - Success</span>
+</pre></div>
+</div>
+<p>如果你的编译器上有这些内置函数，请验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出是否包含关于使用 GNU 内置函数的消息。相反，如果这些内置函数不可用，你应该看到来自 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的之前行为。</p>
+</section>
+<section id="id6">
+<h3>解决方案<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id6" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们包含并使用 <code class="docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code> 模块，验证提供的源代码是否可以被构建。</p>
+<details><summary>TODO 4：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-check-source-compiles">
+<div class="code-block-caption"><span class="caption-text">TODO 4: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#mathfunctions-cmakelists-txt-check-source-compiles" title="链接到此代码">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>include(CheckSourceCompiles)
+check_source_compiles(CXX
+  [=[
+    typedef double v2df __attribute__((vector_size(16)));
+    int main() {
+      __builtin_ia32_sqrtsd(v2df{});
+    }
+  ]=]
+  HAS_GNU_BUILTIN
+)
+</pre></div>
+</div>
+</div>
+</details><p>然后，我们使用检查结果有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 上设置编译定义。</p>
+<details><summary>TODO 5：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-define-use-gnu-builtin">
+<div class="code-block-caption"><span class="caption-text">TODO 5: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#mathfunctions-cmakelists-txt-define-use-gnu-builtin" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">HAS_GNU_BUILTIN</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">target_compile_definitions(</span><span class="nb">MathFunctions</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">TUTORIAL_USE_GNU_BUILTIN</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-3-check-interprocedural-optimization">
+<h2>练习 3 - 检查过程间优化<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#exercise-3-check-interprocedural-optimization" title="链接到此标题">¶</a></h2>
+<p>过程间优化和链接时优化可以为某些软件提供显著的性能提升。CMake 有能力通过 <span class="target" id="index-0-module:CheckIPOSupported"></span><a class="reference internal" href="../../module/CheckIPOSupported.html#module:CheckIPOSupported" title="CheckIPOSupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIPOSupported</span></code></a> 检查 IPO 标志的可用性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIPOSupported</span><span class="nf">)</span>
+<span class="nf">check_ipo_supported()</span><span class="w"> </span><span class="c"># fatal error if IPO is not supported</span>
+<span class="nf">set_target_properties(</span><span class="nb">MyApp</span>
+<span class="w">  </span><span class="no">PROPERTIES</span>
+<span class="w">    </span><span class="no">INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>关于项目内的 IPO 配置，有几个重要的注意事项：</p>
+<ul class="simple">
+<li><p>CMake 并不了解每个编译器上的每个 IPO/LTO 标志，通常通过针对已知工具链进行单独调整可以获得更好的结果。</p></li>
+<li><p>在目标上设置 <span class="target" id="index-0-prop_tgt:INTERPROCEDURAL_OPTIMIZATION"></span><a class="reference internal" href="../../prop_tgt/INTERPROCEDURAL_OPTIMIZATION.html#prop_tgt:INTERPROCEDURAL_OPTIMIZATION" title="INTERPROCEDURAL_OPTIMIZATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERPROCEDURAL_OPTIMIZATION</span></code></a> 属性不会改变它所链接的任何目标，也不会改变来自其他项目的依赖项。IPO 只能“看到”同样被适当编译的其他目标。</p></li>
+</ul>
+<p>由于这些原因，应该认真考虑通过外部机制（预设、<a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志、<span class="target" id="index-0-manual:cmake-toolchains(7)"></span><a class="reference internal" href="../../manual/cmake-toolchains.7.html#manual:cmake-toolchains(7)" title="cmake-toolchains(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">工具链文件</span></code></a> 等）而不是项目内控制，在整个依赖树的所有项目中手动设置 IPO/LTO 标志。</p>
+</div>
+<p>然而，特别是对于超大型项目，有一个在项目内机制在可用时使用 IPO 是有用的。</p>
+<section id="id7">
+<h3>目标<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id7" title="链接到此标题">¶</a></h3>
+<p>在整个教程项目中，当工具链可用时启用 IPO。</p>
+</section>
+<section id="id8">
+<h3>有用资源<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id8" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-1-module:CheckIPOSupported"></span><a class="reference internal" href="../../module/CheckIPOSupported.html#module:CheckIPOSupported" title="CheckIPOSupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIPOSupported</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_INTERPROCEDURAL_OPTIMIZATION"></span><a class="reference internal" href="../../variable/CMAKE_INTERPROCEDURAL_OPTIMIZATION.html#variable:CMAKE_INTERPROCEDURAL_OPTIMIZATION" title="CMAKE_INTERPROCEDURAL_OPTIMIZATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INTERPROCEDURAL_OPTIMIZATION</span></code></a></p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>要编辑的文件<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id9" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>入门<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id10" title="链接到此标题">¶</a></h3>
+<p>继续编辑 <code class="docutils literal notranslate"><span class="pre">Step6</span></code> 中的文件。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">6</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">7</span></code>。</p>
+</section>
+<section id="id11">
+<h3>构建和运行<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id11" title="链接到此标题">¶</a></h3>
+<p>我们只需要重新构建教程即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>如果 IPO 不可用，我们将在配置过程中看到错误消息。否则，没有任何变化。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>无论 IPO 检查的结果如何，我们都不应该期望 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 或 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 的行为有任何变化。</p>
+</div>
+</section>
+<section id="id12">
+<h3>解决方案<a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#id12" title="链接到此标题">¶</a></h3>
+<p>第一个 <code class="docutils literal notranslate"><span class="pre">TODO</span></code> 很简单，我们向项目中添加另一个选项。</p>
+<details><summary>TODO 6：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-enable-ipo">
+<div class="code-block-caption"><span class="caption-text">TODO 6: CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#cmakelists-txt-enable-ipo" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">TUTORIAL_ENABLE_IPO</span><span class="w"> </span><span class="s">"Check for and use IPO support"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>下一步比较复杂，但 <span class="target" id="index-2-module:CheckIPOSupported"></span><a class="reference internal" href="../../module/CheckIPOSupported.html#module:CheckIPOSupported" title="CheckIPOSupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIPOSupported</span></code></a> 的文档中几乎有一个完整的示例，说明我们需要做什么。唯一的区别是我们将在整个项目范围内而不是为单个目标启用 IPO。</p>
+<details><summary>TODO 7：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-check-ipo">
+<div class="code-block-caption"><span class="caption-text">TODO 7: CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;System&#32;Introspection.html#cmakelists-txt-check-ipo" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">TUTORIAL_ENABLE_IPO</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">include(</span><span class="nb">CheckIPOSupported</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">check_ipo_supported(</span><span class="no">RESULT</span><span class="w"> </span><span class="nb">result</span><span class="w"> </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">output</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if(</span><span class="nb">result</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">message(</span><span class="s">"IPO is supported, enabling IPO"</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="no">CMAKE_INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">else()</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">WARNING</span><span class="w"> </span><span class="s">"IPO is not supported: ${output}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>通常，我们不鼓励在项目内部设置 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 变量。在这里，我们通过 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 控制该行为。这允许打包者选择退出我们的覆盖。对于我们想要提供选项来控制受 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 变量控制的项目范围行为的情况，这是一种不完美但可以接受的解决方案。</p>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#">第六步：深入系统自省</a><ul>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#background">背景</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#exercise-1-check-include-file">练习 1 - 检查包含文件</a><ul>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#goal">目标</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#solution">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#exercise-2-check-source-compiles">练习 2 - 检查源代码编译</a><ul>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id1">目标</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id2">有用资源</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id3">要编辑的文件</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id4">入门</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id5">构建并运行</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id6">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#exercise-3-check-interprocedural-optimization">练习 3 - 检查过程间优化</a><ul>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id7">目标</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id8">有用资源</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id9">要编辑的文件</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id10">入门</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id11">构建并运行</a></li>
+<li><a class="reference internal" href="In-Depth&#32;System&#32;Introspection.html#id12">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="上一章">第五步：深入 CMake 库概念</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="下一章">第 7 步：自定义命令和生成的文件</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/In-Depth&#32;System&#32;Introspection.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files">下一页</a> |</li>
+        <li class="right">
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="In-Depth&#32;System&#32;Introspection.html">第六步：深入系统自省</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

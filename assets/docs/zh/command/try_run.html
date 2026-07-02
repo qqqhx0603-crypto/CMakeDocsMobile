@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>try_run — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="try_run.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ctest_build" href="ctest_build.html" />
+    <link rel="prev" title="try_compile" href="try_compile.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ctest_build.html" title="ctest_build" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="try_compile.html" title="try_compile" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="try_run.html">try_run</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="try-run">
+<span id="command:try_run"></span><h1><a class="toc-backref" href="try_run.html#id1" role="doc-backlink">try_run</a><a class="headerlink" href="try_run.html#try-run" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="try_run.html#try-run" id="id1">try_run</a></p>
+<ul>
+<li><p><a class="reference internal" href="try_run.html#try-compiling-and-running-source-files" id="id2">尝试编译并运行源文件</a></p></li>
+<li><p><a class="reference internal" href="try_run.html#options" id="id3">选项</a></p></li>
+<li><p><a class="reference internal" href="try_run.html#other-behavior-settings" id="id4">其他行为设置</a></p></li>
+<li><p><a class="reference internal" href="try_run.html#behavior-when-cross-compiling" id="id5">交叉编译时的行为</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>尝试编译并运行一些代码。</p>
+<section id="try-compiling-and-running-source-files">
+<h2><a class="toc-backref" href="try_run.html#id2" role="doc-backlink">尝试编译并运行源文件</a><a class="headerlink" href="try_run.html#try-compiling-and-running-source-files" title="链接到此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_run(</span><span class="nv">&lt;runResultVar&gt;</span><span class="w"> </span><span class="nv">&lt;compileResultVar&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">SOURCES_TYPE</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">{</span><span class="no">SOURCES</span><span class="w"> </span><span class="nv">&lt;srcfile&gt;...</span><span class="w">                 </span><span class="p">|</span>
+<span class="w">         </span><span class="no">SOURCE_FROM_CONTENT</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;content&gt;</span><span class="w"> </span><span class="p">|</span>
+<span class="w">         </span><span class="no">SOURCE_FROM_VAR</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="w">         </span><span class="p">|</span>
+<span class="w">         </span><span class="no">SOURCE_FROM_FILE</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="w">       </span><span class="p">}...</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LOG_DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;text&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">NO_CACHE</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">NO_LOG</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPILE_DEFINITIONS</span><span class="w"> </span><span class="nv">&lt;defs&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LINK_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LINK_LIBRARIES</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPILE_OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COPY_FILE</span><span class="w"> </span><span class="nv">&lt;fileName&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COPY_FILE_ERROR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD</span><span class="w"> </span><span class="nv">&lt;std&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD_REQUIRED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_EXTENSIONS</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUN_OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUN_OUTPUT_STDOUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUN_OUTPUT_STDERR_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">ARGS</span><span class="w"> </span><span class="nv">&lt;args&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>尝试从一个或多个源文件构建可执行文件。构建成功则在 <code class="docutils literal notranslate"><span class="pre">&lt;compileResultVar&gt;</span></code> 中返回布尔值 <code class="docutils literal notranslate"><span class="pre">true</span></code>，构建失败则返回布尔值 <code class="docutils literal notranslate"><span class="pre">false</span></code>（除非指定了 <code class="docutils literal notranslate"><span class="pre">NO_CACHE</span></code>，否则该结果会被缓存）。如果构建成功，则运行该可执行文件并将退出代码存储在 <code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;</span></code> 中（除非指定了 <code class="docutils literal notranslate"><span class="pre">NO_CACHE</span></code>，否则该结果会被缓存）。如果可执行文件已构建但运行失败，则 <code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;</span></code> 将被设置为 <code class="docutils literal notranslate"><span class="pre">FAILED_TO_RUN</span></code>。关于两个命令共有的选项以及测试项目如何构建源文件的信息，请参阅 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 命令的文档。</p>
+<p>必须提供一个或多个源文件。此外，<code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">SOURCE_FROM_*</span></code> 必须置于其他关键字之前。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版本新增: </span>如果不指定 <code class="docutils literal notranslate"><span class="pre">NO_LOG</span></code> 选项，该命令会记录一个 <a class="reference internal" href="../manual/cmake-configure-log.7.html#try-run-configure-log-event"><span class="std std-ref">configure-log try_run 事件</span></a>。</p>
+</div>
+<p>此命令支持 CMake 3.25 之前的另一种签名方式。为了清晰起见，建议使用上述签名方式。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">try_run(</span><span class="nv">&lt;runResultVar&gt;</span><span class="w"> </span><span class="nv">&lt;compileResultVar&gt;</span>
+<span class="w">        </span><span class="nv">&lt;bindir&gt;</span><span class="w"> </span><span class="p">{</span><span class="nv">&lt;srcfile&gt;</span><span class="p">|</span><span class="no">SOURCES</span><span class="w"> </span><span class="nv">&lt;srcfile&gt;...</span><span class="p">}</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CMAKE_FLAGS</span><span class="w"> </span><span class="nv">&lt;flags&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPILE_DEFINITIONS</span><span class="w"> </span><span class="nv">&lt;defs&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LINK_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LINK_LIBRARIES</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LINKER_LANGUAGE</span><span class="w"> </span><span class="nv">&lt;lang&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPILE_OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COPY_FILE</span><span class="w"> </span><span class="nv">&lt;fileName&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COPY_FILE_ERROR</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD</span><span class="w"> </span><span class="nv">&lt;std&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_STANDARD_REQUIRED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;LANG&gt;</span><span class="nb">_EXTENSIONS</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUN_OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">ARGS</span><span class="w"> </span><span class="nv">&lt;args&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="options">
+<span id="try-run-options"></span><h2><a class="toc-backref" href="try_run.html#id3" role="doc-backlink">选项</a><a class="headerlink" href="try_run.html#options" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">try_run</span></code> 特有的选项包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPILE_OUTPUT_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><p>在给定的变量中报告编译步骤的构建输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><p>在给定的变量中报告编译构建输出以及运行可执行文件的输出。此选项仅出于遗留原因保留，且仅由旧版 <code class="docutils literal notranslate"><span class="pre">try_run</span></code> 签名支持。建议优先使用 <code class="docutils literal notranslate"><span class="pre">COMPILE_OUTPUT_VARIABLE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><p>在给定的变量中报告运行可执行文件的输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDOUT_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>在给定的变量中报告运行可执行文件产生的标准输出 (stdout)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDERR_VARIABLE</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>在给定的变量中报告运行可执行文件产生的标准错误输出 (stderr)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span> <span class="pre">&lt;var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>在给定的目录下运行可执行文件。如果未指定 <code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code>，可执行文件将在 <code class="docutils literal notranslate"><span class="pre">&lt;bindir&gt;</span></code> 或当前构建目录中运行。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ARGS</span> <span class="pre">&lt;args&gt;...</span></code></dt><dd><p>运行可执行文件时传递给它的附加参数。</p>
+</dd>
+</dl>
+</section>
+<section id="other-behavior-settings">
+<h2><a class="toc-backref" href="try_run.html#id4" role="doc-backlink">其他行为设置</a><a class="headerlink" href="try_run.html#other-behavior-settings" title="链接到此标题">¶</a></h2>
+<p>设置变量 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_CONFIGURATION"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_CONFIGURATION.html#variable:CMAKE_TRY_COMPILE_CONFIGURATION" title="CMAKE_TRY_COMPILE_CONFIGURATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_CONFIGURATION</span></code></a> 以选择构建配置。</p>
+<ul class="simple">
+<li><p>对于多配置生成器，此选项用于选择要构建的配置。</p></li>
+<li><p>对于单配置生成器，此选项在测试项目中设置 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a>。</p></li>
+</ul>
+</section>
+<section id="behavior-when-cross-compiling">
+<h2><a class="toc-backref" href="try_run.html#id5" role="doc-backlink">交叉编译时的行为</a><a class="headerlink" href="try_run.html#behavior-when-cross-compiling" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>运行交叉编译的二进制文件时，使用 <code class="docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING_EMULATOR</span></code>。</p>
+</div>
+<p>进行交叉编译时，第一步编译出的可执行文件通常无法在构建主机上运行。<code class="docutils literal notranslate"><span class="pre">try_run</span></code> 命令会检查 <span class="target" id="index-0-variable:CMAKE_CROSSCOMPILING"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING.html#variable:CMAKE_CROSSCOMPILING" title="CMAKE_CROSSCOMPILING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING</span></code></a> 变量，以检测 CMake 是否处于交叉编译模式。如果是，它仍然会尝试编译可执行文件，但不会尝试运行它（除非设置了 <span class="target" id="index-0-variable:CMAKE_CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING_EMULATOR.html#variable:CMAKE_CROSSCOMPILING_EMULATOR" title="CMAKE_CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING_EMULATOR</span></code></a> 变量）。相反，它会创建缓存变量，这些变量必须由用户手动填充，或者通过在某个 CMake 脚本文件中预设它们，以对应可执行文件如果在目标平台上运行时本应产生的值。这些缓存条目包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;</span></code></dt><dd><p>如果可执行文件在目标平台上运行，其预期的退出代码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;__TRYRUN_OUTPUT</span></code></dt><dd><p>如果可执行文件在目标平台上运行，其预期的标准输出和标准错误输出。仅当使用了 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span></code> 选项时才会创建。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;__TRYRUN_OUTPUT_STDOUT</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>如果可执行文件在目标平台上运行，其预期的标准输出。仅当使用了 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDOUT_VARIABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDERR_VARIABLE</span></code> 选项时才会创建。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;runResultVar&gt;__TRYRUN_OUTPUT_STDERR</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>如果可执行文件在目标平台上运行，其预期的标准错误输出。仅当使用了 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDOUT_VARIABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDERR_VARIABLE</span></code> 选项时才会创建。</p>
+</dd>
+</dl>
+<p>为了使项目的交叉编译更容易，仅在确实需要时才使用 <code class="docutils literal notranslate"><span class="pre">try_run</span></code>。如果您使用了 <code class="docutils literal notranslate"><span class="pre">try_run</span></code>，请仅在必要时使用 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDOUT_VARIABLE</span></code>、<code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_STDERR_VARIABLE</span></code>、<code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span></code> 选项。使用它们将意味着在交叉编译时，必须手动设置缓存变量为可执行文件的输出值。您也可以通过检查 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a> 块中的 <span class="target" id="index-1-variable:CMAKE_CROSSCOMPILING"></span><a class="reference internal" href="../variable/CMAKE_CROSSCOMPILING.html#variable:CMAKE_CROSSCOMPILING" title="CMAKE_CROSSCOMPILING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSSCOMPILING</span></code></a> 变量来“保护”对 <code class="docutils literal notranslate"><span class="pre">try_run</span></code> 的调用，并为此情况提供一个易于预设的替代方案。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="try_run.html#">try_run</a><ul>
+<li><a class="reference internal" href="try_run.html#try-compiling-and-running-source-files">尝试编译并运行源文件</a></li>
+<li><a class="reference internal" href="try_run.html#options">选项</a></li>
+<li><a class="reference internal" href="try_run.html#other-behavior-settings">其他行为设置</a></li>
+<li><a class="reference internal" href="try_run.html#behavior-when-cross-compiling">交叉编译时的行为</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="try_compile.html" title="上一章">try_compile</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ctest_build.html" title="下一章">ctest_build</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/try_run.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ctest_build.html" title="ctest_build">下一页</a> |</li>
+        <li class="right">
+          <a href="try_compile.html" title="try_compile">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="try_run.html">try_run</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

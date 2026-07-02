@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_FIND_PACKAGE_PREFER_CONFIG — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_FIND_PACKAGE_PREFER_CONFIG.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS" href="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS.html" />
+    <link rel="prev" title="CMAKE_FIND_NO_INSTALL_PREFIX" href="CMAKE_FIND_NO_INSTALL_PREFIX.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS.html" title="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_FIND_NO_INSTALL_PREFIX.html" title="CMAKE_FIND_NO_INSTALL_PREFIX" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_FIND_PACKAGE_PREFER_CONFIG.html">CMAKE_FIND_PACKAGE_PREFER_CONFIG</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-find-package-prefer-config">
+<span id="variable:CMAKE_FIND_PACKAGE_PREFER_CONFIG"></span><h1>CMAKE_FIND_PACKAGE_PREFER_CONFIG<a class="headerlink" href="CMAKE_FIND_PACKAGE_PREFER_CONFIG.html#cmake-find-package-prefer-config" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>告诉 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 在没有指定模式的情况下，先尝试“Config”模式，然后再尝试“Module”模式。</p>
+<p>命令 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 在使用简化的签名且没有 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 选项时，不使用显式模式。在这种情况下，默认情况下，CMake 首先尝试 Module 模式，通过搜索 <code class="docutils literal notranslate"><span class="pre">Find&lt;pkg&gt;.cmake</span></code> 模块。如果失败，CMake 然后使用 Config 模式搜索包。</p>
+<p>将 <code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_PREFER_CONFIG</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，以告诉 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 首先使用 Config 模式搜索，然后回退到 Module 模式。</p>
+<p>当开发者编译了常用库的自定义版本并希望将其链接到依赖项目时，此变量可能很有用。如果将此变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，它将阻止依赖项目的 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用在找到开发者自定义构建的库之前，选择系统 <code class="docutils literal notranslate"><span class="pre">Find&lt;pkg&gt;.cmake</span></code> 模块找到的默认库。</p>
+<p>设置此变量后，导出的 <code class="docutils literal notranslate"><span class="pre">&lt;pkg&gt;Config.cmake</span></code> 文件有责任提供与 <code class="docutils literal notranslate"><span class="pre">Find&lt;pkg&gt;.cmake</span></code> 模块相同的变量结果，以便依赖项目可以互换使用它们。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_FIND_NO_INSTALL_PREFIX.html" title="上一章">CMAKE_FIND_NO_INSTALL_PREFIX</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS.html" title="下一章">CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_FIND_PACKAGE_PREFER_CONFIG.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS.html" title="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_FIND_NO_INSTALL_PREFIX.html" title="CMAKE_FIND_NO_INSTALL_PREFIX">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_FIND_PACKAGE_PREFER_CONFIG.html">CMAKE_FIND_PACKAGE_PREFER_CONFIG</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

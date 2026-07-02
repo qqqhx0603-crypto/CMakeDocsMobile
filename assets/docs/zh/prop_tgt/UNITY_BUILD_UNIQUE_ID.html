@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>UNITY_BUILD_UNIQUE_ID — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="UNITY_BUILD_UNIQUE_ID.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="VERIFY_INTERFACE_HEADER_SETS" href="VERIFY_INTERFACE_HEADER_SETS.html" />
+    <link rel="prev" title="UNITY_BUILD_RELOCATABLE" href="UNITY_BUILD_RELOCATABLE.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="VERIFY_INTERFACE_HEADER_SETS.html" title="VERIFY_INTERFACE_HEADER_SETS" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="UNITY_BUILD_RELOCATABLE.html" title="UNITY_BUILD_RELOCATABLE" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UNITY_BUILD_UNIQUE_ID.html">UNITY_BUILD_UNIQUE_ID</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="unity-build-unique-id">
+<span id="prop_tgt:UNITY_BUILD_UNIQUE_ID"></span><h1>UNITY_BUILD_UNIQUE_ID<a class="headerlink" href="UNITY_BUILD_UNIQUE_ID.html#unity-build-unique-id" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>在 unity 构建期间设置为每个文件唯一的有效 C 标识符的名称。</p>
+<p>当此属性被填充并且当 <span class="target" id="index-0-prop_tgt:UNITY_BUILD"></span><a class="reference internal" href="UNITY_BUILD.html#prop_tgt:UNITY_BUILD" title="UNITY_BUILD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">UNITY_BUILD</span></code></a> 为 true 时，该属性值用于定义指定名称的编译器定义。 定义的符号的值未指定，但对于每个文件路径都是唯一的。</p>
+<p>给定</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_target_properties(</span><span class="nb">myTarget</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">UNITY_BUILD</span><span class="w"> </span><span class="s">"ON"</span>
+<span class="w">  </span><span class="no">UNITY_BUILD_UNIQUE_ID</span><span class="w"> </span><span class="s">"MY_UNITY_ID"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>符号 <code class="docutils literal notranslate"><span class="pre">MY_UNITY_ID</span></code> 被定义为每个文件唯一的数值。</p>
+<p>此标识符的一个已知用例是在有限范围内消除匿名命名空间中的变量歧义。 匿名命名空间为 unity 构建带来问题，因为它们用于确保某些变量和声明限定于一个翻译单元，这近似于单个源文件。 当源文件在 unity 构建文件中组合时，来自不同文件的这些变量被组合到一个翻译单元中，并且名称会冲突。 可以使用此属性通过以下代码避免这种情况</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Needed for when unity builds are disabled</span>
+<span class="cp">#ifndef MY_UNITY_ID</span>
+<span class="cp">#define MY_UNITY_ID</span>
+<span class="cp">#endif</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">MY_UNITY_ID</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// The name 'i' clashes (or could clash) with other</span>
+<span class="w">  </span><span class="c1">// variables in other anonymous namespaces</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="p">}}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">use_var</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">MY_UNITY_ID</span><span class="o">::</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>伪匿名命名空间在真正的匿名命名空间中使用。 在许多平台上，这保持了内部符号在执行 unity 构建时不具有外部链接的不变性。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="UNITY_BUILD_RELOCATABLE.html" title="上一章">UNITY_BUILD_RELOCATABLE</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="VERIFY_INTERFACE_HEADER_SETS.html" title="下一章">VERIFY_INTERFACE_HEADER_SETS</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/UNITY_BUILD_UNIQUE_ID.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="VERIFY_INTERFACE_HEADER_SETS.html" title="VERIFY_INTERFACE_HEADER_SETS">下一页</a> |</li>
+        <li class="right">
+          <a href="UNITY_BUILD_RELOCATABLE.html" title="UNITY_BUILD_RELOCATABLE">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UNITY_BUILD_UNIQUE_ID.html">UNITY_BUILD_UNIQUE_ID</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

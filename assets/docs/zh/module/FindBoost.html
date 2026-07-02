@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindBoost — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindBoost.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindCABLE" href="FindCABLE.html" />
+    <link rel="prev" title="WriteCompilerDetectionHeader" href="WriteCompilerDetectionHeader.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindCABLE.html" title="FindCABLE" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="WriteCompilerDetectionHeader.html" title="WriteCompilerDetectionHeader" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindBoost.html">FindBoost</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findboost">
+<span id="module:FindBoost"></span><h1>FindBoost<a class="headerlink" href="FindBoost.html#findboost" title="此标题的链接">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.30 版本变更: </span>仅当策略 <span class="target" id="index-0-policy:CMP0167"></span><a class="reference internal" href="../policy/CMP0167.html#policy:CMP0167" title="CMP0167"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0167</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此模块才可用。请将项目迁移到上游 Boost 的 <code class="docutils literal notranslate"><span class="pre">BoostConfig.cmake</span></code> 软件包配置文件，<code class="docutils literal notranslate"><span class="pre">find_package(Boost)</span></code> 现在会搜索该文件。</p>
+</div>
+<p>查找 Boost 头文件和库</p>
+<p>通过调用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 并使用以下格式来使用此模块：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span>
+<span class="w">  </span><span class="p">[</span><span class="nb">version</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w">      </span><span class="c"># Minimum or EXACT version e.g. 1.67.0</span>
+<span class="w">  </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w">             </span><span class="c"># Fail with error if Boost is not found</span>
+<span class="w">  </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span><span class="w"> </span><span class="c"># Boost libraries by their canonical name</span>
+<span class="w">                         </span><span class="c"># e.g. "date_time" for "libboost_date_time"</span>
+<span class="w">  </span><span class="p">[</span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nv">&lt;libs&gt;...</span><span class="p">]</span>
+<span class="w">                         </span><span class="c"># Optional Boost libraries by their canonical name)</span>
+<span class="w">  </span><span class="nf">)</span><span class="w">                      </span><span class="c"># e.g. "date_time" for "libboost_date_time"</span>
+</pre></div>
+</div>
+<p>此模块用于查找头文件和请求的组件库，或者查找由“Boost CMake”构建提供的 CMake 软件包配置文件。对于后者，请直接跳至下方的 <a class="reference internal" href="FindBoost.html#boost-cmake"><span class="std std-ref">Boost CMake</span></a> 部分。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增: </span><code class="docutils literal notranslate"><span class="pre">bzip2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zlib</span></code> 组件（仅限 Windows）。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增: </span><code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增: </span><code class="docutils literal notranslate"><span class="pre">stacktrace_*</span></code> 组件。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增: </span>所有平台上的 <code class="docutils literal notranslate"><span class="pre">bzip2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zlib</span></code> 组件。</p>
+</div>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindBoost.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了头文件和所请求的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIRS</span></code></dt><dd><p>Boost 头文件目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIRS</span></code></dt><dd><p>Boost 库的链接目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARIES</span></code></dt><dd><p>需要链接的 Boost 组件库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了组件 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code>（<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 名称为大写）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY</span></code></dt><dd><p>要为组件 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 链接的库（可能包含 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 的 debug/optimized 关键字）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_MACRO</span></code></dt><dd><p>来自 <code class="docutils literal notranslate"><span class="pre">boost/version.hpp</span></code> 的 <code class="docutils literal notranslate"><span class="pre">BOOST_VERSION</span></code> 值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_STRING</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> 格式的 Boost 版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> 格式的 Boost 版本号（与 <code class="docutils literal notranslate"><span class="pre">Boost_VERSION_STRING</span></code> 相同）。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.15 版本变更: </span>在旧版本 CMake 中，此变量使用来自 Boost 头文件的原始版本字符串（与 <code class="docutils literal notranslate"><span class="pre">Boost_VERSION_MACRO</span></code> 相同）。请参阅策略 <span class="target" id="index-0-policy:CMP0093"></span><a class="reference internal" href="../policy/CMP0093.html#policy:CMP0093" title="CMP0093"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0093</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIB_VERSION</span></code></dt><dd><p>附加到库文件名的版本字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_MAJOR</span></code>, <code class="docutils literal notranslate"><span class="pre">Boost_MAJOR_VERSION</span></code></dt><dd><p>Boost 主版本号（<code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">X</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_MINOR</span></code>, <code class="docutils literal notranslate"><span class="pre">Boost_MINOR_VERSION</span></code></dt><dd><p>Boost 次版本号（<code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">Y</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_PATCH</span></code>, <code class="docutils literal notranslate"><span class="pre">Boost_SUBMINOR_VERSION</span></code></dt><dd><p>Boost 修订版本号（<code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">Z</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_COUNT</span></code></dt><dd><p>版本组件数量 (3)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIB_DIAGNOSTIC_DEFINITIONS</span></code> (Windows 专用)</dt><dd><p>传递给 <span class="target" id="index-0-command:add_definitions"></span><a class="reference internal" href="../command/add_definitions.html#command:add_definitions" title="add_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_definitions()</span></code></a> 以便在编译期间显示有关 Boost 自动链接的诊断信息。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增: </span><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_&lt;PART&gt;</span></code> 变量。</p>
+</div>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindBoost.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>搜索结果将持久保存在 CMake 缓存条目中</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIR</span></code></dt><dd><p>包含 Boost 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_RELEASE</span></code></dt><dd><p>包含 Boost Release 版库的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_DEBUG</span></code></dt><dd><p>包含 Boost Debug 版库的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_DEBUG</span></code></dt><dd><p>组件 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 的 Debug 版库变体。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_RELEASE</span></code></dt><dd><p>组件 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 的 Release 版库变体。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>各配置变量 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_RELEASE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_DEBUG</span></code>。</p>
+</div>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindBoost.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块从以下变量中读取有关搜索位置的提示</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BOOST_ROOT</span></code>, <code class="docutils literal notranslate"><span class="pre">BOOSTROOT</span></code></dt><dd><p>首选安装前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BOOST_INCLUDEDIR</span></code></dt><dd><p>首选头文件目录，例如 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/include</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BOOST_LIBRARYDIR</span></code></dt><dd><p>首选库目录，例如 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_NO_SYSTEM_PATHS</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 可禁止在非这些提示变量指定的位置进行搜索。默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_ADDITIONAL_VERSIONS</span></code></dt><dd><p>此模块未知但希望检查的 Boost 版本列表。（Boost 安装位置可能包含版本号）。</p>
+</dd>
+</dl>
+<p>用户可以将这些提示或结果设置为 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目。项目不应直接读取这些条目，而应使用上述结果变量。请注意，某些提示名称以大写 <code class="docutils literal notranslate"><span class="pre">BOOST</span></code> 开头。如果未将它们指定为 CMake 变量或缓存条目，则可以将它们指定为环境变量。</p>
+<p>此模块首先使用上述提示变量（不包括 <code class="docutils literal notranslate"><span class="pre">BOOST_LIBRARYDIR</span></code>）搜索 Boost 头文件，并将结果保存在 <code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIR</span></code> 中。然后，它使用上述提示（不包括 <code class="docutils literal notranslate"><span class="pre">BOOST_INCLUDEDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_ADDITIONAL_VERSIONS</span></code>）、<code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIR</span></code> 附近的 "lib" 目录以及下方的库名称配置设置来搜索请求的组件库。它将库目录保存在 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_DEBUG</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_RELEASE</span></code> 中，并将各个库的位置保存在 <code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_DEBUG</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_RELEASE</span></code> 中。当用户更改同一构建树中之前搜索所使用的设置（不包括环境变量）时，此模块会丢弃受影响的旧搜索结果并重新搜索。</p>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindBoost.html#imported-targets" title="此标题的链接">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增。</span></p>
+</div>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::boost</span></code></dt><dd><p>仅头文件依赖的目标。（Boost 头文件目录）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::headers</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增: </span><code class="docutils literal notranslate"><span class="pre">Boost::boost</span></code> 的别名。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::&lt;component&gt;</span></code></dt><dd><p>特定组件依赖的目标（共享或静态库）；<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 名称为小写。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::diagnostic_definitions</span></code></dt><dd><p>接口目标，用于在编译期间启用有关 Boost 自动链接的诊断信息（添加 <code class="docutils literal notranslate"><span class="pre">-DBOOST_LIB_DIAGNOSTIC</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::disable_autolinking</span></code></dt><dd><p>接口目标，用于禁用 MSVC 的自动链接（添加 <code class="docutils literal notranslate"><span class="pre">-DBOOST_ALL_NO_LIB</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost::dynamic_linking</span></code></dt><dd><p>接口目标，用于启用 MSVC 的动态链接（添加 <code class="docutils literal notranslate"><span class="pre">-DBOOST_ALL_DYN_LINK</span></code>）。</p>
+</dd>
+</dl>
+<p>隐式依赖项（例如 <code class="docutils literal notranslate"><span class="pre">Boost::filesystem</span></code> 需要 <code class="docutils literal notranslate"><span class="pre">Boost::system</span></code>）将被自动检测并满足，即使在使用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 时未指定 system，或者如果未将 <code class="docutils literal notranslate"><span class="pre">Boost::system</span></code> 添加到 <span class="target" id="index-1-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 中。如果使用 <code class="docutils literal notranslate"><span class="pre">Boost::thread</span></code>，则会自动添加 <code class="docutils literal notranslate"><span class="pre">Threads::Threads</span></code>。</p>
+<p>需要注意的是，导入的目标与此模块创建的变量表现不同：在同一目录或子目录中，使用不同选项（例如静态或共享）多次调用 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package(boost)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(Boost)</span></code></a> 不会覆盖第一次调用所创建目标的值。</p>
+</section>
+<section id="other-variables">
+<h2>其他变量<a class="headerlink" href="FindBoost.html#other-variables" title="此标题的链接">¶</a></h2>
+<p>Boost 库有多种变体，并在其文件名中进行编码。用户或项目可以通过设置以下变量来告知此模块要查找哪些变体：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_DEBUG_LIBS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 以指定是否搜索并使用 Debug 版库。默认值为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_RELEASE_LIBS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 以指定是否搜索并使用 Release 版库。默认值为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_MULTITHREADED</span></code></dt><dd><p>设置为 OFF 以使用非多线程库（“mt”标签）。默认值为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_STATIC_LIBS</span></code></dt><dd><p>设置为 ON 以强制使用静态库。默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_STATIC_RUNTIME</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 以指定是否使用静态链接到 C++ 运行时的库（“s”标签）。默认值取决于平台。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_DEBUG_RUNTIME</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 以指定是否使用链接到 MS Debug C++ 运行时的库（“g”标签）。默认值为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_DEBUG_PYTHON</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以使用使用 Debug Python 构建编译的库（“y”标签）。默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_STLPORT</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以使用使用 STLPort 编译的库（“p”标签）。默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_USE_STLPORT_DEPRECATED_NATIVE_IOSTREAMS</span></code></dt><dd><p>设置为 ON 以使用使用 STLPort 已弃用的 “native iostreams” 编译的库（“n”标签）。默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_COMPILER</span></code></dt><dd><p>设置为特定于编译器的库后缀（例如 <code class="docutils literal notranslate"><span class="pre">-gcc43</span></code>）。默认值是为所使用的 C++ 编译器自动计算的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.9 版本变更: </span>如果需要测试多个兼容的后缀，可以使用列表，按优先级降序排列。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIB_PREFIX</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>设置为 Boost 静态库使用的平台特定库名称前缀（例如 <code class="docutils literal notranslate"><span class="pre">lib</span></code>）。仅在 CMake 默认不知道前缀的平台上才需要此设置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_ARCHITECTURE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>设置为特定于体系结构的库后缀（例如 <code class="docutils literal notranslate"><span class="pre">-x64</span></code>）。默认值是为所使用的 C++ 编译器自动计算的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_THREADAPI</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">thread</span></code> 组件库名称的后缀，例如 <code class="docutils literal notranslate"><span class="pre">pthread</span></code> 或 <code class="docutils literal notranslate"><span class="pre">win32</span></code>。将尝试带此后缀和不带此后缀的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_NAMESPACE</span></code></dt><dd><p>构建 boost 时使用的替代命名空间，例如，如果设置为 <code class="docutils literal notranslate"><span class="pre">myboost</span></code>，则会搜索 <code class="docutils literal notranslate"><span class="pre">myboost_thread</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">boost_thread</span></code>。</p>
+</dd>
+</dl>
+<p>用户可以设置来控制此模块的其他变量包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_DEBUG</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以启用 <code class="docutils literal notranslate"><span class="pre">FindBoost</span></code> 的调试输出。提交任何错误报告前请启用此项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_REALPATH</span></code></dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以解析所发现库的符号链接，从而辅助打包。例如，"system" 组件库可能会解析为 <code class="docutils literal notranslate"><span class="pre">/usr/lib/libboost_system.so.1.67.0</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">/usr/lib/libboost_system.so</span></code>。这不会影响链接，除非用户需要此信息，否则不应启用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_RELEASE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_DEBUG</span></code> 的默认值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_NO_WARN_NEW_VERSIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以抑制关于新 Boost 版本未知依赖项的警告。</p>
+</dd>
+</dl>
+<p>在 Visual Studio 和 Borland 编译器上，Boost 头文件会请求自动链接到相应的库。这需要显式链接匹配的库或使其在链接库搜索路径中可用。在这种情况下，将 <code class="docutils literal notranslate"><span class="pre">Boost_USE_STATIC_LIBS</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 可能无法实现动态链接。Boost 自动链接通常请求静态库，极少数情况除外（例如 <code class="docutils literal notranslate"><span class="pre">Boost.Python</span></code>）。使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_definitions(</span><span class="o">${</span><span class="nt">Boost_LIB_DIAGNOSTIC_DEFINITIONS</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>来请求 Boost 报告有关自动链接请求的信息。</p>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindBoost.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>仅查找 Boost 头文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.36.0</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="nb">Boost_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">include_directories(</span><span class="o">${</span><span class="nt">Boost_INCLUDE_DIRS</span><span class="o">}</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cc</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>查找 Boost 库并使用导入的目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.56</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">COMPONENTS</span>
+<span class="w">             </span><span class="nb">date_time</span><span class="w"> </span><span class="nb">filesystem</span><span class="w"> </span><span class="nb">iostreams</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cc</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">date_time</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">filesystem</span>
+<span class="w">                          </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">iostreams</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 Boost Python 3.6 库并使用导入的目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.67</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">COMPONENTS</span>
+<span class="w">             </span><span class="nb">python36</span><span class="w"> </span><span class="nb">numpy36</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cc</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">python36</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">numpy36</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 Boost 头文件和一些<em>静态</em>（仅限 Release）库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">Boost_USE_STATIC_LIBS</span><span class="w">        </span><span class="no">ON</span><span class="nf">)</span><span class="w">  </span><span class="c"># only find static libs</span>
+<span class="nf">set(</span><span class="nb">Boost_USE_DEBUG_LIBS</span><span class="w">        </span><span class="no">OFF</span><span class="nf">)</span><span class="w">  </span><span class="c"># ignore debug libs and</span>
+<span class="nf">set(</span><span class="nb">Boost_USE_RELEASE_LIBS</span><span class="w">       </span><span class="no">ON</span><span class="nf">)</span><span class="w">  </span><span class="c"># only find release libs</span>
+<span class="nf">set(</span><span class="nb">Boost_USE_MULTITHREADED</span><span class="w">      </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">Boost_USE_STATIC_RUNTIME</span><span class="w">    </span><span class="no">OFF</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.66.0</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">date_time</span><span class="w"> </span><span class="nb">filesystem</span><span class="w"> </span><span class="nb">system</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="nb">Boost_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">include_directories(</span><span class="o">${</span><span class="nt">Boost_INCLUDE_DIRS</span><span class="o">}</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cc</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="o">${</span><span class="nt">Boost_LIBRARIES</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+<section id="boost-cmake">
+<span id="id1"></span><h2>Boost CMake<a class="headerlink" href="FindBoost.html#boost-cmake" title="此标题的链接">¶</a></h2>
+<p>如果 Boost 是使用 boost-cmake 项目构建的，或者从 Boost 1.70.0 版本开始，它提供了用于 find_package 配置模式的软件包配置文件。此模块查找名为 <code class="docutils literal notranslate"><span class="pre">BoostConfig.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">boost-config.cmake</span></code> 的软件包配置文件，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目 <code class="docutils literal notranslate"><span class="pre">Boost_DIR</span></code> 中。如果找到，将加载该软件包配置文件，且此模块不再执行进一步操作。有关其提供内容的详细信息，请参阅 Boost CMake 软件包配置文档。</p>
+<p>将 <code class="docutils literal notranslate"><span class="pre">Boost_NO_BOOST_CMAKE</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 可禁用对 boost-cmake 的搜索。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindBoost.html#">FindBoost</a><ul>
+<li><a class="reference internal" href="FindBoost.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindBoost.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindBoost.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindBoost.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindBoost.html#other-variables">其他变量</a></li>
+<li><a class="reference internal" href="FindBoost.html#examples">示例</a></li>
+<li><a class="reference internal" href="FindBoost.html#boost-cmake">Boost CMake</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="WriteCompilerDetectionHeader.html" title="上一章">WriteCompilerDetectionHeader</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindCABLE.html" title="下一章">FindCABLE</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindBoost.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindCABLE.html" title="FindCABLE">下一页</a> |</li>
+        <li class="right">
+          <a href="WriteCompilerDetectionHeader.html" title="WriteCompilerDetectionHeader">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindBoost.html">FindBoost</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

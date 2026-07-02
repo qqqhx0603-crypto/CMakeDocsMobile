@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>LINK_LIBRARIES_STRATEGY — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="LINK_LIBRARIES_STRATEGY.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="LINK_LIBRARY_OVERRIDE" href="LINK_LIBRARY_OVERRIDE.html" />
+    <link rel="prev" title="LINK_LIBRARIES_ONLY_TARGETS" href="LINK_LIBRARIES_ONLY_TARGETS.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="LINK_LIBRARY_OVERRIDE.html" title="LINK_LIBRARY_OVERRIDE" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="LINK_LIBRARIES_ONLY_TARGETS.html" title="LINK_LIBRARIES_ONLY_TARGETS" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="LINK_LIBRARIES_STRATEGY.html">LINK_LIBRARIES_STRATEGY</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="link-libraries-strategy">
+<span id="prop_tgt:LINK_LIBRARIES_STRATEGY"></span><h1>LINK_LIBRARIES_STRATEGY<a class="headerlink" href="LINK_LIBRARIES_STRATEGY.html#link-libraries-strategy" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>指定目标在链接器命令行上对其直接链接依赖项进行排序的策略。如果在创建目标时设置了 <span class="target" id="index-0-variable:CMAKE_LINK_LIBRARIES_STRATEGY"></span><a class="reference internal" href="../variable/CMAKE_LINK_LIBRARIES_STRATEGY.html#variable:CMAKE_LINK_LIBRARIES_STRATEGY" title="CMAKE_LINK_LIBRARIES_STRATEGY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINK_LIBRARIES_STRATEGY</span></code></a> 变量，则此属性将由该变量的值初始化。</p>
+<p>CMake 使用其 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#target-link-properties"><span class="std std-ref">目标链接属性</span></a> 生成目标的链接行。特别是，<span class="target" id="index-0-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 目标属性记录了目标的直接链接依赖项，通常通过调用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 来填充。间接链接依赖项是通过跟踪 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 属性的传递闭包，从 <span class="target" id="index-1-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 中命名库目标的条目传播而来的。CMake 支持多种策略来对直接和间接链接依赖项进行名义排序，随后会针对 <a class="reference internal" href="LINK_LIBRARIES_STRATEGY.html#toolchain-specific-behavior">工具链特定行为</a> 进行过滤。</p>
+<p>请参考以下策略示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="no">A</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="no">B</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="no">C</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="no">B</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">A</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="no">C</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">A</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">main</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">A</span><span class="w"> </span><span class="no">B</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持的策略包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">REORDER_MINIMALLY</span></code></dt><dd><p><span class="target" id="index-2-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 的条目始终首先出现，并保持其原始顺序。未被原始条目满足的间接链接依赖项可能会在彼此之间进行重新排序和去重，但始终会附加在原始条目之后。这可能会导致链接行效率较低，但允许项目控制独立条目之间的排序。当混合使用链接标志与库，或者当多个库提供给定符号时，这种控制可能非常重要。</p>
+<p>这是默认策略。</p>
+<p>在上面的示例中，此策略通过从原始条目 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code> 开始，然后附加另一个 <code class="docutils literal notranslate"><span class="pre">A</span></code> 来满足 <code class="docutils literal notranslate"><span class="pre">B</span></code> 和 <code class="docutils literal notranslate"><span class="pre">C</span></code> 对 <code class="docutils literal notranslate"><span class="pre">A</span></code> 的依赖，从而为 <code class="docutils literal notranslate"><span class="pre">main</span></code> 计算链接行。此策略产生的名义顺序为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p>
+<p>请注意，针对 <a class="reference internal" href="LINK_LIBRARIES_STRATEGY.html#toolchain-specific-behavior">工具链特定行为</a> 的额外过滤可能会在生成的构建系统中的实际链接器调用中对 <code class="docutils literal notranslate"><span class="pre">A</span></code> 进行去重，最终结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code> 或 <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REORDER_FREELY</span></code></dt><dd><p><span class="target" id="index-3-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 的条目可能会被重新排序、去重，并与间接链接依赖项混合。这可能会产生更高效的链接行，但不会赋予项目任何对独立条目之间排序的控制权。</p>
+<p>在上面的示例中，此策略通过重新排列其原始条目 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code> 以满足 <code class="docutils literal notranslate"><span class="pre">B</span></code> 和 <code class="docutils literal notranslate"><span class="pre">C</span></code> 对 <code class="docutils literal notranslate"><span class="pre">A</span></code> 的依赖，从而为 <code class="docutils literal notranslate"><span class="pre">main</span></code> 计算链接行。此策略产生的名义顺序为 <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p>
+</dd>
+</dl>
+<section id="toolchain-specific-behavior">
+<h2>工具链特定行为<a class="headerlink" href="LINK_LIBRARIES_STRATEGY.html#toolchain-specific-behavior" title="链接到此标题">¶</a></h2>
+<p>在上述策略之一生成直接和间接链接依赖项之间的名义顺序后，生成的构建系统中的实际链接器调用可能会根据平台特定要求和链接器功能对条目进行去重。请参阅策略 <span class="target" id="index-0-policy:CMP0156"></span><a class="reference internal" href="../policy/CMP0156.html#policy:CMP0156" title="CMP0156"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0156</span></code></a>。</p>
+<p>例如，如果 <code class="docutils literal notranslate"><span class="pre">REORDER_MINIMALLY</span></code> 策略产生 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>，则实际链接行可能会按如下方式对 <code class="docutils literal notranslate"><span class="pre">A</span></code> 进行去重</p>
+<ul class="simple">
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是一个静态库且链接器会自动重新扫描，则保留第一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code>。请参阅策略 <span class="target" id="index-0-policy:CMP0179"></span><a class="reference internal" href="../policy/CMP0179.html#policy:CMP0179" title="CMP0179"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0179</span></code></a></p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 Windows 上的共享库，则保留第一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code>。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 macOS 或 UNIX 平台上的共享库，则保留最后一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="LINK_LIBRARIES_STRATEGY.html#">LINK_LIBRARIES_STRATEGY</a><ul>
+<li><a class="reference internal" href="LINK_LIBRARIES_STRATEGY.html#toolchain-specific-behavior">工具链特定行为</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="LINK_LIBRARIES_ONLY_TARGETS.html" title="上一章">LINK_LIBRARIES_ONLY_TARGETS</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="LINK_LIBRARY_OVERRIDE.html" title="下一章">LINK_LIBRARY_OVERRIDE</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/LINK_LIBRARIES_STRATEGY.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="LINK_LIBRARY_OVERRIDE.html" title="LINK_LIBRARY_OVERRIDE">下一页</a> |</li>
+        <li class="right">
+          <a href="LINK_LIBRARIES_ONLY_TARGETS.html" title="LINK_LIBRARIES_ONLY_TARGETS">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="LINK_LIBRARIES_STRATEGY.html">LINK_LIBRARIES_STRATEGY</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

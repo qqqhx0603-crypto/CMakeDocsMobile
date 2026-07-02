@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ctest_configure — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ctest_configure.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ctest_coverage" href="ctest_coverage.html" />
+    <link rel="prev" title="ctest_build" href="ctest_build.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ctest_coverage.html" title="ctest_coverage" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_build.html" title="ctest_build" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_configure.html">ctest_configure</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctest-configure">
+<span id="command:ctest_configure"></span><h1>ctest_configure<a class="headerlink" href="ctest_configure.html#ctest-configure" title="链接到此标题">¶</a></h1>
+<p>作为 <a class="reference internal" href="../manual/ctest.1.html#ctest-configure-step"><span class="std std-ref">CTest 配置步骤</span></a> 的 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">仪表盘客户端</span></a> 执行。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_configure(</span><span class="p">[</span><span class="no">BUILD</span><span class="w"> </span><span class="nv">&lt;build-dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">SOURCE</span><span class="w"> </span><span class="nv">&lt;source-dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">APPEND</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">RETURN_VALUE</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">CAPTURE_CMAKE_ERROR</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>配置项目构建树，并将结果记录在 <code class="docutils literal notranslate"><span class="pre">Configure.xml</span></code> 中，以便与 <span class="target" id="index-0-command:ctest_submit"></span><a class="reference internal" href="ctest_submit.html#command:ctest_submit" title="ctest_submit"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_submit()</span></code></a> 命令一起提交。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">&lt;build-dir&gt;</span></code></dt><dd><p>指定顶级构建目录。如果未给出，则使用 <span class="target" id="index-0-variable:CTEST_BINARY_DIRECTORY"></span><a class="reference internal" href="../variable/CTEST_BINARY_DIRECTORY.html#variable:CTEST_BINARY_DIRECTORY" title="CTEST_BINARY_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_BINARY_DIRECTORY</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE</span> <span class="pre">&lt;source-dir&gt;</span></code></dt><dd><p>指定源目录。如果未提供，则使用 <span class="target" id="index-0-variable:CTEST_SOURCE_DIRECTORY"></span><a class="reference internal" href="../variable/CTEST_SOURCE_DIRECTORY.html#variable:CTEST_SOURCE_DIRECTORY" title="CTEST_SOURCE_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_SOURCE_DIRECTORY</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">APPEND</span></code></dt><dd><p>标记 <code class="docutils literal notranslate"><span class="pre">Configure.xml</span></code>，以便自上次 <span class="target" id="index-0-command:ctest_start"></span><a class="reference internal" href="ctest_start.html#command:ctest_start" title="ctest_start"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_start()</span></code></a> 调用以来，将其附加到先前提交给仪表盘服务器的结果中。附加语义由所使用的仪表盘服务器定义。这<em>不会</em>导致将结果附加到此命令先前调用的 <code class="docutils literal notranslate"><span class="pre">.xml</span></code> 文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span> <span class="pre">&lt;options&gt;</span></code></dt><dd><p>指定要传递给配置工具的命令行参数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RETURN_VALUE</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>将本机配置工具的返回值存储在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CAPTURE_CMAKE_ERROR</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果运行命令时有任何错误，则在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中存储 -1，并防止 ctest 在发生错误时返回非零值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>抑制原本会打印到控制台的任何 CTest 特定的非错误消息。底层配置命令的输出不受影响。</p>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ctest_build.html" title="上一章">ctest_build</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ctest_coverage.html" title="下一章">ctest_coverage</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/ctest_configure.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ctest_coverage.html" title="ctest_coverage">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_build.html" title="ctest_build">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_configure.html">ctest_configure</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

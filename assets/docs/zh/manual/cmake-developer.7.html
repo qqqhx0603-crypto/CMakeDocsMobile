@@ -1,0 +1,476 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-developer(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-developer.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-env-variables(7)" href="cmake-env-variables.7.html" />
+    <link rel="prev" title="cmake-cxxmodules(7)" href="cmake-cxxmodules.7.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-env-variables.7.html" title="cmake-env-variables(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-cxxmodules.7.html" title="cmake-cxxmodules(7)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-developer.7.html">cmake-developer(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-developer(7)"></span><section id="cmake-developer-7">
+<h1><a class="toc-backref" href="cmake-developer.7.html#id3" role="doc-backlink">cmake-developer(7)</a><a class="headerlink" href="cmake-developer.7.html#cmake-developer-7" title="链接至此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-developer.7.html#cmake-developer-7" id="id3">cmake-developer(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-developer.7.html#introduction" id="id4">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake-developer.7.html#accessing-windows-registry" id="id5">访问 Windows 注册表</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-developer.7.html#query-windows-registry" id="id6">查询 Windows 注册表</a></p></li>
+<li><p><a class="reference internal" href="cmake-developer.7.html#find-using-windows-registry" id="id7">使用 Windows 注册表查找</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-developer.7.html#find-modules" id="id8">查找模块</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-developer.7.html#standard-variable-names" id="id9">标准变量名称</a></p></li>
+<li><p><a class="reference internal" href="cmake-developer.7.html#a-sample-find-module" id="id10">查找模块示例</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-developer.7.html#id4" role="doc-backlink">简介</a><a class="headerlink" href="cmake-developer.7.html#introduction" title="链接到此标题">¶</a></h2>
+<p>本手册旨在供使用 <span class="target" id="index-0-manual:cmake-language(7)"></span><a class="reference internal" href="cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-language(7)</span></code></a> 代码的开发人员参考，无论他们是在编写自己的模块、构建自己的构建系统，还是参与 CMake 本身的开发。</p>
+<p>请参阅 <a class="reference external" href="https://cmake.com.cn/get-involved/">https://cmake.com.cn/get-involved/</a> 以参与 CMake 上游开发。其中包含贡献指南的链接，该指南继而链接到 CMake 本身的开发人员指南。</p>
+</section>
+<section id="accessing-windows-registry">
+<h2><a class="toc-backref" href="cmake-developer.7.html#id5" role="doc-backlink">访问 Windows 注册表</a><a class="headerlink" href="cmake-developer.7.html#accessing-windows-registry" title="链接至此标题">¶</a></h2>
+<p>CMake 提供了一些在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上访问注册表的工具。</p>
+<section id="query-windows-registry">
+<h3><a class="toc-backref" href="cmake-developer.7.html#id6" role="doc-backlink">查询 Windows 注册表</a><a class="headerlink" href="cmake-developer.7.html#query-windows-registry" title="链接至此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p><span class="target" id="index-0-command:cmake_host_system_information"></span><a class="reference internal" href="../command/cmake_host_system_information.html#command:cmake_host_system_information" title="cmake_host_system_information"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_host_system_information()</span></code></a> 命令提供了查询本地计算机注册表的可能性。有关更多信息，请参阅 <span class="target" id="index-1-command:cmake_host_system_information"></span><a class="reference internal" href="../command/cmake_host_system_information.html#query-windows-registry" title="cmake_host_system_information(query windows_registry)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_host_system_information(QUERY</span> <span class="pre">WINDOWS_REGISTRY)</span></code></a> 子命令。</p>
+</section>
+<section id="find-using-windows-registry">
+<span id="id1"></span><h3><a class="toc-backref" href="cmake-developer.7.html#id7" role="doc-backlink">使用 Windows 注册表查找</a><a class="headerlink" href="cmake-developer.7.html#find-using-windows-registry" title="链接至此标题">¶</a></h3>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.24 更改。</span></p>
+</div>
+<p><span class="target" id="index-0-command:find_file"></span><a class="reference internal" href="../command/find_file.html#command:find_file" title="find_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_file()</span></code></a>、<span class="target" id="index-0-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a>、<span class="target" id="index-0-command:find_path"></span><a class="reference internal" href="../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a>、<span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 和 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 选项提供了在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上查询注册表的可能性。</p>
+<p>注册表查询的正式语法（使用带有常规扩展的 <a class="reference external" href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> 表示法指定）如下</p>
+<pre><strong id="grammar-token-registry_query">registry_query</strong>  ::= '[' <a class="reference internal" href="cmake-developer.7.html#grammar-token-sep_definition"><code class="xref docutils literal notranslate"><span class="pre">sep_definition</span></code></a>? <a class="reference internal" href="cmake-developer.7.html#grammar-token-root_key"><code class="xref docutils literal notranslate"><span class="pre">root_key</span></code></a>
+                    ((<a class="reference internal" href="cmake-developer.7.html#grammar-token-key_separator"><code class="xref docutils literal notranslate"><span class="pre">key_separator</span></code></a> <a class="reference internal" href="cmake-developer.7.html#grammar-token-sub_key"><code class="xref docutils literal notranslate"><span class="pre">sub_key</span></code></a>)? (<a class="reference internal" href="cmake-developer.7.html#grammar-token-value_separator"><code class="xref docutils literal notranslate"><span class="pre">value_separator</span></code></a> <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_name"><code class="xref docutils literal notranslate"><span class="pre">value_name</span></code></a>_)?)? ']'
+<strong id="grammar-token-sep_definition">sep_definition</strong>  ::= '{' <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_separator"><code class="xref docutils literal notranslate"><span class="pre">value_separator</span></code></a> '}'
+<strong id="grammar-token-root_key">root_key</strong>        ::= 'HKLM' | 'HKEY_LOCAL_MACHINE' | 'HKCU' | 'HKEY_CURRENT_USER' |
+                    'HKCR' | 'HKEY_CLASSES_ROOT' | 'HKCC' | 'HKEY_CURRENT_CONFIG' |
+                    'HKU' | 'HKEY_USERS'
+<strong id="grammar-token-sub_key">sub_key</strong>         ::= <a class="reference internal" href="cmake-developer.7.html#grammar-token-element"><code class="xref docutils literal notranslate"><span class="pre">element</span></code></a> (<a class="reference internal" href="cmake-developer.7.html#grammar-token-key_separator"><code class="xref docutils literal notranslate"><span class="pre">key_separator</span></code></a> <a class="reference internal" href="cmake-developer.7.html#grammar-token-element"><code class="xref docutils literal notranslate"><span class="pre">element</span></code></a>)*
+<strong id="grammar-token-key_separator">key_separator</strong>   ::= '/' | '\\'
+<strong id="grammar-token-value_separator">value_separator</strong> ::= <a class="reference internal" href="cmake-developer.7.html#grammar-token-element"><code class="xref docutils literal notranslate"><span class="pre">element</span></code></a> | ';'
+<strong id="grammar-token-value_name">value_name</strong>      ::= <a class="reference internal" href="cmake-developer.7.html#grammar-token-element"><code class="xref docutils literal notranslate"><span class="pre">element</span></code></a> | '(default)'
+<strong id="grammar-token-element">element</strong>         ::= <a class="reference internal" href="cmake-developer.7.html#grammar-token-character"><code class="xref docutils literal notranslate"><span class="pre">character</span></code></a>\+
+<strong id="grammar-token-character">character</strong>       ::= &lt;any character except <a class="reference internal" href="cmake-developer.7.html#grammar-token-key_separator"><code class="xref docutils literal notranslate"><span class="pre">key_separator</span></code></a> and <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_separator"><code class="xref docutils literal notranslate"><span class="pre">value_separator</span></code></a>&gt;
+</pre>
+<p><a class="reference internal" href="cmake-developer.7.html#grammar-token-sep_definition"><code class="xref std std-token docutils literal notranslate"><span class="pre">sep_definition</span></code></a> 可选项目提供了指定用于分隔 <a class="reference internal" href="cmake-developer.7.html#grammar-token-sub_key"><code class="xref std std-token docutils literal notranslate"><span class="pre">sub_key</span></code></a> 和 <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_name"><code class="xref std std-token docutils literal notranslate"><span class="pre">value_name</span></code></a> 项的字符串的可能性。如果未指定，则使用字符 <code class="docutils literal notranslate"><span class="pre">;</span></code>。多个 <a class="reference internal" href="cmake-developer.7.html#grammar-token-registry_query"><code class="xref std std-token docutils literal notranslate"><span class="pre">registry_query</span></code></a> 项可以指定为路径的一部分。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># example using default separator</span>
+<span class="nf">find_file(</span><span class="p">...</span><span class="w"> </span><span class="no">PATHS</span><span class="w"> </span><span class="s">"/root/[HKLM/Stuff;InstallDir]/lib[HKLM\\\\Stuff;Architecture]"</span><span class="nf">)</span>
+
+<span class="c"># example using different specified separators</span>
+<span class="nf">find_library(</span><span class="p">...</span><span class="w"> </span><span class="no">HINTS</span><span class="w"> </span><span class="s">"/root/[{|}HKCU/Stuff|InstallDir]/lib[{@@}HKCU\\\\Stuff@@Architecture]"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果未指定 <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_name"><code class="xref std std-token docutils literal notranslate"><span class="pre">value_name</span></code></a> 项，或者具有特殊名称 <code class="docutils literal notranslate"><span class="pre">(default)</span></code>，则将返回默认值的内容（如果有）。支持的 <a class="reference internal" href="cmake-developer.7.html#grammar-token-value_name"><code class="xref std std-token docutils literal notranslate"><span class="pre">value_name</span></code></a> 类型为</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_SZ</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_EXPAND_SZ</span></code>。返回的数据会经过扩展。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_DWORD</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REG_QWORD</span></code>.</p></li>
+</ul>
+<p>当注册表查询失败时（通常是因为键不存在或数据类型不受支持），字符串 <code class="docutils literal notranslate"><span class="pre">/REGISTRY-NOTFOUND</span></code> 将替换为 <code class="docutils literal notranslate"><span class="pre">[]</span></code> 查询表达式。</p>
+</section>
+</section>
+<section id="find-modules">
+<span id="id2"></span><h2><a class="toc-backref" href="cmake-developer.7.html#id8" role="doc-backlink">查找模块</a><a class="headerlink" href="cmake-developer.7.html#find-modules" title="链接至此标题">¶</a></h2>
+<p>“查找模块”是一个 <code class="docutils literal notranslate"><span class="pre">Find&lt;PackageName&gt;.cmake</span></code> 文件，当为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 调用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令时加载。</p>
+<p>查找模块的主要任务是确定包是否可用，设置 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量以反映此状态，并提供使用该包所需的任何变量、宏和导入目标。查找模块在某些上游库不提供 <a class="reference internal" href="cmake-packages.7.html#config-file-packages"><span class="std std-ref">配置文件包 (config file package)</span></a> 的情况下非常有用。</p>
+<p>传统的方法是为所有内容（包括库和可执行文件）使用变量：请参阅下文的“标准变量名称”部分。这是大多数 CMake 提供的现有查找模块所采用的做法。</p>
+<p>更现代的做法是尽可能像 <a class="reference internal" href="cmake-packages.7.html#config-file-packages"><span class="std std-ref">配置文件包</span></a> 一样，通过提供 <a class="reference internal" href="cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (imported target)</span></a> 来运行。这样做的好处是向消费者传播 <a class="reference internal" href="cmake-buildsystem.7.html#target-usage-requirements"><span class="std std-ref">使用需求 (usage requirements)</span></a>。</p>
+<p>无论哪种情况（甚至在同时提供变量和导入目标时），查找模块都应与具有相同名称的旧版本保持向后兼容性。</p>
+<p>FindFoo.cmake 模块通常由以下命令加载</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Foo</span><span class="w"> </span><span class="p">[</span><span class="nb">major</span><span class="p">[.</span><span class="nb">minor</span><span class="p">[.</span><span class="nb">patch</span><span class="p">[.</span><span class="nb">tweak</span><span class="p">]]]]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[[</span><span class="no">COMPONENTS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nb">components...</span><span class="p">]]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nb">components...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_POLICY_SCOPE</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>有关查找模块设置了哪些变量的详细信息，请参阅 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 文档。其中大多数通过使用 <span class="target" id="index-0-module:FindPackageHandleStandardArgs"></span><a class="reference internal" href="../module/FindPackageHandleStandardArgs.html#module:FindPackageHandleStandardArgs" title="FindPackageHandleStandardArgs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindPackageHandleStandardArgs</span></code></a> 来处理。</p>
+<p>简而言之，模块应该只定位与请求版本兼容的包版本，如 <code class="docutils literal notranslate"><span class="pre">Foo_FIND_VERSION</span></code> 系列变量所描述的那样。如果 <code class="docutils literal notranslate"><span class="pre">Foo_FIND_QUIETLY</span></code> 设置为 true，它应该避免打印消息，包括任何关于未找到包的抱怨。如果 <code class="docutils literal notranslate"><span class="pre">Foo_FIND_REQUIRED</span></code> 设置为 true，如果找不到包，模块应该发出 <code class="docutils literal notranslate"><span class="pre">FATAL_ERROR</span></code>。如果两者都没有设置为 true，则在找不到包时应打印非致命消息。</p>
+<p>查找多个半独立部分（如库包）的包应该搜索 <code class="docutils literal notranslate"><span class="pre">Foo_FIND_COMPONENTS</span></code> 中列出的组件（如果已设置），并且仅在对于每个未找到的搜索组件 <code class="docutils literal notranslate"><span class="pre">&lt;c&gt;</span></code>，<code class="docutils literal notranslate"><span class="pre">Foo_FIND_REQUIRED_&lt;c&gt;</span></code> 未设置为 true 时，才将 <code class="docutils literal notranslate"><span class="pre">Foo_FOUND</span></code> 设置为 true。<span class="target" id="index-0-command:find_package_handle_standard_args"></span><a class="reference internal" href="../module/FindPackageHandleStandardArgs.html#command:find_package_handle_standard_args" title="find_package_handle_standard_args"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">HANDLE_COMPONENTS</span></code> 参数可用于实现此功能。</p>
+<p>如果未设置 <code class="docutils literal notranslate"><span class="pre">Foo_FIND_COMPONENTS</span></code>，则搜索和要求哪些模块由查找模块决定，但应记录在案。</p>
+<p>对于内部实现，一个普遍接受的约定是以下划线开头的变量仅供临时使用。</p>
+<section id="standard-variable-names">
+<span id="cmake-developer-standard-variable-names"></span><h3><a class="toc-backref" href="cmake-developer.7.html#id9" role="doc-backlink">标准变量名称</a><a class="headerlink" href="cmake-developer.7.html#standard-variable-names" title="链接至此标题">¶</a></h3>
+<p>对于采用设置变量方法（除了创建导入目标之外或代替创建导入目标）的 <code class="docutils literal notranslate"><span class="pre">FindXxx.cmake</span></code> 模块，应使用以下变量名称，以保持查找模块之间的一致性。请注意，所有变量都以 <code class="docutils literal notranslate"><span class="pre">Xxx_</span></code> 开头，该前缀（除非另有说明）必须与 <code class="docutils literal notranslate"><span class="pre">FindXxx.cmake</span></code> 文件的名称完全匹配，包括大小写。变量名上的此前缀可确保它们不会与其他查找模块的变量发生冲突。查找模块定义的任何宏、函数和导入目标也应遵循相同的模式。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_INCLUDE_DIRS</span></code></dt><dd><p>在一个变量中列出的最终包含目录集，供客户端代码使用。这不应是缓存条目（请注意，这也意味着该变量不应作为 <span class="target" id="index-1-command:find_path"></span><a class="reference internal" href="../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a> 命令的结果变量使用——请参阅下文的 <code class="docutils literal notranslate"><span class="pre">Xxx_INCLUDE_DIR</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_LIBRARIES</span></code></dt><dd><p>与模块一起使用的库。这些可以是 CMake 目标、库二进制文件的完整绝对路径，或者是链接器必须在其搜索路径中找到的库名称。这不应是缓存条目（请注意，这也意味着该变量不应作为 <span class="target" id="index-1-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 命令的结果变量使用——请参阅下文的 <code class="docutils literal notranslate"><span class="pre">Xxx_LIBRARY</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_DEFINITIONS</span></code></dt><dd><p>编译使用该模块的代码时要使用的编译定义。这实际上不应包含诸如 <code class="docutils literal notranslate"><span class="pre">-DHAS_JPEG</span></code> 之类的选项，这些选项供客户端源代码文件决定是否 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;jpeg.h&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_EXECUTABLE</span></code></dt><dd><p>可执行文件的完整绝对路径。在这种情况下，<code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 可能不是模块的名称，它可能是工具的名称（通常转换为全大写），前提是该工具拥有一个众所周知的名称，不太可能存在具有相同名称的其他工具。将其用作 <span class="target" id="index-1-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 命令的结果变量是合适的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_YYY_EXECUTABLE</span></code></dt><dd><p>类似于 <code class="docutils literal notranslate"><span class="pre">Xxx_EXECUTABLE</span></code>，但此处 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 始终是模块名称，而 <code class="docutils literal notranslate"><span class="pre">YYY</span></code> 是工具名称（同样，通常为全大写）。如果工具名称不是非常广为人知或者有可能与另一个工具冲突，请首选这种形式。为了获得更高的一致性，如果模块提供多个可执行文件，也请首选这种形式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_LIBRARY_DIRS</span></code></dt><dd><p>可选地，在一个变量中列出的最终库目录集，供客户端代码使用。这不应是缓存条目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_ROOT_DIR</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 安装的基本目录，如果找到了 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code>，可以由查找模块选择性地设置。这对于大型包非常有用，因为许多文件需要相对于公共基础（或根）目录进行引用。不要与外部设置的 <code class="docutils literal notranslate"><span class="pre">Xxx_ROOT</span></code> 提示变量混淆，后者用于让查找模块知道在哪里查找 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_VERSION_VV</span></code></dt><dd><p>此形式的变量指定正在提供的 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 模块是否为该模块的 <code class="docutils literal notranslate"><span class="pre">VV</span></code> 版本。对于给定模块，不应将多个此类形式的变量设置为 true。例如，模块 <code class="docutils literal notranslate"><span class="pre">Barry</span></code> 可能已经发展多年并经历了多个不同的主要版本。<code class="docutils literal notranslate"><span class="pre">Barry</span></code> 模块的第 3 版可能会将变量 <code class="docutils literal notranslate"><span class="pre">Barry_VERSION_3</span></code> 设置为 true，而旧版本的模块可能会改为将 <code class="docutils literal notranslate"><span class="pre">Barry_VERSION_2</span></code> 设置为 true。将 <code class="docutils literal notranslate"><span class="pre">Barry_VERSION_3</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Barry_VERSION_2</span></code> 同时设置为 true 将是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_WRAP_YY</span></code></dt><dd><p>当此形式的变量设置为 false 时，它表示不应使用相关的包装命令。包装命令取决于模块，它可能隐含在模块名称中，也可能由变量的 <code class="docutils literal notranslate"><span class="pre">YY</span></code> 部分指定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_Yy_FOUND</span></code></dt><dd><p>对于此形式的变量，<code class="docutils literal notranslate"><span class="pre">Yy</span></code> 是模块组件的名称。它应该完全匹配可以传递给模块的 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的有效组件名称之一。如果此形式的变量设置为 false，则表示模块 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Yy</span></code> 组件未找到或不可用。此形式的变量通常用于可选组件，以便调用者可以检查可选组件是否可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_FOUND</span></code></dt><dd><p>当 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令返回给调用者时，如果模块被视为成功找到，此变量将被设置为 true。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_NOT_FOUND_MESSAGE</span></code></dt><dd><p>应由配置文件在将 <code class="docutils literal notranslate"><span class="pre">Xxx_FOUND</span></code> 设置为 FALSE 的情况下进行设置。包含的消息将由 <span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令和 <span class="target" id="index-1-command:find_package_handle_standard_args"></span><a class="reference internal" href="../module/FindPackageHandleStandardArgs.html#command:find_package_handle_standard_args" title="find_package_handle_standard_args"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package_handle_standard_args()</span></code></a> 打印，以通知用户有关问题。使用此方法代替直接调用 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a> 来报告未能找到模块或包的原因。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_RUNTIME_LIBRARY_DIRS</span></code></dt><dd><p>可选地，运行链接到共享库的可执行文件时使用的运行时库搜索路径。列表应由用户代码用于创建 Windows 上的 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 或 UNIX 上的 <code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code>。这不应是缓存条目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_VERSION</span></code></dt><dd><p>找到的包的完整版本字符串（如果有）。请注意，一些现有的模块也可能提供 <code class="docutils literal notranslate"><span class="pre">Xxx_VERSION_STRING</span></code>，因为它在当前命名约定之前被传统使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_VERSION_MAJOR</span></code></dt><dd><p>找到的包的主版本（如果有）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_VERSION_MINOR</span></code></dt><dd><p>找到的包的次版本（如果有）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_VERSION_PATCH</span></code></dt><dd><p>找到的包的补丁版本（如果有）。</p>
+</dd>
+</dl>
+<p>以下名称通常不应在 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中使用。它们旨在供查找模块使用，以指定和缓存特定文件或目录的位置。用户通常可以设置和编辑这些变量以控制查找模块的行为（例如手动输入库的路径）</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_LIBRARY</span></code></dt><dd><p>库的路径。仅当模块提供单个库时才使用此形式。将其用作 <span class="target" id="index-2-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 命令中的结果变量是合适的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_Yy_LIBRARY</span></code></dt><dd><p>模块 <code class="docutils literal notranslate"><span class="pre">Xxx</span></code> 提供的库 <code class="docutils literal notranslate"><span class="pre">Yy</span></code> 的路径。当模块提供多个库，或者其他模块也可能提供同名库时，请使用此形式。将其用作 <span class="target" id="index-3-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 命令中的结果变量也是合适的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_INCLUDE_DIR</span></code></dt><dd><p>当模块仅提供单个库时，此变量可用于指定在哪里查找使用该库的头文件（或更准确地说，库的消费者应添加到其头文件搜索路径中的路径）。将其用作 <span class="target" id="index-2-command:find_path"></span><a class="reference internal" href="../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a> 命令中的结果变量是合适的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Xxx_Yy_INCLUDE_DIR</span></code></dt><dd><p>如果模块提供多个库，或者其他模块也可能提供同名库，则建议使用此形式来指定在哪里查找使用该模块提供的库 <code class="docutils literal notranslate"><span class="pre">Yy</span></code> 的头文件。同样，将其用作 <span class="target" id="index-3-command:find_path"></span><a class="reference internal" href="../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a> 命令中的结果变量是合适的。</p>
+</dd>
+</dl>
+<p>为了防止用户被过多的配置设置所淹没，请尽量将尽可能多的选项排除在缓存之外，至少留出一个可用于禁用模块使用或定位未找到的库的选项（例如 <code class="docutils literal notranslate"><span class="pre">Xxx_ROOT_DIR</span></code>）。出于同样的原因，将大多数缓存选项标记为高级。对于提供调试和发布二进制文件的包，创建带有 <code class="docutils literal notranslate"><span class="pre">_LIBRARY_&lt;CONFIG&gt;</span></code> 后缀的缓存变量是很常见的，例如 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARY_RELEASE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARY_DEBUG</span></code>。<span class="target" id="index-0-module:SelectLibraryConfigurations"></span><a class="reference internal" href="../module/SelectLibraryConfigurations.html#module:SelectLibraryConfigurations" title="SelectLibraryConfigurations"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">SelectLibraryConfigurations</span></code></a> 模块在此类情况下会有所帮助。</p>
+<p>虽然这些是标准变量名称，但应为正在替换旧版本的查找模块中先前使用的任何名称提供向后兼容性。旧变量名称应记录为已弃用，以劝阻进一步使用。</p>
+</section>
+<section id="a-sample-find-module">
+<h3><a class="toc-backref" href="cmake-developer.7.html#id10" role="doc-backlink">查找模块示例</a><a class="headerlink" href="cmake-developer.7.html#a-sample-find-module" title="链接至此标题">¶</a></h3>
+<p>我们将描述如何为库 <code class="docutils literal notranslate"><span class="pre">Foo</span></code> 创建一个简单的查找模块。</p>
+<p>模块的顶部应以许可证声明开始，后跟一个空行，然后是 <a class="reference internal" href="cmake-language.7.html#bracket-comment"><span class="std std-ref">括号注释</span></a>。该注释应以 <code class="docutils literal notranslate"><span class="pre">.rst:</span></code> 开头，以表明其内容的其余部分是 reStructuredText 格式的文档。例如</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file LICENSE.rst or https://cmake.com.cn/licensing for details.
+
+#[=======================================================================[.rst:
+FindFoo
+-------
+
+Finds the Foo library.
+
+Imported Targets
+^^^^^^^^^^^^^^^^
+
+This module provides the following imported targets, if found:
+
+``Foo::Foo``
+  The Foo library
+
+Result Variables
+^^^^^^^^^^^^^^^^
+
+This module defines the following variables:
+
+``Foo_FOUND``
+  Boolean indicating whether (the requested version of) Foo was found.
+``Foo_VERSION``
+  The version of the Foo library which was found.
+``Foo_INCLUDE_DIRS``
+  Include directories needed to use Foo.
+``Foo_LIBRARIES``
+  Libraries needed to link to Foo.
+
+Cache Variables
+^^^^^^^^^^^^^^^
+
+The following cache variables may also be set:
+
+``Foo_INCLUDE_DIR``
+  The directory containing ``foo.h``.
+``Foo_LIBRARY``
+  The path to the Foo library.
+
+#]=======================================================================]
+</pre></div>
+</div>
+<p>模块文档包括</p>
+<ul class="simple">
+<li><p>指定模块名称的下划线标题。</p></li>
+<li><p>模块查找内容的简单描述。某些包可能需要更多描述。如果模块的用户应该了解注意事项或其他详细信息，请在此处指定。</p></li>
+<li><p>列出模块提供的导入目标（如果有）的部分。</p></li>
+<li><p>列出模块提供的结果变量的部分。</p></li>
+<li><p>可选地，列出模块使用的缓存变量（如果有）的部分。</p></li>
+</ul>
+<p>如果包提供了任何宏或函数，则应将它们列在附加部分中，但可以通过在定义这些宏或函数之前紧接的额外 <code class="docutils literal notranslate"><span class="pre">.rst:</span></code> 注释块进行记录。</p>
+<p>查找模块实现可以从文档块下方开始。现在必须找到实际的库等。这里的代码显然会因模块而异（毕竟，处理这些正是查找模块的目的），但对于库来说，往往有一种共同的模式。</p>
+<p>首先，我们尝试使用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 来查找库。请注意，我们不能依赖它，因为它可能不可用，但它提供了一个很好的起点。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_check_modules(</span><span class="nb">PC_Foo</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="nb">Foo</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>这应该定义一些以 <code class="docutils literal notranslate"><span class="pre">PC_Foo_</span></code> 开头的变量，其中包含来自 <code class="docutils literal notranslate"><span class="pre">Foo.pc</span></code> 文件的信息。</p>
+<p>现在我们需要找到库和包含文件；我们使用来自 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的信息，在检查其他默认路径之前，为 CMake 提供有关在哪里查找的提示。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_path(</span><span class="nb">Foo_INCLUDE_DIR</span>
+<span class="w">  </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">foo.h</span>
+<span class="w">  </span><span class="no">HINTS</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_INCLUDE_DIRS</span><span class="o">}</span>
+<span class="w">  </span><span class="no">PATH_SUFFIXES</span><span class="w"> </span><span class="nb">Foo</span>
+<span class="nf">)</span>
+<span class="nf">find_library(</span><span class="nb">Foo_LIBRARY</span>
+<span class="w">  </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">foo</span>
+<span class="w">  </span><span class="no">HINTS</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_LIBRARY_DIRS</span><span class="o">}</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者，如果库以多种配置提供，可以使用 <span class="target" id="index-1-module:SelectLibraryConfigurations"></span><a class="reference internal" href="../module/SelectLibraryConfigurations.html#module:SelectLibraryConfigurations" title="SelectLibraryConfigurations"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">SelectLibraryConfigurations</span></code></a> 模块自动设置 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARY</span></code> 变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_library(</span><span class="nb">Foo_LIBRARY_RELEASE</span>
+<span class="w">  </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">foo</span>
+<span class="w">  </span><span class="no">HINTS</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_LIBRARY_DIRS</span><span class="o">}</span><span class="na">/Release</span>
+<span class="nf">)</span>
+<span class="nf">find_library(</span><span class="nb">Foo_LIBRARY_DEBUG</span>
+<span class="w">  </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">foo</span>
+<span class="w">  </span><span class="no">HINTS</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_LIBRARY_DIRS</span><span class="o">}</span><span class="na">/Debug</span>
+<span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">SelectLibraryConfigurations</span><span class="nf">)</span>
+<span class="nf">select_library_configurations(</span><span class="nb">Foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果有获取版本的好方法（例如，从头文件），则可以使用该信息来设置 <code class="docutils literal notranslate"><span class="pre">Foo_VERSION</span></code>。否则，尝试使用来自 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的信息</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">Foo_VERSION</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_VERSION</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>现在我们可以使用 <span class="target" id="index-1-module:FindPackageHandleStandardArgs"></span><a class="reference internal" href="../module/FindPackageHandleStandardArgs.html#module:FindPackageHandleStandardArgs" title="FindPackageHandleStandardArgs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindPackageHandleStandardArgs</span></code></a> 模块为我们处理剩余的大部分步骤</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FindPackageHandleStandardArgs</span><span class="nf">)</span>
+<span class="nf">find_package_handle_standard_args(</span><span class="nb">Foo</span>
+<span class="w">  </span><span class="no">REQUIRED_VARS</span>
+<span class="w">    </span><span class="nb">Foo_LIBRARY</span>
+<span class="w">    </span><span class="nb">Foo_INCLUDE_DIR</span>
+<span class="w">  </span><span class="no">VERSION_VAR</span><span class="w"> </span><span class="nb">Foo_VERSION</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>这将检查 <code class="docutils literal notranslate"><span class="pre">REQUIRED_VARS</span></code> 是否包含值（不以 <code class="docutils literal notranslate"><span class="pre">-NOTFOUND</span></code> 结尾）并相应地设置 <code class="docutils literal notranslate"><span class="pre">Foo_FOUND</span></code>。它还将缓存这些值。如果设置了 <code class="docutils literal notranslate"><span class="pre">Foo_VERSION</span></code>，并且向 <span class="target" id="index-6-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 传递了要求的版本，它将根据 <code class="docutils literal notranslate"><span class="pre">Foo_VERSION</span></code> 中的版本检查请求的版本。它还将适当地打印消息；请注意，如果找到了包，它将打印第一个必需变量的内容，以指示它在哪里被找到。</p>
+<p>此时，我们必须为查找模块的用户提供一种链接到所找到的一个或多个库的方法。如上文“查找模块”部分所述，有两种方法。传统的变量方法如下</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="nb">Foo_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="nb">Foo_LIBRARIES</span><span class="w"> </span><span class="o">${</span><span class="nt">Foo_LIBRARY</span><span class="o">}</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="nb">Foo_INCLUDE_DIRS</span><span class="w"> </span><span class="o">${</span><span class="nt">Foo_INCLUDE_DIR</span><span class="o">}</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="nb">Foo_DEFINITIONS</span><span class="w"> </span><span class="o">${</span><span class="nt">PC_Foo_CFLAGS_OTHER</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>如果找到多个库，则所有这些库都应包含在这些变量中（有关详细信息，请参阅“标准变量名称”部分）。</p>
+<p>提供导入目标时，应进行命名空间处理（因此有 <code class="docutils literal notranslate"><span class="pre">Foo::</span></code> 前缀）；CMake 将识别出传递给 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 且名称中包含 <code class="docutils literal notranslate"><span class="pre">::</span></code> 的值应为导入目标（而不是仅仅是库名称），如果该目标不存在，将产生适当的诊断消息（请参阅策略 <span class="target" id="index-0-policy:CMP0028"></span><a class="reference internal" href="../policy/CMP0028.html#policy:CMP0028" title="CMP0028"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0028</span></code></a>）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="nb">Foo_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_library(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">UNKNOWN</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set_target_properties(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">    </span><span class="no">IMPORTED_LOCATION</span><span class="w"> </span><span class="s">"${Foo_LIBRARY}"</span>
+<span class="w">    </span><span class="no">INTERFACE_COMPILE_OPTIONS</span><span class="w"> </span><span class="s">"${PC_Foo_CFLAGS_OTHER}"</span>
+<span class="w">    </span><span class="no">INTERFACE_INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="s">"${Foo_INCLUDE_DIR}"</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>关于此点需要注意的一点是，<code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code> 和类似的属性应该只包含有关目标本身的信息，而不应包含其任何依赖项的信息。相反，这些依赖项也应该是目标，并且应告知 CMake 它们是此目标的依赖项。CMake 然后会自动组合所有必要的信息。</p>
+<p>在 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 命令中创建的 <span class="target" id="index-0-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标的类型始终可以指定为 <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> 类型。这简化了可能找到静态或共享变体的情况下的代码，并且 CMake 将通过检查文件来确定类型。</p>
+<p>如果库以多种配置提供，则还应填充 <span class="target" id="index-0-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 目标属性</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="nb">Foo_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if</span> <span class="nf">(</span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">add_library(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">UNKNOWN</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="nf">if</span> <span class="nf">(</span><span class="nb">Foo_LIBRARY_RELEASE</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">      </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="no">RELEASE</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set_target_properties(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">      </span><span class="no">IMPORTED_LOCATION_RELEASE</span><span class="w"> </span><span class="s">"${Foo_LIBRARY_RELEASE}"</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="nf">if</span> <span class="nf">(</span><span class="nb">Foo_LIBRARY_DEBUG</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">      </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="no">DEBUG</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set_target_properties(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">      </span><span class="no">IMPORTED_LOCATION_DEBUG</span><span class="w"> </span><span class="s">"${Foo_LIBRARY_DEBUG}"</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="nf">set_target_properties(</span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">    </span><span class="no">INTERFACE_COMPILE_OPTIONS</span><span class="w"> </span><span class="s">"${PC_Foo_CFLAGS_OTHER}"</span>
+<span class="w">    </span><span class="no">INTERFACE_INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="s">"${Foo_INCLUDE_DIR}"</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 变体应在属性中首先列出，以便如果用户使用的配置与任何列出的 <code class="docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code> 不完全匹配，则会选择该变体。</p>
+<p>大多数缓存变量应标记为高级，以在 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 或 <span class="target" id="index-0-manual:ccmake(1)"></span><a class="reference internal" href="ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a> 等图形界面中保持隐藏，除非用户明确选择显示和修改它们</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">mark_as_advanced(</span>
+<span class="w">  </span><span class="nb">Foo_INCLUDE_DIR</span>
+<span class="w">  </span><span class="nb">Foo_LIBRARY</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果此查找模块替换了在当前标准变量命名约定之前提供变量的旧模块版本，则还应提供向后兼容性变量，以尽可能减少干扰。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Backward compatibility variables</span>
+<span class="nf">set(</span><span class="nb">Foo_VERSION_STRING</span><span class="w"> </span><span class="o">${</span><span class="nt">Foo_VERSION</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-developer.7.html#">cmake-developer(7)</a><ul>
+<li><a class="reference internal" href="cmake-developer.7.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake-developer.7.html#accessing-windows-registry">访问 Windows 注册表</a><ul>
+<li><a class="reference internal" href="cmake-developer.7.html#query-windows-registry">查询 Windows 注册表</a></li>
+<li><a class="reference internal" href="cmake-developer.7.html#find-using-windows-registry">使用 Windows 注册表查找</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-developer.7.html#find-modules">查找模块</a><ul>
+<li><a class="reference internal" href="cmake-developer.7.html#standard-variable-names">标准变量名称</a></li>
+<li><a class="reference internal" href="cmake-developer.7.html#a-sample-find-module">查找模块示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake-cxxmodules.7.html" title="上一章">cmake-cxxmodules(7)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-env-variables.7.html" title="下一章">cmake-env-variables(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-developer.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-env-variables.7.html" title="cmake-env-variables(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-cxxmodules.7.html" title="cmake-cxxmodules(7)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-developer.7.html">cmake-developer(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

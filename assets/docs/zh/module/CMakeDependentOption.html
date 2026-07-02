@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMakeDependentOption — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMakeDependentOption.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMakeFindDependencyMacro" href="CMakeFindDependencyMacro.html" />
+    <link rel="prev" title="CMakeBackwardCompatibilityCXX" href="CMakeBackwardCompatibilityCXX.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMakeFindDependencyMacro.html" title="CMakeFindDependencyMacro" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMakeBackwardCompatibilityCXX.html" title="CMakeBackwardCompatibilityCXX" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakeDependentOption.html">CMakeDependentOption</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmakedependentoption">
+<span id="module:CMakeDependentOption"></span><h1>CMakeDependentOption<a class="headerlink" href="CMakeDependentOption.html#cmakedependentoption" title="链接到此标题">¶</a></h1>
+<p>此模块提供了一个命令，用于定义布尔选项，这些选项的可用性和默认值取决于指定的条件或其他选项。这有助于保持简洁的配置界面，仅显示与当前设置相关的选项。</p>
+<p>使用 CMake 加载此模块</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CMakeDependentOption.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:cmake_dependent_option">
+<span class="sig-name descname"><span class="pre">cmake_dependent_option</span></span><a class="headerlink" href="CMakeDependentOption.html#command:cmake_dependent_option" title="Link to this definition">¶</a></dt>
+<dd><p>提供一个依赖于一组条件的布尔选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_dependent_option(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;help&gt;</span><span class="w"> </span><span class="nv">&lt;value&gt;</span><span class="w"> </span><span class="nv">&lt;condition&gt;</span><span class="w"> </span><span class="nv">&lt;else-value&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果一组条件评估为布尔值 true，则此命令创建一个布尔 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 并使其在 GUI（例如 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 或 <span class="target" id="index-0-manual:ccmake(1)"></span><a class="reference internal" href="../manual/ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a>）中对用户可见。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>存储选项值的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;help&gt;</span></code></dt><dd><p>对该选项的简要描述。此字符串通常是一行短文本，显示在 GUI 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 评估为布尔值 true 时，<code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code></dt><dd><p>指定决定 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 是否设置并在 GUI 中可见的条件。</p>
+<ul class="simple">
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 评估为布尔值 false，则该选项在 GUI 中对用户隐藏，并且局部变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 被设置为 <code class="docutils literal notranslate"><span class="pre">&lt;else-value&gt;</span></code>。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 评估为布尔值 true，则会创建一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的布尔缓存变量，其默认值为 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>，该选项会显示在 GUI 中，允许用户启用或禁用它。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 在后续配置运行中评估为布尔值 false，则该选项在 GUI 中对用户隐藏，并且 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的类型更改为内部缓存变量。在这种情况下，同名的局部变量被设置为 <code class="docutils literal notranslate"><span class="pre">&lt;else-value&gt;</span></code>。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 在后续配置运行中再次变为 true，则会保留用户之前设置的值。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 参数可以是</p>
+<ul>
+<li><p>单个条件（例如变量名称）。</p></li>
+<li><p>多个条件组成的 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a>。</p></li>
+<li><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增: </span>完整的 <a class="reference internal" href="../command/if.html#condition-syntax"><span class="std std-ref">条件语法</span></a>，与 <code class="docutils literal notranslate"><span class="pre">if(&lt;condition&gt;)</span></code> 子句中使用的相同。请参阅策略 <span class="target" id="index-0-policy:CMP0127"></span><a class="reference internal" href="../policy/CMP0127.html#policy:CMP0127" title="CMP0127"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0127</span></code></a>。这允许使用完整的条件语法（例如使用圆括号对条件进行分组等）。</p>
+</div>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;else-value&gt;</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 评估为布尔值 false 时，分配给名为 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的局部变量的值。</p>
+</dd>
+</dl>
+<p>在 CMake 项目模式下，会按照上述说明创建布尔缓存变量。在 CMake 脚本模式下，则会设置布尔变量。</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CMakeDependentOption.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-basic-usage">
+<h3>示例：基本用法<a class="headerlink" href="CMakeDependentOption.html#example-basic-usage" title="此标题的永久链接">¶</a></h3>
+<p>在项目中使用此模块有条件地设置选项</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakeDependentOption.html#id1" title="此代码的永久链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+
+<span class="nf">cmake_dependent_option(</span><span class="no">USE_SSL_GNUTLS</span><span class="w"> </span><span class="s">"Use GnuTLS for SSL"</span><span class="w"> </span><span class="no">ON</span><span class="w"> </span><span class="no">USE_SSL</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="example-enabling-disabling-dependent-option">
+<h3>示例：启用/禁用依赖选项<a class="headerlink" href="CMakeDependentOption.html#example-enabling-disabling-dependent-option" title="链接到此标题">¶</a></h3>
+<p>扩展之前的示例，演示了该模块如何允许在配置阶段根据条件设置用户可配置的选项</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakeDependentOption.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+
+<span class="nf">option(</span><span class="no">USE_SSL</span><span class="w"> </span><span class="s">"Enable SSL in the project"</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+
+<span class="nf">cmake_dependent_option(</span><span class="no">USE_SSL_GNUTLS</span><span class="w"> </span><span class="s">"Use GnuTLS for SSL"</span><span class="w"> </span><span class="no">ON</span><span class="w"> </span><span class="no">USE_SSL</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"USE_SSL: ${USE_SSL}"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"USE_SSL_GNUTLS: ${USE_SSL_GNUTLS}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>在第一次配置运行时，布尔缓存变量 <code class="docutils literal notranslate"><span class="pre">USE_SSL</span></code> 设置为 OFF，局部变量 <code class="docutils literal notranslate"><span class="pre">USE_SSL_GNUTLS</span></code> 也设置为 OFF</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build-dir
+
+<span class="go">-- USE_SSL: OFF</span>
+<span class="go">-- USE_SSL_GNUTLS: OFF</span>
+</pre></div>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">USE_SSL=ON</span></code> 运行 CMake 会将 <code class="docutils literal notranslate"><span class="pre">USE_SSL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">USE_SSL_GNUTLS</span></code> 的布尔缓存变量都设置为 ON</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build-dir<span class="w"> </span>-D<span class="w"> </span><span class="nv">USE_SSL</span><span class="o">=</span>ON
+
+<span class="go">-- USE_SSL: ON</span>
+<span class="go">-- USE_SSL_GNUTLS: ON</span>
+</pre></div>
+</div>
+<p>在随后使用 <code class="docutils literal notranslate"><span class="pre">USE_SSL=OFF</span></code> 的配置运行中，<code class="docutils literal notranslate"><span class="pre">USE_SSL_GNUTLS</span></code> 也会随之改变。但是，它的值在内部缓存中会被保留，同时在本地被覆盖</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build-dir<span class="w"> </span>-D<span class="w"> </span><span class="nv">USE_SSL</span><span class="o">=</span>OFF
+
+<span class="go">-- USE_SSL: OFF</span>
+<span class="go">-- USE_SSL_GNUTLS: OFF</span>
+</pre></div>
+</div>
+</section>
+<section id="example-semicolon-separated-list-of-conditions">
+<h3>示例：分号分隔的条件列表<a class="headerlink" href="CMakeDependentOption.html#example-semicolon-separated-list-of-conditions" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;condition&gt;</span></code> 参数也可以是分号分隔的条件列表。在以下示例中，如果变量 <code class="docutils literal notranslate"><span class="pre">USE_BAR</span></code> 为 ON 且变量 <code class="docutils literal notranslate"><span class="pre">USE_ZOT</span></code> 为 OFF，则选项 <code class="docutils literal notranslate"><span class="pre">USE_FOO</span></code> 可用，默认值为 ON。否则，<code class="docutils literal notranslate"><span class="pre">USE_FOO</span></code> 被设置为 OFF 并对用户隐藏。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">USE_BAR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">USE_ZOT</span></code> 的值在未来的配置运行中发生变化，<code class="docutils literal notranslate"><span class="pre">USE_FOO</span></code> 的先前值会被保留，以便当它再次可用时，它会保留其上次设置的值。</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakeDependentOption.html#id3" title="此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+
+<span class="nf">cmake_dependent_option(</span><span class="no">USE_FOO</span><span class="w"> </span><span class="s">"Use Foo"</span><span class="w"> </span><span class="no">ON</span><span class="w"> </span><span class="s">"USE_BAR;NOT USE_ZOT"</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="example-full-condition-syntax">
+<h3>示例：完整条件语法<a class="headerlink" href="CMakeDependentOption.html#example-full-condition-syntax" title="链接到此标题">¶</a></h3>
+<p>从 CMake 3.22 开始，<code class="docutils literal notranslate"><span class="pre">cmake_dependent_option()</span></code> 支持完整条件语法。</p>
+<p>在以下示例中，如果条件评估为 true，则选项 <code class="docutils literal notranslate"><span class="pre">USE_FOO</span></code> 可用并设置为 ON。否则，它被设置为 OFF 并在 GUI 中隐藏。<code class="docutils literal notranslate"><span class="pre">USE_FOO</span></code> 的值在不同配置运行之间被保留，类似于前面的示例。</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakeDependentOption.html#id4" title="此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+
+<span class="nf">cmake_dependent_option(</span><span class="no">USE_FOO</span><span class="w"> </span><span class="s">"Use Foo"</span><span class="w"> </span><span class="no">ON</span><span class="w"> </span><span class="s">"USE_A AND (USE_B OR USE_C)"</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>另一个示例演示了如何根据目标系统有条件地使选项可用</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CMakeDependentOption.html#id5" title="链接到此代码">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDependentOption</span><span class="nf">)</span>
+
+<span class="nf">cmake_dependent_option(</span>
+<span class="w">  </span><span class="no">ENABLE_FOO</span>
+<span class="w">  </span><span class="s">"Enable feature Foo (this option is available when building for Windows)"</span>
+<span class="w">  </span><span class="no">ON</span>
+<span class="w">  </span><span class="p">[[</span><span class="no">CMAKE_SYSTEM_NAME</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"Windows"</span><span class="p">]]</span>
+<span class="w">  </span><span class="no">OFF</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="CMakeDependentOption.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 命令用于提供用户可以选择的布尔选项。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMakeDependentOption.html#">CMakeDependentOption</a><ul>
+<li><a class="reference internal" href="CMakeDependentOption.html#commands">命令</a></li>
+<li><a class="reference internal" href="CMakeDependentOption.html#examples">示例</a><ul>
+<li><a class="reference internal" href="CMakeDependentOption.html#example-basic-usage">示例：基本用法</a></li>
+<li><a class="reference internal" href="CMakeDependentOption.html#example-enabling-disabling-dependent-option">示例：启用/禁用依赖选项</a></li>
+<li><a class="reference internal" href="CMakeDependentOption.html#example-semicolon-separated-list-of-conditions">示例：分号分隔的条件列表</a></li>
+<li><a class="reference internal" href="CMakeDependentOption.html#example-full-condition-syntax">示例：完整条件语法</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="CMakeDependentOption.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMakeBackwardCompatibilityCXX.html" title="上一章">CMakeBackwardCompatibilityCXX</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMakeFindDependencyMacro.html" title="下一章">CMakeFindDependencyMacro</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CMakeDependentOption.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMakeFindDependencyMacro.html" title="CMakeFindDependencyMacro">下一页</a> |</li>
+        <li class="right">
+          <a href="CMakeBackwardCompatibilityCXX.html" title="CMakeBackwardCompatibilityCXX">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakeDependentOption.html">CMakeDependentOption</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

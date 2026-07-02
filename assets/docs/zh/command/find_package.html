@@ -1,0 +1,839 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>find_package — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="find_package.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="find_path" href="find_path.html" />
+    <link rel="prev" title="find_library" href="find_library.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="find_path.html" title="find_path" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="find_library.html" title="find_library" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="find_package.html">find_package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="find-package">
+<span id="command:find_package"></span><h1><a class="toc-backref" href="find_package.html#id16" role="doc-backlink">find_package</a><a class="headerlink" href="find_package.html#find-package" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="find_package.html#find-package" id="id16">find_package</a></p>
+<ul>
+<li><p><a class="reference internal" href="find_package.html#typical-usage" id="id17">典型用法</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#search-modes" id="id18">搜索模式</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#basic-signature" id="id19">基本签名</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#full-signature" id="id20">完整签名</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#config-mode-search-procedure" id="id21">配置模式搜索过程</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#config-mode-version-selection" id="id22">配置模式版本选择</a></p>
+<ul>
+<li><p><a class="reference internal" href="find_package.html#cmake-script" id="id23">CMake 脚本</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#cps" id="id24">通用包规范</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="find_package.html#package-file-interface-variables" id="id25">包文件接口变量</a></p></li>
+<li><p><a class="reference internal" href="find_package.html#cps-transitive-requirements" id="id26">CPS 传递依赖</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><span class="target" id="index-0-guide:Using Dependencies Guide"></span><a class="reference internal" href="../guide/using-dependencies/index.html#guide:Using Dependencies Guide" title="Using Dependencies Guide"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">使用依赖指南</span></code></a> 为该通用主题提供了高阶介绍。它更全面地概述了 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 命令在宏观架构中的位置，包括它与 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 模块的关系。建议在深入阅读下文细节之前先阅读该指南。</p>
+</div>
+<p>查找包（通常由项目外部的某个实体提供），并加载该包的特定信息。对该命令的调用也可以被<a class="reference internal" href="cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a>拦截。</p>
+<section id="typical-usage">
+<h2><a class="toc-backref" href="find_package.html#id17" role="doc-backlink">典型用法</a><a class="headerlink" href="find_package.html#typical-usage" title="链接到此标题">¶</a></h2>
+<p>大多数对 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 的调用通常采用以下形式</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nv">&lt;PackageName&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 是唯一强制性的参数。<code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 通常可以省略；如果项目没有该包就无法成功配置，则应给出 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>。一些更复杂的包支持组件，可以使用 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 关键字进行选择，但大多数包没有那么复杂。</p>
+<p>以上是<a class="reference internal" href="find_package.html#basic-signature">基本签名</a>的简化形式。在可能的情况下，项目应优先使用此形式查找包。这可以降低复杂性，并最大限度地增加找到或提供包的方式。</p>
+<p>理解<a class="reference internal" href="find_package.html#basic-signature">基本签名</a>足以应对 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 的常规使用。打算提供包配置文件（package configuration file）的项目维护者应理解宏观全貌，详情请参阅<a class="reference internal" href="find_package.html#full-signature"><span class="std std-ref">完整签名</span></a>以及本文档后续的所有章节。</p>
+</section>
+<section id="search-modes">
+<h2><a class="toc-backref" href="find_package.html#id18" role="doc-backlink">搜索模式</a><a class="headerlink" href="find_package.html#search-modes" title="链接到此标题">¶</a></h2>
+<p>该命令有几种搜索包的模式</p>
+<dl id="module-mode">
+<dt><strong>模块模式 (Module mode)</strong></dt><dd><p>在此模式下，CMake 搜索名为 <code class="docutils literal notranslate"><span class="pre">Find&lt;PackageName&gt;.cmake</span></code> 的文件，首先在 <span class="target" id="index-0-variable:CMAKE_MODULE_PATH"></span><a class="reference internal" href="../variable/CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH" title="CMAKE_MODULE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code></a> 列出的位置中查找，然后在 CMake 安装提供的 <a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块 (Find Modules)</span></a> 中查找。如果找到了该文件，CMake 将读取并处理它。该模块负责查找包、检查版本并生成任何必要的消息。一些查找模块对版本控制的支持有限或根本不支持；请检查该查找模块的文档。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Find&lt;PackageName&gt;.cmake</span></code> 文件通常不是由包本身提供的。相反，它通常由包外部的实体提供，例如操作系统、CMake 本身，甚至是从中调用 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 命令的项目。由于是外部提供的，<a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块</span></a> 往往具有启发式性质，且容易过时。它们通常搜索特定的库、文件和其他包工件。</p>
+<p>模块模式仅由<a class="reference internal" href="find_package.html#basic-signature"><span class="std std-ref">基本命令签名</span></a>支持。</p>
+</dd>
+</dl>
+<dl id="config-mode">
+<dt><strong>配置模式 (Config mode)</strong></dt><dd><p>在此模式下，CMake 搜索匹配以下任一格式的文件</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;.cps</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;lowercasePackageName&gt;.cps</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;lowercasePackageName&gt;-config.cmake</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code></p></li>
+</ul>
+<p>如果找到了后两个文件中的一个，且指定了版本详情，CMake 还会相应地查找 <code class="docutils literal notranslate"><span class="pre">&lt;lowercasePackageName&gt;-config-version.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code>（请参阅<a class="reference internal" href="find_package.html#version-selection"><span class="std std-ref">配置模式版本选择</span></a>了解这些单独版本文件的用途）。后两个选项是 CMake 脚本包描述。前两个是<a class="reference external" href="https://cps-org.github.io/cps/">通用包规范 (CPS)</a> 包描述，它们更具可移植性，并在“基础”文件中包含了版本信息。除明确注明的例外情况外，文中所有对“配置(config)文件”、“配置模式”、“包配置文件”等的引用均同样适用于 CPS 文件和 CMake 脚本文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>搜索的实现方式在大多数情况下倾向于优先选择通用包规范文件，而非 CMake 脚本配置文件。指定 <code class="docutils literal notranslate"><span class="pre">CONFIGS</span></code> 将禁止考虑 CPS 文件。</p>
+</div>
+<p>在配置模式下，可以为命令提供一组名称作为包名进行搜索。CMake 搜索配置和版本文件的位置比模块模式要复杂得多（请参阅<a class="reference internal" href="find_package.html#search-procedure"><span class="std std-ref">配置模式搜索过程</span></a>）。</p>
+<p>配置和版本文件通常作为包的一部分安装，因此它们往往比查找模块更可靠。它们通常直接包含对包内容的了解，因此在配置或版本文件本身内部不需要进行搜索或启发式处理。</p>
+<p>配置模式同时支持<a class="reference internal" href="find_package.html#basic-signature"><span class="std std-ref">基本</span></a>和<a class="reference internal" href="find_package.html#full-signature"><span class="std std-ref">完整</span></a>命令签名。</p>
+</dd>
+<dt><strong>FetchContent 重定向模式</strong></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span>对 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 的调用可以在内部重定向到由 <span class="target" id="index-1-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 模块提供的包。对于调用者来说，其行为类似于配置模式，区别在于跳过了搜索逻辑，且不使用组件信息。详情请参阅 <span class="target" id="index-0-command:fetchcontent_declare"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 和 <span class="target" id="index-0-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
+</div>
+</dd>
+</dl>
+<p>当未重定向到 <span class="target" id="index-2-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 提供的包时，命令参数决定使用模块模式还是配置模式。使用<a class="reference internal" href="find_package.html#basic-signature">基本签名</a>时，命令首先以模块模式搜索。如果未找到包，搜索将回退到配置模式。用户可以将 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_PREFER_CONFIG"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_PREFER_CONFIG.html#variable:CMAKE_FIND_PACKAGE_PREFER_CONFIG" title="CMAKE_FIND_PACKAGE_PREFER_CONFIG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_PREFER_CONFIG</span></code></a> 变量设为 true，以反转优先级并指示 CMake 首先使用配置模式搜索，然后再回退到模块模式。基本签名也可以通过 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 关键字强制仅使用模块模式。如果使用<a class="reference internal" href="find_package.html#full-signature">完整签名</a>，命令将仅以配置模式搜索。</p>
+</section>
+<section id="basic-signature">
+<span id="id1"></span><h2><a class="toc-backref" href="find_package.html#id19" role="doc-backlink">基本签名</a><a class="headerlink" href="find_package.html#basic-signature" title="链接到此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nv">&lt;PackageName&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">MODULE</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">|</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[[</span><span class="no">COMPONENTS</span><span class="p">]</span><span class="w"> </span><span class="nv">&lt;component&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nv">&lt;component&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">REGISTRY_VIEW</span><span class="w"> </span><span class="p">{</span><span class="m">64</span><span class="p">|</span><span class="m">32</span><span class="p">|</span><span class="m">64</span><span class="nb">_32</span><span class="p">|</span><span class="m">32</span><span class="nb">_64</span><span class="p">|</span><span class="no">HOST</span><span class="p">|</span><span class="no">TARGET</span><span class="p">|</span><span class="no">BOTH</span><span class="p">}]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">GLOBAL</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_POLICY_SCOPE</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">BYPASS_PROVIDER</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">UNWIND_INCLUDE</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>基本签名在模块模式和配置模式下均受支持。<code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 关键字意味着仅可使用模块模式来查找包，不会回退到配置模式。</p>
+<p>无论使用哪种模式，都会设置一个 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量来指示是否找到该包。当找到包时，包的特定信息可以通过该包自身记录的其他变量和 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a> 提供。<code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项会禁用信息性消息，包括当未指定 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 时如果未找到包的提示消息。<code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项会在找不到包时停止处理并报错。</p>
+<p>包所需的组件列表可以在 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 关键字之后列出。如果有任何组件无法满足，则该包整体被视为未找到。如果同时存在 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项，则将其视为致命错误，否则程序仍继续执行。作为一种缩写形式，如果存在 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项，则可以省略 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 关键字，直接在 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 之后列出所需组件。</p>
+<p>可以启用 <span class="target" id="index-0-variable:CMAKE_FIND_REQUIRED"></span><a class="reference internal" href="../variable/CMAKE_FIND_REQUIRED.html#variable:CMAKE_FIND_REQUIRED" title="CMAKE_FIND_REQUIRED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_REQUIRED</span></code></a> 变量，使此调用默认变为 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>。此行为可以通过提供 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 关键字来覆盖。与 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项一样，可以直接在 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 之后列出组件列表，这等同于列在 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 关键字之后。当给定 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 关键字时，找不到包时的警告输出会被抑制。</p>
+<p>其他可选组件可以列在 <code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 之后。如果这些组件无法满足，只要满足所有必需组件，该包整体仍可被视为找到。</p>
+<p>可用组件及其含义由目标包定义。</p>
+<ul class="simple">
+<li><p>对于 CMake 脚本包配置文件，正式上由目标包决定如何解释给定的组件信息，但应遵循上述预期。对于未指定组件的调用，没有单一的预期行为，目标包应明确定义此类情况下的结果。常见安排包括假设应查找所有组件、不查找组件或可用组件的某些明确定义的子集。</p></li>
+<li><p>通用包规范 (CPS) 包由一个根配置文件和零个或多个附录组成，每个附录提供组件并可能具有依赖关系。CMake 总是尝试加载根配置文件。仅当附录的依赖关系得到满足，且它们提供了所请求的组件（或者未请求组件）时，才会加载附录。如果提供所需组件的附录的依赖关系无法满足，则该包被视为未找到。否则，该附录将被忽略。</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span><code class="docutils literal notranslate"><span class="pre">REGISTRY_VIEW</span></code> 关键字指定应查询哪些注册表视图。此关键字仅在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上有效，在所有其他平台上将被忽略。正式上，由目标包决定如何解释给定的注册表视图信息。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span>指定 <code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code> 关键字会将所有导入目标提升到导入项目中的全局作用域。或者，可以通过设置 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_TARGETS_GLOBAL.html#variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL" title="CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_TARGETS_GLOBAL</span></code></a> 变量来启用此功能。</p>
+</div>
+<p id="find-package-version-format"><code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 参数请求所找到的包应与之兼容的版本。它有两种可能的指定形式</p>
+<ul class="simple">
+<li><p>单个版本，格式为 <code class="docutils literal notranslate"><span class="pre">major[.minor[.patch[.tweak]]]</span></code>，其中每个组件都是数值。</p></li>
+<li><p>版本范围，格式为 <code class="docutils literal notranslate"><span class="pre">versionMin...[&lt;]versionMax</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">versionMin</span></code> 和 <code class="docutils literal notranslate"><span class="pre">versionMax</span></code> 具有与单个版本相同的组件为整数的格式和约束。默认情况下，两个端点都包含在内。通过指定 <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>，将排除上限端点。版本范围仅支持 CMake 3.19 或更高版本。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除 CPS 包外，版本支持目前仅在逐个包的基础上提供。当指定了版本范围但包仅被设计为期望单个版本时，该包将忽略范围的上限端点，仅考虑范围下限处的单个版本。支持版本范围的非 CPS 包以各自包决定的方式进行。详情和重要注意事项请参阅下文的<a class="reference internal" href="find_package.html#version-selection">版本选择</a>章节。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 选项请求版本精确匹配。此选项与版本范围的指定不兼容。</p>
+<p>如果查找模块内的递归调用未给出 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 和/或组件列表，则相应参数会自动从外部调用转发（包括 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 的 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 标志）。</p>
+<p>有关 <code class="docutils literal notranslate"><span class="pre">NO_POLICY_SCOPE</span></code> 选项的讨论，请参阅 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 命令文档。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span><code class="docutils literal notranslate"><span class="pre">BYPASS_PROVIDER</span></code> 关键字仅允许在 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 被<a class="reference internal" href="cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a>调用时使用。提供程序可以使用它来直接调用内置的 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 实现，并防止该调用被重新路由回自身。CMake 的未来版本可能会检测到从非依赖提供程序位置使用此关键字的尝试并以致命错误中止。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">4.2 版本新增: </span><code class="docutils literal notranslate"><span class="pre">UNWIND_INCLUDE</span></code> 关键字仅允许在父级 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 调用内调用 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 时使用。当 <code class="docutils literal notranslate"><span class="pre">find_package(UNWIND_INCLUDE)</span></code> 调用未能找到所需的包时，它将启动“回溯 (unwind)”状态。在此状态下，后续对 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 和 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 的调用均被禁止，并且所有父级 <span class="target" id="index-1-command:include"></span><a class="reference internal" href="include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令在达到其作用域时将立即调用 <span class="target" id="index-0-command:return"></span><a class="reference internal" href="return.html#command:return" title="return"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">return()</span></code></a>。此“回溯”将持续到返回到父级 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 为止。</p>
+<p><code class="docutils literal notranslate"><span class="pre">UNWIND_INCLUDE</span></code> 仅旨在由 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#command:install" title="install(export_package_dependencies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT_PACKAGE_DEPENDENCIES)</span></code></a> 生成的 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 调用使用，但对于希望以类似方式手动管理依赖项的用户来说可能很有用。</p>
+</div>
+</section>
+<section id="full-signature">
+<span id="id2"></span><h2><a class="toc-backref" href="find_package.html#id20" role="doc-backlink">完整签名</a><a class="headerlink" href="find_package.html#full-signature" title="链接到此标题">¶</a></h2>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nv">&lt;PackageName&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">version</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">|</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[[</span><span class="no">COMPONENTS</span><span class="p">]</span><span class="w"> </span><span class="nv">&lt;component&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nv">&lt;component&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">CONFIG</span><span class="p">|</span><span class="no">NO_MODULE</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">GLOBAL</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_POLICY_SCOPE</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">BYPASS_PROVIDER</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NAMES</span><span class="w"> </span><span class="nv">&lt;name&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">CONFIGS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">HINTS</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">PATHS</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">REGISTRY_VIEW</span><span class="w"> </span><span class="p">{</span><span class="m">64</span><span class="p">|</span><span class="m">32</span><span class="p">|</span><span class="m">64</span><span class="nb">_32</span><span class="p">|</span><span class="m">32</span><span class="nb">_64</span><span class="p">|</span><span class="no">HOST</span><span class="p">|</span><span class="no">TARGET</span><span class="p">|</span><span class="no">BOTH</span><span class="p">}]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">PATH_SUFFIXES</span><span class="w"> </span><span class="nv">&lt;suffix&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_DEFAULT_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_PACKAGE_ROOT_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_ENVIRONMENT_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_SYSTEM_ENVIRONMENT_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_PACKAGE_REGISTRY</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_BUILDS_PATH</span><span class="p">]</span><span class="w"> </span><span class="c"># Deprecated; does nothing.</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_SYSTEM_PATH</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_INSTALL_PREFIX</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">NO_CMAKE_SYSTEM_PACKAGE_REGISTRY</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">CMAKE_FIND_ROOT_PATH_BOTH</span><span class="w"> </span><span class="p">|</span>
+<span class="w">              </span><span class="no">ONLY_CMAKE_FIND_ROOT_PATH</span><span class="w"> </span><span class="p">|</span>
+<span class="w">              </span><span class="no">NO_CMAKE_FIND_ROOT_PATH</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> 选项、同义词 <code class="docutils literal notranslate"><span class="pre">NO_MODULE</span></code> 选项，或使用未在<a class="reference internal" href="find_package.html#basic-signature">基本签名</a>中指定的选项，均会强制执行纯配置模式。在纯配置模式下，命令跳过模块模式搜索，直接开始配置模式搜索。</p>
+<p>配置模式搜索尝试定位包提供的配置文件。创建一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code> 的缓存条目以保存包含该文件的目录。默认情况下，该命令搜索名称为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 的包。如果给定了 <code class="docutils literal notranslate"><span class="pre">NAMES</span></code> 选项，则使用其后的名称代替 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code>。在确定是否将调用重定向到由 <span class="target" id="index-3-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 提供的包时，也会考虑这些名称。</p>
+<p>对于指定的每个包名，命令搜索其文件名匹配以下任一格式的文件</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;lowercasePackageName&gt;-config.cmake</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;.cps</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;lowercasePackageName&gt;.cps</span></code></p></li>
+</ul>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">CONFIGS</span></code> 选项提供一组替代的配置文件名。下文指定了<a class="reference internal" href="find_package.html#search-procedure"><span class="std std-ref">配置模式搜索过程</span></a>。找到后，检查任何<a class="reference internal" href="find_package.html#version-selection"><span class="std std-ref">版本约束</span></a>，如果满足，则由 CMake 读取并处理配置文件。由于该文件由包提供，它已经知道包内容的位置。配置文件的完整路径存储在 CMake 变量 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_CONFIG</span></code> 中。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>由于 CPS 文件不允许具有<em>不</em>匹配包名的名称，因此指定 <code class="docutils literal notranslate"><span class="pre">CONFIGS</span></code> 将禁止搜索 CPS 文件。</p>
+</div>
+<p>CMake 在搜索具有适当版本的包时考虑过的所有配置文件都存储在 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_CONSIDERED_CONFIGS</span></code> 变量中，关联的版本存储在 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_CONSIDERED_VERSIONS</span></code> 变量中。</p>
+<p>如果找不到包配置文件，除非指定了 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 参数，否则 CMake 将生成一个描述问题的错误。如果指定了 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 且未找到包，则会生成致命错误并停止执行配置步骤。如果 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code> 已被设置为不包含配置文件的目录，或者请求的版本与在该目录中找到的包不兼容（请参阅<a class="reference internal" href="find_package.html#version-selection"><span class="std std-ref">配置模式版本选择</span></a>），CMake 将忽略它并从头开始搜索。</p>
+<p>鼓励提供包配置文件的包维护者对其进行命名和安装，以便下文概述的<a class="reference internal" href="find_package.html#search-procedure"><span class="std std-ref">配置模式搜索过程</span></a>能够找到它们，而无需使用额外选项。</p>
+</section>
+<section id="config-mode-search-procedure">
+<span id="search-procedure"></span><h2><a class="toc-backref" href="find_package.html#id21" role="doc-backlink">配置模式搜索过程</a><a class="headerlink" href="find_package.html#config-mode-search-procedure" title="链接到此标题">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>使用配置模式时，无论给出的是<a class="reference internal" href="find_package.html#full-signature"><span class="std std-ref">完整</span></a>签名还是<a class="reference internal" href="find_package.html#basic-signature"><span class="std std-ref">基本</span></a>签名，都会应用此搜索过程。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span>所有对 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 的调用（即使在模块模式下）首先在 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 目录中查找配置包文件。<span class="target" id="index-4-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 模块，甚至项目本身，可能会将文件写入该位置，以将 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 调用重定向到项目已经提供的内容。如果在该位置未找到配置包文件，搜索将按照下文描述的逻辑进行。</p>
+</div>
+<p>CMake 为包构建一组可能的安装前缀。在每个前缀下，会搜索几个目录以查找配置文件。下表显示了搜索的目录。每个条目旨在用于遵循 Windows (<code class="docutils literal notranslate"><span class="pre">W</span></code>)、UNIX (<code class="docutils literal notranslate"><span class="pre">U</span></code>) 或 Apple (<code class="docutils literal notranslate"><span class="pre">A</span></code>) 约定的安装树。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>条目</p></th>
+<th class="head"><p>约定</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;/cps/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;/*/cps/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/cps/&lt;name&gt;/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/cps/&lt;name&gt;/*/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/cps/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/</span></code></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(cmake|CMake)/</span></code></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/</span></code></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/(cmake|CMake)/</span></code></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/(cmake|CMake)/&lt;name&gt;*/</span></code> <a class="footnote-reference brackets" href="find_package.html#p1" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+<td><p>W</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/cps/&lt;name&gt;/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/cps/&lt;name&gt;/*/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/cps/</span></code> <a class="footnote-reference brackets" href="find_package.html#p2" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/cmake/&lt;name&gt;*/</span></code></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/&lt;name&gt;*/</span></code></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/(lib/&lt;arch&gt;|lib*|share)/&lt;name&gt;*/(cmake|CMake)/</span></code></p></td>
+<td><p>U</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/(lib/&lt;arch&gt;|lib*|share)/cmake/&lt;name&gt;*/</span></code></p></td>
+<td><p>W/U</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/(lib/&lt;arch&gt;|lib*|share)/&lt;name&gt;*/</span></code></p></td>
+<td><p>W/U</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;*/(lib/&lt;arch&gt;|lib*|share)/&lt;name&gt;*/(cmake|CMake)/</span></code></p></td>
+<td><p>W/U</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="p1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="find_package.html#id8">1</a><span class="fn-bracket">]</span></span>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+</aside>
+<aside class="footnote brackets" id="p2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="find_package.html#id3">1</a>,<a role="doc-backlink" href="find_package.html#id4">2</a>,<a role="doc-backlink" href="find_package.html#id5">3</a>,<a role="doc-backlink" href="find_package.html#id6">4</a>,<a role="doc-backlink" href="find_package.html#id7">5</a>,<a role="doc-backlink" href="find_package.html#id9">6</a>,<a role="doc-backlink" href="find_package.html#id10">7</a>,<a role="doc-backlink" href="find_package.html#id11">8</a>)</span>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</aside>
+</aside>
+<p>在支持 macOS <span class="target" id="index-0-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="../prop_tgt/FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 和 <span class="target" id="index-0-prop_tgt:BUNDLE"></span><a class="reference internal" href="../prop_tgt/BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 的系统上，将搜索以下目录以查找包含配置文件的框架或应用程序包</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>条目</p></th>
+<th class="head"><p>约定</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Versions/*/Resources/CPS/</span></code> <a class="footnote-reference brackets" href="find_package.html#p3" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Resources/CPS/</span></code> <a class="footnote-reference brackets" href="find_package.html#p3" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Resources/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Resources/CMake/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Versions/*/Resources/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Versions/*/Resources/CMake/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.app/Contents/Resources/CPS/</span></code> <a class="footnote-reference brackets" href="find_package.html#p3" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.app/Contents/Resources/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.app/Contents/Resources/CMake/</span></code></p></td>
+<td><p>A</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="p3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="find_package.html#id12">1</a>,<a role="doc-backlink" href="find_package.html#id13">2</a>,<a role="doc-backlink" href="find_package.html#id14">3</a>)</span>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+</aside>
+</aside>
+<p>搜索上述路径时，<code class="docutils literal notranslate"><span class="pre">find_package</span></code> 仅会在包含 <code class="docutils literal notranslate"><span class="pre">/cps/</span></code> 的搜索路径中查找 <code class="docutils literal notranslate"><span class="pre">.cps</span></code> 文件，否则仅会查找 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 文件。（这仅适用于指定的路径，不考虑 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的内容。）</p>
+<p>在所有情况下，<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 均视为不区分大小写，并对应于指定的任何名称（<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 或由 <code class="docutils literal notranslate"><span class="pre">NAMES</span></code> 给出的名称）。</p>
+<p>如果已启用至少一种编译语言，则可能会根据编译器的目标架构按以下顺序搜索特定于架构的 <code class="docutils literal notranslate"><span class="pre">lib/&lt;arch&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lib*</span></code> 目录</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">lib/&lt;arch&gt;</span></code></dt><dd><p>如果设置了 <span class="target" id="index-0-variable:CMAKE_LIBRARY_ARCHITECTURE"></span><a class="reference internal" href="../variable/CMAKE_LIBRARY_ARCHITECTURE.html#variable:CMAKE_LIBRARY_ARCHITECTURE" title="CMAKE_LIBRARY_ARCHITECTURE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LIBRARY_ARCHITECTURE</span></code></a> 变量，则进行搜索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lib64</span></code></dt><dd><p>在 64 位平台上（<span class="target" id="index-0-variable:CMAKE_SIZEOF_VOID_P"></span><a class="reference internal" href="../variable/CMAKE_SIZEOF_VOID_P.html#variable:CMAKE_SIZEOF_VOID_P" title="CMAKE_SIZEOF_VOID_P"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SIZEOF_VOID_P</span></code></a> 为 8）且 <span class="target" id="index-0-prop_gbl:FIND_LIBRARY_USE_LIB64_PATHS"></span><a class="reference internal" href="../prop_gbl/FIND_LIBRARY_USE_LIB64_PATHS.html#prop_gbl:FIND_LIBRARY_USE_LIB64_PATHS" title="FIND_LIBRARY_USE_LIB64_PATHS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">FIND_LIBRARY_USE_LIB64_PATHS</span></code></a> 属性设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时进行搜索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lib32</span></code></dt><dd><p>在 32 位平台上（<span class="target" id="index-1-variable:CMAKE_SIZEOF_VOID_P"></span><a class="reference internal" href="../variable/CMAKE_SIZEOF_VOID_P.html#variable:CMAKE_SIZEOF_VOID_P" title="CMAKE_SIZEOF_VOID_P"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SIZEOF_VOID_P</span></code></a> 为 4）且 <span class="target" id="index-0-prop_gbl:FIND_LIBRARY_USE_LIB32_PATHS"></span><a class="reference internal" href="../prop_gbl/FIND_LIBRARY_USE_LIB32_PATHS.html#prop_gbl:FIND_LIBRARY_USE_LIB32_PATHS" title="FIND_LIBRARY_USE_LIB32_PATHS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">FIND_LIBRARY_USE_LIB32_PATHS</span></code></a> 属性设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时进行搜索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">libx32</span></code></dt><dd><p>在 64 位平台上使用 x32 ABI 时，如果 <span class="target" id="index-0-prop_gbl:FIND_LIBRARY_USE_LIBX32_PATHS"></span><a class="reference internal" href="../prop_gbl/FIND_LIBRARY_USE_LIBX32_PATHS.html#prop_gbl:FIND_LIBRARY_USE_LIBX32_PATHS" title="FIND_LIBRARY_USE_LIBX32_PATHS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">FIND_LIBRARY_USE_LIBX32_PATHS</span></code></a> 属性设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时进行搜索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lib</span></code></dt><dd><p>总是搜索。</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.24 版本更改: </span>在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上，可以使用<a class="reference internal" href="../manual/cmake-developer.7.html#find-using-windows-registry"><span class="std std-ref">专用语法</span></a>，将注册表查询包含在通过 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 关键字指定的目录中。此类规范在所有其他平台上将被忽略。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.24 版本新增: </span>可以指定 <code class="docutils literal notranslate"><span class="pre">REGISTRY_VIEW</span></code> 来管理作为 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 一部分指定的 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 注册表查询。</p>
+<p>指定必须查询哪些注册表视图。此选项仅在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 平台上有效，在其他平台上将被忽略。未指定时，当 <span class="target" id="index-0-policy:CMP0134"></span><a class="reference internal" href="../policy/CMP0134.html#policy:CMP0134" title="CMP0134"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0134</span></code></a> 策略为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时使用 <code class="docutils literal notranslate"><span class="pre">TARGET</span></code> 视图。当策略为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 时，默认视图请参阅 <span class="target" id="index-1-policy:CMP0134"></span><a class="reference internal" href="../policy/CMP0134.html#policy:CMP0134" title="CMP0134"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0134</span></code></a>。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">64</span></code></dt><dd><p>查询64位注册表。在32位Windows上，它始终返回字符串 <code class="docutils literal notranslate"><span class="pre">/REGISTRY-NOTFOUND</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">32</span></code></dt><dd><p>查询32位注册表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">64_32</span></code></dt><dd><p>查询两个视图（<code class="docutils literal notranslate"><span class="pre">64</span></code> 和 <code class="docutils literal notranslate"><span class="pre">32</span></code>）并为每个视图生成一个路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">32_64</span></code></dt><dd><p>查询两个视图（<code class="docutils literal notranslate"><span class="pre">32</span></code> 和 <code class="docutils literal notranslate"><span class="pre">64</span></code>）并为每个视图生成一个路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HOST</span></code></dt><dd><p>查询与主机架构匹配的注册表：64 位 Windows 上为 <code class="docutils literal notranslate"><span class="pre">64</span></code>，32 位 Windows 上为 <code class="docutils literal notranslate"><span class="pre">32</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>查询与 <span class="target" id="index-2-variable:CMAKE_SIZEOF_VOID_P"></span><a class="reference internal" href="../variable/CMAKE_SIZEOF_VOID_P.html#variable:CMAKE_SIZEOF_VOID_P" title="CMAKE_SIZEOF_VOID_P"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SIZEOF_VOID_P</span></code></a> 变量指定的架构相匹配的注册表。如果未定义，则回退到 <code class="docutils literal notranslate"><span class="pre">HOST</span></code> 视图。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BOTH</span></code></dt><dd><p>查询两个视图（<code class="docutils literal notranslate"><span class="pre">32</span></code> 和 <code class="docutils literal notranslate"><span class="pre">64</span></code>）。顺序取决于以下规则：如果定义了 <span class="target" id="index-3-variable:CMAKE_SIZEOF_VOID_P"></span><a class="reference internal" href="../variable/CMAKE_SIZEOF_VOID_P.html#variable:CMAKE_SIZEOF_VOID_P" title="CMAKE_SIZEOF_VOID_P"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SIZEOF_VOID_P</span></code></a> 变量，则根据此变量的内容使用以下视图</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">8</span></code>: <code class="docutils literal notranslate"><span class="pre">64_32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: <code class="docutils literal notranslate"><span class="pre">32_64</span></code></p></li>
+</ul>
+<p>如果未定义 <span class="target" id="index-4-variable:CMAKE_SIZEOF_VOID_P"></span><a class="reference internal" href="../variable/CMAKE_SIZEOF_VOID_P.html#variable:CMAKE_SIZEOF_VOID_P" title="CMAKE_SIZEOF_VOID_P"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SIZEOF_VOID_P</span></code></a> 变量，则依赖主机架构。</p>
+<ul class="simple">
+<li><p>64位: <code class="docutils literal notranslate"><span class="pre">64_32</span></code></p></li>
+<li><p>32位: <code class="docutils literal notranslate"><span class="pre">32</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">PATH_SUFFIXES</span></code>，则后缀将逐一附加到每个 (<code class="docutils literal notranslate"><span class="pre">W</span></code>) 或 (<code class="docutils literal notranslate"><span class="pre">U</span></code>) 目录条目。</p>
+<p>这组目录旨在与在安装树中提供配置文件的项目配合使用。上文中标记为 (<code class="docutils literal notranslate"><span class="pre">W</span></code>) 的目录旨在用于 Windows 上的安装，其中前缀可能指向应用程序安装目录的顶部。那些标记为 (<code class="docutils literal notranslate"><span class="pre">U</span></code>) 的目录旨在用于 UNIX 平台上前缀由多个包共享的安装。这仅是一种约定，因此所有 (<code class="docutils literal notranslate"><span class="pre">W</span></code>) 和 (<code class="docutils literal notranslate"><span class="pre">U</span></code>) 目录仍会在所有平台上搜索。标记为 (<code class="docutils literal notranslate"><span class="pre">A</span></code>) 的目录旨在用于 Apple 平台上的安装。<span class="target" id="index-0-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_FIND_APPBUNDLE"></span><a class="reference internal" href="../variable/CMAKE_FIND_APPBUNDLE.html#variable:CMAKE_FIND_APPBUNDLE" title="CMAKE_FIND_APPBUNDLE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_APPBUNDLE</span></code></a> 变量决定了优先顺序。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>将 <span class="target" id="index-1-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 或 <span class="target" id="index-1-variable:CMAKE_FIND_APPBUNDLE"></span><a class="reference internal" href="../variable/CMAKE_FIND_APPBUNDLE.html#variable:CMAKE_FIND_APPBUNDLE" title="CMAKE_FIND_APPBUNDLE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_APPBUNDLE</span></code></a> 设置为非 <code class="docutils literal notranslate"><span class="pre">FIRST</span></code>（默认值）的值，将导致 CMake 以不同于规范中规定的顺序搜索通用包规范文件。</p>
+</div>
+<p>安装前缀集按以下步骤构建。如果指定了 <code class="docutils literal notranslate"><span class="pre">NO_DEFAULT_PATH</span></code>，则启用所有 <code class="docutils literal notranslate"><span class="pre">NO_*</span></code> 选项。</p>
+<ol class="arabic">
+<li><p>搜索特定于当前正在查找的 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 的前缀。请参阅策略 <span class="target" id="index-0-policy:CMP0074"></span><a class="reference internal" href="../policy/CMP0074.html#policy:CMP0074" title="CMP0074"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0074</span></code></a>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>具体来说，按顺序搜索以下变量指定的前缀</p>
+<ol class="loweralpha">
+<li><p><span class="target" id="index-0-variable:<PackageName>_ROOT"></span><a class="reference internal" href="../variable/PackageName_ROOT.html#variable:<PackageName>_ROOT" title="<PackageName>_ROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_ROOT</span></code></a> CMake 变量，其中 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 是大小写保留的包名。</p></li>
+<li><p>CMake 变量 <span class="target" id="index-0-variable:<PACKAGENAME>_ROOT"></span><a class="reference internal" href="../variable/PackageName_ROOT.html#variable:<PACKAGENAME>_ROOT" title="<PACKAGENAME>_ROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">&lt;PACKAGENAME&gt;_ROOT</span></code></a>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;PACKAGENAME&gt;</span></code> 是大写的包名称。请参阅策略 <span class="target" id="index-0-policy:CMP0144"></span><a class="reference internal" href="../policy/CMP0144.html#policy:CMP0144" title="CMP0144"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0144</span></code></a>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+</li>
+<li><p><span class="target" id="index-0-envvar:<PackageName>_ROOT"></span><a class="reference internal" href="../envvar/PackageName_ROOT.html#envvar:<PackageName>_ROOT" title="<PackageName>_ROOT"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_ROOT</span></code></a> 环境变量，其中 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 是大小写保留的包名。</p></li>
+<li><p>环境变量 <span class="target" id="index-0-envvar:<PACKAGENAME>_ROOT"></span><a class="reference internal" href="../envvar/PackageName_ROOT.html#envvar:<PACKAGENAME>_ROOT" title="<PACKAGENAME>_ROOT"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">&lt;PACKAGENAME&gt;_ROOT</span></code></a>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;PACKAGENAME&gt;</span></code> 是大写的包名称。请参阅策略 <span class="target" id="index-1-policy:CMP0144"></span><a class="reference internal" href="../policy/CMP0144.html#policy:CMP0144" title="CMP0144"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0144</span></code></a>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+</li>
+</ol>
+<p>包根变量作为堆栈维护，因此如果从查找模块内调用，父级查找模块的根路径也会在当前包的路径之后被搜索。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_PACKAGE_ROOT_PATH</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_PACKAGE_ROOT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_PACKAGE_ROOT_PATH.html#variable:CMAKE_FIND_USE_PACKAGE_ROOT_PATH" title="CMAKE_FIND_USE_PACKAGE_ROOT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_PACKAGE_ROOT_PATH</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过此步骤。</p>
+</li>
+<li><p>搜索 CMake 特定缓存变量中指定的路径。这些旨在通过 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-DVAR=VALUE</span></code></a> 在命令行上使用。这些值被解释为<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_PATH</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_PATH.html#variable:CMAKE_FIND_USE_CMAKE_PATH" title="CMAKE_FIND_USE_CMAKE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PATH</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过此步骤</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FRAMEWORK_PATH"></span><a class="reference internal" href="../variable/CMAKE_FRAMEWORK_PATH.html#variable:CMAKE_FRAMEWORK_PATH" title="CMAKE_FRAMEWORK_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_APPBUNDLE_PATH"></span><a class="reference internal" href="../variable/CMAKE_APPBUNDLE_PATH.html#variable:CMAKE_APPBUNDLE_PATH" title="CMAKE_APPBUNDLE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_APPBUNDLE_PATH</span></code></a></p></li>
+</ul>
+</li>
+<li><p>搜索 CMake 特定环境变量中指定的路径。这些旨在在用户的 shell 配置中设置，因此使用主机的原生路径分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，UNIX 上为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_ENVIRONMENT_PATH</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过此步骤</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code></p></li>
+<li><p><span class="target" id="index-0-envvar:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../envvar/CMAKE_PREFIX_PATH.html#envvar:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-envvar:CMAKE_FRAMEWORK_PATH"></span><a class="reference internal" href="../envvar/CMAKE_FRAMEWORK_PATH.html#envvar:CMAKE_FRAMEWORK_PATH" title="CMAKE_FRAMEWORK_PATH"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-envvar:CMAKE_APPBUNDLE_PATH"></span><a class="reference internal" href="../envvar/CMAKE_APPBUNDLE_PATH.html#envvar:CMAKE_APPBUNDLE_PATH" title="CMAKE_APPBUNDLE_PATH"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_APPBUNDLE_PATH</span></code></a></p></li>
+</ul>
+</li>
+<li><p>搜索 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 选项指定的路径。这些应为通过系统自省计算出的路径，例如通过已找到的另一个项目的位置提供的提示。硬编码的猜测应使用 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 选项指定。</p></li>
+<li><p>搜索标准系统环境变量。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_SYSTEM_ENVIRONMENT_PATH</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过此步骤。以 <code class="docutils literal notranslate"><span class="pre">/bin</span></code> 或 <code class="docutils literal notranslate"><span class="pre">/sbin</span></code> 结尾的路径条目会自动转换为其父目录</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PATH</span></code></p></li>
+</ul>
+</li>
+<li><p>搜索存储在 CMake <a class="reference internal" href="../manual/cmake-packages.7.html#user-package-registry"><span class="std std-ref">用户包注册表</span></a> 中的路径。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_PACKAGE_REGISTRY</span></code> 或将变量 <span class="target" id="index-0-variable:CMAKE_FIND_USE_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_PACKAGE_REGISTRY</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，或者将已弃用的变量 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY" title="CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，则可以跳过此步骤。</p>
+<p>有关用户包注册表的详情，请参阅 <span class="target" id="index-0-manual:cmake-packages(7)"></span><a class="reference internal" href="../manual/cmake-packages.7.html#manual:cmake-packages(7)" title="cmake-packages(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-packages(7)</span></code></a> 手册。</p>
+</li>
+<li><p>搜索当前系统平台文件中定义的 CMake 变量。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_INSTALL_PREFIX</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_INSTALL_PREFIX.html#variable:CMAKE_FIND_USE_INSTALL_PREFIX" title="CMAKE_FIND_USE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_INSTALL_PREFIX</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_STAGING_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_STAGING_PREFIX.html#variable:CMAKE_STAGING_PREFIX" title="CMAKE_STAGING_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_STAGING_PREFIX</span></code></a> 的搜索。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_SYSTEM_PATH</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_SYSTEM_PATH.html#variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH" title="CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，则可以跳过所有这些位置</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_SYSTEM_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_PREFIX_PATH.html#variable:CMAKE_SYSTEM_PREFIX_PATH" title="CMAKE_SYSTEM_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_PREFIX_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_SYSTEM_FRAMEWORK_PATH"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_FRAMEWORK_PATH.html#variable:CMAKE_SYSTEM_FRAMEWORK_PATH" title="CMAKE_SYSTEM_FRAMEWORK_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_FRAMEWORK_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_SYSTEM_APPBUNDLE_PATH"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_APPBUNDLE_PATH.html#variable:CMAKE_SYSTEM_APPBUNDLE_PATH" title="CMAKE_SYSTEM_APPBUNDLE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_APPBUNDLE_PATH</span></code></a></p></li>
+</ul>
+<p>这些变量包含的平台路径通常包括已安装的软件位置。例如，UNIX 平台上的 <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>。</p>
+</li>
+<li><p>搜索存储在 CMake <a class="reference internal" href="../manual/cmake-packages.7.html#system-package-registry"><span class="std std-ref">系统包注册表</span></a> 中的路径。如果传递 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_SYSTEM_PACKAGE_REGISTRY</span></code> 或将 <span class="target" id="index-0-variable:CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY</span></code></a> 变量设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>，或者将已弃用的变量 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY" title="CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，则可以跳过此步骤。</p>
+<p>有关系统包注册表的详情，请参阅 <span class="target" id="index-1-manual:cmake-packages(7)"></span><a class="reference internal" href="../manual/cmake-packages.7.html#manual:cmake-packages(7)" title="cmake-packages(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-packages(7)</span></code></a> 手册。</p>
+</li>
+<li><p>搜索 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 选项指定的路径。这些通常是硬编码的猜测。</p></li>
+</ol>
+<p><span class="target" id="index-0-variable:CMAKE_IGNORE_PATH"></span><a class="reference internal" href="../variable/CMAKE_IGNORE_PATH.html#variable:CMAKE_IGNORE_PATH" title="CMAKE_IGNORE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_IGNORE_PATH</span></code></a>、<span class="target" id="index-0-variable:CMAKE_IGNORE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_IGNORE_PREFIX_PATH.html#variable:CMAKE_IGNORE_PREFIX_PATH" title="CMAKE_IGNORE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_IGNORE_PREFIX_PATH</span></code></a>、<span class="target" id="index-0-variable:CMAKE_SYSTEM_IGNORE_PATH"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_IGNORE_PATH.html#variable:CMAKE_SYSTEM_IGNORE_PATH" title="CMAKE_SYSTEM_IGNORE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_IGNORE_PATH</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_SYSTEM_IGNORE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_IGNORE_PREFIX_PATH.html#variable:CMAKE_SYSTEM_IGNORE_PREFIX_PATH" title="CMAKE_SYSTEM_IGNORE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_IGNORE_PREFIX_PATH</span></code></a> 变量也会导致上述部分位置被忽略。</p>
+<p>路径按上述顺序搜索。第一个找到的可行包配置文件将被使用，即使列表中后续位置有更新版本的包。</p>
+<p>对于包含通配符表达式 (<code class="docutils literal notranslate"><span class="pre">*</span></code>) 的搜索路径，默认情况下按自然降序搜索匹配通配符的目录。此行为可以通过设置 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_SORT_ORDER"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_ORDER.html#variable:CMAKE_FIND_PACKAGE_SORT_ORDER" title="CMAKE_FIND_PACKAGE_SORT_ORDER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_ORDER</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_DIRECTION.html#variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION" title="CMAKE_FIND_PACKAGE_SORT_DIRECTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_DIRECTION</span></code></a> 变量来覆盖。这些变量决定了 CMake 考虑通配符匹配的顺序。例如，如果文件系统包含包配置文件</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/example-1.2/example-config.cmake
+&lt;prefix&gt;/example-1.10/example-config.cmake
+&lt;prefix&gt;/share/example-2.0/example-config.cmake
+</pre></div>
+</div>
+<p>那么（当上述变量未设置时）<code class="docutils literal notranslate"><span class="pre">find_package(example)</span></code> 将选取 <code class="docutils literal notranslate"><span class="pre">example-1.10</span></code>（假设 <code class="docutils literal notranslate"><span class="pre">example-1.2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">example-1.10</span></code> 都是可行的）。但请注意，<code class="docutils literal notranslate"><span class="pre">find_package</span></code> *不会* 找到 <code class="docutils literal notranslate"><span class="pre">example-2.0</span></code>，因为前两个中的一个会被先找到。</p>
+<p>要控制 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 搜索匹配通配符表达式的目录的顺序，请使用 <span class="target" id="index-1-variable:CMAKE_FIND_PACKAGE_SORT_ORDER"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_ORDER.html#variable:CMAKE_FIND_PACKAGE_SORT_ORDER" title="CMAKE_FIND_PACKAGE_SORT_ORDER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_ORDER</span></code></a> 和 <span class="target" id="index-1-variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_DIRECTION.html#variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION" title="CMAKE_FIND_PACKAGE_SORT_DIRECTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_DIRECTION</span></code></a>。例如，要使上述示例选择 <code class="docutils literal notranslate"><span class="pre">example-1.2</span></code>，可以在调用 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 之前设置</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_FIND_PACKAGE_SORT_ORDER</span><span class="w"> </span><span class="no">NATURAL</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">CMAKE_FIND_PACKAGE_SORT_DIRECTION</span><span class="w"> </span><span class="no">ASC</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 之前。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版本新增: </span>添加了 <code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_&lt;CATEGORY&gt;</span></code> 变量以全局禁用各种搜索位置。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.0 版本更改: </span>变量 <span class="target" id="index-2-variable:CMAKE_FIND_PACKAGE_SORT_ORDER"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_ORDER.html#variable:CMAKE_FIND_PACKAGE_SORT_ORDER" title="CMAKE_FIND_PACKAGE_SORT_ORDER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_ORDER</span></code></a> 和 <span class="target" id="index-2-variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_DIRECTION.html#variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION" title="CMAKE_FIND_PACKAGE_SORT_DIRECTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_DIRECTION</span></code></a> 现在也控制 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 搜索路径 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Versions/*/Resources/</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/&lt;name&gt;.framework/Versions/*/Resources/CMake</span></code> 中匹配通配符表达式的目录的顺序。在旧版本的 CMake 中，此顺序未指定。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.2 版本更改: </span>当遇到多个可行匹配时，<code class="docutils literal notranslate"><span class="pre">find_package</span></code> 现在默认选择版本最新的一个。在旧版本的 CMake 中，结果未指定。相应地，<span class="target" id="index-3-variable:CMAKE_FIND_PACKAGE_SORT_ORDER"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_ORDER.html#variable:CMAKE_FIND_PACKAGE_SORT_ORDER" title="CMAKE_FIND_PACKAGE_SORT_ORDER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_ORDER</span></code></a> 的默认值已从 <code class="docutils literal notranslate"><span class="pre">NONE</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">NATURAL</span></code>，且 <span class="target" id="index-3-variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_SORT_DIRECTION.html#variable:CMAKE_FIND_PACKAGE_SORT_DIRECTION" title="CMAKE_FIND_PACKAGE_SORT_DIRECTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_SORT_DIRECTION</span></code></a> 现在默认为 <code class="docutils literal notranslate"><span class="pre">DEC</span></code>（降序）而不是 <code class="docutils literal notranslate"><span class="pre">ASC</span></code>（升序）。</p>
+</div>
+<p>CMake 变量 <span class="target" id="index-0-variable:CMAKE_FIND_ROOT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_ROOT_PATH.html#variable:CMAKE_FIND_ROOT_PATH" title="CMAKE_FIND_ROOT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH</span></code></a> 指定一个或多个要添加到所有其他搜索目录之前的前缀路径。这有效地在给定位置下“重定向(re-roots)”了整个搜索。作为 <span class="target" id="index-1-variable:CMAKE_STAGING_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_STAGING_PREFIX.html#variable:CMAKE_STAGING_PREFIX" title="CMAKE_STAGING_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_STAGING_PREFIX</span></code></a> 子代的路径被排除在此重定向之外，因为该变量始终是主机系统上的路径。默认情况下 <span class="target" id="index-1-variable:CMAKE_FIND_ROOT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_ROOT_PATH.html#variable:CMAKE_FIND_ROOT_PATH" title="CMAKE_FIND_ROOT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH</span></code></a> 为空。</p>
+<p>变量 <span class="target" id="index-0-variable:CMAKE_SYSROOT"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT.html#variable:CMAKE_SYSROOT" title="CMAKE_SYSROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT</span></code></a> 也可用于指定仅一个目录作为前缀。设置 <span class="target" id="index-1-variable:CMAKE_SYSROOT"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT.html#variable:CMAKE_SYSROOT" title="CMAKE_SYSROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT</span></code></a> 也有其他影响。有关更多信息，请参阅该变量的文档。</p>
+<p>这些变量在交叉编译时特别有用，可以指向目标环境的根目录，CMake 也会在那里进行搜索。默认情况下首先搜索 <span class="target" id="index-2-variable:CMAKE_FIND_ROOT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_ROOT_PATH.html#variable:CMAKE_FIND_ROOT_PATH" title="CMAKE_FIND_ROOT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH</span></code></a> 中列出的目录，然后搜索 <span class="target" id="index-2-variable:CMAKE_SYSROOT"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT.html#variable:CMAKE_SYSROOT" title="CMAKE_SYSROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT</span></code></a> 目录，最后搜索非重定向的目录。默认行为可以通过设置 <span class="target" id="index-1-variable:CMAKE_FIND_ROOT_PATH_MODE_PACKAGE"></span><a class="reference internal" href="../variable/CMAKE_FIND_ROOT_PATH_MODE_PACKAGE.html#variable:CMAKE_FIND_ROOT_PATH_MODE_PACKAGE" title="CMAKE_FIND_ROOT_PATH_MODE_PACKAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH_MODE_PACKAGE</span></code></a> 来调整。此行为可以通过选项在每个调用基础上手动覆盖</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH_BOTH</span></code></dt><dd><p>按上述顺序搜索。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_CMAKE_FIND_ROOT_PATH</span></code></dt><dd><p>不要使用 <span class="target" id="index-3-variable:CMAKE_FIND_ROOT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_ROOT_PATH.html#variable:CMAKE_FIND_ROOT_PATH" title="CMAKE_FIND_ROOT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ONLY_CMAKE_FIND_ROOT_PATH</span></code></dt><dd><p>仅搜索重定向的目录以及 <span class="target" id="index-2-variable:CMAKE_STAGING_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_STAGING_PREFIX.html#variable:CMAKE_STAGING_PREFIX" title="CMAKE_STAGING_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_STAGING_PREFIX</span></code></a> 下的目录。</p>
+</dd>
+</dl>
+<p>默认搜索顺序旨在为常见用例实现从最具体到最不具体的排序。项目可以通过多次调用命令并使用 <code class="docutils literal notranslate"><span class="pre">NO_*</span></code> 选项来覆盖此顺序。</p>
+<pre class="literal-block">find_package (&lt;PackageName&gt; PATHS &lt;paths&gt;... NO_DEFAULT_PATH)
+find_package (&lt;PackageName&gt;)</pre>
+<p>一旦其中一个调用成功，结果变量将被设置并存储在缓存中，这样就不会再次搜索。</p>
+<p>默认情况下，结果变量中存储的值将是找到该文件的路径。<span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS.html#variable:CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS" title="CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS</span></code></a> 变量可以在调用 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 之前设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，以解析符号链接并存储文件的实际路径。</p>
+<p>每个非 REQUIRED 的 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 调用都可以被禁用或设为 REQUIRED</p>
+<ul class="simple">
+<li><p>将 <span class="target" id="index-0-variable:CMAKE_DISABLE_FIND_PACKAGE_<PackageName>"></span><a class="reference internal" href="../variable/CMAKE_DISABLE_FIND_PACKAGE_PackageName.html#variable:CMAKE_DISABLE_FIND_PACKAGE_<PackageName>" title="CMAKE_DISABLE_FIND_PACKAGE_<PackageName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_DISABLE_FIND_PACKAGE_&lt;PackageName&gt;</span></code></a> 变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 将禁用该包。这也将禁用对 <span class="target" id="index-5-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 提供的包的重定向。</p></li>
+<li><p>将 <span class="target" id="index-0-variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"></span><a class="reference internal" href="../variable/CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html#variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>" title="CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;</span></code></a> 变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 使该包变为 REQUIRED。</p></li>
+</ul>
+<p>将两个变量同时设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 是错误的。</p>
+<p><span class="target" id="index-1-variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"></span><a class="reference internal" href="../variable/CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html#variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>" title="CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;</span></code></a> 变量在确定包是否为必需时，优先于 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 关键字。</p>
+</section>
+<section id="config-mode-version-selection">
+<span id="version-selection"></span><h2><a class="toc-backref" href="find_package.html#id22" role="doc-backlink">配置模式版本选择</a><a class="headerlink" href="find_package.html#config-mode-version-selection" title="链接到此标题">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>使用配置模式时，无论给出的是<a class="reference internal" href="find_package.html#full-signature"><span class="std std-ref">完整</span></a>签名还是<a class="reference internal" href="find_package.html#basic-signature"><span class="std std-ref">基本</span></a>签名，都会应用此版本选择过程。</p>
+</div>
+<p>当给定 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 参数时，配置模式将仅查找声称与所请求版本兼容的包版本（请参阅<a class="reference internal" href="find_package.html#find-package-version-format"><span class="std std-ref">格式规范</span></a>）。如果给定了 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 选项，则仅能找到声称与所请求版本完全匹配的包版本。CMake 不会为版本号的含义建立任何约定。</p>
+<section id="cmake-script">
+<span id="cmake-script-version-selection"></span><h3><a class="toc-backref" href="find_package.html#id23" role="doc-backlink">CMake 脚本</a><a class="headerlink" href="find_package.html#cmake-script" title="链接到此标题">¶</a></h3>
+<p>对于 CMake 脚本包配置文件，包版本号由包本身或 <span class="target" id="index-6-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 提供的“版本”文件进行检查。对于候选包配置文件 <code class="docutils literal notranslate"><span class="pre">&lt;config-file&gt;.cmake</span></code>，相应的版本文件位于其旁边，命名为 <code class="docutils literal notranslate"><span class="pre">&lt;config-file&gt;-version.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;config-file&gt;Version.cmake</span></code>。如果没有此类版本文件，则假定该配置文件与任何所请求的版本都不兼容。包含通用版本匹配代码的基本版本文件可以使用 <span class="target" id="index-0-module:CMakePackageConfigHelpers"></span><a class="reference internal" href="../module/CMakePackageConfigHelpers.html#module:CMakePackageConfigHelpers" title="CMakePackageConfigHelpers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePackageConfigHelpers</span></code></a> 模块创建。当找到版本文件时，它会被加载以检查所请求的版本号。版本文件在嵌套作用域中加载，其中定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_NAME</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION</span></code></dt><dd><p>完整的请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAJOR</span></code></dt><dd><p>如果已请求，则为主版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MINOR</span></code></dt><dd><p>如果已请求，则为次版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_PATCH</span></code></dt><dd><p>如果已请求，则为补丁版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_TWEAK</span></code></dt><dd><p>如果已请求，则为调整版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_COUNT</span></code></dt><dd><p>版本组件数量，0 到 4</p>
+</dd>
+</dl>
+<p>当指定了版本范围时，上述版本变量将保存基于版本范围下限的值。这是为了保持与未实现为预期版本范围的包的兼容性。此外，版本范围将由以下变量描述</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_RANGE</span></code></dt><dd><p>完整的请求版本范围字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_RANGE_MIN</span></code></dt><dd><p>此变量指定版本范围的下限端点是应包含还是排除。目前，此变量仅支持 <code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_RANGE_MAX</span></code></dt><dd><p>此变量指定版本范围的上限端点是应包含还是排除。此变量支持的值为 <code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN</span></code></dt><dd><p>范围下限端点的完整请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN_MAJOR</span></code></dt><dd><p>如果请求了版本，则为下限端点的主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN_MINOR</span></code></dt><dd><p>如果请求了版本，则为下限端点的次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN_PATCH</span></code></dt><dd><p>如果请求了版本，则为下限端点的补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN_TWEAK</span></code></dt><dd><p>如果请求了版本，则为下限端点的修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MIN_COUNT</span></code></dt><dd><p>下限端点的版本组件数量，0 到 4</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX</span></code></dt><dd><p>范围上限端点的完整请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX_MAJOR</span></code></dt><dd><p>如果请求了版本，则为上限端点的主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX_MINOR</span></code></dt><dd><p>如果请求了版本，则为上限端点的次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX_PATCH</span></code></dt><dd><p>如果请求了版本，则为上限端点的补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX_TWEAK</span></code></dt><dd><p>如果请求了版本，则为上限端点的修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAX_COUNT</span></code></dt><dd><p>上限端点的版本组件数量，0 到 4</p>
+</dd>
+</dl>
+<p>无论指定的是单个版本还是版本范围，变量 <code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_COMPLETE</span></code> 都会被定义，并保存所指定的完整请求版本字符串。</p>
+<p>版本文件检查它是否满足请求的版本并设置这些变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION</span></code></dt><dd><p>完整的提供版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_EXACT</span></code></dt><dd><p>如果版本完全匹配，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_COMPATIBLE</span></code></dt><dd><p>如果版本兼容，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_UNSUITABLE</span></code></dt><dd><p>如果任何版本均不适用，则为 True</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">find_package</span></code> 命令会检查这些变量，以确定配置文件是否提供了可接受的版本。在 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 调用返回后，它们将不再可用。如果版本可接受，则会设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION</span></code></dt><dd><p>完整的提供版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MAJOR</span></code></dt><dd><p>如果提供了版本，则为主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MINOR</span></code></dt><dd><p>如果提供了版本，则为次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_PATCH</span></code></dt><dd><p>如果提供了版本，则为补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_TWEAK</span></code></dt><dd><p>如果提供了版本，则为修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_COUNT</span></code></dt><dd><p>版本组件数量，0 到 4</p>
+</dd>
+</dl>
+<p>并且加载相应的包配置文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>虽然版本匹配的确切行为由各个包决定，但许多包使用 <span class="target" id="index-0-command:write_basic_package_version_file"></span><a class="reference internal" href="../module/CMakePackageConfigHelpers.html#command:write_basic_package_version_file" title="write_basic_package_version_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">write_basic_package_version_file()</span></code></a> 来提供此逻辑。此命令生成的版本检查脚本在版本范围方面有一些显著的注意事项</p>
+<ul class="simple">
+<li><p>版本范围的上限充当了可接受版本的硬性限制。因此，虽然对 <code class="docutils literal notranslate"><span class="pre">1.4.0</span></code> 版本的请求可能会被版本为 <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> 且声明“主版本号相同”兼容性的包所满足，但如果请求的版本范围是 <code class="docutils literal notranslate"><span class="pre">1.4.0...1.5.0</span></code>，则同一个包将被拒绝。</p></li>
+<li><p>版本范围的两端必须符合包所声明的兼容性级别。例如，如果一个包声明了“主版本号和次版本号相同”的兼容性，请求版本范围 <code class="docutils literal notranslate"><span class="pre">1.4.0...&lt;1.5.5</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1.4.0...1.5.0</span></code> 将导致该包被拒绝，即使包的版本是 <code class="docutils literal notranslate"><span class="pre">1.4.1</span></code>。</p></li>
+</ul>
+<p>因此，不可能使用版本范围来扩展可接受的兼容包版本范围。</p>
+</div>
+</section>
+<section id="cps">
+<span id="cps-version-selection"></span><h3><a class="toc-backref" href="find_package.html#id24" role="doc-backlink">通用包规范 (Common Package Specification)</a><a class="headerlink" href="find_package.html#cps" title="链接到此标题">¶</a></h3>
+<p>对于通用包规范 (CPS) 包配置文件，包版本号由 CMake 根据一组公认的版本方案进行检查。目前，识别以下方案</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">simple</span></code></dt><dd><p>版本号是由整数组成的元组，后跟一个可选的尾随段，该段在版本比较时会被忽略。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">自定义</span></code></dt><dd><p>解释版本号的机制未指定。版本字符串必须完全匹配才能使包被接受。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>有关每种方案的详细说明以及如何执行比较的解释，请参考 <a class="reference external" href="https://cps-org.github.io/cps/schema.html#version-schema"><code class="docutils literal notranslate"><span class="pre">version_schema</span></code></a>。请注意，规范中可能包含 CMake 不支持的方案。</p>
+<p>除了包的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 外，CPS 还允许包选择性地指定 <a class="reference external" href="https://cps-org.github.io/cps/schema.html#compat-version"><code class="docutils literal notranslate"><span class="pre">compat_version</span></code></a>，即包提供兼容性的最旧版本。也就是说，包保证期望 <code class="docutils literal notranslate"><span class="pre">compat_version</span></code> 的使用者应该能够使用该包，即使包的实际版本较新。如果未指定，<code class="docutils literal notranslate"><span class="pre">compat_version</span></code> 隐含地等于包版本，即不提供向后兼容性。</p>
+<p>当包使用识别的方案时，CMake 将根据以下规则确定包的可接受性</p>
+<ul class="simple">
+<li><p>如果指定了 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code>，或者如果包没有提供 <code class="docutils literal notranslate"><span class="pre">compat_version</span></code>，则包的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 必须等于请求的版本。</p></li>
+<li><p>否则</p>
+<ul>
+<li><p>包的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 必须大于或等于请求的（最小）版本，且</p></li>
+<li><p>包的 <code class="docutils literal notranslate"><span class="pre">compat_version</span></code> 必须小于或等于请求的（最小）版本，且</p></li>
+<li><p>如果给定了请求的最高版本，则该版本必须大于（或等于，取决于最高版本是指定为包含还是排除）包的 <code class="docutils literal notranslate"><span class="pre">version</span></code>。</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>选择这种范围匹配实现是为了尽可能接近 <span class="target" id="index-1-command:write_basic_package_version_file"></span><a class="reference internal" href="../module/CMakePackageConfigHelpers.html#command:write_basic_package_version_file" title="write_basic_package_version_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">write_basic_package_version_file()</span></code></a> 的行为，尽管排除了过于宽泛的范围导致无法匹配任何内容的情况。</p>
+</div>
+<p>对于使用 <code class="docutils literal notranslate"><span class="pre">simple</span></code> 版本方案的包，如果版本可接受，则会设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION</span></code></dt><dd><p>完整的提供版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MAJOR</span></code></dt><dd><p>如果提供了版本，则为主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MINOR</span></code></dt><dd><p>如果提供了版本，则为次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_PATCH</span></code></dt><dd><p>如果提供了版本，则为补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_TWEAK</span></code></dt><dd><p>如果提供了版本，则为修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_COUNT</span></code></dt><dd><p>版本组件的数量，非负</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="package-file-interface-variables">
+<h2><a class="toc-backref" href="find_package.html#id25" role="doc-backlink">包文件接口变量</a><a class="headerlink" href="find_package.html#package-file-interface-variables" title="链接到此标题">¶</a></h2>
+<p>加载查找模块 (find module) 或 CMake 脚本包配置文件时，<code class="docutils literal notranslate"><span class="pre">find_package</span></code> 会定义变量来提供有关调用参数的信息（并在返回前恢复其原始状态）</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NAME</span></code></dt><dd><p>正在搜索的 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_REQUIRED</span></code></dt><dd><p>如果给定了 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_QUIETLY</span></code></dt><dd><p>如果给定了 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_REGISTRY_VIEW</span></code></dt><dd><p>如果给定了 <code class="docutils literal notranslate"><span class="pre">REGISTRY_VIEW</span></code> 选项，则为所请求的视图</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION</span></code></dt><dd><p>完整的请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAJOR</span></code></dt><dd><p>如果已请求，则为主版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MINOR</span></code></dt><dd><p>如果已请求，则为次版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_PATCH</span></code></dt><dd><p>如果已请求，则为补丁版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_TWEAK</span></code></dt><dd><p>如果已请求，则为调整版本，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_COUNT</span></code></dt><dd><p>版本组件数量，0 到 4</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_EXACT</span></code></dt><dd><p>如果给定了 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 选项，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_COMPONENTS</span></code></dt><dd><p>指定组件的列表（必需和可选）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_REQUIRED_&lt;c&gt;</span></code></dt><dd><p>如果组件 <code class="docutils literal notranslate"><span class="pre">&lt;c&gt;</span></code> 是必需的，则为 True，如果组件 <code class="docutils literal notranslate"><span class="pre">&lt;c&gt;</span></code> 是可选的，则为 false</p>
+</dd>
+</dl>
+<p>当指定了版本范围时，上述版本变量将保存基于版本范围下限的值。这是为了保持与未实现为预期版本范围的包的兼容性。此外，版本范围将由以下变量描述</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_RANGE</span></code></dt><dd><p>完整的请求版本范围字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_RANGE_MIN</span></code></dt><dd><p>此变量指定版本范围的下限端点是包含还是排除。目前，<code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 是唯一支持的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_RANGE_MAX</span></code></dt><dd><p>此变量指定版本范围的上限端点是包含还是排除。此变量的可能值为 <code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN</span></code></dt><dd><p>范围下限端点的完整请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN_MAJOR</span></code></dt><dd><p>如果请求了版本，则为下限端点的主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN_MINOR</span></code></dt><dd><p>如果请求了版本，则为下限端点的次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN_PATCH</span></code></dt><dd><p>如果请求了版本，则为下限端点的补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN_TWEAK</span></code></dt><dd><p>如果请求了版本，则为下限端点的修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MIN_COUNT</span></code></dt><dd><p>下限端点的版本组件数量，0 到 4</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX</span></code></dt><dd><p>范围上限端点的完整请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX_MAJOR</span></code></dt><dd><p>如果请求了版本，则为上限端点的主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX_MINOR</span></code></dt><dd><p>如果请求了版本，则为上限端点的次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX_PATCH</span></code></dt><dd><p>如果请求了版本，则为上限端点的补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX_TWEAK</span></code></dt><dd><p>如果请求了版本，则为上限端点的修订版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_MAX_COUNT</span></code></dt><dd><p>上限端点的版本组件数量，0 到 4</p>
+</dd>
+</dl>
+<p>无论指定的是单个版本还是版本范围，变量 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_VERSION_COMPLETE</span></code> 都会被定义，并保存所指定的完整请求版本字符串。</p>
+<p>在模块模式 (Module mode) 下，加载的查找模块负责处理这些变量中详细说明的请求；详情请参阅查找模块。在配置模式 (Config mode) 下，<code class="docutils literal notranslate"><span class="pre">find_package</span></code> 会自动处理 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>、<code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 选项，但将组件的处理留给包配置文件，以适合该包的方式进行。包配置文件可以将 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 设置为 false，以告知 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 组件要求未得到满足。</p>
+</section>
+<section id="cps-transitive-requirements">
+<h2><a class="toc-backref" href="find_package.html#id26" role="doc-backlink">CPS 传递依赖要求</a><a class="headerlink" href="find_package.html#cps-transitive-requirements" title="链接到此标题">¶</a></h2>
+<p>通用包规范包描述由一个或多个组件组成，这些组件可能又依赖于包内部或外部的其他组件。当需要外部组件时，所提供的包被标记为该包的包级要求。此外，所需的组件集通常会在上述外部包要求中注明。</p>
+<p>在 CMake 脚本包描述使用 <span class="target" id="index-0-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 命令来处理传递依赖的地方，CMake 会使用内部嵌套的 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 调用来为 CPS 本身处理传递依赖。此调用可以通过另一个 CPS 包或 CMake 脚本包来解析 CPS 包依赖项。处理 CPS 组件依赖项的方式受到一些注意事项的限制。</p>
+<p>当解析传递依赖的候选者是另一个 CPS 包时，事情很简单；<code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 和 CPS “组件”可以直接比较（实际上与 CMake 的“导入目标 (imported targets)”同义）。然而，鼓励（且经常这样做）CMake 脚本包检查是否找到了所需的组件，无论该包是否描述了单独的组件。此外，即使那些确实描述了组件的包，通常也没有与 CPS 正常情况下同等的导入目标相关性。因此，将 CPS 包声明的所需组件集传递给 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 将导致解析依赖项出现虚假失败。</p>
+<p>为了解决这个问题，如果解析 CPS 传递依赖的候选者是 CMake 脚本包，CMake 会将消费 CPS 包声明的所需组件作为 <code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 传递，并执行单独的内部检查，以确认候选包是否提供了所需的导入目标。这些目标必须根据 CPS 约定命名为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;::&lt;ComponentName&gt;</span></code>，否则检查将认为该包未找到。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="find_package.html#">find_package</a><ul>
+<li><a class="reference internal" href="find_package.html#typical-usage">典型用法</a></li>
+<li><a class="reference internal" href="find_package.html#search-modes">搜索模式</a></li>
+<li><a class="reference internal" href="find_package.html#basic-signature">基本签名</a></li>
+<li><a class="reference internal" href="find_package.html#full-signature">完整签名</a></li>
+<li><a class="reference internal" href="find_package.html#config-mode-search-procedure">配置模式搜索过程</a></li>
+<li><a class="reference internal" href="find_package.html#config-mode-version-selection">配置模式版本选择</a><ul>
+<li><a class="reference internal" href="find_package.html#cmake-script">CMake 脚本</a></li>
+<li><a class="reference internal" href="find_package.html#cps">通用包规范</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="find_package.html#package-file-interface-variables">包文件接口变量</a></li>
+<li><a class="reference internal" href="find_package.html#cps-transitive-requirements">CPS 传递依赖</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="find_library.html" title="上一章">find_library</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="find_path.html" title="下一章">find_path</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/find_package.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="find_path.html" title="find_path">下一页</a> |</li>
+        <li class="right">
+          <a href="find_library.html" title="find_library">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="find_package.html">find_package</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

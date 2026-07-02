@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>GetPrerequisites — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="GetPrerequisites.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="MacroAddFileDependencies" href="MacroAddFileDependencies.html" />
+    <link rel="prev" title="Documentation" href="Documentation.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="MacroAddFileDependencies.html" title="MacroAddFileDependencies" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="Documentation.html" title="Documentation" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GetPrerequisites.html">GetPrerequisites</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="getprerequisites">
+<span id="module:GetPrerequisites"></span><h1>GetPrerequisites<a class="headerlink" href="GetPrerequisites.html#getprerequisites" title="链接到此标题">¶</a></h1>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">3.16 版本后已弃用：</span>请改用 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="../command/file.html#get-runtime-dependencies" title="file(get_runtime_dependencies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code></a>。</p>
+</div>
+<p>此模块提供了用于分析和列出可执行文件或共享库文件的依赖项（先决条件）的命令。这些命令会列出可执行文件或共享库所需的共享库（<code class="docutils literal notranslate"><span class="pre">.dll</span></code>、<code class="docutils literal notranslate"><span class="pre">.dylib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">.so</span></code> 文件）。</p>
+<p>使用 CMake 加载此模块</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GetPrerequisites</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此模块使用以下特定于平台的工具来确定依赖项：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dumpbin</span></code> (Windows)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">objdump</span></code> (Windows 上的 MinGW)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldd</span></code> (Linux/Unix)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">otool</span></code> (Apple 操作系统)</p></li>
+</ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.16 版本变更：</span>如果设置了 <span class="target" id="index-0-variable:CMAKE_OBJDUMP"></span><a class="reference internal" href="../variable/CMAKE_OBJDUMP.html#variable:CMAKE_OBJDUMP" title="CMAKE_OBJDUMP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OBJDUMP</span></code></a> 变量，将使用该变量指定的工具。</p>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="GetPrerequisites.html#commands" title="链接到此标题">¶</a></h2>
+<p>本模块提供以下命令</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:get_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:get_prerequisites" title="get_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_prerequisites()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:list_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:list_prerequisites" title="list_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list_prerequisites()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:list_prerequisites_by_glob"></span><a class="reference internal" href="GetPrerequisites.html#command:list_prerequisites_by_glob" title="list_prerequisites_by_glob"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list_prerequisites_by_glob()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:gp_append_unique"></span><a class="reference internal" href="GetPrerequisites.html#command:gp_append_unique" title="gp_append_unique"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gp_append_unique()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:is_file_executable"></span><a class="reference internal" href="GetPrerequisites.html#command:is_file_executable" title="is_file_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">is_file_executable()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:gp_item_default_embedded_path"></span><a class="reference internal" href="GetPrerequisites.html#command:gp_item_default_embedded_path" title="gp_item_default_embedded_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gp_item_default_embedded_path()</span></code></a> (项目可以使用 <code class="docutils literal notranslate"><span class="pre">gp_item_default_embedded_path_override()</span></code> 来覆盖它)</p></li>
+<li><p><span class="target" id="index-0-command:gp_resolve_item"></span><a class="reference internal" href="GetPrerequisites.html#command:gp_resolve_item" title="gp_resolve_item"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gp_resolve_item()</span></code></a> (项目可以使用 <code class="docutils literal notranslate"><span class="pre">gp_resolve_item_override()</span></code> 来覆盖它)</p></li>
+<li><p><span class="target" id="index-0-command:gp_resolved_file_type"></span><a class="reference internal" href="GetPrerequisites.html#command:gp_resolved_file_type" title="gp_resolved_file_type"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gp_resolved_file_type()</span></code></a> (项目可以使用 <code class="docutils literal notranslate"><span class="pre">gp_resolved_file_type_override()</span></code> 来覆盖它)</p></li>
+<li><p><span class="target" id="index-0-command:gp_file_type"></span><a class="reference internal" href="GetPrerequisites.html#command:gp_file_type" title="gp_file_type"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gp_file_type()</span></code></a></p></li>
+</ul>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_prerequisites">
+<span class="sig-name descname"><span class="pre">get_prerequisites</span></span><a class="headerlink" href="GetPrerequisites.html#command:get_prerequisites" title="Link to this definition">¶</a></dt>
+<dd><p>获取指定目标所需的共享库文件列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_prerequisites(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="nv">&lt;prerequisites-var&gt;</span><span class="w"> </span><span class="nv">&lt;exclude-system&gt;</span><span class="w"> </span><span class="nv">&lt;recurse&gt;</span>
+<span class="w">                  </span><span class="nv">&lt;exepath&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;rpaths&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>名为 <code class="docutils literal notranslate"><span class="pre">&lt;prerequisites-var&gt;</span></code> 的变量在首次进入此命令时应为空。退出时，<code class="docutils literal notranslate"><span class="pre">&lt;prerequisites-var&gt;</span></code> 将包含所需共享库文件的列表。</p>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code></dt><dd><p>可执行文件或共享库文件的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;prerequisites-var&gt;</span></code></dt><dd><p>用于保存结果的 CMake 变量名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exclude-system&gt;</span></code></dt><dd><p>如果设置为 1，则排除系统先决条件；如果设置为 0，则包含它们。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;recurse&gt;</span></code></dt><dd><p>如果设置为 1，则递归查找所有先决条件；如果设置为 0，则仅列出直接先决条件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exepath&gt;</span></code></dt><dd><p>在 Apple 操作系统上用于 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 替换的顶级可执行文件路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表：当给定目标不包含任何路径信息时，优先搜索这些路径。然后还会搜索标准系统位置：PATH、框架位置、/usr/lib 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;rpaths&gt;</span></code></dt><dd><p>可执行文件或库的可选运行时搜索路径，有助于查找文件。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版本新增：</span>在调用此命令之前，可以将 <code class="docutils literal notranslate"><span class="pre">GET_PREREQUISITES_VERBOSE</span></code> 变量设置为 true 以启用详细输出。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:list_prerequisites">
+<span class="sig-name descname"><span class="pre">list_prerequisites</span></span><a class="headerlink" href="GetPrerequisites.html#command:list_prerequisites" title="Link to this definition">¶</a></dt>
+<dd><p>打印一条消息，列出指定目标的先决条件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list_prerequisites(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;recurse&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;exclude-system&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;verbose&gt;</span><span class="p">]]]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code></dt><dd><p>共享库或可执行文件的名称，或者是共享库或可执行文件的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;recurse&gt;</span></code></dt><dd><p>如果设置为 1，则递归查找所有先决条件；如果设置为 0，则仅列出直接先决条件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exclude-system&gt;</span></code></dt><dd><p>如果设置为 1，则排除系统先决条件；如果设置为 0，则包含它们。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;verbose&gt;</span></code></dt><dd><p>如果设置为 0，则仅打印先决条件的完整路径名。如果设置为 1，则显示额外信息。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:list_prerequisites_by_glob">
+<span class="sig-name descname"><span class="pre">list_prerequisites_by_glob</span></span><a class="headerlink" href="GetPrerequisites.html#command:list_prerequisites_by_glob" title="Link to this definition">¶</a></dt>
+<dd><p>打印匹配 glob 模式的共享库和可执行文件的先决条件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list_prerequisites_by_glob(</span><span class="p">&lt;</span><span class="no">GLOB</span><span class="p">|</span><span class="no">GLOB_RECURSE</span><span class="p">&gt;</span>
+<span class="w">                           </span><span class="nv">&lt;glob-exp&gt;</span>
+<span class="w">                           </span><span class="p">[</span><span class="nv">&lt;optional-args&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">GLOB</span></code> 或 <code class="docutils literal notranslate"><span class="pre">GLOB_RECURSE</span></code></dt><dd><p>Globbing 模式，决定是仅遍历匹配项还是递归遍历其子目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;glob-exp&gt;</span></code></dt><dd><p>与 <span class="target" id="index-1-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 或 <span class="target" id="index-2-command:file"></span><a class="reference internal" href="../command/file.html#glob-recurse" title="file(glob_recurse)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB_RECURSE)</span></code></a> 一起使用的 globbing 表达式，用于检索匹配文件列表。如果匹配文件是可执行文件，则列出其先决条件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;optional-args&gt;...</span></code></dt><dd><p>提供的任何其他（可选）参数将作为可选参数传递给 <code class="docutils literal notranslate"><span class="pre">list_prerequisite()</span></code> 调用。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gp_append_unique">
+<span class="sig-name descname"><span class="pre">gp_append_unique</span></span><a class="headerlink" href="GetPrerequisites.html#command:gp_append_unique" title="Link to this definition">¶</a></dt>
+<dd><p>仅当值不在列表中时，才将其追加到列表中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gp_append_unique(</span><span class="nv">&lt;list-var&gt;</span><span class="w"> </span><span class="nv">&lt;value&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code></dt><dd><p>要追加到列表中的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;list-var&gt;</span></code></dt><dd><p>列表变量名称，仅当值不在列表中时，该值才会被追加。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:is_file_executable">
+<span class="sig-name descname"><span class="pre">is_file_executable</span></span><a class="headerlink" href="GetPrerequisites.html#command:is_file_executable" title="Link to this definition">¶</a></dt>
+<dd><p>检查给定文件是否为二进制可执行文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">is_file_executable(</span><span class="nv">&lt;file&gt;</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 是二进制可执行文件，则此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 设置为 1；否则设置为 0。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gp_item_default_embedded_path">
+<span class="sig-name descname"><span class="pre">gp_item_default_embedded_path</span></span><a class="headerlink" href="GetPrerequisites.html#command:gp_item_default_embedded_path" title="Link to this definition">¶</a></dt>
+<dd><p>确定指定项的参考路径。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gp_item_default_embedded_path(</span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;default-embedded-path-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令在 <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> 嵌入在包内时确定其参考路径，并将其存储到变量 <code class="docutils literal notranslate"><span class="pre">&lt;default-embedded-path-var&gt;</span></code> 中。</p>
+<p>项目可以通过定义自定义 <code class="docutils literal notranslate"><span class="pre">gp_item_default_embedded_path_override()</span></code> 命令来覆盖此命令。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gp_resolve_item">
+<span class="sig-name descname"><span class="pre">gp_resolve_item</span></span><a class="headerlink" href="GetPrerequisites.html#command:gp_resolve_item" title="Link to this definition">¶</a></dt>
+<dd><p>将给定项解析为现有的完整路径文件，并将其存储到变量中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gp_resolve_item(</span><span class="nv">&lt;context&gt;</span><span class="w"> </span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;exepath&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="nv">&lt;resolved-item-var&gt;</span>
+<span class="w">                </span><span class="p">[</span><span class="nv">&lt;rpaths&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;context&gt;</span></code></dt><dd><p>在 Apple 操作系统上用于 <code class="docutils literal notranslate"><span class="pre">@loader_path</span></code> 替换的顶级加载路径。解析项时，<code class="docutils literal notranslate"><span class="pre">@loader_path</span></code> 引用将相对于给定上下文值的目录（推测为另一个库）进行解析。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code></dt><dd><p>要解析的项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exepath&gt;</span></code></dt><dd><p>请参阅 <span class="target" id="index-1-command:get_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:get_prerequisites" title="get_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_prerequisites()</span></code></a> 中的参数说明。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>请参阅 <span class="target" id="index-2-command:get_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:get_prerequisites" title="get_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_prerequisites()</span></code></a> 中的参数说明。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;resolved-item-var&gt;</span></code></dt><dd><p>用于存储已解析项的结果变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;rpaths&gt;</span></code></dt><dd><p>请参阅 <span class="target" id="index-3-command:get_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:get_prerequisites" title="get_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_prerequisites()</span></code></a> 中的参数说明。</p>
+</dd>
+</dl>
+<p>项目可以通过定义自定义 <code class="docutils literal notranslate"><span class="pre">gp_resolve_item_override()</span></code> 命令来覆盖此命令。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gp_resolved_file_type">
+<span class="sig-name descname"><span class="pre">gp_resolved_file_type</span></span><a class="headerlink" href="GetPrerequisites.html#command:gp_resolved_file_type" title="Link to this definition">¶</a></dt>
+<dd><p>确定给定文件的类型。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gp_resolved_file_type(</span><span class="nv">&lt;original-file&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="w"> </span><span class="nv">&lt;exepath&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="nv">&lt;type-var&gt;</span>
+<span class="w">                      </span><span class="p">[</span><span class="nv">&lt;rpaths&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令相对于 <code class="docutils literal notranslate"><span class="pre">&lt;original-file&gt;</span></code> 确定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 的类型。先决条件的最终类型存储在 <code class="docutils literal notranslate"><span class="pre">&lt;type-var&gt;</span></code> 变量中。</p>
+<p>如有必要，使用 <code class="docutils literal notranslate"><span class="pre">&lt;exepath&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code> 来解析非绝对路径的 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 值——但仅限于非嵌入项。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;rpaths&gt;</span></code></dt><dd><p>请参阅 <span class="target" id="index-4-command:get_prerequisites"></span><a class="reference internal" href="GetPrerequisites.html#command:get_prerequisites" title="get_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_prerequisites()</span></code></a> 中的参数说明。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;type-var&gt;</span></code> 变量将被设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">system</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">local</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedded (嵌入)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">other (其他)</span></code></p></li>
+</ul>
+<p>项目可以通过定义自定义 <code class="docutils literal notranslate"><span class="pre">gp_resolved_file_type_override()</span></code> 命令来覆盖此命令。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gp_file_type">
+<span class="sig-name descname"><span class="pre">gp_file_type</span></span><a class="headerlink" href="GetPrerequisites.html#command:gp_file_type" title="Link to this definition">¶</a></dt>
+<dd><p>确定给定文件的类型。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gp_file_type(</span><span class="nv">&lt;original-file&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="w"> </span><span class="nv">&lt;type-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令相对于 <code class="docutils literal notranslate"><span class="pre">&lt;original-file&gt;</span></code> 确定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 的类型。先决条件的最终类型存储在 <code class="docutils literal notranslate"><span class="pre">&lt;type-var&gt;</span></code> 变量中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;type-var&gt;</span></code> 变量将被设置为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">system</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">local</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedded (嵌入)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">other (其他)</span></code></p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="GetPrerequisites.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-basic-usage">
+<h3>示例：基本用法<a class="headerlink" href="GetPrerequisites.html#example-basic-usage" title="此标题的永久链接">¶</a></h3>
+<p>打印共享库的所有依赖项（包括系统库），并显示详细输出。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GetPrerequisites</span><span class="nf">)</span>
+<span class="nf">list_prerequisites(</span><span class="s">"path/to/libfoo.dylib"</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-upgrading-code">
+<h3>示例：升级代码<a class="headerlink" href="GetPrerequisites.html#example-upgrading-code" title="链接到此标题">¶</a></h3>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GetPrerequisites</span><span class="nf">)</span>
+<span class="c"># ...</span>
+<span class="nf">gp_append_unique(</span><span class="nb">keys</span><span class="w"> </span><span class="s">"${key}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在新代码中，可以将 <code class="docutils literal notranslate"><span class="pre">gp_append_unique()</span></code> 替换为</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="nb">key</span><span class="w"> </span><span class="no">IN_LIST</span><span class="w"> </span><span class="nb">keys</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="s">"${key}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="GetPrerequisites.html#">GetPrerequisites</a><ul>
+<li><a class="reference internal" href="GetPrerequisites.html#commands">命令</a></li>
+<li><a class="reference internal" href="GetPrerequisites.html#examples">示例</a><ul>
+<li><a class="reference internal" href="GetPrerequisites.html#example-basic-usage">示例：基本用法</a></li>
+<li><a class="reference internal" href="GetPrerequisites.html#example-upgrading-code">示例：升级代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="Documentation.html" title="上一章">文档</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="MacroAddFileDependencies.html" title="下一章">MacroAddFileDependencies</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/GetPrerequisites.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="MacroAddFileDependencies.html" title="MacroAddFileDependencies">下一页</a> |</li>
+        <li class="right">
+          <a href="Documentation.html" title="Documentation">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GetPrerequisites.html">GetPrerequisites</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

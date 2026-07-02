@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ENABLE_EXPORTS — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ENABLE_EXPORTS.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="EXCLUDE_FROM_ALL" href="EXCLUDE_FROM_ALL.html" />
+    <link rel="prev" title="EchoString" href="EchoString.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="EXCLUDE_FROM_ALL.html" title="EXCLUDE_FROM_ALL" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="EchoString.html" title="EchoString" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ENABLE_EXPORTS.html">ENABLE_EXPORTS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="enable-exports">
+<span id="prop_tgt:ENABLE_EXPORTS"></span><h1>ENABLE_EXPORTS<a class="headerlink" href="ENABLE_EXPORTS.html#enable-exports" title="链接到此标题">¶</a></h1>
+<p>指定可执行文件或共享库是否导出符号。</p>
+<p>通常，可执行文件不导出任何符号，因为它最终程序。但可执行文件可以导出符号供可加载模块使用。当此属性设置为 true 时，CMake 将允许其他目标使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令“链接”到可执行文件。在所有平台上，对于链接到它的目标，都会创建到可执行文件的目标级别依赖项。在可加载模块的链接行上处理可执行文件因平台而异</p>
+<ul class="simple">
+<li><p>在基于 Windows 的系统（包括 Cygwin）上，将与可执行文件一起创建一个“导入库”来列出导出的符号。可加载模块链接到导入库以获取这些符号。</p></li>
+<li><p>在 macOS 上，可加载模块使用 <code class="docutils literal notranslate"><span class="pre">-bundle_loader</span></code> 标志链接到可执行文件本身。</p></li>
+<li><p>在 AIX 上，将与可执行文件一起创建一个链接器“导入文件”来列出导出符号，以便在链接其他目标时导入。可加载模块链接到导入文件以获取这些符号。</p></li>
+<li><p>在其他平台上，可加载模块直接链接，无需引用可执行文件，因为动态加载器会在加载模块时自动绑定符号。</p></li>
+</ul>
+<p>此属性由 <span class="target" id="index-0-variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_EXECUTABLE_ENABLE_EXPORTS.html#variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS" title="CMAKE_EXECUTABLE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTABLE_ENABLE_EXPORTS</span></code></a> 变量的值初始化，如果该变量在创建可执行文件目标时设置。如果未设置 <span class="target" id="index-1-variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_EXECUTABLE_ENABLE_EXPORTS.html#variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS" title="CMAKE_EXECUTABLE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTABLE_ENABLE_EXPORTS</span></code></a>，则为了向后兼容，将使用 <span class="target" id="index-0-variable:CMAKE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_ENABLE_EXPORTS.html#variable:CMAKE_ENABLE_EXPORTS" title="CMAKE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ENABLE_EXPORTS</span></code></a> 变量来初始化该属性。有关共享库目标的替代初始化行为，请参见下文。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.27 版本新增：</span>要在 macOS 上与共享库链接，或在任何 Apple 平台上与共享框架链接，可以使用链接器导入文件代替实际的共享库。这些链接器导入文件也称为基于文本的存根，它们具有 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件扩展名。</p>
+<p>此属性控制这些链接器导入文件的生成以及它们的消耗。当此属性设置为共享库目标的 true 时，CMake 将为该库生成一个 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件。然后，链接到共享库目标的其他目标将在链接时使用此 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件，而不是链接到共享库二进制文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>为了向后兼容，如果将 <span class="target" id="index-0-prop_tgt:XCODE_ATTRIBUTE_<an-attribute>"></span><a class="reference internal" href="XCODE_ATTRIBUTE_an-attribute.html#prop_tgt:XCODE_ATTRIBUTE_<an-attribute>" title="XCODE_ATTRIBUTE_<an-attribute>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">XCODE_ATTRIBUTE_GENERATE_TEXT_BASED_STUBS</span></code></a> 目标属性或 <span class="target" id="index-0-variable:CMAKE_XCODE_ATTRIBUTE_<an-attribute>"></span><a class="reference internal" href="../variable/CMAKE_XCODE_ATTRIBUTE_an-attribute.html#variable:CMAKE_XCODE_ATTRIBUTE_<an-attribute>" title="CMAKE_XCODE_ATTRIBUTE_<an-attribute>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_XCODE_ATTRIBUTE_GENERATE_TEXT_BASED_STUBS</span></code></a> 变量设置为 false，则此属性将被忽略。</p>
+</div>
+<p>对于共享库目标，此属性由 <span class="target" id="index-0-variable:CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS.html#variable:CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS" title="CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SHARED_LIBRARY_ENABLE_EXPORTS</span></code></a> 变量的值初始化，如果该变量在创建目标时设置。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="EchoString.html" title="上一章">EchoString</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="EXCLUDE_FROM_ALL.html" title="下一章">EXCLUDE_FROM_ALL</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/ENABLE_EXPORTS.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="EXCLUDE_FROM_ALL.html" title="EXCLUDE_FROM_ALL">下一页</a> |</li>
+        <li class="right">
+          <a href="EchoString.html" title="EchoString">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ENABLE_EXPORTS.html">ENABLE_EXPORTS</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

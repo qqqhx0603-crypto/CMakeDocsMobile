@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindGTest — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindGTest.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindGTK" href="FindGTK.html" />
+    <link rel="prev" title="FindGSL" href="FindGSL.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindGTK.html" title="FindGTK" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGSL.html" title="FindGSL" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindGTest.html">FindGTest</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findgtest">
+<span id="module:FindGTest"></span><h1>FindGTest<a class="headerlink" href="FindGTest.html#findgtest" title="链接到此标题">¶</a></h1>
+<p>查找 GoogleTest，即 Google 的 C++ 测试和模拟框架</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">GTest</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>GoogleTest 框架还包含 GoogleMock，这是一个用于编写和使用 C++ 模拟（mock）类的库。在某些系统上，GoogleMock 可能会作为单独的软件包分发。</p>
+<p>当 GoogleTest 和 GoogleMock 库的调试（debug）和发布（release/optimized）版本均可用时，本模块会根据当前的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#build-configurations"><span class="std std-ref">构建配置</span></a> 选择相应的变体。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增: </span>如果 GoogleTest 是使用其基于 CMake 的构建系统构建并安装的，它会提供一个 <a class="reference internal" href="../manual/cmake-packages.7.html#config-file-packages"><span class="std std-ref">软件包配置文件</span></a> (<code class="docutils literal notranslate"><span class="pre">GTestConfig.cmake</span></code>)，该文件可用于 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的 <a class="reference internal" href="../command/find_package.html#config-mode"><span class="std std-ref">配置模式</span></a>。默认情况下，本模块现在会搜索该配置文件，如果找到，则直接返回结果而无需进一步操作。如果未找到上游配置文件，本模块将回退到 <a class="reference internal" href="../command/find_package.html#module-mode"><span class="std std-ref">模块模式</span></a> 并搜索标准位置。</p>
+</div>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindGTest.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>封装 GoogleTest <code class="docutils literal notranslate"><span class="pre">gtest</span></code> 库使用需求的目标，在找到 GoogleTest 时可用。<code class="docutils literal notranslate"><span class="pre">gtest</span></code> 库提供了 GoogleTest 测试框架的核心功能。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>封装 GoogleTest <code class="docutils literal notranslate"><span class="pre">gtest_main</span></code> 库使用需求的目标，在找到 GoogleTest 时可用。<code class="docutils literal notranslate"><span class="pre">gtest_main</span></code> 库提供了一个 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数，允许无需手动定义即可运行测试。</p>
+<p>仅当 GoogleTest 应为可执行文件提供 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数时，才链接到 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code>。如果项目自行提供了 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 实现，则仅链接到 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::gmock</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>封装 GoogleMock <code class="docutils literal notranslate"><span class="pre">gmock</span></code> 库使用需求的目标，在找到 GoogleTest 及其 Mock 库时可用。<code class="docutils literal notranslate"><span class="pre">gmock</span></code> 库提供了在 C++ 中编写和使用模拟类的工具。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::gmock_main</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>封装 GoogleMock <code class="docutils literal notranslate"><span class="pre">gmock_main</span></code> 库使用需求的目标，在找到 GoogleTest 和 <code class="docutils literal notranslate"><span class="pre">gmock_main</span></code> 时可用。<code class="docutils literal notranslate"><span class="pre">gmock_main</span></code> 库提供了一个 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数，允许无需手动定义即可运行 GoogleMock 测试。</p>
+<p>仅当 GoogleTest 应为可执行文件提供 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数时，才链接到 <code class="docutils literal notranslate"><span class="pre">GTest::gmock_main</span></code>。如果项目自行提供了 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 实现，则仅链接到 <code class="docutils literal notranslate"><span class="pre">GTest::gmock</span></code>。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindGTest.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>布尔值，指示是否找到了 GoogleTest。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindGTest.html#hints" title="链接到此标题">¶</a></h2>
+<p>本模块在调用 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 之前接受以下变量：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_ROOT</span></code></dt><dd><p>GoogleTest 安装的根目录（也可以设置为环境变量）。此变量仅在以 <a class="reference internal" href="../command/find_package.html#module-mode"><span class="std std-ref">模块模式</span></a> 找到 GoogleTest 时使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_MSVC_SEARCH</span></code></dt><dd><p>使用 MSVC 编译时，此变量控制根据运行时库链接模型搜索哪个 GoogleTest 构建变体。此变量仅在以 <a class="reference internal" href="../command/find_package.html#module-mode"><span class="std std-ref">模块模式</span></a> 找到 GoogleTest 时使用，并接受以下值之一：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">MD</span></code></dt><dd><p>（默认）搜索构建为链接动态 C 运行时的 GoogleTest 共享库变体。这些库通常使用 MSVC 运行时标志 <code class="docutils literal notranslate"><span class="pre">/MD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">/MDd</span></code>（分别用于 Release 或 Debug）进行编译。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MT</span></code></dt><dd><p>搜索构建为链接静态 C 运行时的 GoogleTest 静态库变体。这些库通常使用 MSVC 运行时标志 <code class="docutils literal notranslate"><span class="pre">/MT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">/MTd</span></code> 进行编译。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="deprecated-items">
+<h2>已弃用的项目<a class="headerlink" href="FindGTest.html#deprecated-items" title="链接到此标题">¶</a></h2>
+<section id="deprecated-variables">
+<h3>已弃用变量<a class="headerlink" href="FindGTest.html#deprecated-variables" title="此标题的链接">¶</a></h3>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_INCLUDE_DIRS</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 导入的目标，该目标通过其 <span class="target" id="index-0-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a> 目标属性公开所需的包含目录。</p>
+</div>
+<p>提供使用 GoogleTest 所需头文件的包含目录的结果变量。仅在以 <a class="reference internal" href="../command/find_package.html#module-mode"><span class="std std-ref">模块模式</span></a> 找到 GoogleTest 时，才能保证此变量可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_LIBRARIES</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 导入的目标。</p>
+</div>
+<p>提供链接 GoogleTest <code class="docutils literal notranslate"><span class="pre">gtest</span></code> 库所需库的结果变量。请注意，除了此变量指定的库外，项目还负责链接合适的线程库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_MAIN_LIBRARIES</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 导入的目标。</p>
+</div>
+<p>提供链接 GoogleTest <code class="docutils literal notranslate"><span class="pre">gtest_main</span></code> 库所需库的结果变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_BOTH_LIBRARIES</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 和 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 导入的目标。</p>
+</div>
+<p>提供同时包含 <code class="docutils literal notranslate"><span class="pre">gtest</span></code> 和 <code class="docutils literal notranslate"><span class="pre">gtest_main</span></code> 库的结果变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTEST_FOUND</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.2 版本弃用: </span>请使用 <code class="docutils literal notranslate"><span class="pre">GTest_FOUND</span></code>，其值相同。</p>
+</div>
+<p>布尔值，指示是否找到了 GoogleTest。</p>
+</dd>
+</dl>
+</section>
+<section id="deprecated-imported-targets">
+<h3>已弃用的导入目标<a class="headerlink" href="FindGTest.html#deprecated-imported-targets" title="链接到此标题">¶</a></h3>
+<p>为了向后兼容，本模块还提供以下导入的目标（自 CMake 3.5 起可用）：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::GTest</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.20 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 导入的目标。</p>
+</div>
+<p>链接 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 库的导入目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GTest::Main</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.20 版本弃用: </span>请改用 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 导入的目标。</p>
+</div>
+<p>链接 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 库的导入目标。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindGTest.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-finding-googletest">
+<h3>示例：查找 GoogleTest<a class="headerlink" href="FindGTest.html#examples-finding-googletest" title="链接到此标题">¶</a></h3>
+<p>查找 GoogleTest</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">GoogleTest</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者，查找 GoogleTest 并将其设为必需（如果未找到，处理将停止并报错）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">GoogleTest</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examples-using-imported-targets">
+<h3>示例：使用导入的目标<a class="headerlink" href="FindGTest.html#examples-using-imported-targets" title="链接到此标题">¶</a></h3>
+<p>在下面的示例中，<code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 导入的目标被链接到项目目标，从而能够使用核心 GoogleTest 测试框架</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">GTest</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在下一个示例中，<code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 导入的目标也链接到可执行文件，并注册了一个测试。<code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 库提供了一个 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数，因此无需手动编写。<code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 库仍然需要被链接，因为测试代码直接使用了 <code class="docutils literal notranslate"><span class="pre">GTest::gtest</span></code> 提供的功能，而最佳实践是直接链接所使用的库。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_testing()</span>
+
+<span class="nf">find_package(</span><span class="nb">GTest</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+
+<span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.cc</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest_main</span><span class="nf">)</span>
+
+<span class="nf">add_test(</span><span class="no">NAME</span><span class="w"> </span><span class="nb">AllTestsInFoo</span><span class="w"> </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="deeper-integration-with-ctest">
+<h2>与 CTest 的深度集成<a class="headerlink" href="FindGTest.html#deeper-integration-with-ctest" title="链接到此标题">¶</a></h2>
+<p>本模块通常与 <span class="target" id="index-0-module:GoogleTest"></span><a class="reference internal" href="GoogleTest.html#module:GoogleTest" title="GoogleTest"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GoogleTest</span></code></a> 模块一起使用，该模块提供了 <span class="target" id="index-0-command:gtest_discover_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_discover_tests" title="gtest_discover_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code></a> 和 <span class="target" id="index-0-command:gtest_add_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_add_tests" title="gtest_add_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_add_tests()</span></code></a> 命令，以帮助将 GoogleTest 基础设施与 CTest 集成。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">GTest</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest_main</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GoogleTest</span><span class="nf">)</span>
+<span class="nf">gtest_discover_tests(</span><span class="nb">example</span><span class="nf">)</span>
+
+<span class="c"># ...</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.9 版本变更: </span>之前的 CMake 版本在此模块中定义了 <span class="target" id="index-1-command:gtest_add_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_add_tests" title="gtest_add_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_add_tests()</span></code></a> 命令。</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindGTest.html#">FindGTest</a><ul>
+<li><a class="reference internal" href="FindGTest.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindGTest.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindGTest.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindGTest.html#deprecated-items">已弃用的项目</a><ul>
+<li><a class="reference internal" href="FindGTest.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindGTest.html#deprecated-imported-targets">已弃用的导入目标</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindGTest.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindGTest.html#examples-finding-googletest">示例：查找 GoogleTest</a></li>
+<li><a class="reference internal" href="FindGTest.html#examples-using-imported-targets">示例：使用导入的目标</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindGTest.html#deeper-integration-with-ctest">与 CTest 的深度集成</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindGSL.html" title="上一章">FindGSL</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindGTK.html" title="下一章">FindGTK</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindGTest.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindGTK.html" title="FindGTK">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGSL.html" title="FindGSL">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindGTest.html">FindGTest</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

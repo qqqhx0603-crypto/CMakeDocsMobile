@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckIPOSupported — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckIPOSupported.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckLanguage" href="CheckLanguage.html" />
+    <link rel="prev" title="CheckIncludeFiles" href="CheckIncludeFiles.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckLanguage.html" title="CheckLanguage" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckIncludeFiles.html" title="CheckIncludeFiles" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckIPOSupported.html">CheckIPOSupported</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checkiposupported">
+<span id="module:CheckIPOSupported"></span><h1>CheckIPOSupported<a class="headerlink" href="CheckIPOSupported.html#checkiposupported" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>此模块提供了一个命令，用于检查编译器是否支持过程间优化 (IPO/LTO)。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIPOSupported</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>过程间优化是一种编译器技术，它跨翻译单元（即跨源文件）执行优化，允许编译器将整个程序作为一个整体进行分析和优化，而不是逐文件进行优化。这可以通过启用更积极的内联和死代码消除来提高性能。当这些优化在链接时应用时，该过程通常被称为链接时优化 (LTO)，这是 IPO 的一种常见形式。</p>
+<p>在 CMake 中，可以使用 <span class="target" id="index-0-prop_tgt:INTERPROCEDURAL_OPTIMIZATION"></span><a class="reference internal" href="../prop_tgt/INTERPROCEDURAL_OPTIMIZATION.html#prop_tgt:INTERPROCEDURAL_OPTIMIZATION" title="INTERPROCEDURAL_OPTIMIZATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERPROCEDURAL_OPTIMIZATION</span></code></a> 目标属性，针对每个目标启用过程间优化，或者使用 <span class="target" id="index-0-variable:CMAKE_INTERPROCEDURAL_OPTIMIZATION"></span><a class="reference internal" href="../variable/CMAKE_INTERPROCEDURAL_OPTIMIZATION.html#variable:CMAKE_INTERPROCEDURAL_OPTIMIZATION" title="CMAKE_INTERPROCEDURAL_OPTIMIZATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INTERPROCEDURAL_OPTIMIZATION</span></code></a> 变量，针对当前作用域内的所有目标启用它。</p>
+<p>在使用目标上启用过程间优化之前，请使用此模块来确保编译器支持 IPO/LTO。</p>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckIPOSupported.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_ipo_supported">
+<span class="sig-name descname"><span class="pre">check_ipo_supported</span></span><a class="headerlink" href="CheckIPOSupported.html#command:check_ipo_supported" title="链接到此定义">¶</a></dt>
+<dd><p>检查编译器是否支持过程间优化 (IPO/LTO)</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_ipo_supported(</span>
+<span class="w">  </span><span class="p">[</span><span class="no">RESULT</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">OUTPUT</span><span class="w"> </span><span class="nv">&lt;output-var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">LANGUAGES</span><span class="w"> </span><span class="nv">&lt;lang&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>选项如下</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>如果编译器支持 IPO，则将 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">YES</span></code>，否则设置为 <code class="docutils literal notranslate"><span class="pre">NO</span></code>。 如果未提供此选项，则如果不支持 IPO，该命令将发出致命错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT</span> <span class="pre">&lt;output-var&gt;</span></code></dt><dd><p>使用任何错误的详细信息设置 <code class="docutils literal notranslate"><span class="pre">&lt;output-var&gt;</span></code> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span> <span class="pre">&lt;lang&gt;...</span></code></dt><dd><p>指定要检查其编译器的语言。</p>
+<p>支持以下语言</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CXX</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Fortran</span></code></p></li>
+</ul>
+<p>如果未提供此选项，则默认语言将从当前的 <span class="target" id="index-0-prop_gbl:ENABLED_LANGUAGES"></span><a class="reference internal" href="../prop_gbl/ENABLED_LANGUAGES.html#prop_gbl:ENABLED_LANGUAGES" title="ENABLED_LANGUAGES"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">ENABLED_LANGUAGES</span></code></a> 全局属性中选取。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>要使用 <code class="docutils literal notranslate"><span class="pre">check_ipo_supported()</span></code>，策略 <span class="target" id="index-0-policy:CMP0069"></span><a class="reference internal" href="../policy/CMP0069.html#policy:CMP0069" title="CMP0069"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0069</span></code></a> 必须设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>；否则，将发生致命错误。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.13 中添加： </span>对 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 中添加： </span>检查使用调用者的 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 值。 请参阅策略 <span class="target" id="index-0-policy:CMP0138"></span><a class="reference internal" href="../policy/CMP0138.html#policy:CMP0138" title="CMP0138"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0138</span></code></a>。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckIPOSupported.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>检查编译器是否支持 IPO，如果不支持则发出致命错误</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIPOSupported</span><span class="nf">)</span>
+<span class="nf">check_ipo_supported()</span><span class="w"> </span><span class="c"># fatal error if IPO is not supported</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>以下示例演示了如何使用此模块仅在编译器支持时为目标启用 IPO，并在不支持时发出警告。 此外，项目可能希望提供配置选项来控制何时启用 IPO。 例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">FOO_ENABLE_IPO</span><span class="w"> </span><span class="s">"Enable IPO/LTO"</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">FOO_ENABLE_IPO</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">include(</span><span class="nb">CheckIPOSupported</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">check_ipo_supported(</span><span class="no">RESULT</span><span class="w"> </span><span class="nb">result</span><span class="w"> </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">output</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if(</span><span class="nb">result</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">INTERPROCEDURAL_OPTIMIZATION</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">else()</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">WARNING</span><span class="w"> </span><span class="s">"IPO is not supported: ${output}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckIPOSupported.html#">CheckIPOSupported</a><ul>
+<li><a class="reference internal" href="CheckIPOSupported.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckIPOSupported.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckIncludeFiles.html" title="上一章">CheckIncludeFiles</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckLanguage.html" title="下一章">CheckLanguage</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckIPOSupported.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckLanguage.html" title="CheckLanguage">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckIncludeFiles.html" title="CheckIncludeFiles">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckIPOSupported.html">CheckIPOSupported</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

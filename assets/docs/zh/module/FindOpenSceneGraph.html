@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindOpenSceneGraph — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindOpenSceneGraph.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindOpenSP" href="FindOpenSP.html" />
+    <link rel="prev" title="FindOpenMP" href="FindOpenMP.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindOpenSP.html" title="FindOpenSP" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindOpenMP.html" title="FindOpenMP" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindOpenSceneGraph.html">FindOpenSceneGraph</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findopenscenegraph">
+<span id="module:FindOpenSceneGraph"></span><h1>FindOpenSceneGraph<a class="headerlink" href="FindOpenSceneGraph.html#findopenscenegraph" title="链接到此标题">¶</a></h1>
+<p>查找 <a class="reference external" href="https://openscenegraph.github.io/openscenegraph.io/">OpenSceneGraph</a> (OSG)，一个 3D 图形应用程序编程接口</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSceneGraph</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>OpenSceneGraph 的开发已大部分过渡到其后继项目 VulkanSceneGraph，新代码应优先使用该项目。有关将 VulkanSceneGraph 与 CMake 结合使用的指导，请参考上游文档。</p>
+</div>
+<p>该模块用于搜索 OpenSceneGraph 核心 osg 库、其依赖项 OpenThreads，以及其他 OpenSceneGraph 库（其中一些也被称为 <em>NodeKits</em>，如果已指定的话）。</p>
+<p>使用 OpenSceneGraph 时，其核心库头文件应包含在 C++ 项目源代码中，例如：</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="FindOpenSceneGraph.html#id1" title="此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osg/PositionAttitudeTransform&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>OpenSceneGraph 库和 NodeKits 的头文件遵循类似的包含结构，例如：</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="FindOpenSceneGraph.html#id2" title="此代码的永久链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osgAnimation/Animation&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osgDB/DatabasePager&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osgFX/BumpMapping&gt;</span>
+<span class="c1">// ...</span>
+</pre></div>
+</div>
+</div>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindOpenSceneGraph.html#components" title="此标题的链接">¶</a></h2>
+<p>OpenSceneGraph 工具包由核心库 osg 和其他附加库组成，这些附加库可以作为组件通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令进行选择性指定。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSceneGraph</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持的组件包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">osg</span></code></dt><dd><p>查找使用 OpenSceneGraph 所必需的核心 osg 库 (<code class="docutils literal notranslate"><span class="pre">libosg</span></code>)。该组件始终会被自动包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OpenThreads</span></code></dt><dd><p>通过 <span class="target" id="index-0-module:FindOpenThreads"></span><a class="reference internal" href="FindOpenThreads.html#module:FindOpenThreads" title="FindOpenThreads"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindOpenThreads</span></code></a> 模块查找依赖的 OpenThreads 库 (<code class="docutils literal notranslate"><span class="pre">libOpenThreads</span></code>)。该组件始终会被自动包含，因为它是使用 OpenSceneGraph 所必需的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgAnimation</span></code></dt><dd><p>查找 osgAnimation 库，该库提供用于动画的通用实用类。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgDB</span></code></dt><dd><p>查找用于读写场景图支持的 osgDB 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgFX</span></code></dt><dd><p>查找 osgFX NodeKit，该库提供实现特效的框架。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgGA</span></code></dt><dd><p>查找 osgGA (GUI Abstraction) 库，该库提供与各种窗口系统交互的工具。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgIntrospection</span></code></dt><dd><p>查找 osgIntrospection 库，该库提供反射框架，用于在运行时访问和调用类属性及方法，而无需修改类本身。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>自 OpenSceneGraph 3.0 版本起，osgIntrospection 库已从 OpenSceneGraph 工具包中移除。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgManipulator</span></code></dt><dd><p>查找 osgManipulator NodeKit，该库提供对 3D 交互式操纵器的支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgParticle</span></code></dt><dd><p>查找 osgParticle NodeKit，该库提供对粒子特效的支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgPresentation</span></code></dt><dd><p>查找 osgPresentation NodeKit，该库提供对基于 3D 场景图的演示文稿的支持。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此 NodeKit 已在 OpenSceneGraph 3.0.0 中添加。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgProducer</span></code></dt><dd><p>查找 osgProducer 实用库，该库提供窗口管理和事件处理功能。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>osgProducer 已在 OpenSceneGraph 1.x 工具包的早期版本中移除，并已被 osgViewer 库取代。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgQt</span></code></dt><dd><p>查找 osgQt 实用库，该库提供各种辅助 Qt 集成的类。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>自 OpenSceneGraph 3.6 版本起，该库已迁移至其独立仓库。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgShadow</span></code></dt><dd><p>查找 osgShadow NodeKit，该库提供对多种阴影技术的支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgSim</span></code></dt><dd><p>查找 osgSim NodeKit，该库增加了对导航灯和 OpenFlight 风格移动控制等模拟特性的支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgTerrain</span></code></dt><dd><p>查找 osgTerrain NodeKit，该库提供地理特有地形渲染支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgText</span></code></dt><dd><p>查找 osgText NodeKit，该库提供高质量文本支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgUtil</span></code></dt><dd><p>查找 osgUtil 库，该库提供更新、剔除和绘制遍历等通用工具，以及诸如优化、三角形带化 (triangle stripping) 和细分 (tessellation) 等场景图工具。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgViewer</span></code></dt><dd><p>查找 osgViewer 库，该库提供高级查看器功能。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgVolume</span></code></dt><dd><p>查找 osgVolume NodeKit，该库提供体渲染支持。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">osgWidget</span></code></dt><dd><p>查找 osgWidget NodeKit，该库提供对 2D 和 3D GUI 小部件集的支持。</p>
+</dd>
+</dl>
+<p>如果未指定组件，该模块默认搜索 <code class="docutils literal notranslate"><span class="pre">osg</span></code> 和 <code class="docutils literal notranslate"><span class="pre">OpenThreads</span></code> 组件。</p>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindOpenSceneGraph.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>布尔值，指示是否找到了（所请求版本的）带有所有指定组件的 OpenSceneGraph。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>找到的 OpenSceneGraph 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPENSCENEGRAPH_INCLUDE_DIRS</span></code></dt><dd><p>包含使用 OpenSceneGraph 所需头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPENSCENEGRAPH_LIBRARIES</span></code></dt><dd><p>使用 OpenSceneGraph 进行链接所需的库。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindOpenSceneGraph.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_DEBUG</span></code></dt><dd><p>将此变量设为布尔值 true 以启用该模块的调试输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_MARK_AS_ADVANCED</span></code></dt><dd><p>将此变量设为布尔值 true，可自动将该模块的缓存变量标记为高级。</p>
+</dd>
+</dl>
+<p>为了帮助此模块找到安装在自定义位置的 OpenSceneGraph 及其各种组件，可以使用 <span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 变量。此外，以下变量也会被考虑：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;_DIR</span></code></dt><dd><p>可设置为 OSG 通用安装根目录的环境变量或 CMake 变量，其中 <code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 是上述列出组件的大写形式。例如，使用 <code class="docutils literal notranslate"><span class="pre">OSGVOLUME_DIR</span></code> 来查找 <code class="docutils literal notranslate"><span class="pre">osgVolume</span></code> 组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSG_DIR</span></code></dt><dd><p>可设置为影响整体 OpenSceneGraph 安装根目录检测的环境变量或 CMake 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSGDIR</span></code></dt><dd><p>环境变量，处理方式与 <code class="docutils literal notranslate"><span class="pre">OSG_DIR</span></code> 相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSG_ROOT</span></code></dt><dd><p>环境变量，处理方式与 <code class="docutils literal notranslate"><span class="pre">OSG_DIR</span></code> 相同。</p>
+</dd>
+</dl>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindOpenSceneGraph.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">OPENSCENEGRAPH_FOUND</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 4.2 版本弃用：</span>使用具有相同值的 <code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_FOUND</span></code>。</p>
+</div>
+<p>布尔值，指示是否找到了（所请求版本的）带有所有指定组件的 OpenSceneGraph。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPENSCENEGRAPH_VERSION</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 4.2 版本弃用：</span>被 <code class="docutils literal notranslate"><span class="pre">OpenSceneGraph_VERSION</span></code> 取代。</p>
+</div>
+<p>找到的 OpenSceneGraph 版本。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindOpenSceneGraph.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找指定了 <code class="docutils literal notranslate"><span class="pre">osgDB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">osgUtil</span></code> 组件的 OpenSceneGraph，并创建一个接口 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (imported target)</span></a>，该目标封装了其链接到项目目标所需的使用要求。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSceneGraph</span><span class="w"> </span><span class="m">2.0.0</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">osgDB</span><span class="w"> </span><span class="nb">osgUtil</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">OpenSceneGraph_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">OpenSceneGraph</span><span class="o">::</span><span class="nb">OpenSceneGraph</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_library(</span><span class="nb">OpenSceneGraph</span><span class="o">::</span><span class="nb">OpenSceneGraph</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set_target_properties(</span>
+<span class="w">    </span><span class="nb">OpenSceneGraph</span><span class="o">::</span><span class="nb">OpenSceneGraph</span>
+<span class="w">    </span><span class="no">PROPERTIES</span>
+<span class="w">      </span><span class="no">INTERFACE_INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="s">"${OPENSCENEGRAPH_INCLUDE_DIRS}"</span>
+<span class="w">      </span><span class="no">INTERFACE_LINK_LIBRARIES</span><span class="w"> </span><span class="s">"${OPENSCENEGRAPH_LIBRARIES}"</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">add_executable(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">OpenSceneGraph</span><span class="o">::</span><span class="nb">OpenSceneGraph</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindOpenSceneGraph.html#see-also" title="链接到此标题">¶</a></h2>
+<p>以下与 OpenSceneGraph 相关的辅助查找模块在该模块查找特定 OpenSceneGraph 组件时被内部使用。这些模块不建议在常规使用 <code class="docutils literal notranslate"><span class="pre">find_package(OpenSceneGraph)</span></code> 时由项目代码直接包含或调用。但是，它们对于需要更精细控制组件检测的高级场景很有用。例如，显式查找它们以覆盖或绕过特定 OpenSceneGraph 组件的检测：</p>
+<ul class="simple">
+<li><p>用于查找核心 osg 库的 <span class="target" id="index-0-module:Findosg"></span><a class="reference internal" href="Findosg.html#module:Findosg" title="Findosg"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">Findosg</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgAnimation 的 <span class="target" id="index-0-module:FindosgAnimation"></span><a class="reference internal" href="FindosgAnimation.html#module:FindosgAnimation" title="FindosgAnimation"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgAnimation</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgDB 的 <span class="target" id="index-0-module:FindosgDB"></span><a class="reference internal" href="FindosgDB.html#module:FindosgDB" title="FindosgDB"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgDB</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgDB 的 <span class="target" id="index-0-module:FindosgFX"></span><a class="reference internal" href="FindosgFX.html#module:FindosgFX" title="FindosgFX"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgFX</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgGA 的 <span class="target" id="index-0-module:FindosgGA"></span><a class="reference internal" href="FindosgGA.html#module:FindosgGA" title="FindosgGA"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgGA</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgIntrospection 的 <span class="target" id="index-0-module:FindosgIntrospection"></span><a class="reference internal" href="FindosgIntrospection.html#module:FindosgIntrospection" title="FindosgIntrospection"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgIntrospection</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgManipulator 的 <span class="target" id="index-0-module:FindosgManipulator"></span><a class="reference internal" href="FindosgManipulator.html#module:FindosgManipulator" title="FindosgManipulator"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgManipulator</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgParticle 的 <span class="target" id="index-0-module:FindosgParticle"></span><a class="reference internal" href="FindosgParticle.html#module:FindosgParticle" title="FindosgParticle"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgParticle</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgPresentation 的 <span class="target" id="index-0-module:FindosgPresentation"></span><a class="reference internal" href="FindosgPresentation.html#module:FindosgPresentation" title="FindosgPresentation"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgPresentation</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgProducer 的 <span class="target" id="index-0-module:FindosgProducer"></span><a class="reference internal" href="FindosgProducer.html#module:FindosgProducer" title="FindosgProducer"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgProducer</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgQt 的 <span class="target" id="index-0-module:FindosgQt"></span><a class="reference internal" href="FindosgQt.html#module:FindosgQt" title="FindosgQt"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgQt</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgShadow 的 <span class="target" id="index-0-module:FindosgShadow"></span><a class="reference internal" href="FindosgShadow.html#module:FindosgShadow" title="FindosgShadow"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgShadow</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgSim 的 <span class="target" id="index-0-module:FindosgSim"></span><a class="reference internal" href="FindosgSim.html#module:FindosgSim" title="FindosgSim"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgSim</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgTerrain 的 <span class="target" id="index-0-module:FindosgTerrain"></span><a class="reference internal" href="FindosgTerrain.html#module:FindosgTerrain" title="FindosgTerrain"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgTerrain</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgText 的 <span class="target" id="index-0-module:FindosgText"></span><a class="reference internal" href="FindosgText.html#module:FindosgText" title="FindosgText"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgText</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgUtil 的 <span class="target" id="index-0-module:FindosgUtil"></span><a class="reference internal" href="FindosgUtil.html#module:FindosgUtil" title="FindosgUtil"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgUtil</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgViewer 的 <span class="target" id="index-0-module:FindosgViewer"></span><a class="reference internal" href="FindosgViewer.html#module:FindosgViewer" title="FindosgViewer"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgViewer</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgVolume 的 <span class="target" id="index-0-module:FindosgVolume"></span><a class="reference internal" href="FindosgVolume.html#module:FindosgVolume" title="FindosgVolume"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgVolume</span></code></a> 模块。</p></li>
+<li><p>用于查找 osgWidget 的 <span class="target" id="index-0-module:FindosgWidget"></span><a class="reference internal" href="FindosgWidget.html#module:FindosgWidget" title="FindosgWidget"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindosgWidget</span></code></a> 模块。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#">FindOpenSceneGraph</a><ul>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#components">组件</a></li>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#examples">示例</a></li>
+<li><a class="reference internal" href="FindOpenSceneGraph.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindOpenMP.html" title="上一章">FindOpenMP</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindOpenSP.html" title="下一章">FindOpenSP</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindOpenSceneGraph.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindOpenSP.html" title="FindOpenSP">下一页</a> |</li>
+        <li class="right">
+          <a href="FindOpenMP.html" title="FindOpenMP">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindOpenSceneGraph.html">FindOpenSceneGraph</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

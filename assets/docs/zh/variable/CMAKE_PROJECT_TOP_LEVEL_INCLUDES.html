@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_PROJECT_TOP_LEVEL_INCLUDES — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;" href="CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html" />
+    <link rel="prev" title="CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE_BEFORE" href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE_BEFORE.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html" title="CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE_BEFORE.html" title="CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE_BEFORE" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html">CMAKE_PROJECT_TOP_LEVEL_INCLUDES</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-project-top-level-includes">
+<span id="variable:CMAKE_PROJECT_TOP_LEVEL_INCLUDES"></span><h1>CMAKE_PROJECT_TOP_LEVEL_INCLUDES<a class="headerlink" href="CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html#cmake-project-top-level-includes" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p><a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，包含作为第一个 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 调用的一部分包含的 CMake 语言文件。这些文件将在读取工具链文件（如果指定了的话）和设置平台变量后立即包含，但在启用任何语言之前。因此，语言特定的变量，包括像 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER</span></code></a> 这样的变量，可能尚未设置。有关在 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 调用期间可能包含的文件更详细的讨论，请参阅 <a class="reference internal" href="../command/project.html#code-injection"><span class="std std-ref">代码注入</span></a>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.29 中添加：</span>此变量现在也可以引用在 <span class="target" id="index-0-variable:CMAKE_MODULE_PATH"></span><a class="reference internal" href="CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH" title="CMAKE_MODULE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code></a> 中找到或内置于 CMake 中的模块名称。</p>
+</div>
+<p>此变量用于指定执行构建一次性设置的文件。它为配置包管理器、添加用户在项目之间共享的逻辑（例如，定义他们自己的自定义构建类型）等提供注入点。它主要供用户添加特定于其环境的内容，但不用于指定工具链详细信息（请使用 <span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a>）。</p>
+<p>默认情况下，此变量为空。它旨在由用户设置。</p>
+<p>另请参阅</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_PROJECT_INCLUDE"></span><a class="reference internal" href="CMAKE_PROJECT_INCLUDE.html#variable:CMAKE_PROJECT_INCLUDE" title="CMAKE_PROJECT_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_INCLUDE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_PROJECT_INCLUDE_BEFORE"></span><a class="reference internal" href="CMAKE_PROJECT_INCLUDE_BEFORE.html#variable:CMAKE_PROJECT_INCLUDE_BEFORE" title="CMAKE_PROJECT_INCLUDE_BEFORE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_INCLUDE_BEFORE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE"></span><a class="reference internal" href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE.html#variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE" title="CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE_BEFORE"></span><a class="reference internal" href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE_BEFORE.html#variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE_BEFORE" title="CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE_BEFORE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE_BEFORE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"></span><a class="reference internal" href="../prop_gbl/PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE.html#prop_gbl:PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE" title="PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">PROPAGATE_TOP_LEVEL_INCLUDES_TO_TRY_COMPILE</span></code></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE_BEFORE.html" title="上一章">CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE_BEFORE</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html" title="下一章">CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_PROJECT_TOP_LEVEL_INCLUDES.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html" title="CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_PROJECT_PROJECT-NAME_INCLUDE_BEFORE.html" title="CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE_BEFORE">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_PROJECT_TOP_LEVEL_INCLUDES.html">CMAKE_PROJECT_TOP_LEVEL_INCLUDES</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

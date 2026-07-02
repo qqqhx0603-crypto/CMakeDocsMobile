@@ -1,0 +1,1554 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-file-api(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-file-api.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-generator-expressions(7)" href="cmake-generator-expressions.7.html" />
+    <link rel="prev" title="CCMAKE_COLORS" href="../envvar/CCMAKE_COLORS.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-generator-expressions.7.html" title="cmake-generator-expressions(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../envvar/CCMAKE_COLORS.html" title="CCMAKE_COLORS" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-file-api.7.html">cmake-file-api(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-file-api(7)"></span><section id="cmake-file-api-7">
+<h1><a class="toc-backref" href="cmake-file-api.7.html#id1" role="doc-backlink">cmake-file-api(7)</a><a class="headerlink" href="cmake-file-api.7.html#cmake-file-api-7" title="指向此标题的链接">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-file-api.7.html#cmake-file-api-7" id="id1">cmake-file-api(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#introduction" id="id2">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#api-v1" id="id3">API v1</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-shared-stateless-query-files" id="id4">v1 共享无状态查询文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files" id="id5">v1 客户端无状态查询文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-client-stateful-query-files" id="id6">v1 客户端有状态查询文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file" id="id7">v1 回复索引文件</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference" id="id8">v1 回复文件引用</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-reply-error-index" id="id9">v1 回复错误索引</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#v1-reply-files" id="id10">v1 回复文件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kinds" id="id11">对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kind-codemodel" id="id12">"codemodel" 对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2" id="id13">"codemodel" 版本 2</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-directory-object" id="id14">"codemodel" 版本 2 "directory" 对象</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-target-object" id="id15">"codemodel" 版本 2 "target" 对象</a></p></li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-backtrace-graph" id="id16">"codemodel" 版本 2 "backtrace graph"</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kind-configurelog" id="id17">"configureLog" 对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#configurelog-version-1" id="id18">"configureLog" 版本 1</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kind-cache" id="id19">"cache" 对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#cache-version-2" id="id20">"cache" 版本 2</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kind-cmakefiles" id="id21">"cmakeFiles" 对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#cmakefiles-version-1" id="id22">"cmakeFiles" 版本 1</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#object-kind-toolchains" id="id23">"toolchains" 对象种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-file-api.7.html#toolchains-version-1" id="id24">"toolchains" 版本 1</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-file-api.7.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="cmake-file-api.7.html#introduction" title="此标题的链接">¶</a></h2>
+<p>CMake 提供了一个基于文件的 API，客户端可以使用它来获取 CMake 生成的构建系统的语义信息。客户端可以通过在构建树中的特定位置写入查询文件来使用该 API，以请求零个或多个<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>。当 CMake 在该构建树中生成构建系统时，它会读取查询文件并为客户端写入回复文件以供读取。</p>
+<p>该基于文件的 API 使用构建树顶部的 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/api/</span></code> 目录。API 具有版本控制，以支持 API 目录内文件布局的更改。API 文件布局的版本控制与回复中使用的<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的版本控制是正交的。此版本的 CMake 仅支持一个 API 版本，即 <a class="reference internal" href="cmake-file-api.7.html#api-v1">API v1</a>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.27 版本新增: </span>项目还可以使用 <span class="target" id="index-0-command:cmake_file_api"></span><a class="reference internal" href="../command/cmake_file_api.html#command:cmake_file_api" title="cmake_file_api"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_file_api()</span></code></a> 命令提交当前运行的查询。</p>
+</div>
+</section>
+<section id="api-v1">
+<span id="file-api-v1"></span><h2><a class="toc-backref" href="cmake-file-api.7.html#id3" role="doc-backlink">API v1</a><a class="headerlink" href="cmake-file-api.7.html#api-v1" title="指向此标题的链接">¶</a></h2>
+<p>API v1 位于 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/api/v1/</span></code> 目录中。它包含以下子目录</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">query/</span></code></dt><dd><p>保存客户端写入的查询文件。这些可以是 <a class="reference internal" href="cmake-file-api.7.html#v1-shared-stateless-query-files">v1 共享无状态查询文件</a>、<a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files">v1 客户端无状态查询文件</a> 或 <a class="reference internal" href="cmake-file-api.7.html#v1-client-stateful-query-files">v1 客户端有状态查询文件</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reply/</span></code></dt><dd><p>保存 CMake 在运行生成构建系统时写入的回复文件。客户端仅在被回复索引引用时才可以读取回复文件。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">index-*.json</span></code></dt><dd><p>CMake 生成构建系统时写入的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">error-*.json</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>当 CMake 因错误而未能生成构建系统时写入的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-error-index">v1 回复错误索引</a>。</p>
+</dd>
+</dl>
+<p>客户端可以随时查找并读取回复索引。客户端可以选择在任何时候创建 <code class="docutils literal notranslate"><span class="pre">reply/</span></code> 目录，并监视新回复索引的出现。CMake 拥有所有回复文件。客户端绝不能删除它们。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.31 版本新增: </span>用户可以将查询文件添加到 <span class="target" id="index-0-envvar:CMAKE_CONFIG_DIR"></span><a class="reference internal" href="../envvar/CMAKE_CONFIG_DIR.html#envvar:CMAKE_CONFIG_DIR" title="CMAKE_CONFIG_DIR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_CONFIG_DIR</span></code></a> 下的 <code class="docutils literal notranslate"><span class="pre">api/v1/query</span></code> 中，以创建适用于所有 CMake 项目的用户级查询。</p>
+</div>
+<section id="v1-shared-stateless-query-files">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id4" role="doc-backlink">v1 共享无状态查询文件</a><a class="headerlink" href="cmake-file-api.7.html#v1-shared-stateless-query-files" title="指向此标题的链接">¶</a></h3>
+<p>共享无状态查询文件允许客户端共享对<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>主要版本的请求，并获取运行的 CMake 所识别的所有已请求版本。</p>
+<p>客户端可以通过在 <code class="docutils literal notranslate"><span class="pre">v1/query/</span></code> 目录中创建空文件来创建共享请求。其格式为</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;build&gt;/.cmake/api/v1/query/&lt;kind&gt;-v&lt;major&gt;
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;</span></code> 是<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>之一，<code class="docutils literal notranslate"><span class="pre">-v</span></code> 是字面量，<code class="docutils literal notranslate"><span class="pre">&lt;major&gt;</span></code> 是主要版本号。</p>
+<p>这种形式的文件是不属于任何特定客户端的无状态共享查询。一旦创建，除非有外部客户端协调或人工干预，否则不应删除它们。</p>
+</section>
+<section id="v1-client-stateless-query-files">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id5" role="doc-backlink">v1 客户端无状态查询文件</a><a class="headerlink" href="cmake-file-api.7.html#v1-client-stateless-query-files" title="指向此标题的链接">¶</a></h3>
+<p>客户端无状态查询文件允许客户端为<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的主要版本创建自有请求，并获取运行的 CMake 所识别的所有已请求版本。</p>
+<p>客户端可以通过在特定于客户端的查询子目录中创建空文件来创建自有请求。其格式为</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;build&gt;/.cmake/api/v1/query/client-&lt;client&gt;/&lt;kind&gt;-v&lt;major&gt;
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">client-</span></code> 是字面量，<code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 是唯一标识客户端的字符串，<code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;</span></code> 是<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>之一，<code class="docutils literal notranslate"><span class="pre">-v</span></code> 是字面量，<code class="docutils literal notranslate"><span class="pre">&lt;major&gt;</span></code> 是主要版本号。每个客户端必须通过自己的方式选择唯一的 <code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 标识符。</p>
+<p>这种形式的文件是由客户端 <code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 拥有的无状态查询。所属客户端可以随时删除它们。</p>
+</section>
+<section id="v1-client-stateful-query-files">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id6" role="doc-backlink">v1 客户端有状态查询文件</a><a class="headerlink" href="cmake-file-api.7.html#v1-client-stateful-query-files" title="指向此标题的链接">¶</a></h3>
+<p>有状态查询文件允许客户端请求每种<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的版本列表，并仅获取运行的 CMake 所识别的最新版本。</p>
+<p>客户端可以通过在特定于客户端的查询子目录中创建 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件来创建自有有状态查询。其格式为</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;build&gt;/.cmake/api/v1/query/client-&lt;client&gt;/query.json
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">client-</span></code> 是字面量，<code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 是唯一标识客户端的字符串，<code class="docutils literal notranslate"><span class="pre">query.json</span></code> 是字面量。每个客户端必须通过自己的方式选择唯一的 <code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 标识符。</p>
+<p><code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件是由客户端 <code class="docutils literal notranslate"><span class="pre">&lt;client&gt;</span></code> 拥有的有状态查询。所属客户端可以随时更新或删除它们。当给定的客户端安装更新时，它随后可以更新其写入构建树的有状态查询，以请求更新的对象版本。这可用于避免要求 CMake 不必要地生成多个对象版本。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span><code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件通过 <a class="reference download internal" download="" href="../_downloads/518cc9f5a5cf4ecb8aa7ae2e9fe80b0c/schema_stateful_query.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件必须包含一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"requests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"client"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"client"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>成员是</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">requests</span></code></dt><dd><p>包含零个或多个请求的 JSON 数组。每个请求都是一个包含以下成员的 JSON 对象：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">种类</span></code></dt><dd><p>指定要包含在回复中的<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>指示客户端理解的对象种类的版本。版本具有遵循语义版本惯例的主要和次要部分。该值必须是：</p>
+<ul class="simple">
+<li><p>指定（非负）主要版本号的 JSON 整数，或</p></li>
+<li><p>包含 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和（可选）<code class="docutils literal notranslate"><span class="pre">minor</span></code> 成员的 JSON 对象，指定非负整数版本组件，或</p></li>
+<li><p>一个 JSON 数组，其元素均为上述类型之一。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">client</span></code></dt><dd><p>预留给客户端使用的可选成员。此值保留在为客户端写入的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>中，但除此之外会被忽略。客户端可以使用它来将自定义信息通过请求传递到其回复中。</p>
+</dd>
+</dl>
+<p>对于每个请求的对象种类，CMake 将在请求中列出的版本中选择它所识别的<em>第一个</em>版本。响应将使用所选的<em>主要</em>版本以及运行的 CMake 为该主要版本所知的最高<em>次要</em>版本。因此，客户端应按优先顺序列出所有受支持的主要版本，并附带每个主要版本所需的最小次要版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">client</span></code></dt><dd><p>预留给客户端使用的可选成员。此值保留在为客户端写入的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>中，但除此之外会被忽略。客户端可以使用它来将自定义信息通过查询传递到其回复中。</p>
+</dd>
+</dl>
+<p>其他 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 顶层成员保留供将来使用。如果存在，它们将被忽略以保持前向兼容性。</p>
+</section>
+<section id="v1-reply-index-file">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id7" role="doc-backlink">v1 回复索引文件</a><a class="headerlink" href="cmake-file-api.7.html#v1-reply-index-file" title="指向此标题的链接">¶</a></h3>
+<p>当 CMake 成功生成构建系统时，它会向 <code class="docutils literal notranslate"><span class="pre">v1/reply/</span></code> 目录写入一个 <code class="docutils literal notranslate"><span class="pre">index-*.json</span></code> 文件。客户端必须首先读取回复索引文件，并且仅在遵循引用后才能读取其他 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-files">v1 回复文件</a>。回复索引文件名的格式为</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;build&gt;/.cmake/api/v1/reply/index-&lt;unspecified&gt;.json
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">index-</span></code> 是字面量，<code class="docutils literal notranslate"><span class="pre">&lt;unspecified&gt;</span></code> 是由 CMake 选择的未指定名称。每当生成新的索引文件时，它都会被赋予一个新名称，旧的名称会被删除。在这些步骤之间的短时间内，可能存在多个索引文件；按字典顺序名称最大的那个是当前索引文件。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span>回复索引文件通过 <a class="reference download internal" download="" href="../_downloads/5d7d7905d28b03cecc567fe68c785594/schema_index.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+</div>
+<p>回复索引文件包含一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"cmake"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="nt">"patch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">"suffix"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.14.0"</span><span class="p">,</span><span class="w"> </span><span class="nt">"isDirty"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"cmake"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/prefix/bin/cmake"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"ctest"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/prefix/bin/ctest"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/prefix/bin/cpack"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/prefix/share/cmake-3.14"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"generator"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"multiConfig"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unix Makefiles"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"reply"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"&lt;kind&gt;-v&lt;major&gt;"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="p">,</span>
+<span class="w">                         </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">                         </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"&lt;unknown&gt;"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown query file"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"..."</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">"client-&lt;client&gt;"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"&lt;kind&gt;-v&lt;major&gt;"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="p">,</span>
+<span class="w">                           </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">                           </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"&lt;unknown&gt;"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown query file"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"..."</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">      </span><span class="nt">"query.json"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"requests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"responses"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown query file"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"client"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>成员是</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">cmake</span></code></dt><dd><p>一个 JSON 对象，包含有关生成该回复的 CMake 实例的信息。它包含以下成员</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>指定 CMake 版本的 JSON 对象，包含以下成员</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">major</span></code>, <code class="docutils literal notranslate"><span class="pre">minor</span></code>, <code class="docutils literal notranslate"><span class="pre">patch</span></code></dt><dd><p>指定主要、次要和补丁版本组件的整数值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">suffix</span></code></dt><dd><p>指定版本后缀的字符串（如果有），例如 <code class="docutils literal notranslate"><span class="pre">g0abc3</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>指定完整版本的字符串，格式为 <code class="docutils literal notranslate"><span class="pre">&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;[-&lt;suffix&gt;]</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isDirty</span></code></dt><dd><p>布尔值，指示版本是否是从具有本地修改的受版本控制的源树构建的。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>一个 JSON 对象，指定随 CMake 附带的内容的路径。它具有 <strong class="program">cmake</strong>、<strong class="program">ctest</strong> 和 <strong class="program">cpack</strong> 的成员，其值是指定每个工具绝对路径的 JSON 字符串（用正斜杠表示）。它还有一个 <code class="docutils literal notranslate"><span class="pre">root</span></code> 成员，用于指定包含 CMake 资源（如 <code class="docutils literal notranslate"><span class="pre">Modules/</span></code> 目录）的目录的绝对路径（参见 <span class="target" id="index-0-variable:CMAKE_ROOT"></span><a class="reference internal" href="../variable/CMAKE_ROOT.html#variable:CMAKE_ROOT" title="CMAKE_ROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ROOT</span></code></a>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">generator</span></code></dt><dd><p>描述用于构建的 CMake 生成器的 JSON 对象。它具有以下成员</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">multiConfig</span></code></dt><dd><p>指定生成器是否支持多种输出配置的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定生成器名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">platform</span></code></dt><dd><p>如果生成器支持 <span class="target" id="index-0-variable:CMAKE_GENERATOR_PLATFORM"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#variable:CMAKE_GENERATOR_PLATFORM" title="CMAKE_GENERATOR_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span></code></a>，则这是一个指定生成器平台名称的字符串。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">objects</span></code></dt><dd><p>一个 JSON 数组，列出作为回复一部分生成的所有<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的所有版本。每个数组条目都是一个 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reply</span></code></dt><dd><p>一个 JSON 对象，反映了 CMake 为生成回复而加载的 <code class="docutils literal notranslate"><span class="pre">query/</span></code> 目录的内容。成员的格式为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;-v&lt;major&gt;</span></code></dt><dd><p>对于每个 CMake 识别为请求对象种类 <code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;</span></code> 且主要版本为 <code class="docutils literal notranslate"><span class="pre">&lt;major&gt;</span></code> 的 <a class="reference internal" href="cmake-file-api.7.html#v1-shared-stateless-query-files">v1 共享无状态查询文件</a>，都会出现此格式的成员。其值是</p>
+<ul class="simple">
+<li><p>对该对象种类和版本的相应回复文件的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a>，或者</p></li>
+<li><p>在 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-error-index">v1 回复错误索引</a>中，一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含带有错误消息的字符串。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;unknown&gt;</span></code></dt><dd><p>对于每个 CMake 未识别的 <a class="reference internal" href="cmake-file-api.7.html#v1-shared-stateless-query-files">v1 共享无状态查询文件</a>，都会出现此格式的成员。其值是一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含指示查询文件未知的错误消息字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">client-&lt;client&gt;</span></code></dt><dd><p>对于每个持有 <a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files">v1 客户端无状态查询文件</a>的客户端自有目录，都会出现此格式的成员。其值是一个反映 <code class="docutils literal notranslate"><span class="pre">query/client-&lt;client&gt;/</span></code> 目录内容的 JSON 对象。成员的格式为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;-v&lt;major&gt;</span></code></dt><dd><p>对于每个 CMake 识别为请求对象种类 <code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;</span></code> 且主要版本为 <code class="docutils literal notranslate"><span class="pre">&lt;major&gt;</span></code> 的 <a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files">v1 客户端无状态查询文件</a>，都会出现此格式的成员。其值是</p>
+<ul class="simple">
+<li><p>对该对象种类和版本的相应回复文件的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a>，或者</p></li>
+<li><p>在 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-error-index">v1 回复错误索引</a>中，一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含带有错误消息的字符串。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;unknown&gt;</span></code></dt><dd><p>对于每个 CMake 未识别的 <a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files">v1 客户端无状态查询文件</a>，都会出现此格式的成员。其值是一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含指示查询文件未知的错误消息字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">query.json</span></code></dt><dd><p>此成员出现在使用 <a class="reference internal" href="cmake-file-api.7.html#v1-client-stateful-query-files">v1 客户端有状态查询文件</a>的客户端中。如果 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件读取或解析为 JSON 对象失败，此成员是一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含错误消息字符串。否则，此成员是一个反映 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件内容的 JSON 对象。成员包括</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">client</span></code></dt><dd><p>如果存在，则为 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件 <code class="docutils literal notranslate"><span class="pre">client</span></code> 成员的副本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">requests</span></code></dt><dd><p>如果存在，则为 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件 <code class="docutils literal notranslate"><span class="pre">requests</span></code> 成员的副本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">responses</span></code></dt><dd><p>如果 <code class="docutils literal notranslate"><span class="pre">query.json</span></code> 文件的 <code class="docutils literal notranslate"><span class="pre">requests</span></code> 成员缺失或无效，此成员是一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含错误消息字符串。否则，此成员包含一个 JSON 数组，其中包含 <code class="docutils literal notranslate"><span class="pre">requests</span></code> 数组中每个条目的响应（顺序相同）。每个响应是</p>
+<ul class="simple">
+<li><p>对所请求的对象种类和所选版本的相应回复文件的 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a>，或者</p></li>
+<li><p>一个包含单个 <code class="docutils literal notranslate"><span class="pre">error</span></code> 成员的 JSON 对象，其中包含带有错误消息的字符串。</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>阅读回复索引文件后，客户端可以阅读它所引用的其他 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-files">v1 回复文件</a>。</p>
+<section id="v1-reply-file-reference">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id8" role="doc-backlink">v1 回复文件引用</a><a class="headerlink" href="cmake-file-api.7.html#v1-reply-file-reference" title="指向此标题的链接">¶</a></h4>
+<p>回复索引文件使用带有以下成员的 JSON 对象来表示对另一个回复文件的每个引用</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">种类</span></code></dt><dd><p>指定<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>之一的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>一个带有 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 成员的 JSON 对象，指定对象种类的整数版本组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">jsonFile</span></code></dt><dd><p>一个 JSON 字符串，指定相对于回复索引文件到包含该对象的另一个 JSON 文件的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="v1-reply-error-index">
+<span id="file-api-reply-error-index"></span><h4><a class="toc-backref" href="cmake-file-api.7.html#id9" role="doc-backlink">v1 回复错误索引</a><a class="headerlink" href="cmake-file-api.7.html#v1-reply-error-index" title="指向此标题的链接">¶</a></h4>
+<div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>当 CMake 未能生成构建系统时，它会向 <code class="docutils literal notranslate"><span class="pre">v1/reply/</span></code> 目录写入一个 <code class="docutils literal notranslate"><span class="pre">error-*.json</span></code> 文件。此回复错误索引遵循 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>的命名模式、语法和语义，但有以下例外：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">index-</span></code> 前缀被 <code class="docutils literal notranslate"><span class="pre">error-</span></code> 前缀替换。</p></li>
+<li><p>当生成新的错误索引时，旧的索引文件<em>不会</em>被删除。如果存在 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>，它会索引最近一次成功运行的回复。如果存在多个 <code class="docutils literal notranslate"><span class="pre">index-*.json</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">error-*.json</span></code> 文件，则按字典顺序名称最大的那个（排除 <code class="docutils literal notranslate"><span class="pre">index-</span></code> 或 <code class="docutils literal notranslate"><span class="pre">error-</span></code> 前缀）是当前索引。</p></li>
+<li><p>仅提供<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的子集</p>
+<dl>
+<dt><a class="reference internal" href="cmake-file-api.7.html#file-api-configurelog">configureLog</a></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+</dd>
+</dl>
+<p>其他对象种类的索引条目包含 <code class="docutils literal notranslate"><span class="pre">error</span></code> 消息，而不是 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a>。</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="v1-reply-files">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id10" role="doc-backlink">v1 回复文件</a><a class="headerlink" href="cmake-file-api.7.html#v1-reply-files" title="指向此标题的链接">¶</a></h3>
+<p>包含特定<a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a>的回复文件由 CMake 写入。这些文件的名称未指定，客户端不得解释。客户端必须首先阅读 <a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a>并按照引用指向所需的响应对象名称。</p>
+<p>回复文件（包括索引文件）绝不会被同名但内容不同的文件所替换。这允许客户端与正在运行的可能生成新回复的 CMake 并发地读取这些文件。但是，在生成新回复后，CMake 将尝试从之前的运行中删除它未刚写入的回复文件。如果客户端尝试读取索引引用的回复文件但发现文件缺失，这意味着并发的 CMake 已经生成了新回复。客户端可以简单地通过阅读新的回复索引文件重新开始。</p>
+</section>
+</section>
+<section id="object-kinds">
+<span id="file-api-object-kinds"></span><h2><a class="toc-backref" href="cmake-file-api.7.html#id11" role="doc-backlink">对象种类</a><a class="headerlink" href="cmake-file-api.7.html#object-kinds" title="指向此标题的链接">¶</a></h2>
+<p>CMake 基于文件的 API 使用以下类型的 JSON 对象报告有关构建系统的语义信息。每种对象都使用具有主要和次要组件的语义版本控制进行独立版本化。每种对象都有以下形式：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;kind&gt;"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"..."</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">kind</span></code> 成员是指定对象种类名称的字符串。<code class="docutils literal notranslate"><span class="pre">version</span></code> 成员是一个带有 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 成员的 JSON 对象，指定对象种类版本的整数组件。额外的顶层成员特定于每个对象种类。</p>
+<section id="object-kind-codemodel">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id12" role="doc-backlink">"codemodel" 对象种类</a><a class="headerlink" href="cmake-file-api.7.html#object-kind-codemodel" title="指向此标题的链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">codemodel</span></code> 对象种类描述了 CMake 所建模的构建系统结构。</p>
+<p>只有一个 <code class="docutils literal notranslate"><span class="pre">codemodel</span></code> 对象主要版本，即版本 2。版本 1 不存在，以避免与 <span class="target" id="index-0-manual:cmake-server(7)"></span><a class="reference internal" href="cmake-server.7.html#manual:cmake-server(7)" title="cmake-server(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-server(7)</span></code></a> 模式中的混淆。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span><code class="docutils literal notranslate"><span class="pre">codemodel</span></code> 对象种类回复通过 <a class="reference download internal" download="" href="../_downloads/897df675c56f49750054a0cd0981e6b5/schema_codemodel.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+</div>
+<section id="codemodel-version-2">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id13" role="doc-backlink">"codemodel" 版本 2</a><a class="headerlink" href="cmake-file-api.7.html#codemodel-version-2" title="指向此标题的链接">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">codemodel</span></code> 对象版本 2 是一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"codemodel"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-source-dir"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-build-dir"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"configurations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"directories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"."</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"."</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"childIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"targetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"abstractTargetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"hasInstallRule"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"minimumCMakeVersion"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.14"</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"parentIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"targetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"abstractTargetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"minimumCMakeVersion"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"string"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.14"</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyProject"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"directoryIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"targetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"abstractTargetIndexes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">],</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"targets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyExecutable"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"directoryIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyLibrary"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"directoryIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="nt">"abstractTargets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyImportedExecutable"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"directoryIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MyPureInterfaceLibrary"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"directoryIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"projectIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"jsonFile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;file&gt;"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">codemodel</span></code> 对象特有的成员包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定顶层源目录绝对路径的字符串（用正斜杠表示）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">构建</span></code></dt><dd><p>指定顶层构建目录绝对路径的字符串（用正斜杠表示）。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">configurations</span></code></dt><dd><p>对应于可用构建配置的条目组成的 JSON 数组。对于单配置生成器，存在一个对应于 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 变量值的条目。对于多配置生成器，存在一个对应于 <span class="target" id="index-0-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a> 变量中列出的每个配置的条目。每个条目都是一个包含以下成员的 JSON 对象：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定配置名称的字符串，例如 <code class="docutils literal notranslate"><span class="pre">Debug</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directories</span></code></dt><dd><p>条目组成的 JSON 数组，每个条目对应一个其源目录包含 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件的构建系统目录。第一个条目对应于顶层目录。每个条目都是一个包含以下成员的 JSON 对象：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定源目录路径的字符串（用正斜杠表示）。如果该目录在顶层源目录内，则路径是相对于该目录指定的（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶层源目录本身）。否则，路径是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">构建</span></code></dt><dd><p>指定构建目录路径的字符串（用正斜杠表示）。如果该目录在顶层构建目录内，则路径是相对于该目录指定的（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶层构建目录本身）。否则，路径是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">parentIndex</span></code></dt><dd><p>当目录不是顶层目录时存在的可选成员。该值是主 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组中另一个条目的从 0 开始的无符号整数索引，该索引对应于将此目录添加为子目录的父目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">childIndexes</span></code></dt><dd><p>当目录具有子目录时存在的可选成员。该值是对应于由 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 或 <span class="target" id="index-0-command:subdirs"></span><a class="reference internal" href="../command/subdirs.html#command:subdirs" title="subdirs"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">subdirs()</span></code></a> 命令创建的子目录的条目组成的 JSON 数组。每个条目都是主 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组中另一个条目的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">projectIndex</span></code></dt><dd><p>指向主 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 数组的从 0 开始的无符号整数索引，指示此目录所属的构建系统项目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetIndexes</span></code></dt><dd><p>当目录本身拥有构建系统目标（不包括属于子目录的目标）时存在的可选成员。该值是对应于构建系统目标的条目组成的 JSON 数组。每个条目是指向主 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abstractTargetIndexes</span></code></dt><dd><p>当目录本身拥有抽象目标（不包括属于子目录的目标）时存在的可选成员。该值是对应于抽象目标的条目组成的 JSON 数组。每个条目是指向主 <code class="docutils literal notranslate"><span class="pre">abstractTargets</span></code> 数组的从 0 开始的无符号整数索引。</p>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">minimumCMakeVersion</span></code></dt><dd><p>当已知该目录的 CMake 最低要求版本时存在的可选成员。这是在目录本身或其祖先之一中最局部调用的 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 命令赋予的 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;</span></code> 版本。该值是一个包含一个成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>指定最低要求版本的字符串，格式为</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;major&gt;.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]][&lt;suffix&gt;]
+</pre></div>
+</div>
+<p>每个组件都是一个无符号整数，后缀可以是任意字符串。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hasInstallRule</span></code></dt><dd><p>当目录或其子目录之一包含任何 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 规则时（即是否可以使用 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 或等效规则），存在的布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">jsonFile</span></code></dt><dd><p>一个 JSON 字符串，指定相对于 codemodel 文件到包含 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-directory-object">"codemodel" 版本 2 "directory" 对象</a>的另一个 JSON 文件的路径。</p>
+<p>此字段在 codemodel 版本 2.3 中添加。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">projects</span></code></dt><dd><p>对应于构建系统中定义的顶层项目和子项目的条目组成的 JSON 数组。每个（子）项目对应于一个源目录，其 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件调用了 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令，且项目名称与其父目录不同。第一个条目对应于顶层项目。</p>
+<p>每个条目都是一个包含以下成员的 JSON 对象：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定赋予 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令的名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">parentIndex</span></code></dt><dd><p>当项目不是顶层项目时存在的可选成员。该值是主 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 数组中另一个条目的从 0 开始的无符号整数索引，该索引对应于将此项目添加为子项目的父项目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">childIndexes</span></code></dt><dd><p>当项目具有子项目时存在的可选成员。该值是对应于子项目的条目组成的 JSON 数组。每个条目是主 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 数组中另一个条目的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directoryIndexes</span></code></dt><dd><p>对应于属于该项目的构建系统目录的条目组成的 JSON 数组。第一个条目对应于该项目的顶层目录。每个条目是指向主 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetIndexes</span></code></dt><dd><p>当项目本身拥有构建系统目标（不包括属于子项目的目标）时存在的可选成员。该值是对应于构建系统目标的条目组成的 JSON 数组。每个条目是指向主 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abstractTargetIndexes</span></code></dt><dd><p>当项目本身拥有抽象目标（不包括属于子项目的目标）时存在的可选成员。该值是对应于抽象目标的条目组成的 JSON 数组。每个条目是指向主 <code class="docutils literal notranslate"><span class="pre">abstractTargets</span></code> 数组的从 0 开始的无符号整数索引。</p>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targets</span></code></dt><dd><p>对应于构建系统目标的条目组成的 JSON 数组。此类目标通过调用 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a>、<span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 和 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 创建，不包括不生成任何构建规则的导入目标和接口库。每个条目都是一个包含以下成员的 JSON 对象：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定目标名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。这与 <code class="docutils literal notranslate"><span class="pre">jsonFile</span></code> 引用的文件中的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 字段匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directoryIndex</span></code></dt><dd><p>指向主 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组的从 0 开始的无符号整数索引，指示定义该目标的构建系统目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">projectIndex</span></code></dt><dd><p>指向主 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 数组的从 0 开始的无符号整数索引，指示定义该目标的构建系统项目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">jsonFile</span></code></dt><dd><p>一个 JSON 字符串，指定相对于 codemodel 文件到包含 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-target-object">"codemodel" 版本 2 "target" 对象</a>的另一个 JSON 文件的路径。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abstractTargets</span></code></dt><dd><p>对应于构建系统中不存在的目标的条目组成的 JSON 数组。这些是通过调用 <span class="target" id="index-1-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-1-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 创建的导入目标或接口库。对于接口库，只有那些不属于构建系统的才会被包含在此数组中。参与构建系统的接口库将被包含在 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中。</p>
+<p>每个条目都是一个包含以下成员的 JSON 对象：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定目标名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。这与 <code class="docutils literal notranslate"><span class="pre">jsonFile</span></code> 引用的文件中的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 字段匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directoryIndex</span></code></dt><dd><p>指向主 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组的从 0 开始的无符号整数索引，指示定义该目标的构建系统目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">projectIndex</span></code></dt><dd><p>指向主 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 数组的从 0 开始的无符号整数索引，指示定义该目标的构建系统项目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">jsonFile</span></code></dt><dd><p>一个 JSON 字符串，指定相对于 codemodel 文件到包含 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-target-object">"codemodel" 版本 2 "target" 对象</a>的另一个 JSON 文件的路径。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="codemodel-version-2-directory-object">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id14" role="doc-backlink">"codemodel" 版本 2 "directory" 对象</a><a class="headerlink" href="cmake-file-api.7.html#codemodel-version-2-directory-object" title="指向此标题的链接">¶</a></h4>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span><code class="docutils literal notranslate"><span class="pre">directory</span></code> 对象回复通过 <a class="reference download internal" download="" href="../_downloads/ab8acee8c9012d7e41f4511c1591003e/schema_directory.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+</div>
+<p>codemodel "directory" 对象由 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2">"codemodel" 版本 2</a> 对象的 <code class="docutils literal notranslate"><span class="pre">directories</span></code> 数组引用。每个 "directory" 对象都是一个包含以下成员的 JSON 对象：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">codemodelVersion</span></code></dt><dd><p>这指定了此文件所属的 codemodel 版本。它将与引用此文件的 codemodel 对象种类的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 字段匹配。它是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">主要版本</span></code></dt><dd><p>codemodel 主要版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">次要版本</span></code></dt><dd><p>codemodel 次要版本。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定源目录路径的字符串（用正斜杠表示）。如果该目录在顶层源目录内，则路径是相对于该目录指定的（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶层源目录本身）。否则，路径是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">构建</span></code></dt><dd><p>指定构建目录路径的字符串（用正斜杠表示）。如果该目录在顶层构建目录内，则路径是相对于该目录指定的（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶层构建目录本身）。否则，路径是绝对路径。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">installers</span></code></dt><dd><p>对应于 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 规则的条目组成的 JSON 数组。每个条目都是一个包含以下成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">component</span></code></dt><dd><p>指定由相应的 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令调用所选组件的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">destination</span></code></dt><dd><p>针对下述特定 <code class="docutils literal notranslate"><span class="pre">type</span></code> 值存在的可选成员。该值是指定安装目标路径的字符串。路径可以是绝对路径，也可以是相对于安装前缀的相对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>针对下述特定 <code class="docutils literal notranslate"><span class="pre">type</span></code> 值存在的可选成员。该值是对应于要安装的路径（文件或目录）的条目组成的 JSON 数组。每个条目是</p>
+<ul>
+<li><p>指定要从中安装文件或目录的路径的字符串。路径中不受 <code class="docutils literal notranslate"><span class="pre">/</span></code> 前导的部分也指定了在目标下安装该文件或目录的路径（名称）。</p></li>
+<li><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">from</span></code></dt><dd><p>指定要从中安装文件或目录的路径的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">到</span></code></dt><dd><p>指定在目标下安装该文件或目录的路径的字符串。</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>在这两种情况下，路径都用正斜杠表示。如果 "from" 路径在相应 <code class="docutils literal notranslate"><span class="pre">type</span></code> 值记录的顶层目录内，则路径是相对于该目录指定的。否则，路径是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>指定安装规则类型的字符串。该值是以下之一，某些变体提供额外的成员</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">file</span></code></dt><dd><p><span class="target" id="index-3-command:install"></span><a class="reference internal" href="../command/install.html#files" title="install(files)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(FILES)</span></code></a> 或 <span class="target" id="index-4-command:install"></span><a class="reference internal" href="../command/install.html#programs" title="install(programs)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PROGRAMS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 和 <code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员被填充，顶层<em>源</em>目录下的路径表示为相对于该目录。可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型没有额外的成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directory</span></code></dt><dd><p><span class="target" id="index-5-command:install"></span><a class="reference internal" href="../command/install.html#directory" title="install(directory)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(DIRECTORY)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 和 <code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员被填充，顶层<em>源</em>目录下的路径表示为相对于该目录。可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型没有额外的成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">目标</span></code></dt><dd><p><span class="target" id="index-6-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 和 <code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员被填充，顶层<em>构建</em>目录下的路径表示为相对于该目录。可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型具有额外的成员 <code class="docutils literal notranslate"><span class="pre">targetId</span></code>、<code class="docutils literal notranslate"><span class="pre">targetIndex</span></code>、<code class="docutils literal notranslate"><span class="pre">targetIsImportLibrary</span></code> 和 <code class="docutils literal notranslate"><span class="pre">targetInstallNamelink</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export</span></code></dt><dd><p><span class="target" id="index-7-command:install"></span><a class="reference internal" href="../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 和 <code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员被填充，顶层<em>构建</em>目录下的路径表示为相对于该目录。<code class="docutils literal notranslate"><span class="pre">paths</span></code> 条目指的是 CMake 自动生成的用于安装的文件，其实际值被视为私有实现细节。此类型具有额外的成员 <code class="docutils literal notranslate"><span class="pre">exportName</span></code> 和 <code class="docutils literal notranslate"><span class="pre">exportTargets</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">script</span></code></dt><dd><p><span class="target" id="index-8-command:install"></span><a class="reference internal" href="../command/install.html#script" title="install(script)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SCRIPT)</span></code></a> 调用。此类型具有额外的成员 <code class="docutils literal notranslate"><span class="pre">scriptFile</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">code</span></code></dt><dd><p><span class="target" id="index-9-command:install"></span><a class="reference internal" href="../command/install.html#code" title="install(code)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(CODE)</span></code></a> 调用。此类型没有额外的成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">importedRuntimeArtifacts</span></code></dt><dd><p><span class="target" id="index-10-command:install"></span><a class="reference internal" href="../command/install.html#imported-runtime-artifacts" title="install(imported_runtime_artifacts)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(IMPORTED_RUNTIME_ARTIFACTS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 成员被填充。可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型没有额外的成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">runtimeDependencySet</span></code></dt><dd><p><span class="target" id="index-11-command:install"></span><a class="reference internal" href="../command/install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 调用或带有 <code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCIES</span></code> 的 <span class="target" id="index-12-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 成员被填充。此类型具有额外的成员 <code class="docutils literal notranslate"><span class="pre">runtimeDependencySetName</span></code> 和 <code class="docutils literal notranslate"><span class="pre">runtimeDependencySetType</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSet</span></code></dt><dd><p>带有 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 的 <span class="target" id="index-13-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 和 <code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员被填充。可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型具有额外的成员 <code class="docutils literal notranslate"><span class="pre">fileSetName</span></code>、<code class="docutils literal notranslate"><span class="pre">fileSetType</span></code>、<code class="docutils literal notranslate"><span class="pre">fileSetDirectories</span></code> 和 <code class="docutils literal notranslate"><span class="pre">fileSetTarget</span></code>。</p>
+<p>此类型在 codemodel 版本 2.4 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cxxModuleBmi</span></code></dt><dd><p>带有 <code class="docutils literal notranslate"><span class="pre">CXX_MODULES_BMI</span></code> 的 <span class="target" id="index-14-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用。<code class="docutils literal notranslate"><span class="pre">destination</span></code> 成员被填充，且可能存在 <code class="docutils literal notranslate"><span class="pre">isOptional</span></code> 成员。此类型具有额外的 <code class="docutils literal notranslate"><span class="pre">cxxModuleBmiTarget</span></code> 成员。</p>
+<p>此类型在 codemodel 版本 2.5 中添加。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isExcludeFromAll</span></code></dt><dd><p>当 <span class="target" id="index-15-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 与 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 选项一起调用时，存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isForAllComponents</span></code></dt><dd><p>当 <span class="target" id="index-16-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install(script|code)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SCRIPT|CODE)</span></code></a> 与 <code class="docutils literal notranslate"><span class="pre">ALL_COMPONENTS</span></code> 选项一起调用时，存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isOptional</span></code></dt><dd><p>当 <span class="target" id="index-17-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 与 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 选项一起调用时，存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">file</span></code>、<code class="docutils literal notranslate"><span class="pre">directory</span></code> 或 <code class="docutils literal notranslate"><span class="pre">target</span></code> 时，这是允许的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetId</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">target</span></code> 时存在的可选成员。该值是唯一标识要安装的目标的字符串。这与主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中目标的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetIndex</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">target</span></code> 时存在的可选成员。该值是主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中要安装目标的从 0 开始的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetIsImportLibrary</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">target</span></code> 且安装程序用于 Windows DLL 导入库文件或 AIX 链接器导入文件时存在的可选成员。如果存在，其布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targetInstallNamelink</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">target</span></code> 且安装程序对应于可能使用符号链接来实现 <span class="target" id="index-0-prop_tgt:VERSION"></span><a class="reference internal" href="../prop_tgt/VERSION.html#prop_tgt:VERSION" title="VERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERSION</span></code></a> 和 <span class="target" id="index-0-prop_tgt:SOVERSION"></span><a class="reference internal" href="../prop_tgt/SOVERSION.html#prop_tgt:SOVERSION" title="SOVERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SOVERSION</span></code></a> 目标属性的目标时存在的可选成员。该值是指示安装程序应如何处理符号链接的字符串：<code class="docutils literal notranslate"><span class="pre">skip</span></code> 表示安装程序应跳过符号链接并仅安装实际文件，<code class="docutils literal notranslate"><span class="pre">only</span></code> 表示安装程序应仅安装符号链接而不安装实际文件。在所有情况下，<code class="docutils literal notranslate"><span class="pre">paths</span></code> 成员都会列出它实际安装的内容。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exportName</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">export</span></code> 时存在的可选成员。该值是指定导出名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exportTargets</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">export</span></code> 时存在的可选成员。该值是对应于包含在导出中的目标的条目组成的 JSON 数组。每个条目都是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。这与主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中目标的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">索引</span></code></dt><dd><p>目标在主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中的从 0 开始的无符号整数索引。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">runtimeDependencySetName</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">runtimeDependencySet</span></code> 且安装程序由 <span class="target" id="index-18-command:install"></span><a class="reference internal" href="../command/install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 调用创建时存在的可选成员。该值是指定所安装运行时依赖集名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">runtimeDependencySetType</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">runtimeDependencySet</span></code> 时存在的可选成员。该值是以下值之一的字符串</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">library</span></code></dt><dd><p>指示此安装程序安装非 macOS 框架的依赖项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">framework</span></code></dt><dd><p>指示此安装程序安装 macOS 框架的依赖项。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetName</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">fileSet</span></code> 时存在的可选成员。该值是包含文件集名称的字符串。</p>
+<p>此字段在 codemodel 版本 2.4 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetType</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">fileSet</span></code> 时存在的可选成员。该值是包含文件集类型的字符串。</p>
+<p>此字段在 codemodel 版本 2.4 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetDirectories</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">fileSet</span></code> 时存在的可选成员。该值是包含文件集基目录的字符串列表（由 <span class="target" id="index-0-prop_tgt:HEADER_DIRS"></span><a class="reference internal" href="../prop_tgt/HEADER_DIRS.html#prop_tgt:HEADER_DIRS" title="HEADER_DIRS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">HEADER_DIRS</span></code></a> 或 <span class="target" id="index-0-prop_tgt:HEADER_DIRS_<NAME>"></span><a class="reference internal" href="../prop_tgt/HEADER_DIRS_NAME.html#prop_tgt:HEADER_DIRS_<NAME>" title="HEADER_DIRS_<NAME>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">HEADER_DIRS_&lt;NAME&gt;</span></code></a> 的生成表达式评估确定）。</p>
+<p>此字段在 codemodel 版本 2.4 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetTarget</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">fileSet</span></code> 时存在的可选成员。该值是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。这与主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中目标的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">索引</span></code></dt><dd><p>目标在主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中的从 0 开始的无符号整数索引。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.4 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cxxModuleBmiTarget</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">cxxModuleBmi</span></code> 时存在的可选成员。该值是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。这与主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中目标的 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">索引</span></code></dt><dd><p>目标在主 "codemodel" 对象 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组中的从 0 开始的无符号整数索引。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.5 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">scriptFile</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">type</span></code> 为 <code class="docutils literal notranslate"><span class="pre">script</span></code> 时存在的可选成员。该值是指定磁盘上脚本文件路径的字符串（用正斜杠表示）。如果文件在顶层源目录内，则路径是相对于该目录指定的。否则，路径是绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>当可以使用指向添加此安装程序的 <span class="target" id="index-19-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 或其他命令调用的 CMake 语言回溯时，存在的可选成员。该值是 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组中从 0 开始的无符号整数索引。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code></dt><dd><p>一个 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-backtrace-graph">"codemodel" 版本 2 "backtrace graph"</a>，其节点被此 "directory" 对象中其他地方的 <code class="docutils literal notranslate"><span class="pre">backtrace</span></code> 成员引用。</p>
+</dd>
+</dl>
+</section>
+<section id="codemodel-version-2-target-object">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id15" role="doc-backlink">"codemodel" 版本 2 "target" 对象</a><a class="headerlink" href="cmake-file-api.7.html#codemodel-version-2-target-object" title="指向此标题的链接">¶</a></h4>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span><code class="docutils literal notranslate"><span class="pre">target</span></code> 对象回复通过 <a class="reference download internal" download="" href="../_downloads/9b15dd3b368026f0304b62f895764fae/schema_target.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+</div>
+<p>codemodel "target" 对象由 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2">"codemodel" 版本 2</a> 对象的 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 数组引用。每个 "target" 对象都是一个包含以下成员的 JSON 对象：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">codemodelVersion</span></code></dt><dd><p>这指定了此文件所属的 codemodel 版本。它将与引用此文件的 codemodel 对象种类的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 字段匹配。它是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">主要版本</span></code></dt><dd><p>codemodel 主要版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">次要版本</span></code></dt><dd><p>codemodel 次要版本。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定目标逻辑名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识目标的字符串。格式未指定，客户端不应解释。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>指定目标类型的字符串。该值是 <code class="docutils literal notranslate"><span class="pre">EXECUTABLE</span></code>、<code class="docutils literal notranslate"><span class="pre">STATIC_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">SHARED_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">MODULE_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJECT_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">INTERFACE_LIBRARY</span></code> 或 <code class="docutils literal notranslate"><span class="pre">UTILITY</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">imported</span></code></dt><dd><p>如果目标是导入目标，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。</p>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">local</span></code></dt><dd><p>如果目标仅定义为局部作用域而不是全局目标，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。目前，只有导入的目标可能具有此字段。</p>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">abstract</span></code></dt><dd><p>如果目标是抽象目标，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 的可选成员。抽象目标不是构建系统的一部分，它们仅用于描述依赖项或为链接到它们的目标提供使用要求。示例包括没有生成源代码的导入目标和接口库。抽象目标无法构建，因此不应将其呈现给用户作为可构建目标。</p>
+<p>此字段在 codemodel 版本 2.9 中添加。codemodel 版本 2.8 及更早版本不包括抽象目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">symbolic</span></code></dt><dd><p>可选成员，如果目标是 <span class="target" id="index-0-prop_tgt:SYMBOLIC"></span><a class="reference internal" href="../prop_tgt/SYMBOLIC.html#prop_tgt:SYMBOLIC" title="SYMBOLIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SYMBOLIC</span></code></a>，则该成员存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。符号目标通过调用 <span class="target" id="index-2-command:add_library"></span><a class="reference internal" href="../command/add_library.html#interface-symbolic" title="add_library(interface-symbolic)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library(INTERFACE</span> <span class="pre">SYMBOLIC)</span></code></a> 创建，它们也是不属于构建系统的抽象目标。</p>
+<p>此字段添加于 codemodel 2.9 版本。符号目标未包含在 codemodel 2.8 及更早版本中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在创建该目标的源代码中命令的 CMake 语言回溯（backtrace）时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">folder</span></code></dt><dd><p>可选成员，当设置了 <span class="target" id="index-0-prop_tgt:FOLDER"></span><a class="reference internal" href="../prop_tgt/FOLDER.html#prop_tgt:FOLDER" title="FOLDER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FOLDER</span></code></a> 目标属性时出现。其值为一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定目标文件夹名称的字符串。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定目标源目录路径的字符串，以正斜杠表示。如果目录位于顶级源目录内，则路径相对于该目录指定（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶级源目录本身）。否则，路径为绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">构建</span></code></dt><dd><p>指定目标构建目录路径的字符串，以正斜杠表示。如果目录位于顶级构建目录内，则路径相对于该目录指定（使用 <code class="docutils literal notranslate"><span class="pre">.</span></code> 表示顶级构建目录本身）。否则，路径为绝对路径。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nameOnDisk</span></code></dt><dd><p>可选成员，出现在链接或归档为单个主要产物的可执行文件和库目标中。其值为指定该产物在磁盘上文件名的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">artifacts</span></code></dt><dd><p>可选成员，出现在产生旨在供依赖项使用的磁盘产物的可执行文件和库目标中。其值为对应于产物的 JSON 对象数组。每个条目都是一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定磁盘上文件路径的字符串，以正斜杠表示。如果文件位于顶级构建目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isGeneratorProvided</span></code></dt><dd><p>可选成员，如果目标是由 CMake 的构建系统生成器提供，而不是由源代码中的命令提供，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">安装</span></code></dt><dd><p>可选成员，当目标具有 <span class="target" id="index-20-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 规则时出现。其值为一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">prefix</span></code></dt><dd><p>指定安装前缀的 JSON 对象。它有一个成员</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 值的字符串。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">destinations</span></code></dt><dd><p>指定安装目标路径的 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定安装目标路径的字符串。该路径可以是绝对路径，也可以是相对于安装前缀的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向指定此目标的 <span class="target" id="index-21-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">launchers</span></code></dt><dd><p>可选成员，出现在由项目指定了至少一个启动器（launcher）的可执行目标上。其值为对应于指定启动器的 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">命令</span></code></dt><dd><p>指定磁盘上启动器路径的字符串，以正斜杠表示。如果文件位于顶级源目录内，则路径相对于该目录指定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">arguments</span></code></dt><dd><p>可选成员，当启动器命令在要启动的可执行文件之前具有参数时出现。其值为表示这些参数的 JSON 字符串数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>指定启动器类型的字符串。其值为以下之一</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">emulator</span></code></dt><dd><p>交叉编译时用于目标平台的仿真器。请参阅 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">测试</span></code></dt><dd><p>用于执行测试的启动程序。请参阅 <span class="target" id="index-0-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 目标属性。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>此字段添加于 codemodel 2.7 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">link</span></code></dt><dd><p>可选成员，出现在链接到运行时二进制文件的非导入式可执行文件和共享库目标中。其值为一个包含描述链接步骤成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code></dt><dd><p>指定用于调用链接器的工具链语言（例如 <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">CXX</span></code>, <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>）的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">commandFragments</span></code></dt><dd><p>可选成员，当存在链接命令行调用的片段时出现。其值为指定有序片段的 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fragment</span></code></dt><dd><p>指定链接命令行调用片段的字符串。其值以构建系统的原生 shell 格式编码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">role</span></code></dt><dd><p>指定片段内容角色的字符串</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>：链接标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libraries</span></code>：链接库文件路径或标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libraryPath</span></code>：库搜索路径标志。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frameworkPath</span></code>：macOS 框架搜索路径标志。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>、<span class="target" id="index-0-command:target_link_options"></span><a class="reference internal" href="../command/target_link_options.html#command:target_link_options" title="target_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_options()</span></code></a> 或其他添加此链接片段的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lto</span></code></dt><dd><p>可选成员，当启用链接时优化（也称为过程间优化或链接时代码生成）时出现，布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sysroot</span></code></dt><dd><p>可选成员，当定义了 <span class="target" id="index-0-variable:CMAKE_SYSROOT_LINK"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT_LINK.html#variable:CMAKE_SYSROOT_LINK" title="CMAKE_SYSROOT_LINK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT_LINK</span></code></a> 或 <span class="target" id="index-0-variable:CMAKE_SYSROOT"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT.html#variable:CMAKE_SYSROOT" title="CMAKE_SYSROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT</span></code></a> 变量时出现。其值为一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定 sysroot 绝对路径的字符串，以正斜杠表示。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">archive</span></code></dt><dd><p>可选成员，出现在非导入式静态库目标中。其值为一个包含描述归档步骤成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">commandFragments</span></code></dt><dd><p>可选成员，当存在归档程序命令行调用的片段时出现。其值为指定片段的 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fragment</span></code></dt><dd><p>指定归档程序命令行调用片段的字符串。其值以构建系统的原生 shell 格式编码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">role</span></code></dt><dd><p>指定片段内容角色的字符串</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>：归档程序标志。</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lto</span></code></dt><dd><p>可选成员，当启用链接时优化（也称为过程间优化或链接时代码生成）时出现，布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debugger</span></code></dt><dd><p>可选成员，当目标设置了以下字段之一时出现。其值为对应于所设置的调试器特定值的 JSON 对象数组。</p>
+<p>此字段添加于 codemodel 2.8 版本。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">workingDirectory</span></code></dt><dd><p>可选成员，当设置了 <span class="target" id="index-0-prop_tgt:DEBUGGER_WORKING_DIRECTORY"></span><a class="reference internal" href="../prop_tgt/DEBUGGER_WORKING_DIRECTORY.html#prop_tgt:DEBUGGER_WORKING_DIRECTORY" title="DEBUGGER_WORKING_DIRECTORY"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DEBUGGER_WORKING_DIRECTORY</span></code></a> 目标属性时出现。当设置了 <span class="target" id="index-0-prop_tgt:VS_DEBUGGER_WORKING_DIRECTORY"></span><a class="reference internal" href="../prop_tgt/VS_DEBUGGER_WORKING_DIRECTORY.html#prop_tgt:VS_DEBUGGER_WORKING_DIRECTORY" title="VS_DEBUGGER_WORKING_DIRECTORY"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VS_DEBUGGER_WORKING_DIRECTORY</span></code></a> 时，该成员也会出现在 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 中。</p>
+<p>此字段添加于 codemodel 2.8 版本。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dependencies</span></code></dt><dd><p>可选成员，当目标依赖于其他目标时出现。它仅在目标属于构建系统时出现。导入的目标不属于构建系统。接口库仅在具有源文件或文件集时才属于构建系统。</p>
+<p>其值为对应于构建依赖项的 JSON 对象数组。该数组不仅包括直接依赖项，还包括传递依赖项。所有列出的目标都将在本目标之前构建。</p>
+<p>依赖项列表反映了<em>构建图</em>依赖项，而不一定是链接依赖项。如果静态库的链接依赖项中存在循环，并非所有链接依赖项都会反映在此构建图依赖项列表中。</p>
+<p>每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识本目标所依赖目标的字符串。这与另一个目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-0-command:add_dependencies"></span><a class="reference internal" href="../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a>、<span class="target" id="index-1-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 或其他创建此依赖项的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">linkLibraries</span></code></dt><dd><p>可选成员，当目标直接链接到一个或多个其他目标或库时可能出现。它包含链接此目标时使用的项。这些项来自目标的 <span class="target" id="index-0-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 属性（非传递性评估），或其直接或传递链接的另一个目标的 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 属性。</p>
+<p>仅作为使用要求应用的项（例如包装在 <span class="target" id="index-0-genex:COMPILE_ONLY"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:COMPILE_ONLY" title="COMPILE_ONLY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_ONLY:...&gt;</span></code></a> 表达式中）不会出现在此成员中。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>可选成员，当要链接的库是一个目标时出现。它唯一标识本目标与之有直接链接关系的目标。这与该其他目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+<p>此 <code class="docutils literal notranslate"><span class="pre">id</span></code> 标识的目标不一定属于构建系统。它可能是一个导入的目标或没有源文件或文件集的接口库。</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> 或 <code class="docutils literal notranslate"><span class="pre">fragment</span></code> 其中之一将始终存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fragment</span></code></dt><dd><p>可选成员，当要链接的库不是目标时出现。它是一个字符串，包含捕获该关系的原始链接器命令行参数。这些通常是按名称而不是按目标链接到库或框架。</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> 或 <code class="docutils literal notranslate"><span class="pre">fragment</span></code> 其中之一将始终存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此关系的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fromDependency</span></code></dt><dd><p>可选成员，仅当该关系是本目标直接或传递链接的库之一上的 <span class="target" id="index-1-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 目标属性的结果时出现。它是一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识其 <span class="target" id="index-2-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 属性创建了该关系的目标的字符串。该值与该目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interfaceLinkLibraries</span></code></dt><dd><p>可选成员，当目标具有一个或多个接口链接库时可能出现。它包含链接此目标的消费者时使用的项。这些来自目标的 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 属性。</p>
+<p>仅作为使用要求应用的项（例如包装在 <span class="target" id="index-1-genex:COMPILE_ONLY"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:COMPILE_ONLY" title="COMPILE_ONLY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_ONLY:...&gt;</span></code></a> 表达式中）不会出现在此成员中。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>可选成员，当接口链接库是针对某个目标时出现。它唯一标识该目标，其值与该目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+<p>此 <code class="docutils literal notranslate"><span class="pre">id</span></code> 标识的目标不一定属于构建系统。它可能是一个导入的目标或没有源文件或文件集的接口库。</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> 或 <code class="docutils literal notranslate"><span class="pre">fragment</span></code> 其中之一将始终存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fragment</span></code></dt><dd><p>可选成员，当接口链接库不是针对某个目标时出现。它是一个字符串，包含要应用于此目标的接口链接库消费者的原始链接器命令行参数。这些通常是用于按名称而不是按目标链接到库或框架的链接器参数。</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> 或 <code class="docutils literal notranslate"><span class="pre">fragment</span></code> 其中之一将始终存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此接口关系的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compileDependencies</span></code></dt><dd><p>可选成员，当目标直接链接到一个或多个可能为此目标提供使用要求的其他目标时可能出现。它们影响本目标源文件的编译方式。这些关系由目标的 <span class="target" id="index-1-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 属性（非传递性评估）以及其直接或传递链接的其它目标的 <span class="target" id="index-3-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 属性定义。</p>
+<p>仅应用链接要求的关系（例如包装在 <span class="target" id="index-0-genex:LINK_ONLY"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:LINK_ONLY" title="LINK_ONLY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;LINK_ONLY:...&gt;</span></code></a> 表达式中）不会出现在此成员中。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识本目标直接依赖的目标的字符串。这与另一个目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+<p>此 <code class="docutils literal notranslate"><span class="pre">id</span></code> 标识的目标不一定属于构建系统。它可能是一个导入的目标或没有源文件或文件集的接口库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此关系的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fromDependency</span></code></dt><dd><p>可选成员，仅当该关系是本目标直接或传递链接的库之一上的 <span class="target" id="index-4-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 目标属性的结果时出现。它是一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识其 <span class="target" id="index-5-prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES_DIRECT.html#prop_tgt:INTERFACE_LINK_LIBRARIES_DIRECT" title="INTERFACE_LINK_LIBRARIES_DIRECT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES_DIRECT</span></code></a> 属性创建了该关系的目标的字符串。该值与该目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interfaceCompileDependencies</span></code></dt><dd><p>可选成员，当目标具有一个或多个到其他目标的接口链接关系时可能出现。它包含影响消费者源文件编译方式的项。这些关系由目标的 <span class="target" id="index-1-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 属性定义。</p>
+<p>仅应用链接要求的关系（例如包装在 <span class="target" id="index-1-genex:LINK_ONLY"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:LINK_ONLY" title="LINK_ONLY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;LINK_ONLY:...&gt;</span></code></a> 表达式中）不会出现在此成员中。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识本目标指定接口关系的目标的字符串。这与另一个目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+<p>此 <code class="docutils literal notranslate"><span class="pre">id</span></code> 标识的目标不一定属于构建系统。它可能是一个导入的目标或没有源文件或文件集的接口库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此关系的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">objectDependencies</span></code></dt><dd><p>可选成员，当目标在其 <span class="target" id="index-0-prop_tgt:SOURCES"></span><a class="reference internal" href="../prop_tgt/SOURCES.html#prop_tgt:SOURCES" title="SOURCES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SOURCES</span></code></a> 属性中有一个或多个条目使用 <span class="target" id="index-0-genex:TARGET_OBJECTS"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:TARGET_OBJECTS" title="TARGET_OBJECTS"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;TARGET_OBJECTS:...&gt;</span></code></a> 指定，且在 <span class="target" id="index-1-genex:TARGET_OBJECTS"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:TARGET_OBJECTS" title="TARGET_OBJECTS"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;TARGET_OBJECTS:...&gt;</span></code></a> 表达式内没有使用其他生成器表达式时出现。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识其对象在 <span class="target" id="index-2-genex:TARGET_OBJECTS"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:TARGET_OBJECTS" title="TARGET_OBJECTS"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;TARGET_OBJECTS:...&gt;</span></code></a> 表达式中被引用的目标的字符串。这与该其他目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此依赖项的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">orderDependencies</span></code></dt><dd><p>可选成员，当目标对其他目标具有一个或多个直接顺序依赖项时出现。此类依赖项可能产生于对 <span class="target" id="index-1-command:add_dependencies"></span><a class="reference internal" href="../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a> 的调用或 CMake 内部处理。与 <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> 数组不同，<code class="docutils literal notranslate"><span class="pre">ZERO_CHECK</span></code> 目标不会包含在 <code class="docutils literal notranslate"><span class="pre">orderDependencies</span></code> 中（这仅与 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 和 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio</span></a> 生成器有关）。</p>
+<p>其值为 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>唯一标识本目标所依赖目标的字符串。这与另一个目标的主 <code class="docutils literal notranslate"><span class="pre">id</span></code> 成员匹配。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向创建此依赖项的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.9 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSets</span></code></dt><dd><p>当目标定义一个或多个文件集时出现的可选成员。其值为对应于目标文件集的 JSON 对象数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定文件集名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>指定文件集类型的字符串。请参阅 <span class="target" id="index-0-command:target_sources"></span><a class="reference internal" href="../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a> 支持的文件集类型。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">visibility</span></code></dt><dd><p>指定文件集可见性的字符串；为 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code>、<code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">baseDirectories</span></code></dt><dd><p>字符串的 JSON 数组，每个字符串指定包含文件集中源文件的基目录。如果目录位于顶级源目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+</dl>
+<p>此字段在 codemodel 版本 2.5 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sources</span></code></dt><dd><p>对应于目标源文件的条目 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定磁盘上源文件路径的字符串，以正斜杠表示。如果文件位于顶级源目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compileGroupIndex</span></code></dt><dd><p>可选成员，当源文件被编译时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">compileGroups</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceGroupIndex</span></code></dt><dd><p>可选成员，当源文件通过 <span class="target" id="index-0-command:source_group"></span><a class="reference internal" href="../command/source_group.html#command:source_group" title="source_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">source_group()</span></code></a> 命令或默认情况下成为源组的一部分时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">sourceGroups</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isGenerated</span></code></dt><dd><p>可选成员，如果源文件是 <span class="target" id="index-0-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a>，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetIndex</span></code></dt><dd><p>可选成员，当源文件是文件集的一部分时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">fileSets</span></code> 数组。</p>
+<p>此字段在 codemodel 版本 2.5 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-1-command:target_sources"></span><a class="reference internal" href="../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a>、<span class="target" id="index-2-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a>、<span class="target" id="index-3-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a>、<span class="target" id="index-1-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 或其他将此源文件添加到目标的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interfaceSources</span></code></dt><dd><p>当目标定义一个或多个接口源文件时出现的可选成员。其值为对应于目标接口源文件的条目 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定磁盘上源文件路径的字符串，以正斜杠表示。如果文件位于顶级源目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceGroupIndex</span></code></dt><dd><p>可选成员，当源文件通过 <span class="target" id="index-1-command:source_group"></span><a class="reference internal" href="../command/source_group.html#command:source_group" title="source_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">source_group()</span></code></a> 命令或默认情况下成为源组的一部分时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">sourceGroups</span></code> 数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isGenerated</span></code></dt><dd><p>可选成员，如果源文件是 <span class="target" id="index-1-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a>，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileSetIndex</span></code></dt><dd><p>可选成员，当源文件是文件集的一部分时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">fileSets</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段添加于 codemodel 2.10 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceGroups</span></code></dt><dd><p>可选成员，当源文件通过 <span class="target" id="index-2-command:source_group"></span><a class="reference internal" href="../command/source_group.html#command:source_group" title="source_group"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">source_group()</span></code></a> 命令或默认情况下被分组在一起时出现。其值为对应于这些组的条目 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定源组名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceIndexes</span></code></dt><dd><p>列出属于该组的源文件的 JSON 数组。每个条目都是一个指向目标主 <code class="docutils literal notranslate"><span class="pre">sources</span></code> 数组的基于 0 的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interfaceSourceIndexes</span></code></dt><dd><p>可选成员，当至少有一个接口源文件属于该源组时出现。其值为列出属于该组的接口源文件的 JSON 数组。每个条目都是一个指向目标主 <code class="docutils literal notranslate"><span class="pre">interfaceSources</span></code> 数组的基于 0 的无符号整数索引。</p>
+<p>此字段添加于 codemodel 2.10 版本。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compileGroups</span></code></dt><dd><p>可选成员，当目标具有需要编译的源文件时出现。其值为对应于所有使用相同设置编译的源文件组的条目 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceIndexes</span></code></dt><dd><p>列出属于该组的源文件的 JSON 数组。每个条目都是一个指向目标主 <code class="docutils literal notranslate"><span class="pre">sources</span></code> 数组的基于 0 的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code></dt><dd><p>指定用于编译源文件的工具链语言（例如 <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">CXX</span></code>, <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>）的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">languageStandard</span></code></dt><dd><p>可选成员，当明确设置语言标准（例如通过 <span class="target" id="index-0-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_STANDARD</span></code></a>）或隐式通过编译特性设置时出现。每个条目都是一个包含两个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backtraces</span></code></dt><dd><p>可选成员，当存在指向 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;_STANDARD</span></code> 设置的 CMake 语言回溯时出现。如果语言标准是通过编译特性隐式设置的，则这些特性被用作回溯。多个编译特性可能要求相同的语言标准，因此可能存在多个回溯。其值为 JSON 数组，每个条目都是一个指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组的基于 0 的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">standard</span></code></dt><dd><p>表示语言标准的字符串。</p>
+</dd>
+</dl>
+<p>此字段添加于 codemodel 2.2 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compileCommandFragments</span></code></dt><dd><p>可选成员，当存在编译器命令行调用的片段时出现。其值为指定有序片段的条目 JSON 数组。每个条目都是一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fragment</span></code></dt><dd><p>指定编译命令行调用片段的字符串。其值以构建系统的原生 shell 格式编码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向添加此片段的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">includes</span></code></dt><dd><p>可选成员，当存在包含目录时出现。其值为每个目录包含一个条目的 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定包含目录路径的字符串，以正斜杠表示。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isSystem</span></code></dt><dd><p>可选成员，如果包含目录被标记为系统包含目录，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="../command/target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 或其他添加此包含目录的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">frameworks</span></code></dt><dd><p>可选成员，当在 Apple 平台上存在框架时出现。其值为每个目录包含一个条目的 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定框架目录路径的字符串，以正斜杠表示。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isSystem</span></code></dt><dd><p>可选成员，如果框架被标记为系统框架，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-2-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 或其他添加此框架的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段添加于 codemodel 2.6 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">precompileHeaders</span></code></dt><dd><p>可选成员，当 <span class="target" id="index-0-command:target_precompile_headers"></span><a class="reference internal" href="../command/target_precompile_headers.html#command:target_precompile_headers" title="target_precompile_headers"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_precompile_headers()</span></code></a> 或其他命令调用在目标上设置了 <span class="target" id="index-0-prop_tgt:PRECOMPILE_HEADERS"></span><a class="reference internal" href="../prop_tgt/PRECOMPILE_HEADERS.html#prop_tgt:PRECOMPILE_HEADERS" title="PRECOMPILE_HEADERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRECOMPILE_HEADERS</span></code></a> 时出现。其值为每个头文件包含一个条目的 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">header</span></code></dt><dd><p>预编译头文件的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-1-command:target_precompile_headers"></span><a class="reference internal" href="../command/target_precompile_headers.html#command:target_precompile_headers" title="target_precompile_headers"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_precompile_headers()</span></code></a> 或其他添加此预编译头文件的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+<p>此字段添加于 codemodel 2.1 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">defines</span></code></dt><dd><p>可选成员，当存在预处理器定义时出现。其值为每个定义包含一个条目的 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">define</span></code></dt><dd><p>指定格式为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;[=&lt;value&gt;]</span></code> 的预处理器定义的字符串，例如 <code class="docutils literal notranslate"><span class="pre">DEF</span></code> 或 <code class="docutils literal notranslate"><span class="pre">DEF=1</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>可选成员，当存在指向 <span class="target" id="index-0-command:target_compile_definitions"></span><a class="reference internal" href="../command/target_compile_definitions.html#command:target_compile_definitions" title="target_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code></a> 或其他添加此预处理器定义的命令调用的 CMake 语言回溯时出现。其值是一个基于 0 的无符号整数索引，指向 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员的 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sysroot</span></code></dt><dd><p>可选成员，当定义了 <span class="target" id="index-0-variable:CMAKE_SYSROOT_COMPILE"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT_COMPILE.html#variable:CMAKE_SYSROOT_COMPILE" title="CMAKE_SYSROOT_COMPILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT_COMPILE</span></code></a> 或 <span class="target" id="index-1-variable:CMAKE_SYSROOT"></span><a class="reference internal" href="../variable/CMAKE_SYSROOT.html#variable:CMAKE_SYSROOT" title="CMAKE_SYSROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSROOT</span></code></a> 变量时出现。其值为一个包含一个成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定 sysroot 绝对路径的字符串，以正斜杠表示。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code></dt><dd><p>一个 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-backtrace-graph">"codemodel" 2 版本 "回溯图"</a>，其节点被本 "target" 对象中其他地方的 <code class="docutils literal notranslate"><span class="pre">backtrace</span></code> 成员引用。</p>
+</dd>
+</dl>
+</section>
+<section id="codemodel-version-2-backtrace-graph">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id16" role="doc-backlink">"codemodel" 2 版本 "回溯图"</a><a class="headerlink" href="cmake-file-api.7.html#codemodel-version-2-backtrace-graph" title="链接到此标题">¶</a></h4>
+<p><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-directory-object">"codemodel" 2 版本 "directory" 对象</a> 或 <a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-target-object">"codemodel" 2 版本 "target" 对象</a> 的 <code class="docutils literal notranslate"><span class="pre">backtraceGraph</span></code> 成员是一个描述回溯图的 JSON 对象。其节点被包含对象中其他地方的 <code class="docutils literal notranslate"><span class="pre">backtrace</span></code> 成员引用。回溯图对象成员为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">nodes</span></code></dt><dd><p>列出回溯图中节点的 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">file</span></code></dt><dd><p>指向回溯 <code class="docutils literal notranslate"><span class="pre">files</span></code> 数组的基于 0 的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">行</span></code></dt><dd><p>当节点表示文件中的某一行时出现的可选成员。其值为基于 1 的无符号整数行号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">命令</span></code></dt><dd><p>当节点表示文件中的命令调用时出现的可选成员。其值为指向回溯 <code class="docutils literal notranslate"><span class="pre">commands</span></code> 数组的基于 0 的无符号整数索引。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>当节点不是调用栈底部时出现的可选成员。其值为回溯 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> 数组中另一个条目的基于 0 的无符号整数索引。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">commands</span></code></dt><dd><p>列出回溯节点引用的命令名称的 JSON 数组。每个条目都是一个指定命令名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">files</span></code></dt><dd><p>列出回溯节点引用的 CMake 语言文件的 JSON 数组。每个条目都是一个指定文件路径的字符串，以正斜杠表示。如果文件位于顶级源目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="object-kind-configurelog">
+<span id="file-api-configurelog"></span><h3><a class="toc-backref" href="cmake-file-api.7.html#id17" role="doc-backlink">对象类型 "configureLog"</a><a class="headerlink" href="cmake-file-api.7.html#object-kind-configurelog" title="链接到此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象类型描述了 <span class="target" id="index-0-manual:cmake-configure-log(7)"></span><a class="reference internal" href="cmake-configure-log.7.html#manual:cmake-configure-log(7)" title="cmake-configure-log(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-configure-log(7)</span></code></a> 文件的位置和内容。</p>
+<p>仅有一个 <code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象主版本，即版本 1。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增：</span><code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象类型回复由 <a class="reference download internal" download="" href="../_downloads/dbe320a46c35d67d48497959b85f5834/schema_configureLog.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读形式描述。</p>
+</div>
+<section id="configurelog-version-1">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id18" role="doc-backlink">"configureLog" 版本 1</a><a class="headerlink" href="cmake-file-api.7.html#configurelog-version-1" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象版本 1 是一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"configureLog"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-build-dir/CMakeFiles/CMakeConfigureLog.yaml"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"eventKindNames"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"try_compile-v1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"try_run-v1"</span><span class="w"> </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象特有的成员是</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定配置日志文件路径的字符串。客户端必须从该路径读取日志文件，该路径可能与 <span class="target" id="index-1-manual:cmake-configure-log(7)"></span><a class="reference internal" href="cmake-configure-log.7.html#manual:cmake-configure-log(7)" title="cmake-configure-log(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-configure-log(7)</span></code></a> 记录的路径不同。如果没有记录任何事件，日志文件可能不存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eventKindNames</span></code></dt><dd><p>一个 JSON 数组，其条目均为命名 <span class="target" id="index-2-manual:cmake-configure-log(7)"></span><a class="reference internal" href="cmake-configure-log.7.html#manual:cmake-configure-log(7)" title="cmake-configure-log(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-configure-log(7)</span></code></a> 版本化事件类型的 JSON 字符串。每种配置日志事件类型最多列出一个版本。虽然配置日志可能包含其他（版本化）事件类型，但客户端必须忽略未在此字段中列出的那些。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="object-kind-cache">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id19" role="doc-backlink">对象类型 "cache"</a><a class="headerlink" href="cmake-file-api.7.html#object-kind-cache" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cache</span></code> 对象类型列出缓存条目。这些是存储在构建树持久缓存 (<code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code>) 中的 <a class="reference internal" href="cmake-language.7.html#cmake-language-variables"><span class="std std-ref">变量</span></a>。</p>
+<p>仅有一个 <code class="docutils literal notranslate"><span class="pre">cache</span></code> 对象主版本，即版本 2。版本 1 不存在，以避免与 <span class="target" id="index-1-manual:cmake-server(7)"></span><a class="reference internal" href="cmake-server.7.html#manual:cmake-server(7)" title="cmake-server(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-server(7)</span></code></a> 模式下的缓存混淆。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增：</span><code class="docutils literal notranslate"><span class="pre">cache</span></code> 对象类型回复由 <a class="reference download internal" download="" href="../_downloads/0a011df60644523932f105f1124b6951/schema_cache.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读形式描述。</p>
+</div>
+<section id="cache-version-2">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id20" role="doc-backlink">"cache" 版本 2</a><a class="headerlink" href="cmake-file-api.7.html#cache-version-2" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">cache</span></code> 对象版本 2 是一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cache"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"entries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BUILD_SHARED_LIBS"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOOL"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HELPSTRING"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Build shared libraries"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CMAKE_GENERATOR"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unix Makefiles"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INTERNAL"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HELPSTRING"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Name of generator."</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cache</span></code> 对象特有的成员是</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">entries</span></code></dt><dd><p>一个 JSON 数组，其条目均为指定缓存条目的 JSON 对象。每个条目的成员为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定条目名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>指定条目值的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>指定由 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 用于选择编辑小部件的条目类型的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">属性</span></code></dt><dd><p>指定关联 <a class="reference internal" href="cmake-properties.7.html#cache-entry-properties"><span class="std std-ref">缓存条目属性</span></a> 的条目 JSON 数组。每个条目都是一个包含成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>指定缓存条目属性名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>指定缓存条目属性值的字符串。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="object-kind-cmakefiles">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id21" role="doc-backlink">对象类型 "cmakeFiles"</a><a class="headerlink" href="cmake-file-api.7.html#object-kind-cmakefiles" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 对象类型列出了 CMake 在配置和生成构建系统时使用的文件。这些包括 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件以及包含的 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 文件。</p>
+<p>仅有一个 <code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 对象主版本，即版本 1。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增：</span><code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 对象类型回复由 <a class="reference download internal" download="" href="../_downloads/eda7e22f7a80461c5ca4341d0cec4b65/schema_cmakeFiles.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读形式描述。</p>
+</div>
+<section id="cmakefiles-version-1">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id22" role="doc-backlink">"cmakeFiles" 版本 1</a><a class="headerlink" href="cmake-file-api.7.html#cmakefiles-version-1" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 对象版本 1 是一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cmakeFiles"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-build-dir"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-source-dir"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"inputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CMakeLists.txt"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"isGenerated"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/top-level-build-dir/.../CMakeSystem.cmake"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"isExternal"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/external/third-party/module.cmake"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"isCMake"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"isExternal"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/path/to/cmake/Modules/CMakeGenericSystem.cmake"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"globsDependent"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"expression"</span><span class="p">:</span><span class="w"> </span><span class="s2">"src/*.cxx"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"recurse"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"src/foo.cxx"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"src/bar.cxx"</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 对象特有的成员是</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定顶层源目录绝对路径的字符串（用正斜杠表示）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">构建</span></code></dt><dd><p>指定顶层构建目录绝对路径的字符串（用正斜杠表示）。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputs</span></code></dt><dd><p>一个 JSON 数组，其条目均为指定 CMake 在配置和生成构建系统时使用的输入文件的 JSON 对象。每个条目的成员为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>指定 CMake 输入文件路径的字符串，以正斜杠表示。如果文件位于顶级源目录内，则路径相对于该目录指定。否则，路径为绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isGenerated</span></code></dt><dd><p>可选成员，如果路径指定的文件位于顶级构建目录之下且构建是源外（out-of-source）构建，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。此成员在源内（in-source）构建中不可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isExternal</span></code></dt><dd><p>可选成员，如果路径指定的文件不在顶级源或构建目录之下，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isCMake</span></code></dt><dd><p>可选成员，如果路径指定了 CMake 安装中的文件，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">globsDependent</span></code></dt><dd><p>可选成员，当项目使用 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_DEPENDS</span></code> 选项调用 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 或 <span class="target" id="index-1-command:file"></span><a class="reference internal" href="../command/file.html#glob-recurse" title="file(glob_recurse)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB_RECURSE)</span></code></a> 时出现。其值为 JSON 对象数组，每个对象指定一个 glob 表达式及与其匹配的路径列表。如果 glob 表达式不再匹配相同的路径列表，CMake 会认为构建系统已过期。</p>
+<p>此字段添加于 <code class="docutils literal notranslate"><span class="pre">cmakeFiles</span></code> 1.1 版本。</p>
+<p>每个条目的成员为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">expression</span></code></dt><dd><p>指定 glob 表达式的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recurse</span></code></dt><dd><p>可选成员，如果条目对应于 <span class="target" id="index-2-command:file"></span><a class="reference internal" href="../command/file.html#glob-recurse" title="file(glob_recurse)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB_RECURSE)</span></code></a> 调用，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。否则，条目对应于 <span class="target" id="index-3-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 调用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">listDirectories</span></code></dt><dd><p>可选成员，如果 <span class="target" id="index-4-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 在没有 <code class="docutils literal notranslate"><span class="pre">LIST_DIRECTORIES</span> <span class="pre">false</span></code> 的情况下调用，或者 <span class="target" id="index-5-command:file"></span><a class="reference internal" href="../command/file.html#glob-recurse" title="file(glob_recurse)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB_RECURSE)</span></code></a> 在有 <code class="docutils literal notranslate"><span class="pre">LIST_DIRECTORIES</span> <span class="pre">true</span></code> 的情况下调用，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">followSymlinks</span></code></dt><dd><p>可选成员，如果 <span class="target" id="index-6-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 使用了 <code class="docutils literal notranslate"><span class="pre">FOLLOW_SYMLINKS</span></code> 选项调用，则存在且布尔值为 <code class="docutils literal notranslate"><span class="pre">true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">relative</span></code></dt><dd><p>可选成员，如果 <span class="target" id="index-7-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 使用了 <code class="docutils literal notranslate"><span class="pre">RELATIVE</span> <span class="pre">&lt;path&gt;</span></code> 选项调用，则存在。其值为包含所给定 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>列出由 <span class="target" id="index-8-command:file"></span><a class="reference internal" href="../command/file.html#glob" title="file(glob)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB)</span></code></a> 或 <span class="target" id="index-9-command:file"></span><a class="reference internal" href="../command/file.html#glob-recurse" title="file(glob_recurse)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GLOB_RECURSE)</span></code></a> 调用匹配的路径的 JSON 字符串数组。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="object-kind-toolchains">
+<h3><a class="toc-backref" href="cmake-file-api.7.html#id23" role="doc-backlink">对象类型 "toolchains"</a><a class="headerlink" href="cmake-file-api.7.html#object-kind-toolchains" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">toolchains</span></code> 对象类型列出了构建期间使用的工具链属性。这些包括语言、编译器路径、ID 和版本。</p>
+<p>仅有一个 <code class="docutils literal notranslate"><span class="pre">toolchains</span></code> 对象主版本，即版本 1。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增：</span><code class="docutils literal notranslate"><span class="pre">toolchains</span></code> 对象类型回复由 <a class="reference download internal" download="" href="../_downloads/56f10a9b3889585adab74528ea878f2e/schema_toolchains.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读形式描述。</p>
+</div>
+<section id="toolchains-version-1">
+<h4><a class="toc-backref" href="cmake-file-api.7.html#id24" role="doc-backlink">"toolchains" 版本 1</a><a class="headerlink" href="cmake-file-api.7.html#toolchains-version-1" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">toolchains</span></code> 对象版本 1 是一个 JSON 对象</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toolchains"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"toolchains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"C"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"compiler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/bin/cc"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"commandFragment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--config x86_64-linux-gnu.cfg"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GNU"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9.3.0"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"implicit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"includeDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"/usr/lib/gcc/x86_64-linux-gnu/9/include"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/local/include"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"linkDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"/usr/lib/gcc/x86_64-linux-gnu/9"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/lib/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/lib"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/lib/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/lib"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"linkFrameworkDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">          </span><span class="nt">"linkLibraries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"gcc"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc_s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"c"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc_s"</span><span class="w"> </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"sourceFileExtensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"c"</span><span class="p">,</span><span class="w"> </span><span class="s2">"m"</span><span class="w"> </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CXX"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"compiler"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/bin/c++"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GNU"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9.3.0"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"implicit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"includeDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"/usr/include/c++/9"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include/x86_64-linux-gnu/c++/9"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include/c++/9/backward"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/lib/gcc/x86_64-linux-gnu/9/include"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/local/include"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/include"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"linkDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"/usr/lib/gcc/x86_64-linux-gnu/9"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/lib/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/usr/lib"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/lib/x86_64-linux-gnu"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"/lib"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"linkFrameworkDirectories"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">          </span><span class="nt">"linkLibraries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"stdc++"</span><span class="p">,</span><span class="w"> </span><span class="s2">"m"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc_s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc"</span><span class="p">,</span><span class="w"> </span><span class="s2">"c"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc_s"</span><span class="p">,</span><span class="w"> </span><span class="s2">"gcc"</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"sourceFileExtensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"C"</span><span class="p">,</span><span class="w"> </span><span class="s2">"M"</span><span class="p">,</span><span class="w"> </span><span class="s2">"c++"</span><span class="p">,</span><span class="w"> </span><span class="s2">"cc"</span><span class="p">,</span><span class="w"> </span><span class="s2">"cpp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"cxx"</span><span class="p">,</span><span class="w"> </span><span class="s2">"mm"</span><span class="p">,</span><span class="w"> </span><span class="s2">"CPP"</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">toolchains</span></code> 对象特有的成员是</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">toolchains</span></code></dt><dd><p>一个 JSON 数组，其条目均为指定与特定语言相关联的工具链的 JSON 对象。每个条目的成员为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code></dt><dd><p>指定工具链语言（如 C 或 CXX）的 JSON 字符串。语言名称与可以传递给 <span class="target" id="index-2-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令的语言名称相同。因为 CMake 每种语言仅支持一个工具链，所以此字段可以用作键。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compiler</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER</span></code></a> 变量时出现。其值是包含编译器路径的 JSON 字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">commandFragment</span></code></dt><dd><p>可选成员，当 <span class="target" id="index-1-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER</span></code></a> 变量是包含多个元素的列表，或者 <span class="target" id="index-0-envvar:CC"></span><a class="reference internal" href="../envvar/CC.html#envvar:CC" title="CC"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CC</span></code></a> 或类似环境变量在编译器可执行文件后包含命令行参数时出现。其值是以命令行片段形式包含后续元素（编译器必需参数）的 JSON 字符串。</p>
+<p>此字段添加于 toolchains 1.1 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_<LANG>_COMPILER_ID" title="CMAKE_<LANG>_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER_ID</span></code></a> 变量时出现。其值是包含编译器 ID (GNU, MSVC 等) 的 JSON 字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_VERSION"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_VERSION.html#variable:CMAKE_<LANG>_COMPILER_VERSION" title="CMAKE_<LANG>_COMPILER_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER_VERSION</span></code></a> 变量时出现。其值是包含编译器版本的 JSON 字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">目标</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_TARGET"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_TARGET.html#variable:CMAKE_<LANG>_COMPILER_TARGET" title="CMAKE_<LANG>_COMPILER_TARGET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER_TARGET</span></code></a> 变量时出现。其值是包含编译器交叉编译目标的 JSON 字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">implicit</span></code></dt><dd><p>包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">includeDirectories</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_IMPLICIT_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../variable/CMAKE_LANG_IMPLICIT_INCLUDE_DIRECTORIES.html#variable:CMAKE_LANG_IMPLICIT_INCLUDE_DIRECTORIES" title="CMAKE_LANG_IMPLICIT_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_IMPLICIT_INCLUDE_DIRECTORIES</span></code></a> 变量时出现。其值是一个 JSON 字符串数组，其中每个字符串包含编译器隐式包含目录的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">linkDirectories</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_IMPLICIT_LINK_DIRECTORIES"></span><a class="reference internal" href="../variable/CMAKE_LANG_IMPLICIT_LINK_DIRECTORIES.html#variable:CMAKE_LANG_IMPLICIT_LINK_DIRECTORIES" title="CMAKE_LANG_IMPLICIT_LINK_DIRECTORIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_IMPLICIT_LINK_DIRECTORIES</span></code></a> 变量时出现。其值是一个 JSON 字符串数组，其中每个字符串包含编译器隐式链接目录的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">linkFrameworkDirectories</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES"></span><a class="reference internal" href="../variable/CMAKE_LANG_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES.html#variable:CMAKE_LANG_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES" title="CMAKE_LANG_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES</span></code></a> 变量时出现。其值是一个 JSON 字符串数组，其中每个字符串包含编译器隐式链接框架目录的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">linkLibraries</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_IMPLICIT_LINK_LIBRARIES"></span><a class="reference internal" href="../variable/CMAKE_LANG_IMPLICIT_LINK_LIBRARIES.html#variable:CMAKE_LANG_IMPLICIT_LINK_LIBRARIES" title="CMAKE_LANG_IMPLICIT_LINK_LIBRARIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_IMPLICIT_LINK_LIBRARIES</span></code></a> 变量时出现。其值是一个 JSON 字符串数组，其中每个字符串包含编译器隐式链接库的路径。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sourceFileExtensions</span></code></dt><dd><p>可选成员，当为当前语言定义了 <span class="target" id="index-0-variable:CMAKE_<LANG>_SOURCE_FILE_EXTENSIONS"></span><a class="reference internal" href="../variable/CMAKE_LANG_SOURCE_FILE_EXTENSIONS.html#variable:CMAKE_<LANG>_SOURCE_FILE_EXTENSIONS" title="CMAKE_LANG_SOURCE_FILE_EXTENSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_SOURCE_FILE_EXTENSIONS</span></code></a> 变量时出现。其值是一个 JSON 字符串数组，其中每个字符串包含该语言的文件扩展名（不带前导点）。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#">cmake-file-api(7)</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#api-v1">API v1</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-shared-stateless-query-files">v1 共享无状态查询文件</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-client-stateless-query-files">v1 客户端无状态查询文件</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-client-stateful-query-files">v1 客户端有状态查询文件</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-reply-index-file">v1 回复索引文件</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-reply-file-reference">v1 回复文件引用</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-reply-error-index">v1 回复错误索引</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#v1-reply-files">v1 回复文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kinds">对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kind-codemodel">"codemodel" 对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2">"codemodel" 版本 2</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-directory-object">"codemodel" 版本 2 "directory" 对象</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-target-object">"codemodel" 版本 2 "target" 对象</a></li>
+<li><a class="reference internal" href="cmake-file-api.7.html#codemodel-version-2-backtrace-graph">"codemodel" 版本 2 "backtrace graph"</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kind-configurelog">"configureLog" 对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#configurelog-version-1">"configureLog" 版本 1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kind-cache">"cache" 对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#cache-version-2">"cache" 版本 2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kind-cmakefiles">"cmakeFiles" 对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#cmakefiles-version-1">"cmakeFiles" 版本 1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-file-api.7.html#object-kind-toolchains">"toolchains" 对象种类</a><ul>
+<li><a class="reference internal" href="cmake-file-api.7.html#toolchains-version-1">"toolchains" 版本 1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../envvar/CCMAKE_COLORS.html" title="上一章">CCMAKE_COLORS</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-generator-expressions.7.html" title="下一章">cmake-generator-expressions(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-file-api.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-generator-expressions.7.html" title="cmake-generator-expressions(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="../envvar/CCMAKE_COLORS.html" title="CCMAKE_COLORS">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-file-api.7.html">cmake-file-api(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

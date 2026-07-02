@@ -1,0 +1,666 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>string — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="string.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="unset" href="unset.html" />
+    <link rel="prev" title="site_name" href="site_name.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="unset.html" title="unset" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="site_name.html" title="site_name" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="string.html">string</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="string">
+<span id="command:string"></span><h1>string<a class="headerlink" href="string.html#string" title="链接到此标题">¶</a></h1>
+<p>字符串操作。</p>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="string.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="string.html#search-and-replace">Search and Replace</a>
+  string(<a class="reference internal" href="string.html#find">FIND</a> &lt;string&gt; &lt;substring&gt; &lt;out-var&gt; [...])
+  string(<a class="reference internal" href="string.html#replace">REPLACE</a> &lt;match-string&gt; &lt;replace-string&gt; &lt;out-var&gt; &lt;input&gt;...)
+  string(<a class="reference internal" href="string.html#regex-match">REGEX MATCH</a> &lt;match-regex&gt; &lt;out-var&gt; &lt;input&gt;...)
+  string(<a class="reference internal" href="string.html#regex-matchall">REGEX MATCHALL</a> &lt;match-regex&gt; &lt;out-var&gt; &lt;input&gt;...)
+  string(<a class="reference internal" href="string.html#regex-replace">REGEX REPLACE</a> &lt;match-regex&gt; &lt;replace-expr&gt; &lt;out-var&gt; &lt;input&gt;...)
+
+<a class="reference internal" href="string.html#manipulation">Manipulation</a>
+  string(<a class="reference internal" href="string.html#append">APPEND</a> &lt;string-var&gt; [&lt;input&gt;...])
+  string(<a class="reference internal" href="string.html#prepend">PREPEND</a> &lt;string-var&gt; [&lt;input&gt;...])
+  string(<a class="reference internal" href="string.html#concat">CONCAT</a> &lt;out-var&gt; [&lt;input&gt;...])
+  string(<a class="reference internal" href="string.html#join">JOIN</a> &lt;glue&gt; &lt;out-var&gt; [&lt;input&gt;...])
+  string(<a class="reference internal" href="string.html#tolower">TOLOWER</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#toupper">TOUPPER</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#length">LENGTH</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#substring">SUBSTRING</a> &lt;string&gt; &lt;begin&gt; &lt;length&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#strip">STRIP</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#genex-strip">GENEX_STRIP</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#repeat">REPEAT</a> &lt;string&gt; &lt;count&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#regex-quote">REGEX QUOTE</a> &lt;out-var&gt; &lt;input&gt;...)
+
+<a class="reference internal" href="string.html#comparison">Comparison</a>
+  string(<a class="reference internal" href="string.html#compare">COMPARE</a> &lt;op&gt; &lt;string1&gt; &lt;string2&gt; &lt;out-var&gt;)
+
+<a class="reference internal" href="string.html#hashing">Hashing</a>
+  string(<a class="reference internal" href="string.html#hash">&lt;HASH&gt;</a> &lt;out-var&gt; &lt;input&gt;)
+
+<a class="reference internal" href="string.html#generation">Generation</a>
+  string(<a class="reference internal" href="string.html#ascii">ASCII</a> &lt;number&gt;... &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#hex">HEX</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#configure">CONFIGURE</a> &lt;string&gt; &lt;out-var&gt; [...])
+  string(<a class="reference internal" href="string.html#make-c-identifier">MAKE_C_IDENTIFIER</a> &lt;string&gt; &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#random">RANDOM</a> [&lt;option&gt;...] &lt;out-var&gt;)
+  string(<a class="reference internal" href="string.html#timestamp">TIMESTAMP</a> &lt;out-var&gt; [&lt;format string&gt;] [UTC])
+  string(<a class="reference internal" href="string.html#uuid">UUID</a> &lt;out-var&gt; ...)
+
+<a class="reference internal" href="string.html#json">JSON</a>
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         {<a class="reference internal" href="string.html#json-get">GET</a> | <a class="reference internal" href="string.html#json-get-raw">GET_RAW</a> | <a class="reference internal" href="string.html#json-type">TYPE</a> | <a class="reference internal" href="string.html#json-length">LENGTH</a>}
+         &lt;json-string&gt; [&lt;member|index&gt; ...])
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         <a class="reference internal" href="string.html#json-remove">REMOVE</a>
+         &lt;json-string&gt; &lt;member|index&gt; [&lt;member|index&gt; ...])
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         <a class="reference internal" href="string.html#json-member">MEMBER</a> &lt;json-string&gt;
+         [&lt;member|index&gt; ...] &lt;index&gt;)
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         <a class="reference internal" href="string.html#json-set">SET</a> &lt;json-string&gt;
+         &lt;member|index&gt; [&lt;member|index&gt; ...] &lt;value&gt;)
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         <a class="reference internal" href="string.html#json-equal">EQUAL</a> &lt;json-string1&gt; &lt;json-string2&gt;)
+  string(JSON &lt;out-var&gt; [ERROR_VARIABLE &lt;error-var&gt;]
+         <a class="reference internal" href="string.html#string-encode">STRING_ENCODE</a> &lt;string&gt;)</pre>
+</section>
+<section id="search-and-replace">
+<h2>搜索和替换<a class="headerlink" href="string.html#search-and-replace" title="链接到此标题">¶</a></h2>
+<section id="search-and-replace-with-plain-strings">
+<h3>使用纯字符串进行搜索和替换<a class="headerlink" href="string.html#search-and-replace-with-plain-strings" title="链接到此标题">¶</a></h3>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="find">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">FIND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;substring&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">REVERSE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#find" title="链接到此定义">¶</a></dt>
+<dd><p>返回给定 <code class="docutils literal notranslate"><span class="pre">&lt;substring&gt;</span></code> 在提供的 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 中被找到的位置。如果使用了 <code class="docutils literal notranslate"><span class="pre">REVERSE</span></code> 标志，该命令将搜索指定 <code class="docutils literal notranslate"><span class="pre">&lt;substring&gt;</span></code> 的最后一个出现位置。如果未找到 <code class="docutils literal notranslate"><span class="pre">&lt;substring&gt;</span></code>，则返回位置 -1。</p>
+<p><code class="docutils literal notranslate"><span class="pre">string(FIND)</span></code> 子命令将所有字符串视为仅 ASCII 字符。存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中的索引也将以字节为单位计数，因此包含多字节字符的字符串可能会导致意外结果。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="replace">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REPLACE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;match_string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;replace_string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#replace" title="链接到此定义">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 中所有出现的 <code class="docutils literal notranslate"><span class="pre">&lt;match_string&gt;</span></code> 替换为 <code class="docutils literal notranslate"><span class="pre">&lt;replace_string&gt;</span></code>，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。</p>
+</dd></dl>
+
+</section>
+<section id="search-and-replace-with-regular-expressions">
+<h3>使用正则表达式进行搜索和替换<a class="headerlink" href="string.html#search-and-replace-with-regular-expressions" title="链接到此标题">¶</a></h3>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="regex-match">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REGEX</span></span><span class="w"> </span><span class="no"><span class="pre">MATCH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;regular_expression&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#regex-match" title="链接到此定义">¶</a></dt>
+<dd><p>匹配 <code class="docutils literal notranslate"><span class="pre">&lt;regular_expression&gt;</span></code> 一次，并将匹配项存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。在匹配之前，所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数都会被连接起来。正则表达式在下面的小节中指定。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="regex-matchall">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REGEX</span></span><span class="w"> </span><span class="no"><span class="pre">MATCHALL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;regular_expression&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#regex-matchall" title="链接到此定义">¶</a></dt>
+<dd><p>尽可能多次匹配 <code class="docutils literal notranslate"><span class="pre">&lt;regular_expression&gt;</span></code>，并将匹配项作为列表存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。在匹配之前，所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数都会被连接起来。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="regex-replace">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REGEX</span></span><span class="w"> </span><span class="no"><span class="pre">REPLACE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;regular_expression&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;replacement_expression&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#regex-replace" title="链接到此定义">¶</a></dt>
+<dd><p>尽可能多次匹配 <code class="docutils literal notranslate"><span class="pre">&lt;regular_expression&gt;</span></code>，并在输出中用 <code class="docutils literal notranslate"><span class="pre">&lt;replacement_expression&gt;</span></code> 替换匹配项。在匹配之前，所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数都会被连接起来。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;replacement_expression&gt;</span></code> 可以使用 <code class="docutils literal notranslate"><span class="pre">\1</span></code>、<code class="docutils literal notranslate"><span class="pre">\2</span></code>、...、<code class="docutils literal notranslate"><span class="pre">\9</span></code> 引用匹配项中用括号分隔的子表达式。请注意，在 CMake 代码中需要两个反斜杠 (<code class="docutils literal notranslate"><span class="pre">\\1</span></code>) 才能通过参数解析获得反斜杠。</p>
+</dd></dl>
+
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 4.1 中更改：</span><code class="docutils literal notranslate"><span class="pre">^</span></code> 锚点现在仅匹配输入字符串的开头，而不是每个重复搜索的开头。请参阅策略 <span class="target" id="index-0-policy:CMP0186"></span><a class="reference internal" href="../policy/CMP0186.html#policy:CMP0186" title="CMP0186"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0186</span></code></a>。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">MATCHALL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">REPLACE</span></code> 中允许零长度匹配。 以前，它们会触发错误。</p>
+<p>替换表达式可以包含对未匹配任何内容的子表达式的引用。 以前，此类引用会触发错误。</p>
+</div>
+</section>
+<section id="regex-specification">
+<span id="id1"></span><h3>正则表达式规范<a class="headerlink" href="string.html#regex-specification" title="链接到此标题">¶</a></h3>
+<p>以下字符在正则表达式中具有特殊含义</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">^</span></code></dt><dd><p>匹配输入开头</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">$</span></code></dt><dd><p>匹配输入结尾</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">.</span></code></dt><dd><p>匹配任何单个字符</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;char&gt;</span></code></dt><dd><p>匹配指定的单个字符 <code class="docutils literal notranslate"><span class="pre">&lt;char&gt;</span></code>。 使用此方法匹配特殊正则表达式字符，例如 <code class="docutils literal notranslate"><span class="pre">\.</span></code> 以匹配字面量 <code class="docutils literal notranslate"><span class="pre">.</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\\</span></code> 以匹配字面量反斜杠 <code class="docutils literal notranslate"><span class="pre">\</span></code>。 逃避非特殊字符是不必要的，但允许，例如 <code class="docutils literal notranslate"><span class="pre">\a</span></code> 匹配 <code class="docutils literal notranslate"><span class="pre">a</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code></dt><dd><p>匹配方括号内的任何字符。 要匹配字面量 <code class="docutils literal notranslate"><span class="pre">]</span></code>，使其成为第一个字符，例如 <code class="docutils literal notranslate"><span class="pre">[]ab]</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[^</span> <span class="pre">]</span></code></dt><dd><p>匹配不在方括号内的任何字符。 要不匹配字面量 <code class="docutils literal notranslate"><span class="pre">]</span></code>，使其成为第一个字符，例如 <code class="docutils literal notranslate"><span class="pre">[^]ab]</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">-</span></code></dt><dd><p>在方括号内，指定两侧字符之间的包含范围，例如 <code class="docutils literal notranslate"><span class="pre">[a-f]</span></code> 是 <code class="docutils literal notranslate"><span class="pre">[abcdef]</span></code>。 要在方括号中匹配字面量 <code class="docutils literal notranslate"><span class="pre">-</span></code>，使其成为第一个或最后一个字符，例如 <code class="docutils literal notranslate"><span class="pre">[+*/-]</span></code> 匹配基本的数学运算符。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">*</span></code></dt><dd><p>匹配前模式零次或多次</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">+</span></code></dt><dd><p>匹配前模式一次或多次</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">?</span></code></dt><dd><p>匹配前模式零次或一次</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">|</span></code></dt><dd><p>匹配 <code class="docutils literal notranslate"><span class="pre">|</span></code> 两侧的模式</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">()</span></code></dt><dd><p>保存匹配的子表达式，可以在 <code class="docutils literal notranslate"><span class="pre">REGEX REPLACE</span></code> 操作中引用它。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加：</span>所有与正则表达式相关的命令，包括例如 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="if.html#matches" title="if(matches)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if(MATCHES)</span></code></a>，将子组匹配项保存到变量 <span class="target" id="index-0-variable:CMAKE_MATCH_<n>"></span><a class="reference internal" href="../variable/CMAKE_MATCH_n.html#variable:CMAKE_MATCH_<n>" title="CMAKE_MATCH_<n>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MATCH_&lt;n&gt;</span></code></a>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> 为 0..9。</p>
+</div>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">*</span></code>、<code class="docutils literal notranslate"><span class="pre">+</span></code> 和 <code class="docutils literal notranslate"><span class="pre">?</span></code> 的优先级高于连接。 <code class="docutils literal notranslate"><span class="pre">|</span></code> 的优先级低于连接。 这意味着正则表达式 <code class="docutils literal notranslate"><span class="pre">^ab+d$</span></code> 匹配 <code class="docutils literal notranslate"><span class="pre">abbd</span></code> 但不匹配 <code class="docutils literal notranslate"><span class="pre">ababd</span></code>，正则表达式 <code class="docutils literal notranslate"><span class="pre">^(ab|cd)$</span></code> 匹配 <code class="docutils literal notranslate"><span class="pre">ab</span></code> 但不匹配 <code class="docutils literal notranslate"><span class="pre">abd</span></code>。</p>
+<p>CMake 语言 <a class="reference internal" href="../manual/cmake-language.7.html#escape-sequences"><span class="std std-ref">转义序列</span></a>，例如 <code class="docutils literal notranslate"><span class="pre">\t</span></code>、<code class="docutils literal notranslate"><span class="pre">\r</span></code>、<code class="docutils literal notranslate"><span class="pre">\n</span></code> 和 <code class="docutils literal notranslate"><span class="pre">\\</span></code> 可用于构造字面量制表符、回车符、换行符和反斜杠（分别）以传递给正则表达式。 例如</p>
+<ul class="simple">
+<li><p>带引号的参数 <code class="docutils literal notranslate"><span class="pre">"[</span> <span class="pre">\t\r\n]"</span></code> 指定一个匹配任何单个空白字符的正则表达式。</p></li>
+<li><p>带引号的参数 <code class="docutils literal notranslate"><span class="pre">"[/\\]"</span></code> 指定一个匹配单个正斜杠 <code class="docutils literal notranslate"><span class="pre">/</span></code> 或反斜杠 <code class="docutils literal notranslate"><span class="pre">\</span></code> 的正则表达式。</p></li>
+<li><p>带引号的参数 <code class="docutils literal notranslate"><span class="pre">"[A-Za-z0-9_]"</span></code> 指定一个匹配 C 语言环境中的任何单个“单词”字符的正则表达式。</p></li>
+<li><p>引用的参数 <code class="docutils literal notranslate"><span class="pre">"\\(\\a\\+b\\)"</span></code> 指定了一个正则表达式，它匹配确切的字符串 <code class="docutils literal notranslate"><span class="pre">(a+b)</span></code>。在引用的参数中，每个 <code class="docutils literal notranslate"><span class="pre">\\</span></code> 都会被解析为 <code class="docutils literal notranslate"><span class="pre">\</span></code>，因此正则表达式本身实际上是 <code class="docutils literal notranslate"><span class="pre">\(\a\+\b\)</span></code>。这也可以在 <a class="reference internal" href="../manual/cmake-language.7.html#bracket-argument"><span class="std std-ref">方括号参数</span></a> 中指定，而无需转义反斜杠，例如 <code class="docutils literal notranslate"><span class="pre">[[\(\a\+\b\)]]</span></code>。</p></li>
+</ul>
+</section>
+</section>
+<section id="manipulation">
+<h2>操作<a class="headerlink" href="string.html#manipulation" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="append">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">APPEND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#append" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>将所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数附加到字符串。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="prepend">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">PREPEND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#prepend" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>将所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数添加到字符串的前面。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="concat">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">CONCAT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#concat" title="链接到此定义">¶</a></dt>
+<dd><p>将所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数连接在一起，并将结果存储在指定的 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="join">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JOIN</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;glue&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#join" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;glue&gt;</span></code> 字符串将所有 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 参数连接在一起，并将结果存储在指定的 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。</p>
+<p>要连接列表的元素，最好使用 <span class="target" id="index-0-command:list"></span><a class="reference internal" href="list.html#command:list" title="list"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list()</span></code></a> 命令中的 <code class="docutils literal notranslate"><span class="pre">JOIN</span></code> 操作符。这允许元素具有特殊字符，例如 <code class="docutils literal notranslate"><span class="pre">;</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="tolower">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">TOLOWER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#tolower" title="链接到此定义">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 转换为小写字符。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="toupper">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">TOUPPER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#toupper" title="链接到此定义">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 转换为大写字符。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="length">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">LENGTH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#length" title="链接到此定义">¶</a></dt>
+<dd><p>将给定字符串的长度（以字节为单位）存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。请注意，这意味着如果 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 包含多字节字符，则存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中的结果将<em>不是</em>字符数。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="substring">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">SUBSTRING</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;begin&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;length&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#substring" title="链接到此定义">¶</a></dt>
+<dd><p>将给定 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 的子字符串存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。如果 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code> 为 <code class="docutils literal notranslate"><span class="pre">-1</span></code>，则将从 <code class="docutils literal notranslate"><span class="pre">&lt;begin&gt;</span></code> 开始的字符串的其余部分返回。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.2 版本更改：</span>如果 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 短于 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code>，则将使用字符串的末尾。CMake 的早期版本在此情况下报告错误。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;begin&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code> 都是以字节为单位计算的，因此如果 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 可能包含多字节字符，则必须小心。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="strip">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">STRIP</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#strip" title="链接到此定义">¶</a></dt>
+<dd><p>将给定 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 的子字符串存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中，并删除前导和尾随空格。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="genex-strip">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">GENEX_STRIP</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#genex-strip" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>从输入 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 中删除任何 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="repeat">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REPEAT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;count&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#repeat" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>将输出字符串生成为输入 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 重复 <code class="docutils literal notranslate"><span class="pre">&lt;count&gt;</span></code> 次。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="regex-quote">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">REGEX</span></span><span class="w"> </span><span class="no"><span class="pre">QUOTE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#regex-quote" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>将正则表达式匹配 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 存储在 <code class="docutils literal notranslate"><span class="pre">&lt;out-var&gt;</span></code> 中。转义所有在正则表达式中具有特殊含义的字符，以便输出字符串可以作为正则表达式的一部分用于字面匹配输入。</p>
+</dd></dl>
+
+</section>
+<section id="comparison">
+<h2>比较<a class="headerlink" href="string.html#comparison" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature" id="compare">
+<dt class="sig sig-object cmake" id="compare-less">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">LESS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-less" title="链接到此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="compare-greater">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">GREATER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-greater" title="链接到此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="compare-equal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">EQUAL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-equal" title="链接到此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="compare-notequal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">NOTEQUAL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-notequal" title="链接到此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="compare-less-equal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">LESS_EQUAL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-less-equal" title="链接到此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="compare-greater-equal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="w"> </span><span class="no"><span class="pre">GREATER_EQUAL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string2&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#compare-greater-equal" title="链接到此定义">¶</a></dt>
+<dd><p>比较字符串并将 true 或 false 存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.7 版本中添加：</span>添加了 <code class="docutils literal notranslate"><span class="pre">LESS_EQUAL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">GREATER_EQUAL</span></code> 选项。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="hashing">
+<span id="supported-hash-algorithms"></span><h2>哈希<a class="headerlink" href="string.html#hashing" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="hash">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="nv"><span class="pre">&lt;HASH&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;input&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#hash" title="链接到此定义">¶</a></dt>
+<dd><p>计算 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 字符串的密码学哈希值。支持的 <code class="docutils literal notranslate"><span class="pre">&lt;HASH&gt;</span></code> 算法名称是</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">MD5</span></code></dt><dd><p>消息摘要算法 5，RFC 1321。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA1</span></code></dt><dd><p>美国安全哈希算法 1，RFC 3174。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA224</span></code></dt><dd><p>美国安全哈希算法，RFC 4634。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA256</span></code></dt><dd><p>美国安全哈希算法，RFC 4634。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA384</span></code></dt><dd><p>美国安全哈希算法，RFC 4634。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA512</span></code></dt><dd><p>美国安全哈希算法，RFC 4634。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA3_224</span></code></dt><dd><p>Keccak SHA-3。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA3_256</span></code></dt><dd><p>Keccak SHA-3。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA3_384</span></code></dt><dd><p>Keccak SHA-3。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHA3_512</span></code></dt><dd><p>Keccak SHA-3。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.8 版本中添加：</span>添加了 <code class="docutils literal notranslate"><span class="pre">SHA3_*</span></code> 哈希算法。</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="generation">
+<h2>生成<a class="headerlink" href="string.html#generation" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="ascii">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">ASCII</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;number&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;number&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#ascii" title="链接到此定义">¶</a></dt>
+<dd><p>将所有数字转换为相应的 ASCII 字符。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="hex">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">HEX</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#hex" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>将输入 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 中的每个字节转换为其十六进制表示形式，并将连接后的十六进制数字存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。输出中的字母（<code class="docutils literal notranslate"><span class="pre">a</span></code> 到 <code class="docutils literal notranslate"><span class="pre">f</span></code>）均为小写。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="configure">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">CONFIGURE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">@ONLY</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ESCAPE_QUOTES</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#configure" title="链接到此定义">¶</a></dt>
+<dd><p>转换一个 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code>，就像 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 转换一个文件一样。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="make-c-identifier">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">MAKE_C_IDENTIFIER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#make-c-identifier" title="链接到此定义">¶</a></dt>
+<dd><p>将输入 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 中的每个非字母数字字符转换为下划线，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 中。如果 <code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code> 的第一个字符是数字，则结果前面也会添加一个下划线。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="random">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">RANDOM</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">LENGTH</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;length&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ALPHABET</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;alphabet&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">RANDOM_SEED</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;seed&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#random" title="链接到此定义">¶</a></dt>
+<dd><p>返回一个给定 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code> 的随机字符串，该字符串由给定的 <code class="docutils literal notranslate"><span class="pre">&lt;alphabet&gt;</span></code> 中的字符组成。默认长度为 5 个字符，默认字母表包含所有数字以及大写和小写字母。如果给定了整数 <code class="docutils literal notranslate"><span class="pre">RANDOM_SEED</span></code>，则其值将用于初始化随机数生成器。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="timestamp">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">TIMESTAMP</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;format_string&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">UTC</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#timestamp" title="链接到此定义">¶</a></dt>
+<dd><p>将当前日期和/或时间的字符串表示形式写入 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code>。</p>
+<p>如果命令无法获取时间戳，则 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code> 将设置为空字符串 <code class="docutils literal notranslate"><span class="pre">""</span></code>。</p>
+<p>可选的 <code class="docutils literal notranslate"><span class="pre">UTC</span></code> 标志请求当前日期/时间表示形式以协调世界时 (UTC) 而不是本地时间。</p>
+<p>可选的 <code class="docutils literal notranslate"><span class="pre">&lt;format_string&gt;</span></code> 可以包含以下格式说明符</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">%%</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>文字百分号 (%)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%d</span></code></dt><dd><p>当前月份的日期 (01-31)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%H</span></code></dt><dd><p>24 小时制的小时数 (00-23)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%I</span></code></dt><dd><p>12 小时制的小时数 (01-12)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%j</span></code></dt><dd><p>当前年份的第几天 (001-366)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%m</span></code></dt><dd><p>当前年份的月份 (01-12)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%b</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>缩写的月份名称（例如 Oct）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%B</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>完整的月份名称（例如 October）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%M</span></code></dt><dd><p>当前小时的分钟数 (00-59)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%s</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>自 1970 年 1 月 1 日午夜以来经过的秒数 (UTC)（UNIX 时间）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%S</span></code></dt><dd><p>当前分钟的秒数。60 表示闰秒。(00-60)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%f</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>当前秒的微秒数 (000000-999999)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%U</span></code></dt><dd><p>当前年份的周数 (00-53)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%V</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>当前年份的 ISO 8601 周数 (01-53)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%w</span></code></dt><dd><p>当前星期几。0 是星期日。(0-6)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%a</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>缩写的星期几名称（例如 Fri）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%A</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>完整的星期几名称（例如 Friday）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%y</span></code></dt><dd><p>当前年份的最后两位数字 (00-99)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%Y</span></code></dt><dd><p>当前年份。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%z</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>从 UTC 的时区偏移量，以小时和分钟为单位，格式为 <code class="docutils literal notranslate"><span class="pre">+hhmm</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-hhmm</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">%Z</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>时区名称。</p>
+</dd>
+</dl>
+<p>未知的格式说明符将被忽略并按原样复制到输出中。</p>
+<p>如果未提供显式的 <code class="docutils literal notranslate"><span class="pre">&lt;format_string&gt;</span></code>，则默认值为</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">%Y-%m-%dT%H:%M:%S</span></code> 用于本地时间。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%Y-%m-%dT%H:%M:%SZ</span></code> 用于 UTC。</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.8 版本中添加：</span>如果设置了环境变量 <code class="docutils literal notranslate"><span class="pre">SOURCE_DATE_EPOCH</span></code>，则其值将代替当前时间。有关详细信息，请参阅 <a class="reference external" href="https://reproducible-builds.org/specs/source-date-epoch/">https://reproducible-builds.org/specs/source-date-epoch/</a>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="uuid">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">UUID</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">NAMESPACE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;namespace&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">NAME</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;name&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">TYPE</span></span><span class="w"> </span><span class="p"><span class="pre">&lt;</span></span><span class="no"><span class="pre">MD5</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">SHA1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">UPPER</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#uuid" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>根据 RFC4122 中结合 <code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;</span></code>（本身必须是有效的 UUID）和 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的哈希值创建通用唯一标识符（又称 GUID）。哈希算法可以是 <code class="docutils literal notranslate"><span class="pre">MD5</span></code>（版本 3 UUID）或 <code class="docutils literal notranslate"><span class="pre">SHA1</span></code>（版本 5 UUID）。UUID 的格式为 <code class="docutils literal notranslate"><span class="pre">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></code>，其中每个 <code class="docutils literal notranslate"><span class="pre">x</span></code> 代表一个小写十六进制字符。如果需要，可以使用可选的 <code class="docutils literal notranslate"><span class="pre">UPPER</span></code> 标志请求大写表示形式。</p>
+</dd></dl>
+
+</section>
+<section id="json">
+<span id="id2"></span><h2>JSON<a class="headerlink" href="string.html#json" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>用于查询 JSON 字符串的功能。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在以下每个与 JSON 相关的子命令中，如果给出了可选的 <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code> 参数，错误将报告在 <code class="docutils literal notranslate"><span class="pre">&lt;error-variable&gt;</span></code> 中，并且 <code class="docutils literal notranslate"><span class="pre">&lt;out-var&gt;</span></code> 将被设置为 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;-[&lt;member|index&gt;...]-NOTFOUND</span></code>，其中包含发生错误点的路径元素，或者如果不存在相关路径，则仅设置为 <code class="docutils literal notranslate"><span class="pre">NOTFOUND</span></code>。如果发生错误但未提供 <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code> 选项，则会生成致命错误消息。如果没有发生错误，<code class="docutils literal notranslate"><span class="pre">&lt;error-variable&gt;</span></code> 将被设置为 <code class="docutils literal notranslate"><span class="pre">NOTFOUND</span></code>。</p>
+</div>
+<p>在以下子命令中，<code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 参数应写为 <a class="reference internal" href="../manual/cmake-language.7.html#quoted-argument"><span class="std std-ref">带引号的参数</span></a>，以确保整个 JSON 字符串作为单个参数传递，即使它包含分号也是如此。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-get">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">GET</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-get" title="链接到此定义">¶</a></dt>
+<dd><p>从 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 获取位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的元素。数组和对象元素将作为 JSON 字符串返回。布尔元素将作为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 返回。空元素将作为空字符串返回。数字和字符串类型将作为字符串返回。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-get-raw">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">GET_RAW</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-get-raw" title="链接到此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>从 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 获取位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的元素。与 <a class="reference internal" href="string.html#json-get"><code class="cmake literal docutils notranslate"><span class="pre">GET</span></code></a> 类似，但不转换数字、字符串、布尔值或空元素。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-type">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">TYPE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-type" title="链接到此定义">¶</a></dt>
+<dd><p>获取 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 中位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的元素的类型。<code class="docutils literal notranslate"><span class="pre">&lt;out-var&gt;</span></code> 将被设置为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>、<code class="docutils literal notranslate"><span class="pre">NUMBER</span></code>、<code class="docutils literal notranslate"><span class="pre">STRING</span></code>、<code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code>、<code class="docutils literal notranslate"><span class="pre">ARRAY</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OBJECT</span></code> 中的一个。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-member">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-var&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">MEMBER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;index&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-member" title="链接到此定义">¶</a></dt>
+<dd><p>获取 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 中位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的第 <code class="docutils literal notranslate"><span class="pre">&lt;index&gt;</span></code> 个成员的名称。需要对象类型的元素。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-length">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">LENGTH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-length" title="链接到此定义">¶</a></dt>
+<dd><p>获取 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 中位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的元素的长度。需要数组或对象类型的元素。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-remove">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">REMOVE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-remove" title="链接到此定义">¶</a></dt>
+<dd><p>从 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 中删除位于由 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数列表给出的位置的元素。不包含已删除元素的 JSON 字符串将存储在 <code class="docutils literal notranslate"><span class="pre">&lt;out-var&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-set">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">SET</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[&lt;</span></span><span class="nb"><span class="pre">member</span></span><span class="p"><span class="pre">|</span></span><span class="nb"><span class="pre">index</span></span><span class="p"><span class="pre">&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-set" title="链接到此定义">¶</a></dt>
+<dd><p>在 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 中，根据 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数指定的列表位置，将元素设置为 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>。 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 的内容应该是有效的 JSON。 如果 <code class="docutils literal notranslate"><span class="pre">&lt;json-string&gt;</span></code> 是一个数组，可以使用大于或等于数组长度的数字作为 <code class="docutils literal notranslate"><span class="pre">&lt;member|index&gt;</span></code> 参数，将 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 追加到数组的末尾。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="json-equal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">［</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-var&gt;</span></span><span class="p"><span class="pre">］</span></span><span class="w"> </span><span class="no"><span class="pre">EQUAL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string1&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;json-string2&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#json-equal" title="Link to this definition">¶</a></dt>
+<dd><p>比较由 <code class="docutils literal notranslate"><span class="pre">&lt;json-string1&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;json-string2&gt;</span></code> 给定的两个 JSON 对象是否相等。 <code class="docutils literal notranslate"><span class="pre">&lt;json-string1&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;json-string2&gt;</span></code> 的内容应该是有效的 JSON。 如果 JSON 对象被认为是相等的，则 <code class="docutils literal notranslate"><span class="pre">&lt;out-var&gt;</span></code> 将被设置为一个真值；否则，将设置为一个假值。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="string-encode">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">string(</span></span><span class="no"><span class="pre">JSON</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;out-var&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">［</span></span><span class="no"><span class="pre">ERROR_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;error-var&gt;</span></span><span class="p"><span class="pre">］</span></span><span class="w"> </span><span class="no"><span class="pre">STRING_ENCODE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;string&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="string.html#string-encode" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>将原始字符串转换为用引号括起来的 JSON 字符串。JSON 字符串内部的特殊字符将被正确转义。</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="string.html#">string</a><ul>
+<li><a class="reference internal" href="string.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="string.html#search-and-replace">搜索和替换</a><ul>
+<li><a class="reference internal" href="string.html#search-and-replace-with-plain-strings">使用纯字符串进行搜索和替换</a></li>
+<li><a class="reference internal" href="string.html#search-and-replace-with-regular-expressions">使用正则表达式进行搜索和替换</a></li>
+<li><a class="reference internal" href="string.html#regex-specification">正则表达式规范</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="string.html#manipulation">操作</a></li>
+<li><a class="reference internal" href="string.html#comparison">比较</a></li>
+<li><a class="reference internal" href="string.html#hashing">哈希</a></li>
+<li><a class="reference internal" href="string.html#generation">生成</a></li>
+<li><a class="reference internal" href="string.html#json">JSON</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="site_name.html" title="上一章">site_name</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="unset.html" title="下一章">unset</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/string.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="unset.html" title="unset">下一页</a> |</li>
+        <li class="right">
+          <a href="site_name.html" title="site_name">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="string.html">string</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

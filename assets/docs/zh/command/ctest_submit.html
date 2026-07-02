@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ctest_submit — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ctest_submit.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ctest_test" href="ctest_test.html" />
+    <link rel="prev" title="ctest_start" href="ctest_start.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ctest_test.html" title="ctest_test" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_start.html" title="ctest_start" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_submit.html">ctest_submit</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctest-submit">
+<span id="command:ctest_submit"></span><h1>ctest_submit<a class="headerlink" href="ctest_submit.html#ctest-submit" title="链接到此标题">¶</a></h1>
+<p>以 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">Dashboard Client（仪表盘客户端）</span></a> 身份执行 <a class="reference internal" href="../manual/ctest.1.html#ctest-submit-step"><span class="std std-ref">CTest Submit Step（CTest 提交步骤）</span></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_submit(</span><span class="p">[</span><span class="no">PARTS</span><span class="w"> </span><span class="nv">&lt;part&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">FILES</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">SUBMIT_URL</span><span class="w"> </span><span class="nv">&lt;url&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">BUILD_ID</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">HTTPHEADER</span><span class="w"> </span><span class="nv">&lt;header&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETRY_COUNT</span><span class="w"> </span><span class="nv">&lt;count&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETRY_DELAY</span><span class="w"> </span><span class="nv">&lt;delay&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETURN_VALUE</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">CAPTURE_CMAKE_ERROR</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">             </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将结果提交到仪表盘服务器。默认情况下，所有可用的部分（parts）都会被提交。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PARTS</span> <span class="pre">&lt;part&gt;...</span></code></dt><dd><p>指定要提交的部分子集。有效的部分名称包括：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Start</span></code> - 无内容。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Update</span></code> - <span class="target" id="index-0-command:ctest_update"></span><a class="reference internal" href="ctest_update.html#command:ctest_update" title="ctest_update"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_update()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">Update.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Configure</span></code> - <span class="target" id="index-0-command:ctest_configure"></span><a class="reference internal" href="ctest_configure.html#command:ctest_configure" title="ctest_configure"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_configure()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">Configure.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Build</span></code> - <span class="target" id="index-0-command:ctest_build"></span><a class="reference internal" href="ctest_build.html#command:ctest_build" title="ctest_build"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_build()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">Build.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Test</span></code> - <span class="target" id="index-0-command:ctest_test"></span><a class="reference internal" href="ctest_test.html#command:ctest_test" title="ctest_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_test()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">Test.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Coverage</span></code> - <span class="target" id="index-0-command:ctest_coverage"></span><a class="reference internal" href="ctest_coverage.html#command:ctest_coverage" title="ctest_coverage"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_coverage()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">Coverage.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MemCheck</span></code> - <span class="target" id="index-0-command:ctest_memcheck"></span><a class="reference internal" href="ctest_memcheck.html#command:ctest_memcheck" title="ctest_memcheck"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_memcheck()</span></code></a> 的结果，位于 <code class="docutils literal notranslate"><span class="pre">DynamicAnalysis.xml</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DynamicAnalysis-Test.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Notes</span></code> - 由 <span class="target" id="index-0-variable:CTEST_NOTES_FILES"></span><a class="reference internal" href="../variable/CTEST_NOTES_FILES.html#variable:CTEST_NOTES_FILES" title="CTEST_NOTES_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_NOTES_FILES</span></code></a> 列出的文件，位于 <code class="docutils literal notranslate"><span class="pre">Notes.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExtraFiles</span></code> - 由 <span class="target" id="index-0-variable:CTEST_EXTRA_SUBMIT_FILES"></span><a class="reference internal" href="../variable/CTEST_EXTRA_SUBMIT_FILES.html#variable:CTEST_EXTRA_SUBMIT_FILES" title="CTEST_EXTRA_SUBMIT_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_EXTRA_SUBMIT_FILES</span></code></a> 列出的文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Upload</span></code> - 由 <span class="target" id="index-0-command:ctest_upload"></span><a class="reference internal" href="ctest_upload.html#command:ctest_upload" title="ctest_upload"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_upload()</span></code></a> 准备上传的文件，位于 <code class="docutils literal notranslate"><span class="pre">Upload.xml</span></code> 中。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Submit</span></code> - 无内容。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Done</span></code> - 构建已完成，位于 <code class="docutils literal notranslate"><span class="pre">Done.xml</span></code> 中。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILES</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><p>指定要提交的具体文件列表。每个文件在调用时必须存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SUBMIT_URL</span> <span class="pre">&lt;url&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>要发送提交内容的仪表盘服务器的 <code class="docutils literal notranslate"><span class="pre">http</span></code> 或 <code class="docutils literal notranslate"><span class="pre">https</span></code> URL。如果未指定，则使用 <span class="target" id="index-0-variable:CTEST_SUBMIT_URL"></span><a class="reference internal" href="../variable/CTEST_SUBMIT_URL.html#variable:CTEST_SUBMIT_URL" title="CTEST_SUBMIT_URL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_SUBMIT_URL</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_ID</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>将 CDash 为此构建分配的 ID 存储在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HTTPHEADER</span> <span class="pre">&lt;HTTP-header&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>指定在提交期间包含在 CDash 请求中的 HTTP 头信息。例如，可以配置 CDash 仅接受来自已认证客户端的提交。在这种情况下，您应该在头部提供 bearer token。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_submit(</span><span class="no">HTTPHEADER</span><span class="w"> </span><span class="s">"Authorization: Bearer &lt;auth-token&gt;"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此子选项可以重复多次以添加多个头部信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RETRY_COUNT</span> <span class="pre">&lt;count&gt;</span></code></dt><dd><p>指定提交超时后重试的次数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RETRY_DELAY</span> <span class="pre">&lt;delay&gt;</span></code></dt><dd><p>指定提交超时后，在尝试重新提交之前需要等待的时长（以秒为单位）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RETURN_VALUE</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中存储结果：成功为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，失败为非零值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CAPTURE_CMAKE_ERROR</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>如果运行命令时有任何错误，则在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中存储 -1，并防止 ctest 在发生错误时返回非零值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>抑制所有非错误信息（即原本会打印到控制台的信息）。</p>
+</dd>
+</dl>
+<section id="submit-to-cdash-upload-api">
+<h2>提交到 CDash 上传 API<a class="headerlink" href="ctest_submit.html#submit-to-cdash-upload-api" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_submit(</span><span class="no">CDASH_UPLOAD</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">CDASH_UPLOAD_TYPE</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">SUBMIT_URL</span><span class="w"> </span><span class="nv">&lt;url&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">BUILD_ID</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">HTTPHEADER</span><span class="w"> </span><span class="nv">&lt;header&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETRY_COUNT</span><span class="w"> </span><span class="nv">&lt;count&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETRY_DELAY</span><span class="w"> </span><span class="nv">&lt;delay&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">RETURN_VALUE</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此第二种签名用于通过 CDash 文件上传 API 将文件上传到 CDash。该 API 首先向 CDash 发送包含文件内容哈希值的上传请求。如果 CDash 尚不存在该文件，则将其上传。随文件一起还会指定一个 CDash 类型字符串，以告知 CDash 使用哪个处理程序来处理这些数据。</p>
+<p>此签名的选项解析方式与第一种相同。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.8 版本新增：</span> 添加了 <code class="docutils literal notranslate"><span class="pre">RETRY_COUNT</span></code>, <code class="docutils literal notranslate"><span class="pre">RETRY_DELAY</span></code>, <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.9 版本新增：</span> 添加了 <code class="docutils literal notranslate"><span class="pre">HTTPHEADER</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增：</span> 添加了 <code class="docutils literal notranslate"><span class="pre">RETURN_VALUE</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版本新增：</span> 添加了 <code class="docutils literal notranslate"><span class="pre">SUBMIT_URL</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span> 添加了 <code class="docutils literal notranslate"><span class="pre">BUILD_ID</span></code> 选项。</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="ctest_submit.html#">ctest_submit</a><ul>
+<li><a class="reference internal" href="ctest_submit.html#submit-to-cdash-upload-api">提交到 CDash 上传 API</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ctest_start.html" title="上一章">ctest_start</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ctest_test.html" title="下一章">ctest_test</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/ctest_submit.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ctest_test.html" title="ctest_test">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_start.html" title="ctest_start">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_submit.html">ctest_submit</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

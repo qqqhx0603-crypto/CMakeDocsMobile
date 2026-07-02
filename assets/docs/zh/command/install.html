@@ -1,0 +1,1074 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>install — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="install.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="link_directories" href="link_directories.html" />
+    <link rel="prev" title="include_regular_expression" href="include_regular_expression.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="link_directories.html" title="link_directories" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="include_regular_expression.html" title="include_regular_expression" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="install.html">安装</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="install">
+<span id="command:install"></span><h1><a class="toc-backref" href="install.html#id1" role="doc-backlink">install</a><a class="headerlink" href="install.html#install" title="指向此标题的链接">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="install.html#install" id="id1">安装</a></p>
+<ul>
+<li><p><a class="reference internal" href="install.html#synopsis" id="id2">概要</a></p></li>
+<li><p><a class="reference internal" href="install.html#introduction" id="id3">简介</a></p>
+<ul>
+<li><p><a class="reference internal" href="install.html#common-options" id="id4">通用选项</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="install.html#signatures" id="id5">语法形式</a></p></li>
+<li><p><a class="reference internal" href="install.html#examples" id="id6">示例</a></p>
+<ul>
+<li><p><a class="reference internal" href="install.html#example-install-targets-with-per-artifact-components" id="id7">示例：为每个构件组件安装目标</a></p></li>
+<li><p><a class="reference internal" href="install.html#example-install-targets-to-per-config-destinations" id="id8">示例：将目标安装到特定配置的目录</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="install.html#generated-installation-script" id="id9">生成的安装脚本</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>指定在安装时运行的规则。</p>
+<section id="synopsis">
+<h2><a class="toc-backref" href="install.html#id2" role="doc-backlink">概要</a><a class="headerlink" href="install.html#synopsis" title="指向此标题的链接">¶</a></h2>
+<pre class="literal-block">install(<a class="reference internal" href="install.html#targets">TARGETS</a> &lt;target&gt;... [...])
+install(<a class="reference internal" href="install.html#imported-runtime-artifacts">IMPORTED_RUNTIME_ARTIFACTS</a> &lt;target&gt;... [...])
+install({<a class="reference internal" href="install.html#files">FILES</a> | <a class="reference internal" href="install.html#programs">PROGRAMS</a>} &lt;file&gt;... [...])
+install(<a class="reference internal" href="install.html#directory">DIRECTORY</a> &lt;dir&gt;... [...])
+install(<a class="reference internal" href="install.html#script">SCRIPT</a> &lt;file&gt; [...])
+install(<a class="reference internal" href="install.html#code">CODE</a> &lt;code&gt; [...])
+install(<a class="reference internal" href="install.html#export">EXPORT</a> &lt;export-name&gt; [...])
+install(<a class="reference internal" href="install.html#package-info">PACKAGE_INFO</a> &lt;package-name&gt; [...])
+install(<a class="reference internal" href="install.html#runtime-dependency-set">RUNTIME_DEPENDENCY_SET</a> &lt;set-name&gt; [...])
+install(<a class="reference internal" href="install.html#sbom">SBOM</a> &lt;sbom-name&gt; [...])</pre>
+</section>
+<section id="introduction">
+<h2><a class="toc-backref" href="install.html#id3" role="doc-backlink">简介</a><a class="headerlink" href="install.html#introduction" title="此标题的链接">¶</a></h2>
+<p>此命令为项目生成安装规则。在源目录中通过调用 <code class="docutils literal notranslate"><span class="pre">install()</span></code> 命令指定的安装规则，会在安装过程中按顺序执行。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.14 版本变更：</span>通过调用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 命令添加的子目录中的安装规则，会与父目录中的规则交错执行，从而按声明顺序运行（参见策略 <span class="target" id="index-0-policy:CMP0082"></span><a class="reference internal" href="../policy/CMP0082.html#policy:CMP0082" title="CMP0082"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0082</span></code></a>）。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.22 版本变更：</span>环境变量 <span class="target" id="index-0-envvar:CMAKE_INSTALL_MODE"></span><a class="reference internal" href="../envvar/CMAKE_INSTALL_MODE.html#envvar:CMAKE_INSTALL_MODE" title="CMAKE_INSTALL_MODE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MODE</span></code></a> 可以覆盖 <code class="docutils literal notranslate"><span class="pre">install()</span></code> 的默认复制行为。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span>项目可以启用 <span class="target" id="index-0-prop_gbl:INSTALL_PARALLEL"></span><a class="reference internal" href="../prop_gbl/INSTALL_PARALLEL.html#prop_gbl:INSTALL_PARALLEL" title="INSTALL_PARALLEL"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">INSTALL_PARALLEL</span></code></a> 来开启并行安装。使用并行安装时，通过调用 <span class="target" id="index-1-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 添加的子目录将独立安装，且不同子目录中添加的安装规则的运行顺序不再得到保证。</p>
+</div>
+<section id="common-options">
+<h3><a class="toc-backref" href="install.html#id4" role="doc-backlink">通用选项</a><a class="headerlink" href="install.html#common-options" title="指向此标题的链接">¶</a></h3>
+<p>此命令有多种语法形式。其中一些定义了文件和目标的安装选项。此处涵盖了适用于多种语法形式的通用选项，但它们仅在指定了这些选项的语法形式中有效。通用选项如下：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>指定文件安装到的磁盘目录。<code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 应为相对路径。允许使用绝对路径，但不推荐。</p>
+<p>当提供相对路径时，它是相对于 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量的值进行解析的。可以使用 <code class="docutils literal notranslate"><span class="pre">DESTDIR</span></code> 机制在安装时重定位前缀，该机制在 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量文档中有说明。</p>
+<p>由于绝对路径无法与 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> 命令的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 选项或 <span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 安装程序生成器配合使用，因此强烈建议始终使用相对路径以获得包维护者的最佳支持。特别地，无需通过预置 <span class="target" id="index-2-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 来使路径成为绝对路径；如果 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 是相对路径，则默认使用此前缀。</p>
+<p>如果给出了绝对路径（带有前导斜杠或驱动器号），则按原样使用。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span><code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 将根据与 <span class="target" id="index-0-command:cmake_path"></span><a class="reference internal" href="cmake_path.html#command:cmake_path" title="cmake_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_path()</span></code></a> 命令相同的 <a class="reference internal" href="cmake_path.html#normalization"><span class="std std-ref">归一化规则</span></a> 进行归一化。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span> <span class="pre">&lt;permission&gt;...</span></code></dt><dd><p>指定已安装文件的权限。有效的权限包括 <code class="docutils literal notranslate"><span class="pre">OWNER_READ</span></code>、<code class="docutils literal notranslate"><span class="pre">OWNER_WRITE</span></code>、<code class="docutils literal notranslate"><span class="pre">OWNER_EXECUTE</span></code>、<code class="docutils literal notranslate"><span class="pre">GROUP_READ</span></code>、<code class="docutils literal notranslate"><span class="pre">GROUP_WRITE</span></code>、<code class="docutils literal notranslate"><span class="pre">GROUP_EXECUTE</span></code>、<code class="docutils literal notranslate"><span class="pre">WORLD_READ</span></code>、<code class="docutils literal notranslate"><span class="pre">WORLD_WRITE</span></code>、<code class="docutils literal notranslate"><span class="pre">WORLD_EXECUTE</span></code>、<code class="docutils literal notranslate"><span class="pre">SETUID</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SETGID</span></code>。在某些平台上无意义的权限会被忽略。</p>
+<p>如果此选项在单次调用中多次使用，其权限列表会累加。如果 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用使用了 <a class="reference internal" href="install.html#artifact-kind">&lt;artifact-kind&gt;</a> 参数，则每种构件类型会累积独立的权限列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIGURATIONS</span> <span class="pre">&lt;config&gt;...</span></code></dt><dd><p>指定安装规则适用的构建配置列表（Debug, Release 等）。</p>
+<p>如果此选项在单次调用中多次使用，其配置列表会累加。如果 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用使用了 <a class="reference internal" href="install.html#artifact-kind">&lt;artifact-kind&gt;</a> 参数，则每种构件类型会累积独立的配置列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPONENT</span> <span class="pre">&lt;component&gt;</span></code></dt><dd><p>指定与安装规则关联的安装组件名称，例如 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Development</span></code>。在特定组件安装期间，仅执行与给定组件名称关联的安装规则。在完整安装期间，除非标记为 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code>，否则会安装所有组件。如果未提供 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code>，则会创建一个名为 "Unspecified" 的默认组件。默认组件名称可以通过 <span class="target" id="index-0-variable:CMAKE_INSTALL_DEFAULT_COMPONENT_NAME"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_DEFAULT_COMPONENT_NAME.html#variable:CMAKE_INSTALL_DEFAULT_COMPONENT_NAME" title="CMAKE_INSTALL_DEFAULT_COMPONENT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DEFAULT_COMPONENT_NAME</span></code></a> 变量进行控制。</p>
+<p>安装组件可以被 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> 命令的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-install-component"><code class="xref std std-option docutils literal notranslate"><span class="pre">--component</span></code></a> 选项以及 <span class="target" id="index-0-module:CPackComponent"></span><a class="reference internal" href="../module/CPackComponent.html#module:CPackComponent" title="CPackComponent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPackComponent</span></code></a> 模块使用。全局目标 <code class="docutils literal notranslate"><span class="pre">list_install_components</span></code> 会列出所有可用组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>指定文件在完整安装中被排除，仅作为特定组件安装的一部分进行安装。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code></dt><dd><p>指定如果待安装文件不存在，不视为错误。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.1 版本新增：</span>安装文件的命令语法可以在安装期间打印消息。使用 <span class="target" id="index-0-variable:CMAKE_INSTALL_MESSAGE"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_MESSAGE.html#variable:CMAKE_INSTALL_MESSAGE" title="CMAKE_INSTALL_MESSAGE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MESSAGE</span></code></a> 变量来控制打印哪些消息。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增：</span>许多 <code class="docutils literal notranslate"><span class="pre">install()</span></code> 变体隐式创建包含已安装文件的目录。如果设置了 <span class="target" id="index-0-variable:CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS.html#variable:CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS" title="CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS</span></code></a>，则这些目录将以指定的权限创建。否则，它们将按照类 Unix 平台上的 uname 规则创建。Windows 平台不受影响。</p>
+</div>
+</section>
+</section>
+<section id="signatures">
+<h2><a class="toc-backref" href="install.html#id5" role="doc-backlink">语法形式</a><a class="headerlink" href="install.html#signatures" title="指向此标题的链接">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="targets">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">TARGETS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;target&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#targets" title="指向此定义的链接">¶</a></dt>
+<dd><p>安装目标 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#output-artifacts"><span class="std std-ref">输出构件</span></a> 及相关文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUNTIME_DEPENDENCIES</span><span class="w"> </span><span class="nv">&lt;arg&gt;...</span><span class="p">|</span><span class="no">RUNTIME_DEPENDENCY_SET</span><span class="w"> </span><span class="nv">&lt;set-name&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;artifact-option&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;artifact-kind&gt;</span><span class="w"> </span><span class="nv">&lt;artifact-option&gt;...</span><span class="p">]...</span>
+<span class="w">        </span><span class="p">[</span><span class="no">INCLUDES</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;dir&gt;</span><span class="w"> </span><span class="p">...]]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;artifact-option&gt;...</span></code> 组可能包含</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="p">[</span><span class="no">NAMELINK_COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="p">[</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="p">[</span><span class="no">NAMELINK_ONLY</span><span class="p">|</span><span class="no">NAMELINK_SKIP</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>第一个 <code class="docutils literal notranslate"><span class="pre">&lt;artifact-option&gt;...</span></code> 组适用于在同一调用中稍后未指定专用组的目标 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#output-artifacts"><span class="std std-ref">输出构件</span></a>。</p>
+<p id="artifact-kind">每个 <code class="docutils literal notranslate"><span class="pre">&lt;artifact-kind&gt;</span> <span class="pre">&lt;artifact-option&gt;...</span></code> 组适用于指定构件类型的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#output-artifacts"><span class="std std-ref">输出构件</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code></dt><dd><p>此类目标构件包括：</p>
+<ul class="simple">
+<li><p><em>静态库</em>（除非在 macOS 上标记为 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code>，见下文）；</p></li>
+<li><p><em>DLL 导入库</em>（在所有 Windows 系统上，包括 Cygwin；其扩展名为 <code class="docutils literal notranslate"><span class="pre">.lib</span></code>，与进入 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 的 <code class="docutils literal notranslate"><span class="pre">.dll</span></code> 库形成对比）；</p></li>
+<li><p>在 AIX 上，为启用了 <span class="target" id="index-0-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的可执行文件创建的 <em>链接器导入文件</em>。</p></li>
+<li><p>在 macOS 上，为启用了 <span class="target" id="index-1-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的共享库创建的 <em>链接器导入文件</em>（除非标记为 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code>，见下文）。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code></dt><dd><p>此类目标构件包括：</p>
+<ul class="simple">
+<li><p><em>共享库</em>，除以下情况外：</p>
+<ul>
+<li><p>DLL（这些进入 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code>，见下文），</p></li>
+<li><p>在 macOS 上标记为 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 时（见下文）。</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code></dt><dd><p>此类目标构件包括：</p>
+<ul class="simple">
+<li><p><em>可执行文件</em>（除非在 macOS 上标记为 <code class="docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code>，见下文的 <code class="docutils literal notranslate"><span class="pre">BUNDLE</span></code>）；</p></li>
+<li><p>DLL（在所有基于 Windows 的系统上，包括 Cygwin；注意附带的导入库属于 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 类型）。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OBJECTS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>与 <em>对象库</em> 相关联的对象文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></dt><dd><p>在 macOS 上，标记为 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 属性的静态库和共享库都被视为 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUNDLE</span></code></dt><dd><p>在 macOS 上，标记为 <span class="target" id="index-0-prop_tgt:MACOSX_BUNDLE"></span><a class="reference internal" href="../prop_tgt/MACOSX_BUNDLE.html#prop_tgt:MACOSX_BUNDLE" title="MACOSX_BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code></a> 属性的可执行文件被视为 <code class="docutils literal notranslate"><span class="pre">BUNDLE</span></code> 目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></dt><dd><p>任何与库关联的 <span class="target" id="index-0-prop_tgt:PUBLIC_HEADER"></span><a class="reference internal" href="../prop_tgt/PUBLIC_HEADER.html#prop_tgt:PUBLIC_HEADER" title="PUBLIC_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></a> 文件都会安装在非 Apple 平台上由 <code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code> 参数指定的目的地。此参数定义的规则在 Apple 平台上的 <span class="target" id="index-0-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="../prop_tgt/FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 库中被忽略，因为相关文件会安装在框架文件夹内的适当位置。详见 <span class="target" id="index-1-prop_tgt:PUBLIC_HEADER"></span><a class="reference internal" href="../prop_tgt/PUBLIC_HEADER.html#prop_tgt:PUBLIC_HEADER" title="PUBLIC_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></dt><dd><p>类似于 <code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code>，但用于 <code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code> 文件。详见 <span class="target" id="index-0-prop_tgt:PRIVATE_HEADER"></span><a class="reference internal" href="../prop_tgt/PRIVATE_HEADER.html#prop_tgt:PRIVATE_HEADER" title="PRIVATE_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code></dt><dd><p>类似于 <code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code>，但用于 <code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code> 文件。详见 <span class="target" id="index-0-prop_tgt:RESOURCE"></span><a class="reference internal" href="../prop_tgt/RESOURCE.html#prop_tgt:RESOURCE" title="RESOURCE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">RESOURCE</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_SET</span> <span class="pre">&lt;set-name&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>文件集由 <span class="target" id="index-0-command:target_sources"></span><a class="reference internal" href="target_sources.html#command:target_sources" title="target_sources(file_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources(FILE_SET)</span></code></a> 命令定义。如果文件集 <code class="docutils literal notranslate"><span class="pre">&lt;set-name&gt;</span></code> 存在且为 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code>，则集中的任何文件都会安装在目的地（见下文）。相对于文件集基目录的目录结构会得到保留。例如，将文件 <code class="docutils literal notranslate"><span class="pre">/blah/include/myproj/here.h</span></code> 添加到基目录为 <code class="docutils literal notranslate"><span class="pre">/blah/include</span></code> 的文件集中，它将被安装到目的地之下的 <code class="docutils literal notranslate"><span class="pre">myproj/here.h</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CXX_MODULES_BMI</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>文件集类型为 <code class="docutils literal notranslate"><span class="pre">CXX_MODULES</span></code> 的 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 源文件中的任何 C++ 模块文件都将安装到给定的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>。所有模块都直接放置在目的地，因为不会从模块名称中推导目录结构。可以使用空的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 来禁止安装这些文件（用于通用代码）。</p>
+</dd>
+</dl>
+<p>对于常规可执行文件、静态库和共享库，<code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数不是必需的。对于这些目标类型，当省略 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 时，默认目的地将取自 <span class="target" id="index-0-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 中的相应变量，如果未定义该变量，则设置为内置默认值。这同样适用于文件集，以及通过 <span class="target" id="index-2-prop_tgt:PUBLIC_HEADER"></span><a class="reference internal" href="../prop_tgt/PUBLIC_HEADER.html#prop_tgt:PUBLIC_HEADER" title="PUBLIC_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></a> 和 <span class="target" id="index-1-prop_tgt:PRIVATE_HEADER"></span><a class="reference internal" href="../prop_tgt/PRIVATE_HEADER.html#prop_tgt:PRIVATE_HEADER" title="PRIVATE_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></a> 目标属性与已安装目标关联的公共和私有头文件。对于模块库、Apple 捆绑包和框架，必须始终提供目的地。接口库和对象库可以省略目的地，但处理方式不同（参见本节末尾对此主题的讨论）。</p>
+<p>对于 DLL 平台上的共享库，如果未指定 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 目的地，则 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 组件都会安装到它们的默认目的地。如果指定了 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 目的地，则组件安装到该目的地，另一个组件不安装。如果同时指定了 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 目的地，则两个组件都安装到各自的目的地。</p>
+<p>下表显示了未给定目的地时适用的目标类型及其相关变量和内置默认值：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>目标类型</p></th>
+<th class="head"><p>GNUInstallDirs 变量</p></th>
+<th class="head"><p>内置默认值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_BINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> (类型 <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>希望遵循将头文件安装到特定于项目的子目录这一常见做法的项目，可能更倾向于使用带有适当路径和基目录的文件集。否则，他们必须提供 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，而不能依赖上述规则（参见下文的下一个示例）。</p>
+<p>为了使包符合分发文件系统布局策略，如果项目必须指定 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，强烈建议使用以适当的相对 <span class="target" id="index-1-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 变量开头的路径。这允许包维护者通过设置适当的缓存变量来控制安装目的地。以下示例显示了一个静态库被安装到 <span class="target" id="index-2-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 提供的默认目的地，但其头文件安装到了一个特定于项目的子目录中，且未使用文件集。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">set_target_properties(</span><span class="nb">mylib</span><span class="w"> </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">PUBLIC_HEADER</span><span class="w"> </span><span class="nb">mylib.h</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">mylib</span>
+<span class="w">        </span><span class="no">PUBLIC_HEADER</span>
+<span class="w">          </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_INCLUDEDIR</span><span class="o">}</span><span class="na">/myproj</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>除了上面列出的 <a class="reference internal" href="install.html#common-options">通用选项</a> 之外，每个目标还可以接受以下附加参数：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>在某些平台上，带版本的共享库具有如下符号链接：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lib&lt;name&gt;.so -&gt; lib&lt;name&gt;.so.1
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">lib&lt;name&gt;.so.1</span></code> 是库的 soname，<code class="docutils literal notranslate"><span class="pre">lib&lt;name&gt;.so</span></code> 是允许链接器在给定 <code class="docutils literal notranslate"><span class="pre">-l&lt;name&gt;</span></code> 时找到库的“命名链接”。<code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code> 选项类似于 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项，但它改变了生成的共享库命名链接的安装组件。如果未指定，它默认为 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 的值。在 <code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code> 块之外使用此参数是错误的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更：</span>此参数也适用于 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 块，用于管理在 macOS 上为启用了 <span class="target" id="index-2-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的共享库创建的链接器导入文件。</p>
+</div>
+<p>参阅 <a class="reference internal" href="install.html#example-install-targets-with-per-artifact-components">示例：为每个构件组件安装目标</a> 中使用 <code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code> 的示例。</p>
+<p>此选项通常用于具有独立运行时和开发包的包管理器。例如，在 Debian 系统上，库通常包含在运行时包中，而头文件和命名链接则包含在开发包中。</p>
+<p>有关创建版本化共享库的详细信息，请参阅 <span class="target" id="index-0-prop_tgt:VERSION"></span><a class="reference internal" href="../prop_tgt/VERSION.html#prop_tgt:VERSION" title="VERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERSION</span></code></a> 和 <span class="target" id="index-0-prop_tgt:SOVERSION"></span><a class="reference internal" href="../prop_tgt/SOVERSION.html#prop_tgt:SOVERSION" title="SOVERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SOVERSION</span></code></a> 目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMELINK_ONLY</span></code></dt><dd><p>此选项导致在安装库目标时仅安装命名链接。在版本化共享库没有命名链接的平台或库未版本化的平台上，<code class="docutils literal notranslate"><span class="pre">NAMELINK_ONLY</span></code> 选项不会安装任何内容。在 <code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code> 块之外使用此参数是错误的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更：</span>此参数也适用于 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 块，用于管理在 macOS 上为启用了 <span class="target" id="index-3-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的共享库创建的链接器导入文件。</p>
+</div>
+<p>当给定 <code class="docutils literal notranslate"><span class="pre">NAMELINK_ONLY</span></code> 时，可以使用 <code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 来指定命名链接的安装组件，但通常应优先使用 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMELINK_SKIP</span></code></dt><dd><p>类似于 <code class="docutils literal notranslate"><span class="pre">NAMELINK_ONLY</span></code>，但作用相反：它导致在安装库目标时安装除命名链接之外的库文件。当既未给出 <code class="docutils literal notranslate"><span class="pre">NAMELINK_ONLY</span></code> 也未给出 <code class="docutils literal notranslate"><span class="pre">NAMELINK_SKIP</span></code> 时，两者都会被安装。在版本化共享库没有符号链接或库未版本化的平台上，<code class="docutils literal notranslate"><span class="pre">NAMELINK_SKIP</span></code> 会安装该库。在 <code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code> 块之外使用此参数是错误的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更：</span>此参数也适用于 <code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code> 块，用于管理在 macOS 上为启用了 <span class="target" id="index-4-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 的共享库创建的链接器导入文件。</p>
+</div>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">NAMELINK_SKIP</span></code>，则 <code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code> 无效。不建议将 <code class="docutils literal notranslate"><span class="pre">NAMELINK_SKIP</span></code> 与 <code class="docutils literal notranslate"><span class="pre">NAMELINK_COMPONENT</span></code> 结合使用。</p>
+</dd>
+</dl>
+<p><span class="target" id="index-2-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令还可以在顶层接受以下选项：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT</span></code></dt><dd><p>此选项将已安装的目标文件与名为 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 的导出关联起来。它必须出现在任何目标选项之前。要实际安装导出文件本身，请调用下文记录的 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a>。参阅 <span class="target" id="index-0-prop_tgt:EXPORT_NAME"></span><a class="reference internal" href="../prop_tgt/EXPORT_NAME.html#prop_tgt:EXPORT_NAME" title="EXPORT_NAME"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXPORT_NAME</span></code></a> 目标属性文档以更改导出目标的名称。</p>
+<p>如果使用了 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 且目标包含 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 文件集，则所有这些文件集都必须用 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 参数指定。与目标关联的所有 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 文件集都包含在导出中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDES</span> <span class="pre">DESTINATION</span></code></dt><dd><p>此选项指定一组目录，当通过 <span class="target" id="index-4-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令导出时，这些目录将被添加到 <code class="docutils literal notranslate"><span class="pre">&lt;targets&gt;</span></code> 的 <span class="target" id="index-0-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a> 目标属性中。如果指定了相对路径，则将其视为相对于 <span class="target" id="index-0-genex:INSTALL_PREFIX"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:INSTALL_PREFIX" title="INSTALL_PREFIX"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;INSTALL_PREFIX&gt;</span></code></a>。</p>
+<p>与其他各种 <code class="docutils literal notranslate"><span class="pre">install()</span></code> 子命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数不同，<code class="docutils literal notranslate"><span class="pre">INCLUDES</span> <span class="pre">DESTINATION</span></code> 之后给出的路径按原样使用。它们不会被归一化，也不假定已归一化，尽管建议以归一化形式给出（参见 <a class="reference internal" href="cmake_path.html#normalization"><span class="std std-ref">归一化</span></a>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCY_SET</span> <span class="pre">&lt;set-name&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>此选项导致已安装的可执行文件、共享库和模块目标的所有运行时依赖项被添加到指定的运行时依赖项集中。此集合随后可以使用 <span class="target" id="index-5-command:install"></span><a class="reference internal" href="install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 命令进行安装。</p>
+<p>此关键字与 <code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCIES</span></code> 关键字互斥。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCIES</span> <span class="pre">&lt;arg&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>此选项导致已安装的可执行文件、共享库和模块目标的所有运行时依赖项与目标本身一起安装。<code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code>、<code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 和通用参数用于确定这些依赖项安装的属性（<code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>、<code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 等）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCIES</span></code> 在语义上等同于以下一对调用：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="no">RUNTIME_DEPENDENCY_SET</span><span class="w"> </span><span class="nv">&lt;set-name&gt;</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">RUNTIME_DEPENDENCY_SET</span><span class="w"> </span><span class="nv">&lt;set-name&gt;</span><span class="w"> </span><span class="nv">&lt;arg&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;set-name&gt;</span></code> 将是一个随机生成的集合名称。<code class="docutils literal notranslate"><span class="pre">&lt;arg&gt;...</span></code> 可以包含 <span class="target" id="index-6-command:install"></span><a class="reference internal" href="install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 命令支持的以下任何关键字：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRE_INCLUDE_REGEXES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRE_EXCLUDE_REGEXES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_FILES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_FILES</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCY_SET</span></code> 关键字互斥。</p>
+</dd>
+</dl>
+<p><a class="reference internal" href="../manual/cmake-buildsystem.7.html#interface-libraries"><span class="std std-ref">接口库</span></a> 可以列在要安装的目标中。它们不安装任何构件，但会被包含在关联的 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 中。如果列出了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#object-libraries"><span class="std std-ref">对象库</span></a> 但未为其目标文件指定目的地，它们将作为 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#interface-libraries"><span class="std std-ref">接口库</span></a> 导出。这足以满足在实现中链接到这些对象库的其他目标的传递使用要求。</p>
+<p>安装目标属性 <span class="target" id="index-0-prop_tgt:EXCLUDE_FROM_ALL"></span><a class="reference internal" href="../prop_tgt/EXCLUDE_FROM_ALL.html#prop_tgt:EXCLUDE_FROM_ALL" title="EXCLUDE_FROM_ALL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 的目标具有未定义的行为。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增：</span>作为 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数给出的安装目的地可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增：</span><span class="target" id="index-7-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 可以安装在其他目录中创建的目标。当使用此类跨目录安装规则时，从子目录运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>（或类似命令）不能保证来自其他目录的目标是最新的。您可以使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 或 <span class="target" id="index-0-command:add_dependencies"></span><a class="reference internal" href="add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a> 来确保在运行子目录特定安装规则之前构建此类目录外目标。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="imported-runtime-artifacts">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">IMPORTED_RUNTIME_ARTIFACTS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;target&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#imported-runtime-artifacts" title="指向此定义的链接">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>安装导入目标的运行时构件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">IMPORTED_RUNTIME_ARTIFACTS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RUNTIME_DEPENDENCY_SET</span><span class="w"> </span><span class="nv">&lt;set-name&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[[</span><span class="no">LIBRARY</span><span class="p">|</span><span class="no">RUNTIME</span><span class="p">|</span><span class="no">FRAMEWORK</span><span class="p">|</span><span class="no">BUNDLE</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="w">        </span><span class="p">]...</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">IMPORTED_RUNTIME_ARTIFACTS</span></code> 形式指定了安装导入目标运行时构件的规则。如果项目希望在其安装中捆绑外部可执行文件或模块，可以这样做。<code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code>、<code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BUNDLE</span></code> 参数具有与 <a class="reference internal" href="install.html#targets">TARGETS</a> 模式中相同的语义。仅安装导入目标的运行时构件（<span class="target" id="index-1-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="../prop_tgt/FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 库、<span class="target" id="index-1-prop_tgt:MACOSX_BUNDLE"></span><a class="reference internal" href="../prop_tgt/MACOSX_BUNDLE.html#prop_tgt:MACOSX_BUNDLE" title="MACOSX_BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code></a> 可执行文件和 <span class="target" id="index-0-prop_tgt:BUNDLE"></span><a class="reference internal" href="../prop_tgt/BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> CFBundles 的情况除外）。例如，不安装与 DLL 关联的头文件和导入库。对于 <span class="target" id="index-2-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="../prop_tgt/FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 库、<span class="target" id="index-2-prop_tgt:MACOSX_BUNDLE"></span><a class="reference internal" href="../prop_tgt/MACOSX_BUNDLE.html#prop_tgt:MACOSX_BUNDLE" title="MACOSX_BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code></a> 可执行文件和 <span class="target" id="index-1-prop_tgt:BUNDLE"></span><a class="reference internal" href="../prop_tgt/BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> CFBundles，将安装整个目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RUNTIME_DEPENDENCY_SET</span></code> 选项导致导入的可执行文件、共享库和模块库 <code class="docutils literal notranslate"><span class="pre">targets</span></code> 的运行时构件被添加到 <code class="docutils literal notranslate"><span class="pre">&lt;set-name&gt;</span></code> 运行时依赖项集中。此集合随后可以使用 <span class="target" id="index-8-command:install"></span><a class="reference internal" href="install.html#runtime-dependency-set" title="install(runtime_dependency_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code></a> 命令进行安装。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="files">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">FILES</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;file&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#files" title="指向此定义的链接">¶</a></dt>
+<dt class="sig sig-object cmake" id="programs">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">PROGRAMS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;program&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#programs" title="指向此定义的链接">¶</a></dt>
+<dd><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果安装头文件，请考虑改用 <span class="target" id="index-1-command:target_sources"></span><a class="reference internal" href="target_sources.html#command:target_sources" title="target_sources(file_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources(FILE_SET)</span></code></a> 定义的文件集。文件集将头文件与目标关联，并作为目标的一部分进行安装。</p>
+</div>
+<p>安装文件或程序</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="p">&lt;</span><span class="no">FILES</span><span class="p">|</span><span class="no">PROGRAMS</span><span class="p">&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span>
+<span class="w">        </span><span class="no">TYPE</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RENAME</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FILES</span></code> 形式指定了为项目安装文件的规则。作为相对路径给出的文件名是相对于当前源目录解析的。如果未给出 <code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span></code> 参数，此形式安装的文件默认被授予 <code class="docutils literal notranslate"><span class="pre">OWNER_WRITE</span></code>、<code class="docutils literal notranslate"><span class="pre">OWNER_READ</span></code>、<code class="docutils literal notranslate"><span class="pre">GROUP_READ</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORLD_READ</span></code> 权限。</p>
+<p><code class="docutils literal notranslate"><span class="pre">PROGRAMS</span></code> 形式与 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 形式相同，不同之处在于已安装文件的默认权限还包括 <code class="docutils literal notranslate"><span class="pre">OWNER_EXECUTE</span></code>、<code class="docutils literal notranslate"><span class="pre">GROUP_EXECUTE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORLD_EXECUTE</span></code>。此形式旨在安装非目标的程序，例如 shell 脚本。使用 <code class="docutils literal notranslate"><span class="pre">TARGETS</span></code> 形式来安装在项目内构建的目标。</p>
+<p>赋予 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 或 <code class="docutils literal notranslate"><span class="pre">PROGRAMS</span></code> 的文件列表可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-1-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。但是，如果任何项以生成器表达式开头，则必须将其解析为完整路径。</p>
+<p>可选的 <code class="docutils literal notranslate"><span class="pre">RENAME</span> <span class="pre">&lt;name&gt;</span></code> 参数用于指定与原始文件名不同的已安装文件名。仅当命令安装单个文件时才允许重命名。</p>
+<p>必须提供 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，但不能同时提供。 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数指定正在安装的文件的通用文件类型。目的地将自动通过从 <span class="target" id="index-3-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 中获取相应变量来设置，如果未定义该变量，则使用内置默认值。有关支持的文件类型及其对应的变量和内置默认值，请参阅下表。如果项目希望明确定义安装目的地，可以提供 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数而不是文件类型。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数</p></th>
+<th class="head"><p>GNUInstallDirs 变量</p></th>
+<th class="head"><p>内置默认值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BIN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_BINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SBIN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SBINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sbin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYSCONF</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SYSCONFDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">etc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHAREDSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SHARESTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">com</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LOCALSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LOCALSTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">var</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUNSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_RUNSTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;LOCALSTATE</span> <span class="pre">dir&gt;/run</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">INFO</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INFODIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/info</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LOCALE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LOCALEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/locale</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_MANDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/man</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DOC</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DOCDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/doc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIBEXEC</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBEXECDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">libexec</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>希望遵循将头文件安装到特定于项目的子目录这一常见做法的项目需要提供目的地，而不是依赖上述规则。使用文件集安装头文件而不是 <code class="docutils literal notranslate"><span class="pre">install(FILES)</span></code> 会更好（参见 <span class="target" id="index-2-command:target_sources"></span><a class="reference internal" href="target_sources.html#command:target_sources" title="target_sources(file_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources(FILE_SET)</span></code></a>）。</p>
+<p>请注意，某些类型的内置默认值使用 <code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 目录作为前缀。<code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 前缀的计算方式与类型类似，以 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DATAROOTDIR</span></code> 作为变量，以 <code class="docutils literal notranslate"><span class="pre">share</span></code> 作为内置默认值。您不能将 <code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 用作 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数；请改用 <code class="docutils literal notranslate"><span class="pre">DATA</span></code>。</p>
+<p>为了使包符合分发文件系统布局策略，如果项目必须指定 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，强烈建议使用以适当的相对 <span class="target" id="index-4-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 变量开头的路径。这允许包维护者通过设置适当的缓存变量来控制安装目的地。以下示例演示了如何遵循此建议，同时将图像安装到特定于项目的文档子目录中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">FILES</span><span class="w"> </span><span class="nb">logo.png</span>
+<span class="w">        </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_DOCDIR</span><span class="o">}</span><span class="na">/myproj</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增：</span>作为 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数给出的安装目的地可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-2-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增：</span>作为 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code> 参数给出的安装重命名可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-3-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.31 版本新增：</span><code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数现在支持 <code class="docutils literal notranslate"><span class="pre">LIBEXEC</span></code> 类型。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="directory">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">DIRECTORY</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;dir&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#directory" title="指向此定义的链接">¶</a></dt>
+<dd><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>要安装头文件的目录子树，请考虑改用 <span class="target" id="index-3-command:target_sources"></span><a class="reference internal" href="target_sources.html#command:target_sources" title="target_sources(file_set)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources(FILE_SET)</span></code></a> 定义的文件集。文件集不仅保留目录结构，还将头文件与目标关联，并作为目标的一部分进行安装。</p>
+</div>
+<p>安装一个或多个目录的内容</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;...</span>
+<span class="w">        </span><span class="no">TYPE</span><span class="w"> </span><span class="nv">&lt;type&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">FILE_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DIRECTORY_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">USE_SOURCE_PERMISSIONS</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">MESSAGE_NEVER</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">FILES_MATCHING</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="nv">&lt;match-rule&gt;</span><span class="w"> </span><span class="nv">&lt;match-option&gt;...</span><span class="p">]...</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 形式将一个或多个目录的内容安装到给定的目的地。目录结构被逐字复制到目的地。</p>
+<p>必须提供 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，但不能同时提供。如果未给定权限，文件将被赋予命令 <a class="reference internal" href="install.html#files">FILES</a> 形式中指定的默认权限，目录将被赋予命令 <a class="reference internal" href="install.html#programs">PROGRAMS</a> 形式中指定的默认权限。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;...</span></code></dt><dd><p>要安装的目录列表。</p>
+<p>每个目录名称的最后一个组件都会附加到目标目录，但可以使用尾随斜杠来避免这种情况，因为它会使最后一个组件为空。作为相对路径给出的目录名是相对于当前源目录解析的。如果未给定输入目录名，则将创建目标目录，但不会向其中安装任何内容。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>源 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;...</span></code> 列表可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-4-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TYPE</span> <span class="pre">&lt;type&gt;</span></code></dt><dd><p>指定正在安装的列出目录中文件的通用文件类型。目的地将自动通过从 <span class="target" id="index-5-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 中获取相应变量来设置，如果未定义该变量，则使用内置默认值。有关支持的文件类型及其对应的变量和内置默认值，请参阅下表。如果项目希望明确定义安装目的地，可以提供 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 参数而不是文件类型。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数</p></th>
+<th class="head"><p>GNUInstallDirs 变量</p></th>
+<th class="head"><p>内置默认值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BIN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_BINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SBIN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SBINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sbin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYSCONF</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SYSCONFDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">etc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHAREDSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_SHARESTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">com</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LOCALSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LOCALSTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">var</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUNSTATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_RUNSTATEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;LOCALSTATE</span> <span class="pre">dir&gt;/run</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DATADIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">INFO</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INFODIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/info</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LOCALE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LOCALEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/locale</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAN</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_MANDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/man</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DOC</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_DOCDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;DATAROOT</span> <span class="pre">dir&gt;/doc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIBEXEC</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBEXECDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">libexec</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>请注意，某些类型的内置默认值使用 <code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 目录作为前缀。<code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 前缀的计算方式与类型类似，以 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_DATAROOTDIR</span></code> 作为变量，以 <code class="docutils literal notranslate"><span class="pre">share</span></code> 作为内置默认值。您不能将 <code class="docutils literal notranslate"><span class="pre">DATAROOT</span></code> 用作 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 参数；请改用 <code class="docutils literal notranslate"><span class="pre">DATA</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.31 版本新增：</span><code class="docutils literal notranslate"><span class="pre">LIBEXEC</span></code> 类型。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>目标目录，如 <a class="reference internal" href="install.html#common-options">通用选项</a> 中记录的那样。</p>
+<p>为了使包符合分发文件系统布局策略，如果项目必须指定 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，强烈建议使用以适当的相对 <span class="target" id="index-6-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 变量开头的路径。这允许包维护者通过设置适当的缓存变量来控制安装目的地。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增：</span>目的地 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”。有关可用表达式，请参阅 <span class="target" id="index-5-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span> <span class="pre">&lt;permission&gt;...</span></code></dt><dd><p>指定授予目的地中文件的权限，其中 <code class="docutils literal notranslate"><span class="pre">&lt;permission&gt;</span></code> 名称记录在 <a class="reference internal" href="install.html#common-options">通用选项</a> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY_PERMISSIONS</span> <span class="pre">&lt;permission&gt;...</span></code></dt><dd><p>指定授予目的地中目录的权限，其中 <code class="docutils literal notranslate"><span class="pre">&lt;permission&gt;</span></code> 名称记录在 <a class="reference internal" href="install.html#common-options">通用选项</a> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code></dt><dd><p>如果指定了此项而未指定 <code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code>，则文件权限将从源目录结构中复制。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MESSAGE_NEVER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>禁用文件安装状态输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILES_MATCHING</span></code></dt><dd><p>此选项可以在第一个 <code class="docutils literal notranslate"><span class="pre">&lt;match-rule&gt;</span></code> 之前给出，以禁用未被任何表达式匹配的文件（但不是目录）的安装。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="na">src/</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">doc/myproj</span>
+<span class="w">        </span><span class="no">FILES_MATCHING</span><span class="w"> </span><span class="no">PATTERN</span><span class="w"> </span><span class="s">"*.png"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将从源树中提取并安装图像。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;match-rule&gt;</span> <span class="pre">&lt;match-option&gt;...</span></code></dt><dd><p>可以使用匹配输入目录中遇到的目录或文件的规则，以高精度控制目录的安装。它们可用于将某些选项（见下文）应用于所遇到的文件和目录的子集。除非给出了上述 <code class="docutils literal notranslate"><span class="pre">FILES_MATCHING</span></code> 选项，否则所有文件和目录无论是否匹配都会被安装。</p>
+<p>每个输入文件或目录的完整路径（使用正斜杠）都可以由 <code class="docutils literal notranslate"><span class="pre">&lt;match-rule&gt;</span></code> 匹配：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PATTERN</span> <span class="pre">&lt;pattern&gt;</span></code></dt><dd><p>使用 glob 模式匹配完整文件名。完整路径中匹配模式的部分必须出现在文件名末尾，并且前面必须有一个斜杠（它不是模式的一部分）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REGEX</span> <span class="pre">&lt;regex&gt;</span></code></dt><dd><p>使用 <a class="reference internal" href="string.html#regex-specification"><span class="std std-ref">正则表达式</span></a> 匹配文件完整路径的任何部分。可以使用 <code class="docutils literal notranslate"><span class="pre">/</span></code> 和 <code class="docutils literal notranslate"><span class="pre">$</span></code> 将匹配限制在路径末尾。</p>
+</dd>
+</dl>
+<p>每个 <code class="docutils literal notranslate"><span class="pre">&lt;match-rule&gt;</span></code> 后面可以跟 <code class="docutils literal notranslate"><span class="pre">&lt;match-option&gt;</span></code> 参数。匹配选项适用于规则匹配的文件或目录。匹配选项包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code></dt><dd><p>将匹配的文件或目录从安装中排除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PERMISSIONS</span> <span class="pre">&lt;permission&gt;...</span></code></dt><dd><p>覆盖匹配文件或目录的权限设置。</p>
+</dd>
+</dl>
+<p>例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nb">icons</span><span class="w"> </span><span class="na">scripts/</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">share/myproj</span>
+<span class="w">        </span><span class="no">PATTERN</span><span class="w"> </span><span class="s">"CVS"</span><span class="w"> </span><span class="no">EXCLUDE</span>
+<span class="w">        </span><span class="no">PATTERN</span><span class="w"> </span><span class="s">"scripts/*"</span>
+<span class="w">        </span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="no">OWNER_EXECUTE</span><span class="w"> </span><span class="no">OWNER_WRITE</span><span class="w"> </span><span class="no">OWNER_READ</span>
+<span class="w">                    </span><span class="no">GROUP_EXECUTE</span><span class="w"> </span><span class="no">GROUP_READ</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>会将 <code class="docutils literal notranslate"><span class="pre">icons</span></code> 目录安装到 <code class="docutils literal notranslate"><span class="pre">share/myproj/icons</span></code>，并将 <code class="docutils literal notranslate"><span class="pre">scripts</span></code> 目录安装到 <code class="docutils literal notranslate"><span class="pre">share/myproj</span></code>。图标将获得默认文件权限，脚本将被赋予特定权限，并且任何 <code class="docutils literal notranslate"><span class="pre">CVS</span></code> 目录都将被排除。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="script">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">SCRIPT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;file&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#script" title="指向此定义的链接">¶</a></dt>
+<dt class="sig sig-object cmake" id="code">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">CODE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;code&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#code" title="指向此定义的链接">¶</a></dt>
+<dd><p>在安装期间调用 CMake 脚本或代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="p">[[</span><span class="no">SCRIPT</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">CODE</span><span class="w"> </span><span class="nv">&lt;code&gt;</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">ALL_COMPONENTS</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SCRIPT</span></code> 形式将在安装期间调用给定的 CMake 脚本文件。如果脚本文件名是相对路径，它将相对于当前源目录解析。<code class="docutils literal notranslate"><span class="pre">CODE</span></code> 形式将在安装期间调用给定的 CMake 代码。代码作为双引号字符串内的单个参数指定。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">CODE</span><span class="w"> </span><span class="s">"message(\"Sample install message.\")"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将在安装期间打印一条消息。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增：</span>当给定 <code class="docutils literal notranslate"><span class="pre">ALL_COMPONENTS</span></code> 选项时，自定义安装脚本代码将为特定组件安装的每个组件执行。此选项与 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项互斥。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版本新增：</span><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code> 可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的“生成器表达式”（对于 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，这是指它们在文件名中的使用，而不是文件内容）。有关可用表达式，请参阅 <span class="target" id="index-6-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="export">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">EXPORT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;export-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#export" title="指向此定义的链接">¶</a></dt>
+<dd><p>安装一个为相关项目导出目标的 CMake 文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;namespace&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">FILE</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="p">.</span><span class="nb">cmake</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CXX_MODULES_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXPORT_LINK_INTERFACE_LIBRARIES</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXPORT_PACKAGE_DEPENDENCIES</span><span class="p">]</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">EXPORT_ANDROID_MK</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 形式生成并安装一个 CMake 文件，其中包含从安装树导入目标到另一个项目中的代码。目标安装通过使用上述记录的 <span class="target" id="index-9-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 语法的 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 选项与导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 关联。<code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> 选项将在写入导入文件时将 <code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;</span></code> 预置到目标名称中。默认情况下，生成的文件将被称为 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;.cmake</span></code>，但 <code class="docutils literal notranslate"><span class="pre">FILE</span></code> 选项可用于指定不同的名称。<code class="docutils literal notranslate"><span class="pre">FILE</span></code> 选项给出的值必须是带有 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 扩展名的文件名。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">CONFIGURATIONS</span></code> 选项，则仅在安装命名配置之一时安装该文件。此外，生成的导入文件将仅引用匹配的目标配置。参阅 <span class="target" id="index-0-variable:CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_MAP_IMPORTED_CONFIG_CONFIG.html#variable:CMAKE_MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;" title="CMAKE_MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a> 变量，以将相关项目的配置映射到已安装的配置。<code class="docutils literal notranslate"><span class="pre">EXPORT_LINK_INTERFACE_LIBRARIES</span></code> 关键字（如果存在）会导致在策略 <span class="target" id="index-0-policy:CMP0022"></span><a class="reference internal" href="../policy/CMP0022.html#policy:CMP0022" title="CMP0022"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0022</span></code></a> 为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，导出匹配 <code class="docutils literal notranslate"><span class="pre">(IMPORTED_)?LINK_INTERFACE_LIBRARIES(_&lt;CONFIG&gt;)?</span></code> 的属性内容。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>已安装的 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;.cmake</span></code> 文件可能附带额外的每个配置 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;-*.cmake</span></code> 文件，由 glob 匹配加载。请勿将导出名称与包名称相同，并结合安装 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;-config.cmake</span></code> 文件，否则后者可能会被 glob 错误地匹配并加载。</p>
+</div>
+<p>当给定 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项时，列出的 <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 隐式依赖于导出集中的所有组件。导出的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.cmake</span></code> 文件将要求存在每个已导出的组件，以便相关项目能够正确构建。例如，项目可能会定义 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件，共享库进入 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件，静态库和头文件进入 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件。导出集通常也是 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的一部分，但它会导出 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件中的目标。因此，如果安装了 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件，则需要安装 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件，反之则不然。如果安装了 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件而没有 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件，试图链接它的相关项目将出现构建错误。包管理器（如 APT 和 RPM）通常通过在包元数据中将 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件列为 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的依赖项来处理此问题，从而确保在存在头文件和 CMake 导出文件时始终安装该库。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增：</span>除了 cmake 语言文件外，<code class="docutils literal notranslate"><span class="pre">EXPORT_ANDROID_MK</span></code> 模式还可用于指定对 android ndk 构建系统的导出。此模式接受与普通导出模式相同的选项。Android NDK 支持使用静态和共享预构建库。这允许 cmake 构建项目库并将其提供给 ndk 构建系统，其中包括使用库所需的传递依赖项、包含标志和定义。</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CXX_MODULES_DIRECTORY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>指定一个子目录，用于存储导出集中目标的 C++ 模块信息。此目录将填充一些文件，这些文件将必要的目标属性信息添加到相关目标中。请注意，没有此信息，导出集中的任何 C++ 模块都将不支持在消费目标中导入。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_PACKAGE_DEPENDENCIES</span></code></dt><dd><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>实验性。受 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_EXPORT_PACKAGE_DEPENDENCIES</span></code> 控制。</p>
+</div>
+<p>指定应导出 <span class="target" id="index-0-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用。如果指定了此参数，CMake 将检查导出集中的所有目标并收集它们的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 链接目标。如果任何此类目标是通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 找到的，或者设置了 <span class="target" id="index-0-prop_tgt:EXPORT_FIND_PACKAGE_NAME"></span><a class="reference internal" href="../prop_tgt/EXPORT_FIND_PACKAGE_NAME.html#prop_tgt:EXPORT_FIND_PACKAGE_NAME" title="EXPORT_FIND_PACKAGE_NAME"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXPORT_FIND_PACKAGE_NAME</span></code></a> 属性，且此类包依赖项未通过向 <span class="target" id="index-0-command:export"></span><a class="reference internal" href="export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 传递 <code class="docutils literal notranslate"><span class="pre">ENABLED</span> <span class="pre">OFF</span></code> 而被禁用，则会写入一个 <span class="target" id="index-1-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用，其中包含目标的相应包名称、<code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 参数以及 <span class="target" id="index-1-command:export"></span><a class="reference internal" href="export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span></code> 参数指定的任何额外参数。任何通过向 <span class="target" id="index-2-command:export"></span><a class="reference internal" href="export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 传递 <code class="docutils literal notranslate"><span class="pre">ENABLED</span> <span class="pre">ON</span></code> 而手动指定的包依赖项也会被添加，即使导出的目标不依赖于来自它们的任何目标。</p>
+<p><span class="target" id="index-2-command:find_dependency"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#command:find_dependency" title="find_dependency"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 调用按以下顺序写入：</p>
+<ol class="arabic simple">
+<li><p>在 <span class="target" id="index-3-command:export"></span><a class="reference internal" href="export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 中列出的任何包依赖项都按照它们首次指定的顺序写入，无论它们是否包含导出目标的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 依赖项。</p></li>
+<li><p>包含导出目标的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 链接依赖项且从未在 <span class="target" id="index-4-command:export"></span><a class="reference internal" href="export.html#setup" title="export(setup)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(SETUP)</span></code></a> 中指定的任何包依赖项，都按它们首次找到的顺序写入。</p></li>
+</ol>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 形式有助于外部项目使用由当前项目构建和安装的目标。例如，以下代码：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">myexe</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">myproj</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">bin</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">myproj</span><span class="w"> </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nb">mp_</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">lib/myproj</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">EXPORT_ANDROID_MK</span><span class="w"> </span><span class="nb">myproj</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">share/ndk-modules</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将可执行文件 <code class="docutils literal notranslate"><span class="pre">myexe</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/bin</span></code>，并将导入代码安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib/myproj/myproj.cmake</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/share/ndk-modules/Android.mk</span></code> 中。外部项目可以使用 include 命令加载此文件，并使用导入的目标名称 <code class="docutils literal notranslate"><span class="pre">mp_myexe</span></code> 从安装树引用 <code class="docutils literal notranslate"><span class="pre">myexe</span></code> 可执行文件，就好像该目标是在其自己的树中构建的一样。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="package-info">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">PACKAGE_INFO</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;package-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#package-info" title="指向此定义的链接">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>安装一个 <a class="reference external" href="https://cps-org.github.io/cps/">通用包规范</a> ("CPS") 文件，为相关项目导出目标。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">PACKAGE_INFO</span><span class="w"> </span><span class="nv">&lt;package-name&gt;</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PROJECT</span><span class="w"> </span><span class="nv">&lt;project-name&gt;</span><span class="p">|</span><span class="no">NO_PROJECT_METADATA</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">APPENDIX</span><span class="w"> </span><span class="nv">&lt;appendix-name&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LOWER_CASE_FILE</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span>
+<span class="w">         </span><span class="p">[</span><span class="no">COMPAT_VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">VERSION_SCHEMA</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DEFAULT_TARGETS</span><span class="w"> </span><span class="nv">&lt;target&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DEFAULT_CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DEFAULT_LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;description-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">HOMEPAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">CXX_MODULES_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PACKAGE_INFO</span></code> 形式用于生成并安装通用包规范（Common Package Specification）文件，该文件描述了已安装的目标，以便其他项目可以使用它们。目标安装通过上述文档中 <span class="target" id="index-10-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 签名的 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 选项与导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 关联。与 <span class="target" id="index-11-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 不同，此信息不是以 CMake 代码形式表达的，因此可以被除 CMake 之外的工具使用。当导入到另一个 CMake 项目时，导入的目标将带有 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;::</span></code> 前缀。默认情况下，生成的文件名为 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;[-&lt;appendix-name&gt;].cps</span></code>。如果指定了 <code class="docutils literal notranslate"><span class="pre">LOWER_CASE_FILE</span></code>，则磁盘上的包名（包括文件名和安装目标路径）将首先转换为小写。</p>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，则使用特定于平台的默认值。</p>
+<p>可以使用多个选项来指定包元数据</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION</span> <span class="pre">&lt;version&gt;</span></code></dt><dd><p>包的版本。<code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 应符合指定的模式。有关当使用者请求包时如何使用包版本的更多信息，请参阅 <a class="reference internal" href="find_package.html#cps-version-selection"><span class="std std-ref">版本选择 (CPS)</span></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPAT_VERSION</span> <span class="pre">&lt;version&gt;</span></code></dt><dd><p>包提供兼容性的最旧版本。</p>
+<p>如果未指定，则 <code class="docutils literal notranslate"><span class="pre">COMPAT_VERSION</span></code> 隐式地等于包的 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code>，这意味着不提供向后兼容性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION_SCHEMA</span> <span class="pre">&lt;schema&gt;</span></code></dt><dd><p>包的版本号（<code class="docutils literal notranslate"><span class="pre">VERSION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">COMPAT_VERSION</span></code>）所遵循的模式。如果未提供此选项，尽管不会将模式写入 <code class="docutils literal notranslate"><span class="pre">.cps</span></code> 文件，但 CPS 规范在这种情况下假定模式为 <code class="docutils literal notranslate"><span class="pre">simple</span></code>。有关详细信息和官方支持的模式列表，请参阅 <a class="reference external" href="https://cps-org.github.io/cps/schema.html#version-schema"><code class="docutils literal notranslate"><span class="pre">version_schema</span></code></a>，但请注意，该规范可能包含 CMake 不支持的模式。<span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 所支持的模式列表，请参阅 <a class="reference internal" href="find_package.html#cps-version-selection"><span class="std std-ref">版本选择 (CPS)</span></a>。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">DEFAULT_TARGETS</span> <span class="pre">&lt;target&gt;...</span></code></p>
+<blockquote>
+<div><p>当使用者请求链接到包名，而不是特定组件时，应使用的目标。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">DEFAULT_CONFIGURATIONS</span> <span class="pre">&lt;config&gt;...</span></code></p>
+<blockquote>
+<div><p>如果不存在与使用者配置完全匹配或映射的情况，使用者应优先选择的配置顺序列表。如果未指定，CMake 将以未指定的顺序回退到包可用的配置。</p>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">LICENSE</span> <span class="pre">&lt;license-string&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>一个 <a class="reference external" href="https://spdx.dev/">系统软件包数据交换</a> (SPDX) <a class="reference external" href="https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/">许可证表达式</a>，用于描述整个项目的许可证，包括随项目分发的文档、资源或其他材料，以及软件构件。有关常用许可证及其标识符的列表，请参阅 SPDX <a class="reference external" href="https://spdx.org/licenses/">许可证列表</a>。</p>
+<p>单个组件的许可证取自其各自目标的 <span class="target" id="index-0-prop_tgt:SPDX_LICENSE"></span><a class="reference internal" href="../prop_tgt/SPDX_LICENSE.html#prop_tgt:SPDX_LICENSE" title="SPDX_LICENSE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SPDX_LICENSE</span></code></a> 属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEFAULT_LICENSE</span> <span class="pre">&lt;license-string&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>一个 <a class="reference external" href="https://spdx.dev/">系统软件包数据交换</a> (SPDX) <a class="reference external" href="https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/">许可证表达式</a>，用于描述任何未另外指定许可证的组件的许可证。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span> <span class="pre">&lt;description-string&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>项目的说明性描述。建议此描述为一个相对简短的字符串，通常不超过几个字。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HOMEPAGE_URL</span> <span class="pre">&lt;url-string&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>项目的说明性权威主页 URL。</p>
+</dd>
+</dl>
+<p>默认情况下，如果指定的 <code class="docutils literal notranslate"><span class="pre">&lt;package-name&gt;</span></code> 与当前的 CMake <span class="target" id="index-0-variable:PROJECT_NAME"></span><a class="reference internal" href="../variable/PROJECT_NAME.html#variable:PROJECT_NAME" title="PROJECT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">PROJECT_NAME</span></code></a> 匹配，则包元数据将继承自项目。<code class="docutils literal notranslate"><span class="pre">PROJECT</span> <span class="pre">&lt;project-name&gt;</span></code> 选项可用于指定从不同的项目继承元数据。如果指定了 <code class="docutils literal notranslate"><span class="pre">NO_PROJECT_METADATA</span></code>，则禁用包元数据的自动继承。无论如何，<code class="docutils literal notranslate"><span class="pre">install</span></code> 命令中指定的任何元数据值都将具有优先权。</p>
+<p>如果指定了 <code class="docutils literal notranslate"><span class="pre">APPENDIX</span></code>，则指定的各目标将被导出为所命名包的附录，而不是生成顶层包规范。附录可用于将较少使用的目标（及其外部依赖项）与包的其余部分分离开来。这使得使用者能够忽略他们不使用的目标的传递依赖项，并允许单个逻辑“包”由多个构建树生成的构件组成。</p>
+<p>附录不允许更改基础包元数据；因此，不得将 <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code>、<code class="docutils literal notranslate"><span class="pre">VERSION</span></code>、<code class="docutils literal notranslate"><span class="pre">COMPAT_VERSION</span></code>、<code class="docutils literal notranslate"><span class="pre">VERSION_SCHEMA</span></code>、<code class="docutils literal notranslate"><span class="pre">DEFAULT_TARGETS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">DEFAULT_CONFIGURATIONS</span></code> 与 <code class="docutils literal notranslate"><span class="pre">APPENDIX</span></code> 组合使用。此外，强烈建议在主包和任何附录之间保持 <code class="docutils literal notranslate"><span class="pre">LOWER_CASE_FILE</span></code> 的使用一致。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>由于 CPS 旨在跨多种构建工具实现可移植性，因此可能不支持 CMake 脚本导出中允许的所有功能。特别是，目前对接口属性中生成器表达式的支持仅限于依赖于配置的表达式。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>这是为项目生成通用包规范包信息的推荐方式。对于那些用户在修改项目的构建文件时无法要求获得 CPS 包信息的经销商，可以使用 <span class="target" id="index-0-variable:CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO.html#variable:CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO" title="CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO</span></code></a> 变量从 <span class="target" id="index-12-command:install"></span><a class="reference internal" href="install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 调用中生成 <code class="docutils literal notranslate"><span class="pre">.cps</span></code> 文件。请参阅该变量的文档以了解用法和注意事项。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="runtime-dependency-set">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">RUNTIME_DEPENDENCY_SET</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;set-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#runtime-dependency-set" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>安装运行时依赖项集</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">RUNTIME_DEPENDENCY_SET</span><span class="w"> </span><span class="nv">&lt;set-name&gt;</span>
+<span class="w">        </span><span class="p">[[</span><span class="no">LIBRARY</span><span class="p">|</span><span class="no">RUNTIME</span><span class="p">|</span><span class="no">FRAMEWORK</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permission&gt;...</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nv">&lt;config&gt;...</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">NAMELINK_COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">OPTIONAL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="w">        </span><span class="p">]...</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PRE_INCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regex&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PRE_EXCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regex&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">POST_INCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regex&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">POST_EXCLUDE_REGEXES</span><span class="w"> </span><span class="nv">&lt;regex&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">POST_INCLUDE_FILES</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">POST_EXCLUDE_FILES</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DIRECTORIES</span><span class="w"> </span><span class="nv">&lt;dir&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>安装先前由一个或多个 <span class="target" id="index-13-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 或 <span class="target" id="index-14-command:install"></span><a class="reference internal" href="install.html#imported-runtime-artifacts" title="install(imported_runtime_artifacts)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(IMPORTED_RUNTIME_ARTIFACTS)</span></code></a> 命令创建的运行时依赖项集。属于运行时依赖项集的目标的依赖项在 DLL 平台上安装到 <code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 目标路径和组件中，在非 DLL 平台上安装到 <code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code> 目标路径和组件中。macOS 框架安装在 <code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code> 目标路径和组件中。除非目标本身使用 <span class="target" id="index-15-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 安装，否则在构建树内构建的目标及其自身的依赖项永远不会作为运行时依赖项安装。</p>
+<p>生成的安装脚本会在构建树文件上调用 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="file.html#get-runtime-dependencies" title="file(get_runtime_dependencies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code></a> 以计算运行时依赖项。构建树可执行文件作为 <code class="docutils literal notranslate"><span class="pre">EXECUTABLES</span></code> 参数传递，构建树共享库作为 <code class="docutils literal notranslate"><span class="pre">LIBRARIES</span></code> 参数传递，构建树模块作为 <code class="docutils literal notranslate"><span class="pre">MODULES</span></code> 参数传递。在 macOS 上，如果其中一个可执行文件是 <span class="target" id="index-3-prop_tgt:MACOSX_BUNDLE"></span><a class="reference internal" href="../prop_tgt/MACOSX_BUNDLE.html#prop_tgt:MACOSX_BUNDLE" title="MACOSX_BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code></a>，则该可执行文件将作为 <code class="docutils literal notranslate"><span class="pre">BUNDLE_EXECUTABLE</span></code> 参数传递。在 macOS 上，运行时依赖项集中最多只能有一个这样的包可执行文件。<span class="target" id="index-4-prop_tgt:MACOSX_BUNDLE"></span><a class="reference internal" href="../prop_tgt/MACOSX_BUNDLE.html#prop_tgt:MACOSX_BUNDLE" title="MACOSX_BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_BUNDLE</span></code></a> 属性对其他平台没有影响。请注意，<span class="target" id="index-1-command:file"></span><a class="reference internal" href="file.html#get-runtime-dependencies" title="file(get_runtime_dependencies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code></a> 仅支持收集 Windows、Linux 和 macOS 平台的运行时依赖项，因此 <code class="docutils literal notranslate"><span class="pre">install(RUNTIME_DEPENDENCY_SET)</span></code> 具有相同的限制。</p>
+<p>以下子参数将作为相应的参数转发给 <span class="target" id="index-2-command:file"></span><a class="reference internal" href="file.html#get-runtime-dependencies" title="file(get_runtime_dependencies)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GET_RUNTIME_DEPENDENCIES)</span></code></a>（对于那些提供非空目录、正则表达式或文件列表的参数）。它们都支持 <span class="target" id="index-7-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DIRECTORIES</span> <span class="pre">&lt;dir&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRE_INCLUDE_REGEXES</span> <span class="pre">&lt;regex&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRE_EXCLUDE_REGEXES</span> <span class="pre">&lt;regex&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_REGEXES</span> <span class="pre">&lt;regex&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_REGEXES</span> <span class="pre">&lt;regex&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_INCLUDE_FILES</span> <span class="pre">&lt;file&gt;...</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST_EXCLUDE_FILES</span> <span class="pre">&lt;file&gt;...</span></code></p></li>
+</ul>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此命令取代了 <span class="target" id="index-0-command:install_targets"></span><a class="reference internal" href="install_targets.html#command:install_targets" title="install_targets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_targets()</span></code></a> 命令以及 <span class="target" id="index-0-prop_tgt:PRE_INSTALL_SCRIPT"></span><a class="reference internal" href="../prop_tgt/PRE_INSTALL_SCRIPT.html#prop_tgt:PRE_INSTALL_SCRIPT" title="PRE_INSTALL_SCRIPT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRE_INSTALL_SCRIPT</span></code></a> 和 <span class="target" id="index-0-prop_tgt:POST_INSTALL_SCRIPT"></span><a class="reference internal" href="../prop_tgt/POST_INSTALL_SCRIPT.html#prop_tgt:POST_INSTALL_SCRIPT" title="POST_INSTALL_SCRIPT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">POST_INSTALL_SCRIPT</span></code></a> 目标属性。它还替换了 <span class="target" id="index-0-command:install_files"></span><a class="reference internal" href="install_files.html#command:install_files" title="install_files"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_files()</span></code></a> 和 <span class="target" id="index-0-command:install_programs"></span><a class="reference internal" href="install_programs.html#command:install_programs" title="install_programs"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_programs()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 形式。这些安装规则相对于由 <span class="target" id="index-1-command:install_targets"></span><a class="reference internal" href="install_targets.html#command:install_targets" title="install_targets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_targets()</span></code></a>、<span class="target" id="index-1-command:install_files"></span><a class="reference internal" href="install_files.html#command:install_files" title="install_files"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_files()</span></code></a> 和 <span class="target" id="index-1-command:install_programs"></span><a class="reference internal" href="install_programs.html#command:install_programs" title="install_programs"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_programs()</span></code></a> 命令生成的安装规则的处理顺序是未定义的。</p>
+</div>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="sbom">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">install(</span></span><span class="no"><span class="pre">SBOM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;sbom-name&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="install.html#sbom" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>实验性功能。受 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXPERIMENTAL_GENERATE_SBOM</span></code> 控制。</p>
+</div>
+<p>安装描述项目的软件物料清单 (SBOM)</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">SBOM</span><span class="w"> </span><span class="nv">&lt;sbom-name&gt;</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nv">&lt;export-name&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PROJECT</span><span class="w"> </span><span class="nv">&lt;project-name&gt;</span><span class="p">|</span><span class="no">NO_PROJECT_METADATA</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;major&gt;</span><span class="p">[.</span><span class="nv">&lt;minor&gt;</span><span class="p">[.</span><span class="nv">&lt;patch&gt;</span><span class="p">[.</span><span class="nv">&lt;tweak&gt;</span><span class="p">]]]]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">LICENSE</span><span class="w"> </span><span class="nv">&lt;license-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">DESCRIPTION</span><span class="w"> </span><span class="nv">&lt;description-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">HOMEPAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">PACKAGE_URL</span><span class="w"> </span><span class="nv">&lt;url-string&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">FORMAT</span><span class="w"> </span><span class="nv">&lt;string&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SBOM</span></code> 形式为给定项目生成软件物料清单 (SBOM) 文件，并将其作为项目安装的一部分进行安装。软件物料清单是项目目标、链接库以及相关元数据（如版本和许可证信息）的机器可读描述。CMake 目前使用 <a class="reference external" href="https://spdx.dev/">系统软件包数据交换</a> 3.0 规范的 JSON-LD 表示形式生成 SBOM 文件（由 <code class="docutils literal notranslate"><span class="pre">FORMAT</span></code> 选项选择），但该接口旨在允许在未来的 CMake 版本中支持额外的 SBOM 格式或模式版本。</p>
+<p>目标安装通过上述文档中 <span class="target" id="index-16-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 签名的 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 选项与导出 <code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;</span></code> 关联。如果未指定 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，则使用特定于平台的默认值。</p>
+<p>可以使用多个选项来指定包元数据</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION</span> <span class="pre">&lt;version&gt;</span></code></dt><dd><p>包版本，表示为一系列非负整数组件，即 &lt;major&gt;[.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]]]。有关更多信息，请参阅 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="project.html#command:project" title="project(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project(VERSION)</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FORMAT</span> <span class="pre">&lt;string&gt;</span></code></dt><dd><p>导出 SBOM 的格式，必须为 <code class="docutils literal notranslate"><span class="pre">&lt;format&gt;[-&lt;version&gt;][+&lt;representation&gt;]</span></code> 形式的表达式。CMake 目前支持 <a class="reference external" href="https://spdx.dev/">系统软件包数据交换</a> v3.0.1 的 JSON-LD 序列化（<code class="docutils literal notranslate"><span class="pre">spdx</span></code> 或 <code class="docutils literal notranslate"><span class="pre">spdx-3.0.1+json</span></code>），如果未指定 <code class="docutils literal notranslate"><span class="pre">FORMAT</span></code>，这也是默认设置。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">HOMEPAGE_URL</span> <span class="pre">&lt;url-string&gt;</span></code></p>
+<blockquote>
+<div><p>项目的说明性权威主页 URL。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">PACKAGE_URL</span> <span class="pre">&lt;url-string&gt;</span></code></p>
+<blockquote>
+<div><p>项目的权威包 URL 说明。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">LICENSE</span> <span class="pre">&lt;license-string&gt;</span></code></p>
+<blockquote>
+<div><p>一个 <a class="reference external" href="https://spdx.dev/">系统软件包数据交换</a> (SPDX) <a class="reference external" href="https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/">许可证表达式</a>，用于描述整个项目的许可证，包括随项目分发的文档、资源或其他材料，以及软件构件。有关常用许可证及其标识符的列表，请参阅 SPDX <a class="reference external" href="https://spdx.org/licenses/">许可证列表</a>。</p>
+<p>单个组件的许可证取自其各自目标的 <span class="target" id="index-1-prop_tgt:SPDX_LICENSE"></span><a class="reference internal" href="../prop_tgt/SPDX_LICENSE.html#prop_tgt:SPDX_LICENSE" title="SPDX_LICENSE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SPDX_LICENSE</span></code></a> 属性。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span> <span class="pre">&lt;description-string&gt;</span></code></p>
+<blockquote>
+<div><p>项目的说明性描述。建议此描述为一个相对简短的字符串，通常不超过几个字。</p>
+</div></blockquote>
+<p>默认情况下，如果指定的 <code class="docutils literal notranslate"><span class="pre">&lt;sbom-name&gt;</span></code> 与当前的 CMake <span class="target" id="index-1-variable:PROJECT_NAME"></span><a class="reference internal" href="../variable/PROJECT_NAME.html#variable:PROJECT_NAME" title="PROJECT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">PROJECT_NAME</span></code></a> 匹配，则 sbom 元数据将继承自项目。<code class="docutils literal notranslate"><span class="pre">PROJECT</span> <span class="pre">&lt;project-name&gt;</span></code> 选项可用于指定从不同的项目继承元数据。如果指定了 <code class="docutils literal notranslate"><span class="pre">NO_PROJECT_METADATA</span></code>，则禁用 sbom 元数据的自动继承。无论如何，<code class="docutils literal notranslate"><span class="pre">install</span></code> 命令中指定的任何元数据值都将具有优先权。</p>
+<p>请注意，对于在 <span class="target" id="index-0-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 或 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 属性中包含生成器表达式的目标，除非这些生成器表达式由 <span class="target" id="index-0-genex:LINK_ONLY"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:LINK_ONLY" title="LINK_ONLY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">LINK_ONLY</span></code></a> 保护，否则无法为其生成 SBOM 文件。</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="install.html#id6" role="doc-backlink">示例</a><a class="headerlink" href="install.html#examples" title="链接到此标题">¶</a></h2>
+<section id="example-install-targets-with-per-artifact-components">
+<h3><a class="toc-backref" href="install.html#id7" role="doc-backlink">示例：安装带有每构件组件的目标</a><a class="headerlink" href="install.html#example-install-targets-with-per-artifact-components" title="链接到此标题">¶</a></h3>
+<p>考虑一个定义了具有不同构件类型的目标的项目</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">myExe</span><span class="w"> </span><span class="nb">myExe.c</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">myStaticLib</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="nb">myStaticLib.c</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">myStaticLib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span><span class="w"> </span><span class="no">FILES</span><span class="w"> </span><span class="nb">myStaticLib.h</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">mySharedLib</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="nb">mySharedLib.c</span><span class="nf">)</span>
+<span class="nf">target_sources(</span><span class="nb">mySharedLib</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span><span class="w"> </span><span class="no">FILES</span><span class="w"> </span><span class="nb">mySharedLib.h</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">mySharedLib</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">SOVERSION</span><span class="w"> </span><span class="m">1</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>我们可以使用 <a class="reference internal" href="install.html#artifact-kind">&lt;artifact-kind&gt;</a> 参数调用 <span class="target" id="index-17-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a>，为每种类型的构件指定不同的选项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">TARGETS</span>
+<span class="w">          </span><span class="nb">myExe</span>
+<span class="w">          </span><span class="nb">mySharedLib</span>
+<span class="w">          </span><span class="nb">myStaticLib</span>
+<span class="w">        </span><span class="no">RUNTIME</span><span class="w">           </span><span class="c"># Following options apply to runtime artifacts.</span>
+<span class="w">          </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nb">Runtime</span>
+<span class="w">        </span><span class="no">LIBRARY</span><span class="w">           </span><span class="c"># Following options apply to library artifacts.</span>
+<span class="w">          </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nb">Runtime</span>
+<span class="w">          </span><span class="no">NAMELINK_COMPONENT</span><span class="w"> </span><span class="nb">Development</span>
+<span class="w">        </span><span class="no">ARCHIVE</span><span class="w">           </span><span class="c"># Following options apply to archive artifacts.</span>
+<span class="w">          </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nb">Development</span>
+<span class="w">          </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">lib/static</span>
+<span class="w">        </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span><span class="w">  </span><span class="c"># Following options apply to file set HEADERS.</span>
+<span class="w">          </span><span class="no">COMPONENT</span><span class="w"> </span><span class="nb">Development</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>这将</p>
+<ul class="simple">
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">myExe</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/bin</span></code>（默认的 RUNTIME 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件的一部分。</p></li>
+<li><p>在非 DLL 平台上</p>
+<ul>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">libmySharedLib.so.1</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib</span></code>（默认的 LIBRARY 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件的一部分。</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">libmySharedLib.so</span></code> “namelink”（符号链接）安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib</span></code>（默认的 LIBRARY 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的一部分。</p></li>
+</ul>
+</li>
+<li><p>在 DLL 平台上</p>
+<ul>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">mySharedLib.dll</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/bin</span></code>（默认的 RUNTIME 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Runtime</span></code> 组件的一部分。</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">mySharedLib.lib</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib/static</span></code>（指定的 ARCHIVE 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的一部分。</p></li>
+</ul>
+</li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">myStaticLib</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib/static</span></code>（指定的 ARCHIVE 构件安装路径），作为 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的一部分。</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">mySharedLib.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">myStaticLib.h</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/include</span></code>（HEADERS 类型文件集的默认路径），作为 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件的一部分。</p></li>
+</ul>
+</section>
+<section id="example-install-targets-to-per-config-destinations">
+<h3><a class="toc-backref" href="install.html#id8" role="doc-backlink">示例：将目标安装到特定于配置的路径</a><a class="headerlink" href="install.html#example-install-targets-to-per-config-destinations" title="链接到此标题">¶</a></h3>
+<p>每个 <span class="target" id="index-18-command:install"></span><a class="reference internal" href="install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 调用将给定的目标 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#output-artifacts"><span class="std std-ref">输出构件</span></a> 安装到最多一个 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code>，但安装规则本身可以通过 <code class="docutils literal notranslate"><span class="pre">CONFIGURATIONS</span></code> 选项进行过滤。为了为每个配置安装到不同的路径，需要每个配置调用一次。例如，代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">myExe</span>
+<span class="w">        </span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nb">Debug</span>
+<span class="w">        </span><span class="no">RUNTIME</span>
+<span class="w">          </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">Debug/bin</span>
+<span class="w">        </span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">myExe</span>
+<span class="w">        </span><span class="no">CONFIGURATIONS</span><span class="w"> </span><span class="nb">Release</span>
+<span class="w">        </span><span class="no">RUNTIME</span>
+<span class="w">          </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">Release/bin</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将在 Debug 配置中把 <code class="docutils literal notranslate"><span class="pre">myExe</span></code> 安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/Debug/bin</span></code>，在 Release 配置中安装到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/Release/bin</span></code>。</p>
+</section>
+</section>
+<section id="generated-installation-script">
+<h2><a class="toc-backref" href="install.html#id9" role="doc-backlink">生成的安装脚本</a><a class="headerlink" href="install.html#generated-installation-script" title="链接到此标题">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>不建议使用此功能。请考虑改用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a>。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">install()</span></code> 命令在构建目录内生成一个 <code class="docutils literal notranslate"><span class="pre">cmake_install.cmake</span></code> 文件，该文件由生成的安装目标和 CPack 在内部使用。您还可以使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-P"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-P</span></code></a> 手动调用此脚本。此脚本接受多个变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code></dt><dd><p>设置此变量以仅安装单个 CPack 组件，而不是安装所有组件。例如，如果您只想安装 <code class="docutils literal notranslate"><span class="pre">Development</span></code> 组件，请运行 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DCOMPONENT=Development</span> <span class="pre">-P</span> <span class="pre">cmake_install.cmake</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_TYPE</span></code></dt><dd><p>如果您使用的是多配置生成器，请设置此变量以更改构建类型。例如，要以 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 配置进行安装，请运行 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DBUILD_TYPE=Debug</span> <span class="pre">-P</span> <span class="pre">cmake_install.cmake</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESTDIR</span></code></dt><dd><p>这是一个环境变量，而不是 CMake 变量。它允许您在 UNIX 系统上更改安装前缀。有关详细信息，请参阅 <span class="target" id="index-0-envvar:DESTDIR"></span><a class="reference internal" href="../envvar/DESTDIR.html#envvar:DESTDIR" title="DESTDIR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">DESTDIR</span></code></a>。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="install.html#">安装</a><ul>
+<li><a class="reference internal" href="install.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="install.html#introduction">简介</a><ul>
+<li><a class="reference internal" href="install.html#common-options">通用选项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="install.html#signatures">语法形式</a></li>
+<li><a class="reference internal" href="install.html#examples">示例</a><ul>
+<li><a class="reference internal" href="install.html#example-install-targets-with-per-artifact-components">示例：为每个构件组件安装目标</a></li>
+<li><a class="reference internal" href="install.html#example-install-targets-to-per-config-destinations">示例：将目标安装到特定配置的目录</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="install.html#generated-installation-script">生成的安装脚本</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="include_regular_expression.html" title="上一章">include_regular_expression</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="link_directories.html" title="下一章">link_directories</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/install.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="link_directories.html" title="link_directories">下一页</a> |</li>
+        <li class="right">
+          <a href="include_regular_expression.html" title="include_regular_expression">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="install.html">安装</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

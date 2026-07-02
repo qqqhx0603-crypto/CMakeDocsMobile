@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindThreads — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindThreads.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindTIFF" href="FindTIFF.html" />
+    <link rel="prev" title="FindTclStub" href="FindTclStub.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindTIFF.html" title="FindTIFF" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindTclStub.html" title="FindTclStub" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindThreads.html">FindThreads</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findthreads">
+<span id="module:FindThreads"></span><h1>FindThreads<a class="headerlink" href="FindThreads.html#findthreads" title="链接到此标题">¶</a></h1>
+<p>查找并确定用于多线程支持的系统线程库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Threads</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>多线程可以在单个程序内实现并发执行，通常通过创建多个执行线程来完成。最常见的方法是使用诸如类 Unix 系统上的 POSIX 线程（<code class="docutils literal notranslate"><span class="pre">pthreads</span></code>）或 Windows 上的 Windows 线程之类的库。</p>
+<p>该模块抽象了特定平台的差异，并检测如何启用线程支持——无论是需要链接到特定库、添加编译器标志（如 <code class="docutils literal notranslate"><span class="pre">-pthread</span></code>），还是两者兼有。在某些平台上，线程功能在默认库中隐式可用，无需使用额外的标志或库。</p>
+<p>该模块适用于依赖系统级线程 API 的 C 和 C++ 项目（以及其他偶尔使用的编译语言）。</p>
+<p>使用此模块可通过以可移植的方式处理线程支持的检测和设置，从而确保项目能够在不同平台上正确构建。</p>
+<section id="c-and-c-language-standards">
+<h2>C 和 C++ 语言标准<a class="headerlink" href="FindThreads.html#c-and-c-language-standards" title="链接到此标题">¶</a></h2>
+<p>C11 标准通过 <code class="docutils literal notranslate"><span class="pre">&lt;threads.h&gt;</span></code> 头文件引入了一个最小化的跨平台线程 API，而 C++11 在标准库中增加了 <code class="docutils literal notranslate"><span class="pre">&lt;thread&gt;</span></code> 头文件，提供了高级多线程支持。这些标准头文件允许在语言层面编写可移植的线程代码，而无需直接使用诸如 <code class="docutils literal notranslate"><span class="pre">pthreads</span></code> 或 Windows 线程等特定平台的 API。</p>
+<p>然而，即使可以使用标准的 C11 或 C++11 线程，某些应用程序可能仍然需要特定平台的编译器或链接器标志（例如类 Unix 系统上的 <code class="docutils literal notranslate"><span class="pre">-pthread</span></code>）。这就是 FindThreads 的用武之地——它确保这些标志和任何必要的库被正确设置，即使代码中没有显式使用系统 API。</p>
+<p>简而言之</p>
+<ul class="simple">
+<li><p>在源代码中使用 <code class="docutils literal notranslate"><span class="pre">&lt;thread&gt;</span></code>（C++11 及更高版本）或 <code class="docutils literal notranslate"><span class="pre">&lt;threads.h&gt;</span></code>（C11）以实现可移植性和更简单的语法。</p></li>
+<li><p>当应用程序需要传统的线程支持并确保代码能够在不同平台上正确编译和链接时，在 CMake 项目中使用 <code class="docutils literal notranslate"><span class="pre">find_package(Threads)</span></code>。</p></li>
+</ul>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindThreads.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Threads::Threads</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>该目标封装了通过标志或线程库启用线程的使用需求（如果找到的话）。如果检测到支持线程，则该目标可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindThreads.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Threads_FOUND</span></code></dt><dd><p>布尔值，指示是否支持线程（通过单独的库或标准库）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_THREAD_LIBS_INIT</span></code></dt><dd><p>要使用的线程库。如果线程函数由系统库提供且无需特殊标志即可使用，则此变量可能为空。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_USE_WIN32_THREADS_INIT</span></code></dt><dd><p>如果找到的线程库是 win32 线程库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_USE_PTHREADS_INIT</span></code></dt><dd><p>如果找到的线程库是 pthread 兼容的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_HP_PTHREADS_INIT</span></code></dt><dd><p>如果找到的线程库是 HP 线程库。</p>
+</dd>
+</dl>
+</section>
+<section id="variables-affecting-behavior">
+<h2>影响行为的变量<a class="headerlink" href="FindThreads.html#variables-affecting-behavior" title="链接到此标题">¶</a></h2>
+<p>该模块在调用 <code class="docutils literal notranslate"><span class="pre">find_package(Threads)</span></code> 之前接受以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">THREADS_PREFER_PTHREAD_FLAG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>如果偏好使用 <code class="docutils literal notranslate"><span class="pre">-pthread</span></code> 编译器和链接器标志，调用者可以将此变量设置为布尔值 true。该编译器标志只能与导入的目标一起使用。对于新代码，强烈建议同时使用导入的目标以及此开关。</p>
+<p>如果系统库提供了线程函数（即 <code class="docutils literal notranslate"><span class="pre">CMAKE_THREAD_LIBS_INIT</span></code> 为空），则此变量无效。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindThreads.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找线程并将导入的目标链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">THREADS_PREFER_PTHREAD_FLAG</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Threads</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Threads</span><span class="o">::</span><span class="nb">Threads</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindThreads.html#">FindThreads</a><ul>
+<li><a class="reference internal" href="FindThreads.html#c-and-c-language-standards">C 和 C++ 语言标准</a></li>
+<li><a class="reference internal" href="FindThreads.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindThreads.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindThreads.html#variables-affecting-behavior">影响行为的变量</a></li>
+<li><a class="reference internal" href="FindThreads.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindTclStub.html" title="上一章">FindTclStub</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindTIFF.html" title="下一章">FindTIFF</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindThreads.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindTIFF.html" title="FindTIFF">下一页</a> |</li>
+        <li class="right">
+          <a href="FindTclStub.html" title="FindTclStub">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindThreads.html">FindThreads</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

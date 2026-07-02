@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>RESOURCE_GROUPS — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="RESOURCE_GROUPS.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="RESOURCE_LOCK" href="RESOURCE_LOCK.html" />
+    <link rel="prev" title="REQUIRED_FILES" href="REQUIRED_FILES.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="RESOURCE_LOCK.html" title="RESOURCE_LOCK" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="REQUIRED_FILES.html" title="REQUIRED_FILES" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="RESOURCE_GROUPS.html">RESOURCE_GROUPS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="resource-groups">
+<span id="prop_test:RESOURCE_GROUPS"></span><h1>RESOURCE_GROUPS<a class="headerlink" href="RESOURCE_GROUPS.html#resource-groups" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>指定测试所需的资源，并以对测试有意义的方式进行分组。有关此属性如何集成到 CTest 资源分配功能中的更多信息，请参阅 <a class="reference internal" href="../manual/ctest.1.html#ctest-resource-allocation"><span class="std std-ref">资源分配</span></a>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RESOURCE_GROUPS</span></code> 属性是一个<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">由分号分隔的列表</span></a>，包含多个组描述。每个条目由可选的组数量（使用该描述）和随后的一系列资源需求组成。这些需求（以及组数量）用逗号分隔。资源需求由资源类型名称、冒号以及指定在该类型资源上所需槽位（slots）数量的无符号整数组成。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RESOURCE_GROUPS</span></code> 属性告诉 CTest 测试预期使用的资源，并以对测试有意义的方式进行分组。测试本身必须读取<a class="reference internal" href="../manual/ctest.1.html#ctest-resource-environment-variables"><span class="std std-ref">环境变量</span></a>，以确定已分配给每个组的资源。例如，每个组可能对应于测试在执行时将生成的进程。</p>
+<p>考虑以下示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_test(</span><span class="no">NAME</span><span class="w"> </span><span class="nb">MyTest</span><span class="w"> </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">MyExe</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">MyTest</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">RESOURCE_GROUPS</span>
+<span class="w">  </span><span class="s">"2,gpus:2"</span>
+<span class="w">  </span><span class="s">"gpus:4,crypto_chips:2"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在此示例中，有两个组描述（隐式以分号分隔）。第一个描述的内容是 <code class="docutils literal notranslate"><span class="pre">2,gpus:2</span></code>。该描述指定了 2 个组，每组需要单个 GPU 上的 2 个槽位。第二个描述的内容是 <code class="docutils literal notranslate"><span class="pre">gpus:4,crypto_chips:2</span></code>。该描述未指定组计数，因此假定默认为 1。这单个组需要单个 GPU 上的 4 个槽位和单个加密芯片上的 2 个槽位。总共为该测试指定了 3 个资源组，每个组都有其独特的具体需求。</p>
+<p>请注意，资源类型后的槽位数指定的是来自<em>单个</em>资源实例的槽位。如果资源组可以容忍接收来自同一资源不同实例的槽位，则可以通过将规范拆分为多个一槽位的需求来表示。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_test(</span><span class="no">NAME</span><span class="w"> </span><span class="nb">MyTest</span><span class="w"> </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">MyExe</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">MyTest</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">RESOURCE_GROUPS</span>
+<span class="w">  </span><span class="s">"gpus:1,gpus:1,gpus:1,gpus:1"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在这种情况下，单个资源组表示它需要 4 个 GPU 槽位，所有这些槽位可能来自不同的 GPU（尽管不一定非要如此；CTest 仍可能分配来自同一 GPU 的槽位）。</p>
+<p>当 CTest 为测试设置<a class="reference internal" href="../manual/ctest.1.html#ctest-resource-environment-variables"><span class="std std-ref">环境变量</span></a>时，它会根据组描述分配组号，从左侧的 0 开始，一直到右侧的“组总数减 1”。例如，在上面的示例中，第一个描述中的两个组的 ID 为 0 和 1，而第二个描述中的单个组的 ID 为 2。</p>
+<p><code class="docutils literal notranslate"><span class="pre">RESOURCE_GROUPS</span></code> 和 <span class="target" id="index-0-prop_test:RESOURCE_LOCK"></span><a class="reference internal" href="RESOURCE_LOCK.html#prop_test:RESOURCE_LOCK" title="RESOURCE_LOCK"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">RESOURCE_LOCK</span></code></a> 属性目的相似，但它们是独特且正交的。由 <code class="docutils literal notranslate"><span class="pre">RESOURCE_GROUPS</span></code> 指定的资源不会影响 <span class="target" id="index-1-prop_test:RESOURCE_LOCK"></span><a class="reference internal" href="RESOURCE_LOCK.html#prop_test:RESOURCE_LOCK" title="RESOURCE_LOCK"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">RESOURCE_LOCK</span></code></a>，反之亦然。虽然 <span class="target" id="index-2-prop_test:RESOURCE_LOCK"></span><a class="reference internal" href="RESOURCE_LOCK.html#prop_test:RESOURCE_LOCK" title="RESOURCE_LOCK"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">RESOURCE_LOCK</span></code></a> 是一种用于锁定单个全局资源的更简单的属性，但 <code class="docutils literal notranslate"><span class="pre">RESOURCE_GROUPS</span></code> 是一种更高级的属性，允许多个测试同时使用同一类型的多种资源，并以细粒度的方式指定它们的需求。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="REQUIRED_FILES.html" title="上一章">REQUIRED_FILES</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="RESOURCE_LOCK.html" title="下一章">RESOURCE_LOCK</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_test/RESOURCE_GROUPS.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="RESOURCE_LOCK.html" title="RESOURCE_LOCK">下一页</a> |</li>
+        <li class="right">
+          <a href="REQUIRED_FILES.html" title="REQUIRED_FILES">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="RESOURCE_GROUPS.html">RESOURCE_GROUPS</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

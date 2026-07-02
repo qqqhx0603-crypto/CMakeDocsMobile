@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake_file_api — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake_file_api.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake_instrumentation" href="cmake_instrumentation.html" />
+    <link rel="prev" title="build_command" href="build_command.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake_instrumentation.html" title="cmake_instrumentation" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="build_command.html" title="build_command" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_file_api.html">cmake_file_api</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-file-api">
+<span id="command:cmake_file_api"></span><h1>cmake_file_api<a class="headerlink" href="cmake_file_api.html#cmake-file-api" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p>启用与 <span class="target" id="index-0-manual:cmake-file-api(7)"></span><a class="reference internal" href="../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">文件</span> <span class="pre">API</span></code></a> 的交互。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="query">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_file_api(</span></span><span class="no"><span class="pre">QUERY</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_file_api.html#query" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">QUERY</span></code> 子命令为当前的 CMake 调用添加一个文件 API 查询。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_file_api(</span>
+<span class="w">  </span><span class="no">QUERY</span>
+<span class="w">  </span><span class="no">API_VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CODEMODEL</span><span class="w"> </span><span class="nv">&lt;versions&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CACHE</span><span class="w"> </span><span class="nv">&lt;versions&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">CMAKEFILES</span><span class="w"> </span><span class="nv">&lt;versions&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">TOOLCHAINS</span><span class="w"> </span><span class="nv">&lt;versions&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>必须始终提供 <code class="docutils literal notranslate"><span class="pre">API_VERSION</span></code>。目前，<code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 唯一支持的值是 1。有关回复内容和位置的详细信息，请参阅 <a class="reference internal" href="../manual/cmake-file-api.7.html#file-api-v1"><span class="std std-ref">API v1</span></a>。</p>
+<p>可选关键字 <code class="docutils literal notranslate"><span class="pre">CODEMODEL</span></code>、<code class="docutils literal notranslate"><span class="pre">CACHE</span></code>、<code class="docutils literal notranslate"><span class="pre">CMAKEFILES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TOOLCHAINS</span></code> 中的每一个都对应项目可以请求的对象种类之一。由于 <code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象种类必须在 CMake 开始读取顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件之前进行设置，因此无法通过此命令进行设置。</p>
+<p>对于每个可选关键字，<code class="docutils literal notranslate"><span class="pre">&lt;versions&gt;</span></code> 列表必须包含一个或多个形式为 <code class="docutils literal notranslate"><span class="pre">major</span></code> 或 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> 的版本值，其中 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 为整数。项目应按其首选顺序列出它们接受的版本，因为列表中只会选择第一个受支持的值。如果某个对象种类的 <code class="docutils literal notranslate"><span class="pre">major</span></code> 版本号高于该种类支持的任何主版本号，命令将忽略该版本。如果遇到无效的版本号，或者所请求的版本均不受支持，命令将报错。</p>
+<p>对于每种所请求的对象种类，内部将添加一个等同于共享、无状态查询的查询。文件系统中不会创建任何查询文件。回复<em>将</em>在生成阶段写入文件系统。</p>
+<p>多次添加针对同一内容的查询（无论是来自查询文件还是多次调用 <code class="docutils literal notranslate"><span class="pre">cmake_file_api(QUERY)</span></code>）都不会报错。最终的查询集将是磁盘上指定的所有查询与项目提交的查询的合并。</p>
+</dd></dl>
+
+<section id="example">
+<h2>示例<a class="headerlink" href="cmake_file_api.html#example" title="此标题的链接">¶</a></h2>
+<p>项目可能希望在构建时使用来自文件 API 的回复来实现某种形式的验证任务。项目无需依赖 CMake 外部的工具来创建查询文件，而是可以使用 <code class="docutils literal notranslate"><span class="pre">cmake_file_api(QUERY)</span></code> 来请求当前运行所需的信息。然后，它可以创建一个在构建时运行的自定义命令，并确保所请求的信息始终可用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_file_api(</span>
+<span class="w">  </span><span class="no">QUERY</span>
+<span class="w">  </span><span class="no">API_VERSION</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="no">CODEMODEL</span><span class="w"> </span><span class="m">2.3</span>
+<span class="w">  </span><span class="no">TOOLCHAINS</span><span class="w"> </span><span class="m">1</span>
+<span class="nf">)</span>
+
+<span class="nf">add_custom_target(</span><span class="nb">verify_project</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span>
+<span class="w">    </span><span class="p">-</span><span class="no">D</span><span class="w"> </span><span class="no">BUILD_DIR</span><span class="p">=</span><span class="o">${</span><span class="nt">CMAKE_BINARY_DIR</span><span class="o">}</span>
+<span class="w">    </span><span class="p">-</span><span class="no">D</span><span class="w"> </span><span class="no">CONFIG</span><span class="p">=</span><span class="o">$&lt;</span><span class="no">CONFIG</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">-</span><span class="no">P</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/verify_project.cmake</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake_file_api.html#">cmake_file_api</a><ul>
+<li><a class="reference internal" href="cmake_file_api.html#example">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="build_command.html" title="上一章">build_command</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake_instrumentation.html" title="下一章">cmake_instrumentation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/cmake_file_api.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake_instrumentation.html" title="cmake_instrumentation">下一页</a> |</li>
+        <li class="right">
+          <a href="build_command.html" title="build_command">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_file_api.html">cmake_file_api</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

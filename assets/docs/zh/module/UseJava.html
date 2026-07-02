@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>UseJava — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="UseJava.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="UseSWIG" href="UseSWIG.html" />
+    <link rel="prev" title="UseEcos" href="UseEcos.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="UseSWIG.html" title="UseSWIG" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="UseEcos.html" title="UseEcos" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UseJava.html">UseJava</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="usejava">
+<span id="module:UseJava"></span><h1>UseJava<a class="headerlink" href="UseJava.html#usejava" title="链接到此标题">¶</a></h1>
+<p>此文件提供对 <code class="docutils literal notranslate"><span class="pre">Java</span></code> 的支持。假定 <span class="target" id="index-0-module:FindJava"></span><a class="reference internal" href="FindJava.html#module:FindJava" title="FindJava"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindJava</span></code></a> 模块已被加载。有关如何将 Java 加载到您的 CMake 项目中的信息，请参阅 <span class="target" id="index-1-module:FindJava"></span><a class="reference internal" href="FindJava.html#module:FindJava" title="FindJava"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindJava</span></code></a>。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">UseJava</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="UseJava.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="UseJava.html#creating-and-installing-jars">Creating and Installing JARS</a>
+  <a class="reference internal" href="UseJava.html#add-jar">add_jar</a> (&lt;target_name&gt; [SOURCES] &lt;source1&gt; [&lt;source2&gt;...] ...)
+  <a class="reference internal" href="UseJava.html#install-jar">install_jar</a> (&lt;target_name&gt; DESTINATION &lt;destination&gt; [COMPONENT &lt;component&gt;])
+  <a class="reference internal" href="UseJava.html#install-jni-symlink">install_jni_symlink</a> (&lt;target_name&gt; DESTINATION &lt;destination&gt; [COMPONENT &lt;component&gt;])
+
+<a class="reference internal" href="UseJava.html#header-generation">Header Generation</a>
+  <a class="reference internal" href="UseJava.html#create-javah">create_javah</a> ((TARGET &lt;target&gt; | GENERATED_FILES &lt;VAR&gt;) CLASSES &lt;class&gt;... ...)
+
+<a class="reference internal" href="UseJava.html#exporting-jar-targets">Exporting JAR Targets</a>
+  <a class="reference internal" href="UseJava.html#install-jar-exports">install_jar_exports</a> (TARGETS &lt;jars&gt;... FILE &lt;filename&gt; DESTINATION &lt;destination&gt; ...)
+  <a class="reference internal" href="UseJava.html#export-jars">export_jars</a> (TARGETS &lt;jars&gt;... [NAMESPACE &lt;namespace&gt;] FILE &lt;filename&gt;)
+
+<a class="reference internal" href="UseJava.html#finding-jars">Finding JARs</a>
+  <a class="reference internal" href="UseJava.html#find-jar">find_jar</a> (&lt;VAR&gt; NAMES &lt;name1&gt; [&lt;name2&gt;...] [PATHS &lt;path1&gt; [&lt;path2&gt;... ENV &lt;var&gt;]] ...)
+
+<a class="reference internal" href="UseJava.html#creating-java-documentation">Creating Java Documentation</a>
+  <a class="reference internal" href="UseJava.html#create-javadoc">create_javadoc</a> (&lt;VAR&gt; (PACKAGES &lt;pkg1&gt; [&lt;pkg2&gt;...] | FILES &lt;file1&gt; [&lt;file2&gt;...]) ...)</pre>
+</section>
+<section id="creating-and-installing-jars">
+<h2>创建与安装 JAR<a class="headerlink" href="UseJava.html#creating-and-installing-jars" title="链接到此标题">¶</a></h2>
+<dl class="cmake command" id="add-jar">
+<dt class="sig sig-object cmake" id="command:add_jar">
+<span class="sig-name descname"><span class="pre">add_jar</span></span><a class="headerlink" href="UseJava.html#command:add_jar" title="Link to this definition">¶</a></dt>
+<dd><p>创建一个包含 Java 对象以及可选资源的 jar 文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_jar(</span><span class="nv">&lt;target_name&gt;</span>
+<span class="w">        </span><span class="p">[</span><span class="no">SOURCES</span><span class="p">]</span><span class="w"> </span><span class="nv">&lt;source1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;source2&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;resource1&gt;...</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">RESOURCES</span><span class="w"> </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;ns1&gt;</span><span class="w"> </span><span class="nv">&lt;resource1&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;nsX&gt;</span><span class="w"> </span><span class="nv">&lt;resourceX&gt;...</span><span class="p">]...</span><span class="w"> </span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">INCLUDE_JARS</span><span class="w"> </span><span class="nv">&lt;jar1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;jar2&gt;...</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">INCLUDE_MODULES</span><span class="w"> </span><span class="nv">&lt;jar1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;jar2&gt;...</span><span class="p">]]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">ENTRY_POINT</span><span class="w"> </span><span class="nv">&lt;entry&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">VERSION</span><span class="w"> </span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">MANIFEST</span><span class="w"> </span><span class="nv">&lt;manifest&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">OUTPUT_NAME</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">OUTPUT_DIR</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">[</span><span class="no">GENERATE_NATIVE_HEADERS</span><span class="w"> </span><span class="nv">&lt;target&gt;</span>
+<span class="w">                                 </span><span class="p">[</span><span class="nf">DESTINATION</span> <span class="nf">(</span><span class="nv">&lt;dir&gt;</span><span class="p">|</span><span class="no">INSTALL</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">BUILD</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="nf">)</span><span class="p">]]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令创建一个 <code class="docutils literal notranslate"><span class="pre">&lt;target_name&gt;.jar</span></code>。它会编译给定的 <code class="docutils literal notranslate"><span class="pre">&lt;source&gt;</span></code> 文件，并将给定的 <code class="docutils literal notranslate"><span class="pre">&lt;resource&gt;</span></code> 文件添加到该 jar 文件中。源文件可以是 Java 文件或列表文件（以 <code class="docutils literal notranslate"><span class="pre">@</span></code> 为前缀）。如果仅提供了资源文件，则只创建一个 jar 文件。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCES</span></code></dt><dd><p>编译指定的源文件并将结果添加到 jar 文件中。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增：</span>支持以 <code class="docutils literal notranslate"><span class="pre">@</span></code> 为前缀的响应文件。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESOURCES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>将命名的 <code class="docutils literal notranslate"><span class="pre">&lt;resource&gt;</span></code> 文件添加到 jar 中，方法是剥离源文件路径并将其置于 jar 内的 <code class="docutils literal notranslate"><span class="pre">&lt;ns&gt;</span></code> 路径之下。</p>
+<p>例如</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RESOURCES NAMESPACE "/com/my/namespace" "a/path/to/resource.txt"
+</pre></div>
+</div>
+<p>最终产生一个可在 jar 内通过 <code class="docutils literal notranslate"><span class="pre">/com/my/namespace/resource.txt</span></code> 访问的资源。</p>
+<p>可以通过将资源添加到 <code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 列表中来添加资源，而不调整其命名空间（这是原始行为），在这种情况下，资源路径必须相对于 <code class="docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code>。在源码外构建（out of source builds）时，如果不使用 <code class="docutils literal notranslate"><span class="pre">RESOURCES</span></code> 参数而添加资源，几乎肯定会导致混淆。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>通过 <code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 参数添加资源依赖于一个硬编码的文件扩展名列表，这些扩展名会被测试以确定它们是否需要编译（例如 File.java）。符合扩展名的 <code class="docutils literal notranslate"><span class="pre">SOURCES</span></code> 文件会被编译。不符合的文件则被视为资源。要包含符合这些文件扩展名但不需要编译的资源，请使用 <code class="docutils literal notranslate"><span class="pre">RESOURCES</span></code> 参数。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_JARS</span></code></dt><dd><p>在编译 Java 源文件时，列表中的 jar 文件会被添加到类路径（classpath）中，同时也会被添加到目标的依赖项中。<code class="docutils literal notranslate"><span class="pre">INCLUDE_JARS</span></code> 也接受由 <code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 创建的其他目标名称。为了向后兼容，作为源文件列出的 jar 文件会被忽略（自此模块的第一个版本以来一直如此）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_MODULES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>在构建 Java 源文件时，列表中的 jar 文件会被添加到模块路径（module path）中，同时也会被添加到目标的依赖项中。<code class="docutils literal notranslate"><span class="pre">INCLUDE_MODULES</span></code> 也接受由 <code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 创建的其他目标名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENTRY_POINT</span></code></dt><dd><p>定义 jar 文件中的入口点。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION</span></code></dt><dd><p>向目标输出名称添加版本号。</p>
+<p>以下示例将创建一个名为 <code class="docutils literal notranslate"><span class="pre">shibboleet-1.2.0.jar</span></code> 的 jar 文件，并创建一个指向带有版本信息 jar 的符号链接 <code class="docutils literal notranslate"><span class="pre">shibboleet.jar</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_jar(</span><span class="nb">shibboleet</span><span class="w"> </span><span class="nb">shibbotleet.java</span><span class="w"> </span><span class="no">VERSION</span><span class="w"> </span><span class="m">1.2.0</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MANIFEST</span></code></dt><dd><p>为 jar 定义自定义清单文件（manifest）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_NAME</span></code></dt><dd><p>为目标指定不同的输出名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_DIR</span></code></dt><dd><p>设置生成 jar 文件的目录。如果未指定，则使用 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 作为输出目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GENERATE_NATIVE_HEADERS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>为声明为 native 的方法生成原生头文件。这些文件提供了允许 Java 和 C 代码交互的连接胶水。系统将创建一个 INTERFACE 目标以便于使用这些生成的文件。子选项 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 可用于指定生成头文件的输出目录。</p>
+<p>此选项至少需要 JDK 1.8 版本。</p>
+<p>为了优化使用此选项，建议在调用 <code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 之前包含 JNI 模块。之后，生成的原生头文件目标可用于使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令编译 C/C++ 源文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">JNI</span><span class="nf">)</span>
+<span class="nf">add_jar(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.java</span><span class="w"> </span><span class="no">GENERATE_NATIVE_HEADERS</span><span class="w"> </span><span class="nb">foo-native</span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">bar</span><span class="w"> </span><span class="nb">bar.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">bar</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">foo-native</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增：</span><code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 子选项现在支持为 <code class="docutils literal notranslate"><span class="pre">BUILD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INSTALL</span></code> 步骤指定不同的输出目录。如果未指定 <code class="docutils literal notranslate"><span class="pre">BUILD</span></code> 目录，将使用默认目录。</p>
+<p>要导出由 <code class="docutils literal notranslate"><span class="pre">GENERATE_NATIVE_HEADERS</span></code> 选项生成出的接口目标，需要使用 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 的 <code class="docutils literal notranslate"><span class="pre">INSTALL</span></code> 子选项。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_jar(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.java</span><span class="w"> </span><span class="no">GENERATE_NATIVE_HEADERS</span><span class="w"> </span><span class="nb">foo-native</span>
+<span class="w">                     </span><span class="no">DESTINATION</span><span class="w"> </span><span class="no">INSTALL</span><span class="w"> </span><span class="nb">include</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">foo-native</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">native</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="s">"$&lt;TARGET_PROPERTY:foo-native,NATIVE_HEADERS_DIRECTORY&gt;/"</span>
+<span class="w">        </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">include</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">native</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="na">/to/export</span><span class="w"> </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</dd>
+</dl>
+<p>可以设置一些变量来自定义 <code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 的行为以及 Java 编译器。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_JAVA_COMPILE_FLAGS</span></code></dt><dd><p>指定 Java 编译器的额外标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_JAVA_INCLUDE_PATH</span></code></dt><dd><p>指定类路径的额外路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_JNI_TARGET</span></code></dt><dd><p>如果目标是 JNI 库，请将此布尔变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 以启用 JNI 符号链接的创建（另请参阅 <a class="reference internal" href="UseJava.html#install-jni-symlink"><span class="std std-ref">install_jni_symlink()</span></a>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_JAR_CLASSES_PREFIX</span></code></dt><dd><p>如果应从同一个 Java 源文件树生成多个 jar 文件，为防止后续 jar 文件中出现重复类文件的堆积，请在调用 <code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 之前设置/重置 <code class="docutils literal notranslate"><span class="pre">CMAKE_JAR_CLASSES_PREFIX</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_JAR_CLASSES_PREFIX</span><span class="w"> </span><span class="na">com/redhat/foo</span><span class="nf">)</span>
+<span class="nf">add_jar(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">foo.java</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="no">CMAKE_JAR_CLASSES_PREFIX</span><span class="w"> </span><span class="na">com/redhat/bar</span><span class="nf">)</span>
+<span class="nf">add_jar(</span><span class="nb">bar</span><span class="w"> </span><span class="nb">bar.java</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">add_jar()</span></code> 函数在 <code class="docutils literal notranslate"><span class="pre">&lt;target_name&gt;</span></code> 上设置以下目标属性：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_FILES</span></code></dt><dd><p>应安装的文件。由 <a class="reference internal" href="UseJava.html#install-jar"><span class="std std-ref">install_jar()</span></a> 使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JNI_SYMLINK</span></code></dt><dd><p>应安装的 JNI 符号链接。由 <a class="reference internal" href="UseJava.html#install-jni-symlink"><span class="std std-ref">install_jni_symlink()</span></a> 使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JAR_FILE</span></code></dt><dd><p>jar 文件的位置，以便您可以包含它。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CLASSDIR</span></code></dt><dd><p>可以找到类文件的目录。例如，用于配合 <code class="docutils literal notranslate"><span class="pre">javah</span></code> 使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NATIVE_HEADERS_DIRECTORY</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>原生头文件的生成目录。当指定 <code class="docutils literal notranslate"><span class="pre">GENERATE_NATIVE_HEADERS</span></code> 选项时定义。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command" id="install-jar">
+<dt class="sig sig-object cmake" id="command:install_jar">
+<span class="sig-name descname"><span class="pre">install_jar</span></span><a class="headerlink" href="UseJava.html#command:install_jar" title="Link to this definition">¶</a></dt>
+<dd><p>此命令将 jar 文件安装到给定的目标位置。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install_jar(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="nv">&lt;destination&gt;</span><span class="nf">)</span>
+<span class="nf">install_jar(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;destination&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;target_name&gt;</span></code> 文件安装到给定的 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>。它应该在与 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar()</span></a> 相同的作用域中调用，否则将失败。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增：</span>带有 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项的第二个签名。</p>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code></dt><dd><p>指定文件在磁盘上的安装目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code></dt><dd><p>指定与安装规则关联的安装组件名称，例如“runtime”或“development”。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">install_jar()</span></code> 命令在 <code class="docutils literal notranslate"><span class="pre">&lt;target_name&gt;</span></code> 上设置以下目标属性：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_DESTINATION</span></code></dt><dd><p>保存如上所述的 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>，并由 <a class="reference internal" href="UseJava.html#install-jar-exports"><span class="std std-ref">install_jar_exports()</span></a> 使用。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command" id="install-jni-symlink">
+<dt class="sig sig-object cmake" id="command:install_jni_symlink">
+<span class="sig-name descname"><span class="pre">install_jni_symlink</span></span><a class="headerlink" href="UseJava.html#command:install_jni_symlink" title="Link to this definition">¶</a></dt>
+<dd><p>为 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar()</span></a> 生成的目标安装 JNI 符号链接。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install_jni_symlink(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="nv">&lt;destination&gt;</span><span class="nf">)</span>
+<span class="nf">install_jni_symlink(</span><span class="nv">&lt;target_name&gt;</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;destination&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;target_name&gt;</span></code> JNI 符号链接安装到给定的 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>。它应该在与 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar()</span></a> 相同的作用域中调用，否则将失败。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增：</span>带有 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code> 选项的第二个签名。</p>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code></dt><dd><p>指定文件在磁盘上的安装目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code></dt><dd><p>指定与安装规则关联的安装组件名称，例如“runtime”或“development”。</p>
+</dd>
+</dl>
+<p>利用以下命令创建 JNI 符号链接。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_JNI_TARGET</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">add_jar(</span><span class="nb">shibboleet</span><span class="w"> </span><span class="nb">shibbotleet.java</span><span class="w"> </span><span class="no">VERSION</span><span class="w"> </span><span class="m">1.2.0</span><span class="nf">)</span>
+<span class="nf">install_jar(</span><span class="nb">shibboleet</span><span class="w"> </span><span class="o">${</span><span class="nt">LIB_INSTALL_DIR</span><span class="o">}</span><span class="na">/shibboleet</span><span class="nf">)</span>
+<span class="nf">install_jni_symlink(</span><span class="nb">shibboleet</span><span class="w"> </span><span class="o">${</span><span class="nt">JAVA_LIB_INSTALL_DIR</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="header-generation">
+<h2>头文件生成<a class="headerlink" href="UseJava.html#header-generation" title="链接到此标题">¶</a></h2>
+<dl class="cmake command" id="create-javah">
+<dt class="sig sig-object cmake" id="command:create_javah">
+<span class="sig-name descname"><span class="pre">create_javah</span></span><a class="headerlink" href="UseJava.html#command:create_javah" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>为 Java 类生成 C 头文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javah(</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">GENERATED_FILES</span><span class="w"> </span><span class="nv">&lt;VAR&gt;</span>
+<span class="w">             </span><span class="no">CLASSES</span><span class="w"> </span><span class="nv">&lt;class&gt;...</span>
+<span class="w">             </span><span class="p">[</span><span class="no">CLASSPATH</span><span class="w"> </span><span class="nv">&lt;classpath&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">DEPENDS</span><span class="w"> </span><span class="nv">&lt;depend&gt;...</span><span class="p">]</span>
+<span class="w">             </span><span class="p">[</span><span class="no">OUTPUT_NAME</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">|</span><span class="no">OUTPUT_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">             </span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">3.11 版本弃用：</span>由于 <a class="reference external" href="https://openjdk.org/jeps/313">javah 工具的废除</a>，从 JDK 10 开始将不再支持此命令。应改用 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar(GENERATE_NATIVE_HEADERS)</span></a> 命令。</p>
+</div>
+<p>从 Java 类创建 C 头文件。这些文件提供了允许 Java 和 C 代码交互的连接胶水。</p>
+<p><code class="docutils literal notranslate"><span class="pre">create_javah()</span></code> 有两个主要签名。第一个签名通过 <code class="docutils literal notranslate"><span class="pre">GENERATED_FILES</span></code> 选项指定的变量返回生成的文件。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javah(</span><span class="no">GENERATED_FILES</span><span class="w"> </span><span class="nb">files_headers</span>
+<span class="w">  </span><span class="no">CLASSES</span><span class="w"> </span><span class="nb">org.cmake.HelloWorld</span>
+<span class="w">  </span><span class="no">CLASSPATH</span><span class="w"> </span><span class="nb">hello.jar</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">create_javah()</span></code> 的第二个签名创建一个封装了头文件生成的目标。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javah(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">target_headers</span>
+<span class="w">  </span><span class="no">CLASSES</span><span class="w"> </span><span class="nb">org.cmake.HelloWorld</span>
+<span class="w">  </span><span class="no">CLASSPATH</span><span class="w"> </span><span class="nb">hello.jar</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>两个签名共享相同的选项。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CLASSES</span></code></dt><dd><p>指定用于生成头文件的 Java 类。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CLASSPATH</span></code></dt><dd><p>指定查找类的各种路径。此处可以使用 <code class="docutils literal notranslate"><span class="pre">.class</span></code> 文件、jar 文件或由 add_jar 命令创建的目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code></dt><dd><p>javah 目标所依赖的目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_NAME</span></code></dt><dd><p>将选项 <code class="docutils literal notranslate"><span class="pre">CLASSES</span></code> 列出的所有类的结果头文件连接到 <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> 中。行为与 <code class="docutils literal notranslate"><span class="pre">javah</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-o</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_DIR</span></code></dt><dd><p>设置生成头文件的目录。行为与 <code class="docutils literal notranslate"><span class="pre">javah</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-d</span></code> 选项相同。如果未指定，则使用 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 作为输出目录。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="exporting-jar-targets">
+<h2>导出 JAR 目标<a class="headerlink" href="UseJava.html#exporting-jar-targets" title="链接到此标题">¶</a></h2>
+<dl class="cmake command" id="install-jar-exports">
+<dt class="sig sig-object cmake" id="command:install_jar_exports">
+<span class="sig-name descname"><span class="pre">install_jar_exports</span></span><a class="headerlink" href="UseJava.html#command:install_jar_exports" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>安装目标导出文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install_jar_exports(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nv">&lt;jars&gt;...</span>
+<span class="w">                    </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;namespace&gt;</span><span class="p">]</span>
+<span class="w">                    </span><span class="no">FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span>
+<span class="w">                    </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nv">&lt;destination&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENT</span><span class="w"> </span><span class="nv">&lt;component&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令为指定的 jar 目标安装一个目标导出文件 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> 到给定的 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录。其功能类似于 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a>。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code></dt><dd><p>由 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar()</span></a> 命令创建的目标列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;</span></code> 值将作为前缀添加到写入导入文件的目标名称中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE</span></code></dt><dd><p>指定导出文件的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code></dt><dd><p>指定文件在磁盘上的安装目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPONENT</span></code></dt><dd><p>指定与安装规则关联的安装组件名称，例如“runtime”或“development”。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command" id="export-jars">
+<dt class="sig sig-object cmake" id="command:export_jars">
+<span class="sig-name descname"><span class="pre">export_jars</span></span><a class="headerlink" href="UseJava.html#command:export_jars" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>编写一个目标导出文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">export_jars(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nv">&lt;jars&gt;...</span>
+<span class="w">            </span><span class="p">[</span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nv">&lt;namespace&gt;</span><span class="p">]</span>
+<span class="w">            </span><span class="no">FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令为指定的 <code class="docutils literal notranslate"><span class="pre">&lt;jars&gt;</span></code> 目标编写一个目标导出文件 <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>。其功能类似于 <span class="target" id="index-0-command:export"></span><a class="reference internal" href="../command/export.html#command:export" title="export"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export()</span></code></a>。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGETS</span></code></dt><dd><p>由 <a class="reference internal" href="UseJava.html#add-jar"><span class="std std-ref">add_jar()</span></a> 命令创建的目标列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;</span></code> 值将作为前缀添加到写入导入文件的目标名称中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE</span></code></dt><dd><p>指定导出文件的名称。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="finding-jars">
+<h2>查找 JARs<a class="headerlink" href="UseJava.html#finding-jars" title="链接到此标题">¶</a></h2>
+<dl class="cmake command" id="find-jar">
+<dt class="sig sig-object cmake" id="command:find_jar">
+<span class="sig-name descname"><span class="pre">find_jar</span></span><a class="headerlink" href="UseJava.html#command:find_jar" title="Link to this definition">¶</a></dt>
+<dd><p>查找指定的 jar 文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_jar(</span><span class="nv">&lt;VAR&gt;</span>
+<span class="w">         </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">NAMES</span><span class="w"> </span><span class="nv">&lt;name1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;name2&gt;...</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">PATHS</span><span class="w"> </span><span class="nv">&lt;path1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;path2&gt;...</span><span class="w"> </span><span class="no">ENV</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="p">]]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">VERSIONS</span><span class="w"> </span><span class="nv">&lt;version1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version2&gt;</span><span class="p">]]</span>
+<span class="w">         </span><span class="p">[</span><span class="no">DOC</span><span class="w"> </span><span class="s">"cache documentation string"</span><span class="p">]</span>
+<span class="w">        </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令用于查找指定 jar 的完整路径。创建一个以 <code class="docutils literal notranslate"><span class="pre">&lt;VAR&gt;</span></code> 命名的缓存条目来存储此命令的结果。如果找到 jar 的完整路径，结果将存储在变量中，除非清除该变量，否则不会重复搜索。如果未找到，结果将为 <code class="docutils literal notranslate"><span class="pre">&lt;VAR&gt;-NOTFOUND</span></code>，且下次使用相同变量调用 <code class="docutils literal notranslate"><span class="pre">find_jar()</span></code> 时将再次尝试搜索。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">NAMES</span></code></dt><dd><p>指定一个或多个 jar 文件的可能名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PATHS</span></code></dt><dd><p>指定除默认位置外还要搜索的目录。<code class="docutils literal notranslate"><span class="pre">ENV</span></code> var 子选项从系统环境变量中读取路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSIONS</span></code></dt><dd><p>指定 jar 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOC</span></code></dt><dd><p>为 <code class="docutils literal notranslate"><span class="pre">&lt;VAR&gt;</span></code> 缓存条目指定文档字符串。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="creating-java-documentation">
+<h2>创建 Java 文档<a class="headerlink" href="UseJava.html#creating-java-documentation" title="链接到此标题">¶</a></h2>
+<dl class="cmake command" id="create-javadoc">
+<dt class="sig sig-object cmake" id="command:create_javadoc">
+<span class="sig-name descname"><span class="pre">create_javadoc</span></span><a class="headerlink" href="UseJava.html#command:create_javadoc" title="Link to this definition">¶</a></dt>
+<dd><p>基于文件和包创建 Java 文档。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javadoc(</span><span class="nv">&lt;VAR&gt;</span>
+<span class="w">               </span><span class="nf">(</span><span class="no">PACKAGES</span><span class="w"> </span><span class="nv">&lt;pkg1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;pkg2&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">FILES</span><span class="w"> </span><span class="nv">&lt;file1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;file2&gt;...</span><span class="p">]</span><span class="nf">)</span>
+<span class="w">               </span><span class="p">[</span><span class="no">SOURCEPATH</span><span class="w"> </span><span class="nv">&lt;sourcepath&gt;</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">CLASSPATH</span><span class="w"> </span><span class="nv">&lt;classpath&gt;</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">INSTALLPATH</span><span class="w"> </span><span class="nv">&lt;install path&gt;</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">DOCTITLE</span><span class="w"> </span><span class="nv">&lt;the documentation title&gt;</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">WINDOWTITLE</span><span class="w"> </span><span class="nv">&lt;the title of the document&gt;</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="nf">AUTHOR</span> <span class="nf">(</span><span class="no">TRUE</span><span class="p">|</span><span class="no">FALSE</span><span class="nf">)</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="nf">USE</span> <span class="nf">(</span><span class="no">TRUE</span><span class="p">|</span><span class="no">FALSE</span><span class="nf">)</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="nf">VERSION</span> <span class="nf">(</span><span class="no">TRUE</span><span class="p">|</span><span class="no">FALSE</span><span class="nf">)</span><span class="p">]</span>
+<span class="w">               </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">create_javadoc()</span></code> 命令可用于创建 Java 文档。<code class="docutils literal notranslate"><span class="pre">create_javadoc()</span></code> 有两个主要签名。</p>
+<p>第一个签名使用带有源文件的路径上的包名。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javadoc(</span><span class="nb">my_example_doc</span>
+<span class="w">               </span><span class="no">PACKAGES</span><span class="w"> </span><span class="nb">com.example.foo</span><span class="w"> </span><span class="nb">com.example.bar</span>
+<span class="w">               </span><span class="no">SOURCEPATH</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_SOURCE_DIR}"</span>
+<span class="w">               </span><span class="no">CLASSPATH</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_JAVA_INCLUDE_PATH</span><span class="o">}</span>
+<span class="w">               </span><span class="no">WINDOWTITLE</span><span class="w"> </span><span class="s">"My example"</span>
+<span class="w">               </span><span class="no">DOCTITLE</span><span class="w"> </span><span class="s">"&lt;h1&gt;My example&lt;/h1&gt;"</span>
+<span class="w">               </span><span class="no">AUTHOR</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">               </span><span class="no">USE</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">               </span><span class="no">VERSION</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">              </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">create_javadoc()</span></code> 的第二个签名作用于给定的文件列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">create_javadoc(</span><span class="nb">my_example_doc</span>
+<span class="w">               </span><span class="no">FILES</span><span class="w"> </span><span class="na">java/A.java</span><span class="w"> </span><span class="na">java/B.java</span>
+<span class="w">               </span><span class="no">CLASSPATH</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_JAVA_INCLUDE_PATH</span><span class="o">}</span>
+<span class="w">               </span><span class="no">WINDOWTITLE</span><span class="w"> </span><span class="s">"My example"</span>
+<span class="w">               </span><span class="no">DOCTITLE</span><span class="w"> </span><span class="s">"&lt;h1&gt;My example&lt;/h1&gt;"</span>
+<span class="w">               </span><span class="no">AUTHOR</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">               </span><span class="no">USE</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">               </span><span class="no">VERSION</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">              </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>两个签名共享大部分选项。有关详细信息，请阅读 javadoc 手册页。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGES</span></code></dt><dd><p>指定 Java 包。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILES</span></code></dt><dd><p>指定 Java 源文件。如果指定了相对路径，它们将相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCEPATH</span></code></dt><dd><p>指定查找包的目录。默认使用 <span class="target" id="index-1-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a> 目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CLASSPATH</span></code></dt><dd><p>指定查找用户类文件的位置。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-classpath</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALLPATH</span></code></dt><dd><p>指定安装 Java 文档的位置。如果指定了，文档将被安装到 <code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_PREFIX}/share/javadoc/&lt;VAR&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOCTITLE</span></code></dt><dd><p>指定放置在概览摘要文件顶部附近的标题。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-doctitle</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WINDOWTITLE</span></code></dt><dd><p>指定放置在 HTML <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code> 标签中的标题。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-windowtitle</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AUTHOR</span></code></dt><dd><p>当指定值 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时，在生成的文档中包含 <code class="docutils literal notranslate"><span class="pre">@author</span></code> 文本。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-author</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USE</span></code></dt><dd><p>当指定值 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时，创建类和包的使用页面。为每个记录的类和包包含一个 Use 页面。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-use</span></code> 选项相同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VERSION</span></code></dt><dd><p>当指定值 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时，在生成的文档中包含版本文本。行为与 <code class="docutils literal notranslate"><span class="pre">javadoc</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">-version</span></code> 选项相同。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="UseJava.html#">UseJava</a><ul>
+<li><a class="reference internal" href="UseJava.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="UseJava.html#creating-and-installing-jars">创建与安装 JAR</a></li>
+<li><a class="reference internal" href="UseJava.html#header-generation">头文件生成</a></li>
+<li><a class="reference internal" href="UseJava.html#exporting-jar-targets">导出 JAR 目标</a></li>
+<li><a class="reference internal" href="UseJava.html#finding-jars">查找 JARs</a></li>
+<li><a class="reference internal" href="UseJava.html#creating-java-documentation">创建 Java 文档</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="UseEcos.html" title="上一章">UseEcos</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="UseSWIG.html" title="下一章">UseSWIG</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/UseJava.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="UseSWIG.html" title="UseSWIG">下一页</a> |</li>
+        <li class="right">
+          <a href="UseEcos.html" title="UseEcos">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UseJava.html">UseJava</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

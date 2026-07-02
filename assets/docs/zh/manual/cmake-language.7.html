@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-language(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-language.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-modules(7)" href="cmake-modules.7.html" />
+    <link rel="prev" title="cmake-instrumentation(7)" href="cmake-instrumentation.7.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-modules.7.html" title="cmake-modules(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-instrumentation.7.html" title="cmake-instrumentation(7)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-language.7.html">cmake-language(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-language(7)"></span><section id="cmake-language-7">
+<h1><a class="toc-backref" href="cmake-language.7.html#id9" role="doc-backlink">cmake-language(7)</a><a class="headerlink" href="cmake-language.7.html#cmake-language-7" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-language.7.html#cmake-language-7" id="id9">cmake-language(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#organization" id="id10">组织结构</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#directories" id="id11">目录</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#scripts" id="id12">脚本</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#modules" id="id13">模块</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-language.7.html#syntax" id="id14">语法</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#encoding" id="id15">编码</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#source-files" id="id16">源文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#command-invocations" id="id17">命令调用</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#command-arguments" id="id18">命令参数</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#bracket-argument" id="id19">括号参数</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#quoted-argument" id="id20">引号参数</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#unquoted-argument" id="id21">无引号参数</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-language.7.html#escape-sequences" id="id22">转义序列</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#variable-references" id="id23">变量引用</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#comments" id="id24">注释</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#bracket-comment" id="id25">括号注释</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#line-comment" id="id26">行注释</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-language.7.html#control-structures" id="id27">控制结构</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-language.7.html#conditional-blocks" id="id28">条件块</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#loops" id="id29">循环</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#command-definitions" id="id30">命令定义</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-language.7.html#variables" id="id31">变量</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#environment-variables" id="id32">环境变量</a></p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#lists" id="id33">列表</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="organization">
+<h2><a class="toc-backref" href="cmake-language.7.html#id10" role="doc-backlink">组织结构</a><a class="headerlink" href="cmake-language.7.html#organization" title="链接到此标题">¶</a></h2>
+<p>CMake 输入文件使用“CMake 语言”编写，位于命名为 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 或以 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 为扩展名的源文件中。术语“列表文件”（listfile）是对任何此类包含 CMake 命令并由工具处理的源文件的统称。</p>
+<p>项目中的 CMake 语言源文件组织为：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-language.7.html#directories">目录</a>（<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>）、</p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#scripts">脚本</a>（<code class="docutils literal notranslate"><span class="pre">&lt;script&gt;.cmake</span></code>）以及</p></li>
+<li><p><a class="reference internal" href="cmake-language.7.html#modules">模块</a>（<code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.cmake</span></code>）。</p></li>
+</ul>
+<section id="directories">
+<h3><a class="toc-backref" href="cmake-language.7.html#id11" role="doc-backlink">目录</a><a class="headerlink" href="cmake-language.7.html#directories" title="链接到此标题">¶</a></h3>
+<p>当 CMake 处理项目源码树时，入口点是顶级源码目录中名为 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 的源文件。该文件可能包含完整的构建规范，或者使用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 命令将子目录添加到构建中。该命令添加的每个子目录也必须包含一个 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作为该目录的入口点。对于每个处理了 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件的源码目录，CMake 都会在构建树中生成一个对应的目录，作为默认的工作目录和输出目录。</p>
+</section>
+<section id="scripts">
+<h3><a class="toc-backref" href="cmake-language.7.html#id12" role="doc-backlink">脚本</a><a class="headerlink" href="cmake-language.7.html#scripts" title="链接到此标题">¶</a></h3>
+<p>单个 <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;.cmake</span></code> 源文件可以通过使用 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行工具并配合 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-P"><code class="xref std std-option docutils literal notranslate"><span class="pre">-P</span></code></a> 选项，以*脚本模式*进行处理。脚本模式仅运行给定的 CMake 语言源文件中的命令，而不生成构建系统。它不允许使用定义构建目标或操作的 CMake 命令。</p>
+</section>
+<section id="modules">
+<h3><a class="toc-backref" href="cmake-language.7.html#id13" role="doc-backlink">模块</a><a class="headerlink" href="cmake-language.7.html#modules" title="此标题的链接">¶</a></h3>
+<p>无论是在<a class="reference internal" href="cmake-language.7.html#directories">目录</a>还是<a class="reference internal" href="cmake-language.7.html#scripts">脚本</a>中，CMake 语言代码都可以使用 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令在当前作用域内加载 <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.cmake</span></code> 源文件。有关 CMake 发行版附带模块的文档，请参阅 <span class="target" id="index-0-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 手册页。项目源码树也可以提供自己的模块，并在 <span class="target" id="index-0-variable:CMAKE_MODULE_PATH"></span><a class="reference internal" href="../variable/CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH" title="CMAKE_MODULE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code></a> 变量中指定它们的位置。</p>
+</section>
+</section>
+<section id="syntax">
+<h2><a class="toc-backref" href="cmake-language.7.html#id14" role="doc-backlink">语法</a><a class="headerlink" href="cmake-language.7.html#syntax" title="链接到此标题">¶</a></h2>
+<section id="encoding">
+<span id="cmake-language-encoding"></span><h3><a class="toc-backref" href="cmake-language.7.html#id15" role="doc-backlink">编码</a><a class="headerlink" href="cmake-language.7.html#encoding" title="链接到此标题">¶</a></h3>
+<p>CMake 语言源文件可以使用 7 位 ASCII 文本编写，以确保在所有支持的平台上具有最大的可移植性。换行符可以编码为 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\r\n</span></code>，但在读取输入文件时会被统一转换为 <code class="docutils literal notranslate"><span class="pre">\n</span></code>。</p>
+<p>请注意，此实现支持 8 位编码，因此在支持此编码的系统 API 的平台上，源文件可以采用 UTF-8 编码。此外，CMake 3.2 及更高版本在 Windows 上支持以 UTF-8 编码的源文件（使用 UTF-16 调用系统 API）。此外，CMake 3.0 及更高版本允许源文件以 UTF-8 <a class="reference external" href="https://en.wikipedia.org/wiki/Byte_order_mark">字节顺序标记 (BOM)</a> 开头。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">4.3 版本新增：</span><span class="target" id="index-0-command:cmake_host_system_information"></span><a class="reference internal" href="../command/cmake_host_system_information.html#command:cmake_host_system_information" title="cmake_host_system_information"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_host_system_information()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">LOCALE_CHARSET</span></code> 查询会返回预期的字符集编码。</p>
+</div>
+</section>
+<section id="source-files">
+<h3><a class="toc-backref" href="cmake-language.7.html#id16" role="doc-backlink">源文件</a><a class="headerlink" href="cmake-language.7.html#source-files" title="链接到此标题">¶</a></h3>
+<p>CMake 语言源文件由零个或多个<a class="reference internal" href="cmake-language.7.html#command-invocations">命令调用</a>组成，这些调用由换行符分隔，并可选择使用空格和<a class="reference internal" href="cmake-language.7.html#comments">注释</a>。</p>
+<pre><strong id="grammar-token-file">file</strong>         ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-file_element"><code class="xref docutils literal notranslate"><span class="pre">file_element</span></code></a>*
+<strong id="grammar-token-file_element">file_element</strong> ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-command_invocation"><code class="xref docutils literal notranslate"><span class="pre">command_invocation</span></code></a> <a class="reference internal" href="cmake-language.7.html#grammar-token-line_ending"><code class="xref docutils literal notranslate"><span class="pre">line_ending</span></code></a> |
+                 (<a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_comment"><code class="xref docutils literal notranslate"><span class="pre">bracket_comment</span></code></a>|<a class="reference internal" href="cmake-language.7.html#grammar-token-space"><code class="xref docutils literal notranslate"><span class="pre">space</span></code></a>)* <a class="reference internal" href="cmake-language.7.html#grammar-token-line_ending"><code class="xref docutils literal notranslate"><span class="pre">line_ending</span></code></a>
+<strong id="grammar-token-line_ending">line_ending</strong>  ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-line_comment"><code class="xref docutils literal notranslate"><span class="pre">line_comment</span></code></a>? <a class="reference internal" href="cmake-language.7.html#grammar-token-newline"><code class="xref docutils literal notranslate"><span class="pre">newline</span></code></a>
+<strong id="grammar-token-space">space</strong>        ::= &lt;match '[ \t]+'&gt;
+<strong id="grammar-token-newline">newline</strong>      ::= &lt;match '\n'&gt;
+</pre>
+<p>请注意，任何不在<a class="reference internal" href="cmake-language.7.html#command-arguments">命令参数</a>或<a class="reference internal" href="cmake-language.7.html#bracket-comment">括号注释</a>内的源文件行都可以以<a class="reference internal" href="cmake-language.7.html#line-comment">行注释</a>结尾。</p>
+</section>
+<section id="command-invocations">
+<span id="id1"></span><h3><a class="toc-backref" href="cmake-language.7.html#id17" role="doc-backlink">命令调用</a><a class="headerlink" href="cmake-language.7.html#command-invocations" title="链接到此标题">¶</a></h3>
+<p><em>命令调用</em>是一个名称，后跟由空格分隔且用圆括号括起来的参数。</p>
+<pre><strong id="grammar-token-command_invocation">command_invocation</strong>  ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-space"><code class="xref docutils literal notranslate"><span class="pre">space</span></code></a>* <a class="reference internal" href="cmake-language.7.html#grammar-token-identifier"><code class="xref docutils literal notranslate"><span class="pre">identifier</span></code></a> <a class="reference internal" href="cmake-language.7.html#grammar-token-space"><code class="xref docutils literal notranslate"><span class="pre">space</span></code></a>* '(' <a class="reference internal" href="cmake-language.7.html#grammar-token-arguments"><code class="xref docutils literal notranslate"><span class="pre">arguments</span></code></a> ')'
+<strong id="grammar-token-identifier">identifier</strong>          ::= &lt;match '[A-Za-z_][A-Za-z0-9_]*'&gt;
+<strong id="grammar-token-arguments">arguments</strong>           ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-argument"><code class="xref docutils literal notranslate"><span class="pre">argument</span></code></a>? <a class="reference internal" href="cmake-language.7.html#grammar-token-separated_arguments"><code class="xref docutils literal notranslate"><span class="pre">separated_arguments</span></code></a>*
+<strong id="grammar-token-separated_arguments">separated_arguments</strong> ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-separation"><code class="xref docutils literal notranslate"><span class="pre">separation</span></code></a>+ <a class="reference internal" href="cmake-language.7.html#grammar-token-argument"><code class="xref docutils literal notranslate"><span class="pre">argument</span></code></a>? |
+                        <a class="reference internal" href="cmake-language.7.html#grammar-token-separation"><code class="xref docutils literal notranslate"><span class="pre">separation</span></code></a>* '(' <a class="reference internal" href="cmake-language.7.html#grammar-token-arguments"><code class="xref docutils literal notranslate"><span class="pre">arguments</span></code></a> ')'
+<strong id="grammar-token-separation">separation</strong>          ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-space"><code class="xref docutils literal notranslate"><span class="pre">space</span></code></a> | <a class="reference internal" href="cmake-language.7.html#grammar-token-line_ending"><code class="xref docutils literal notranslate"><span class="pre">line_ending</span></code></a>
+</pre>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">hello</span><span class="w"> </span><span class="nb">world.c</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>命令名称不区分大小写。参数中未加引号的嵌套括号必须平衡。每个 <code class="docutils literal notranslate"><span class="pre">(</span></code> 或 <code class="docutils literal notranslate"><span class="pre">)</span></code> 都会作为字面量<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>传递给命令调用。这可用于在调用 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="../command/if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a> 命令时括住条件。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">FALSE</span><span class="w"> </span><span class="nf">AND</span> <span class="nf">(</span><span class="no">FALSE</span><span class="w"> </span><span class="no">OR</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">))</span><span class="w"> </span><span class="c"># evaluates to FALSE</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>3.0 之前的 CMake 版本要求命令名称标识符至少为 2 个字符。</p>
+<p>2.8.12 之前的 CMake 版本会静默接受紧随<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>之后且没有空格分隔的<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>或<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>。为了兼容性，CMake 2.8.12 及更高版本接受此类代码，但会产生警告。</p>
+</div>
+</section>
+<section id="command-arguments">
+<h3><a class="toc-backref" href="cmake-language.7.html#id18" role="doc-backlink">命令参数</a><a class="headerlink" href="cmake-language.7.html#command-arguments" title="链接到此标题">¶</a></h3>
+<p>在<a class="reference internal" href="cmake-language.7.html#command-invocations">命令调用</a>中有三种类型的参数：</p>
+<pre><strong id="grammar-token-argument">argument</strong> ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_argument"><code class="xref docutils literal notranslate"><span class="pre">bracket_argument</span></code></a> | <a class="reference internal" href="cmake-language.7.html#grammar-token-quoted_argument"><code class="xref docutils literal notranslate"><span class="pre">quoted_argument</span></code></a> | <a class="reference internal" href="cmake-language.7.html#grammar-token-unquoted_argument"><code class="xref docutils literal notranslate"><span class="pre">unquoted_argument</span></code></a>
+</pre>
+<section id="bracket-argument">
+<span id="id2"></span><h4><a class="toc-backref" href="cmake-language.7.html#id19" role="doc-backlink">括号参数</a><a class="headerlink" href="cmake-language.7.html#bracket-argument" title="链接到此标题">¶</a></h4>
+<p><em>括号参数</em>受 <a class="reference external" href="https://lua.ac.cn/">Lua</a> 长括号语法启发，将内容括在长度相同的开始和结束“括号”之间。</p>
+<pre><strong id="grammar-token-bracket_argument">bracket_argument</strong> ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_open"><code class="xref docutils literal notranslate"><span class="pre">bracket_open</span></code></a> <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_content"><code class="xref docutils literal notranslate"><span class="pre">bracket_content</span></code></a> <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_close"><code class="xref docutils literal notranslate"><span class="pre">bracket_close</span></code></a>
+<strong id="grammar-token-bracket_open">bracket_open</strong>     ::= '[' '='* '['
+<strong id="grammar-token-bracket_content">bracket_content</strong>  ::= &lt;any text not containing a <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_close"><code class="xref docutils literal notranslate"><span class="pre">bracket_close</span></code></a> with
+                     the same number of '=' as the <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_open"><code class="xref docutils literal notranslate"><span class="pre">bracket_open</span></code></a>&gt;
+<strong id="grammar-token-bracket_close">bracket_close</strong>    ::= ']' '='* ']'
+</pre>
+<p>左括号的写法是 <code class="docutils literal notranslate"><span class="pre">[</span></code> 后跟零个或多个 <code class="docutils literal notranslate"><span class="pre">=</span></code>，再跟一个 <code class="docutils literal notranslate"><span class="pre">[</span></code>。相应的右括号写法是 <code class="docutils literal notranslate"><span class="pre">]</span></code> 后跟相同数量的 <code class="docutils literal notranslate"><span class="pre">=</span></code>，再跟一个 <code class="docutils literal notranslate"><span class="pre">]</span></code>。括号不可嵌套。总是可以为左右括号选择唯一的长度，以包含其他长度的右括号。</p>
+<p>括号参数的内容由左括号和右括号之间的所有文本组成，但左括号后紧跟的一个换行符（如果有）会被忽略。不对括起来的内容进行任何求值（例如<a class="reference internal" href="cmake-language.7.html#escape-sequences">转义序列</a>或<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>）。括号参数总是作为一个单一参数传递给命令调用。</p>
+<p>例如</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>message([=[
+This is the first line in a bracket argument with bracket length 1.
+No \-escape sequences or ${variable} references are evaluated.
+This is always one argument even though it contains a ; character.
+The text does not end on a closing bracket of length 0 like ]].
+It does end in a closing bracket of length 1.
+]=])
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>3.0 之前的 CMake 版本不支持括号参数。它们将左括号解释为<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>的开始。</p>
+</div>
+</section>
+<section id="quoted-argument">
+<span id="id3"></span><h4><a class="toc-backref" href="cmake-language.7.html#id20" role="doc-backlink">引号参数</a><a class="headerlink" href="cmake-language.7.html#quoted-argument" title="链接到此标题">¶</a></h4>
+<p><em>引号参数</em>将内容括在双引号字符之间。</p>
+<pre><strong id="grammar-token-quoted_argument">quoted_argument</strong>     ::= '"' <a class="reference internal" href="cmake-language.7.html#grammar-token-quoted_element"><code class="xref docutils literal notranslate"><span class="pre">quoted_element</span></code></a>* '"'
+<strong id="grammar-token-quoted_element">quoted_element</strong>      ::= &lt;any character except '\' or '"'&gt; |
+                        <a class="reference internal" href="cmake-language.7.html#grammar-token-escape_sequence"><code class="xref docutils literal notranslate"><span class="pre">escape_sequence</span></code></a> |
+                        <a class="reference internal" href="cmake-language.7.html#grammar-token-quoted_continuation"><code class="xref docutils literal notranslate"><span class="pre">quoted_continuation</span></code></a>
+<strong id="grammar-token-quoted_continuation">quoted_continuation</strong> ::= '\' <a class="reference internal" href="cmake-language.7.html#grammar-token-newline"><code class="xref docutils literal notranslate"><span class="pre">newline</span></code></a>
+</pre>
+<p>引号参数的内容由双引号之间的所有文本组成。其中的<a class="reference internal" href="cmake-language.7.html#escape-sequences">转义序列</a>和<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>都会被求值。引号参数总是作为一个单一参数传递给命令调用。</p>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="s">"This is a quoted argument containing multiple lines.</span>
+<span class="s">This is always one argument even though it contains a ; character.</span>
+<span class="s">Both \\-escape sequences and ${variable} references are evaluated.</span>
+<span class="s">The text does not end on an escaped double-quote like \".</span>
+<span class="s">It does end in an unescaped double quote.</span>
+<span class="s">"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>任何以奇数个反斜杠结尾的行上的最后一个 <code class="docutils literal notranslate"><span class="pre">\</span></code> 被视为行连接符，并与紧随其后的换行符一起被忽略。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="s">"\</span>
+<span class="s">This is the first line of a quoted argument. \</span>
+<span class="s">In fact it is the only line but since it is long \</span>
+<span class="s">the source code uses line continuation.\</span>
+<span class="s">"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>3.0 之前的 CMake 版本不支持使用 <code class="docutils literal notranslate"><span class="pre">\</span></code> 进行行连接。如果引号参数中的行以奇数个 <code class="docutils literal notranslate"><span class="pre">\</span></code> 结尾，它们会报错。</p>
+</div>
+</section>
+<section id="unquoted-argument">
+<span id="id4"></span><h4><a class="toc-backref" href="cmake-language.7.html#id21" role="doc-backlink">无引号参数</a><a class="headerlink" href="cmake-language.7.html#unquoted-argument" title="链接到此标题">¶</a></h4>
+<p><em>无引号参数</em>不被任何引号语法括起来。它不能包含任何空格、<code class="docutils literal notranslate"><span class="pre">(</span></code>、<code class="docutils literal notranslate"><span class="pre">)</span></code>、<code class="docutils literal notranslate"><span class="pre">#</span></code>、<code class="docutils literal notranslate"><span class="pre">"</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\</span></code>，除非这些字符被反斜杠转义。</p>
+<pre><strong id="grammar-token-unquoted_argument">unquoted_argument</strong> ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-unquoted_element"><code class="xref docutils literal notranslate"><span class="pre">unquoted_element</span></code></a>+ | <a class="reference internal" href="cmake-language.7.html#grammar-token-unquoted_legacy"><code class="xref docutils literal notranslate"><span class="pre">unquoted_legacy</span></code></a>
+<strong id="grammar-token-unquoted_element">unquoted_element</strong>  ::= &lt;any character except whitespace or one of '()#"\'&gt; |
+                      <a class="reference internal" href="cmake-language.7.html#grammar-token-escape_sequence"><code class="xref docutils literal notranslate"><span class="pre">escape_sequence</span></code></a>
+<strong id="grammar-token-unquoted_legacy">unquoted_legacy</strong>   ::= &lt;see note in text&gt;
+</pre>
+<p>无引号参数的内容由连续的允许字符或转义字符块组成。其中的<a class="reference internal" href="cmake-language.7.html#escape-sequences">转义序列</a>和<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>都会被求值。生成的数值会以<a class="reference internal" href="cmake-language.7.html#lists">列表</a>划分为元素的方式进行划分。每个非空元素都作为参数传递给命令调用。因此，一个无引号参数可以作为零个或多个参数传递给命令调用。</p>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foreach(</span><span class="nb">arg</span>
+<span class="w">    </span><span class="nb">NoSpace</span>
+<span class="w">    </span><span class="nb">Escaped\ Space</span>
+<span class="w">    </span><span class="nb">This</span><span class="p">;</span><span class="nb">Divides</span><span class="p">;</span><span class="nb">Into</span><span class="p">;</span><span class="nb">Five</span><span class="p">;</span><span class="nb">Arguments</span>
+<span class="w">    </span><span class="nb">Escaped\;Semicolon</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="s">"${arg}"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>为了支持遗留的 CMake 代码，无引号参数也可以包含双引号字符串（<code class="docutils literal notranslate"><span class="pre">"..."</span></code>，可能包含水平空白）和 Make 风格的变量引用（<code class="docutils literal notranslate"><span class="pre">$(MAKEVAR)</span></code>）。</p>
+<p>未转义的双引号必须平衡，不能出现在无引号参数的开头，并被视为内容的一部分。例如，无引号参数 <code class="docutils literal notranslate"><span class="pre">-Da="b</span> <span class="pre">c"</span></code>、<code class="docutils literal notranslate"><span class="pre">-Da=$(v)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">a"</span> <span class="pre">"b"c"d</span></code> 均按字面意思解释。它们可以分别写成引号参数 <code class="docutils literal notranslate"><span class="pre">"-Da=\"b</span> <span class="pre">c\""</span></code>、<code class="docutils literal notranslate"><span class="pre">"-Da=$(v)"</span></code> 和 <code class="docutils literal notranslate"><span class="pre">"a\"</span> <span class="pre">\"b\"c\"d"</span></code>。</p>
+<p>Make 风格的引用按字面意思作为内容的一部分处理，不会进行变量扩展。它们被视为单个参数的一部分（而不是作为分开的 <code class="docutils literal notranslate"><span class="pre">$</span></code>、<code class="docutils literal notranslate"><span class="pre">(</span></code>、<code class="docutils literal notranslate"><span class="pre">MAKEVAR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">)</span></code> 参数）。</p>
+<p>上述“无引号遗留”产生式代表了此类参数。我们不建议在新的代码中使用遗留的无引号参数。相反，请使用<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>或<a class="reference internal" href="cmake-language.7.html#bracket-argument">括号参数</a>来表示内容。</p>
+</div>
+</section>
+</section>
+<section id="escape-sequences">
+<span id="id5"></span><h3><a class="toc-backref" href="cmake-language.7.html#id22" role="doc-backlink">转义序列</a><a class="headerlink" href="cmake-language.7.html#escape-sequences" title="链接到此标题">¶</a></h3>
+<p><em>转义序列</em>是一个 <code class="docutils literal notranslate"><span class="pre">\</span></code> 后跟一个字符。</p>
+<pre><strong id="grammar-token-escape_sequence">escape_sequence</strong>  ::= <a class="reference internal" href="cmake-language.7.html#grammar-token-escape_identity"><code class="xref docutils literal notranslate"><span class="pre">escape_identity</span></code></a> | <a class="reference internal" href="cmake-language.7.html#grammar-token-escape_encoded"><code class="xref docutils literal notranslate"><span class="pre">escape_encoded</span></code></a> | <a class="reference internal" href="cmake-language.7.html#grammar-token-escape_semicolon"><code class="xref docutils literal notranslate"><span class="pre">escape_semicolon</span></code></a>
+<strong id="grammar-token-escape_identity">escape_identity</strong>  ::= '\' &lt;match '[^A-Za-z0-9;]'&gt;
+<strong id="grammar-token-escape_encoded">escape_encoded</strong>   ::= '\t' | '\r' | '\n'
+<strong id="grammar-token-escape_semicolon">escape_semicolon</strong> ::= '\;'
+</pre>
+<p>紧跟在非字母数字字符后面的 <code class="docutils literal notranslate"><span class="pre">\</span></code> 仅对其进行转义，将其作为字面量字符处理而不解释其语法。<code class="docutils literal notranslate"><span class="pre">\t</span></code>、<code class="docutils literal notranslate"><span class="pre">\r</span></code> 或 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 分别表示制表符、回车符或换行符。在任何<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>之外的 <code class="docutils literal notranslate"><span class="pre">\;</span></code> 自身编码为字符 <code class="docutils literal notranslate"><span class="pre">;</span></code>，但可在<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>中使用它来编码 <code class="docutils literal notranslate"><span class="pre">;</span></code>，而不将其作为参数分割符。在<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>内部的 <code class="docutils literal notranslate"><span class="pre">\;</span></code> 编码为字面量 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符。（另请参阅策略 <span class="target" id="index-0-policy:CMP0053"></span><a class="reference internal" href="../policy/CMP0053.html#policy:CMP0053" title="CMP0053"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0053</span></code></a> 文档以了解历史考量。）</p>
+</section>
+<section id="variable-references">
+<span id="id6"></span><h3><a class="toc-backref" href="cmake-language.7.html#id23" role="doc-backlink">变量引用</a><a class="headerlink" href="cmake-language.7.html#variable-references" title="链接到此标题">¶</a></h3>
+<p><em>变量引用</em>的形式为 <code class="docutils literal notranslate"><span class="pre">${&lt;variable&gt;}</span></code>，并在<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>或<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>内部进行求值。变量引用被指定变量或缓存条目的值替换；如果两者均未设置，则替换为空字符串。变量引用可以嵌套并从内向外求值，例如 <code class="docutils literal notranslate"><span class="pre">${outer_${inner_variable}_variable}</span></code>。</p>
+<p>字面量变量引用可以由字母数字字符、字符 <code class="docutils literal notranslate"><span class="pre">/_.+-</span></code> 以及<a class="reference internal" href="cmake-language.7.html#escape-sequences">转义序列</a>组成。嵌套引用可用于评估任何名称的变量。另请参阅策略 <span class="target" id="index-1-policy:CMP0053"></span><a class="reference internal" href="../policy/CMP0053.html#policy:CMP0053" title="CMP0053"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0053</span></code></a> 文档以了解历史考量，以及为什么虽然从技术上允许 <code class="docutils literal notranslate"><span class="pre">$</span></code> 但不建议这样做。</p>
+<p><a class="reference internal" href="cmake-language.7.html#variables">变量</a>部分记录了变量名的作用域以及如何设置它们的值。</p>
+<p><em>环境变量引用</em>的形式为 <code class="docutils literal notranslate"><span class="pre">$ENV{&lt;variable&gt;}</span></code>。有关更多信息，请参阅<a class="reference internal" href="cmake-language.7.html#environment-variables">环境变量</a>部分。</p>
+<p><em>缓存变量引用</em>的形式为 <code class="docutils literal notranslate"><span class="pre">$CACHE{&lt;variable&gt;}</span></code>，它被替换为指定的缓存条目的值，而不检查相同名称的普通变量。如果缓存条目不存在，则替换为空字符串。有关更多信息，请参阅 <span class="target" id="index-0-variable:CACHE"></span><a class="reference internal" href="../variable/CACHE.html#variable:CACHE" title="CACHE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CACHE</span></code></a>。</p>
+<p><span class="target" id="index-1-command:if"></span><a class="reference internal" href="../command/if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a> 命令具有特殊的条件语法，允许在短形式中使用 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">${&lt;variable&gt;}</span></code> 进行变量引用。但是，环境变量总是需要作为 <code class="docutils literal notranslate"><span class="pre">$ENV{&lt;variable&gt;}</span></code> 引用。</p>
+</section>
+<section id="comments">
+<h3><a class="toc-backref" href="cmake-language.7.html#id24" role="doc-backlink">注释</a><a class="headerlink" href="cmake-language.7.html#comments" title="链接到此标题">¶</a></h3>
+<p>注释以 <code class="docutils literal notranslate"><span class="pre">#</span></code> 字符开头，前提是该字符不在<a class="reference internal" href="cmake-language.7.html#bracket-argument">括号参数</a>、<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>内，或未作为<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>的一部分被 <code class="docutils literal notranslate"><span class="pre">\</span></code> 转义。注释有两种类型：<a class="reference internal" href="cmake-language.7.html#bracket-comment">括号注释</a>和<a class="reference internal" href="cmake-language.7.html#line-comment">行注释</a>。</p>
+<section id="bracket-comment">
+<span id="id7"></span><h4><a class="toc-backref" href="cmake-language.7.html#id25" role="doc-backlink">括号注释</a><a class="headerlink" href="cmake-language.7.html#bracket-comment" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">#</span></code> 后紧跟 <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_open"><code class="xref std std-token docutils literal notranslate"><span class="pre">bracket_open</span></code></a> 构成了<em>括号注释</em>，其内容包含整个括号包围的区域。</p>
+<pre><strong id="grammar-token-bracket_comment">bracket_comment</strong> ::= '#' <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_argument"><code class="xref docutils literal notranslate"><span class="pre">bracket_argument</span></code></a>
+</pre>
+<p>例如</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#[[This is a bracket comment.
+It runs until the close bracket.]]
+message("First Argument\n" #[[Bracket Comment]] "Second Argument")
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>3.0 之前的 CMake 版本不支持括号注释。它们将开头的 <code class="docutils literal notranslate"><span class="pre">#</span></code> 解释为<a class="reference internal" href="cmake-language.7.html#line-comment">行注释</a>的开始。</p>
+</div>
+</section>
+<section id="line-comment">
+<span id="id8"></span><h4><a class="toc-backref" href="cmake-language.7.html#id26" role="doc-backlink">行注释</a><a class="headerlink" href="cmake-language.7.html#line-comment" title="链接到此标题">¶</a></h4>
+<p>没有紧跟 <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_open"><code class="xref std std-token docutils literal notranslate"><span class="pre">bracket_open</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">#</span></code> 构成了<em>行注释</em>，其内容延伸至行尾。</p>
+<pre><strong id="grammar-token-line_comment">line_comment</strong> ::= '#' &lt;any text not starting in a <a class="reference internal" href="cmake-language.7.html#grammar-token-bracket_open"><code class="xref docutils literal notranslate"><span class="pre">bracket_open</span></code></a>
+                 and not containing a <a class="reference internal" href="cmake-language.7.html#grammar-token-newline"><code class="xref docutils literal notranslate"><span class="pre">newline</span></code></a>&gt;
+</pre>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># This is a line comment.</span>
+<span class="nf">message(</span><span class="s">"First Argument\n"</span><span class="w"> </span><span class="c"># This is a line comment :)</span>
+<span class="w">        </span><span class="s">"Second Argument"</span><span class="nf">)</span><span class="w"> </span><span class="c"># This is a line comment.</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="control-structures">
+<h2><a class="toc-backref" href="cmake-language.7.html#id27" role="doc-backlink">控制结构</a><a class="headerlink" href="cmake-language.7.html#control-structures" title="链接到此标题">¶</a></h2>
+<section id="conditional-blocks">
+<h3><a class="toc-backref" href="cmake-language.7.html#id28" role="doc-backlink">条件块</a><a class="headerlink" href="cmake-language.7.html#conditional-blocks" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-2-command:if"></span><a class="reference internal" href="../command/if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a>/<span class="target" id="index-0-command:elseif"></span><a class="reference internal" href="../command/elseif.html#command:elseif" title="elseif"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">elseif()</span></code></a>/<span class="target" id="index-0-command:else"></span><a class="reference internal" href="../command/else.html#command:else" title="else"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">else()</span></code></a>/<span class="target" id="index-0-command:endif"></span><a class="reference internal" href="../command/endif.html#command:endif" title="endif"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endif()</span></code></a> 命令用于界定需要条件执行的代码块。</p>
+</section>
+<section id="loops">
+<h3><a class="toc-backref" href="cmake-language.7.html#id29" role="doc-backlink">循环</a><a class="headerlink" href="cmake-language.7.html#loops" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-0-command:foreach"></span><a class="reference internal" href="../command/foreach.html#command:foreach" title="foreach"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">foreach()</span></code></a>/<span class="target" id="index-0-command:endforeach"></span><a class="reference internal" href="../command/endforeach.html#command:endforeach" title="endforeach"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endforeach()</span></code></a> 和 <span class="target" id="index-0-command:while"></span><a class="reference internal" href="../command/while.html#command:while" title="while"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">while()</span></code></a>/<span class="target" id="index-0-command:endwhile"></span><a class="reference internal" href="../command/endwhile.html#command:endwhile" title="endwhile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endwhile()</span></code></a> 命令界定循环执行的代码块。在这些块内，可以使用 <span class="target" id="index-0-command:break"></span><a class="reference internal" href="../command/break.html#command:break" title="break"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">break()</span></code></a> 命令提前终止循环，而 <span class="target" id="index-0-command:continue"></span><a class="reference internal" href="../command/continue.html#command:continue" title="continue"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">continue()</span></code></a> 命令可用于立即开始下一次迭代。</p>
+</section>
+<section id="command-definitions">
+<h3><a class="toc-backref" href="cmake-language.7.html#id30" role="doc-backlink">命令定义</a><a class="headerlink" href="cmake-language.7.html#command-definitions" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-0-command:macro"></span><a class="reference internal" href="../command/macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a>/<span class="target" id="index-0-command:endmacro"></span><a class="reference internal" href="../command/endmacro.html#command:endmacro" title="endmacro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endmacro()</span></code></a> 和 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a>/<span class="target" id="index-0-command:endfunction"></span><a class="reference internal" href="../command/endfunction.html#command:endfunction" title="endfunction"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endfunction()</span></code></a> 命令界定用于后续调用记录的代码块。</p>
+</section>
+</section>
+<section id="variables">
+<span id="cmake-language-variables"></span><h2><a class="toc-backref" href="cmake-language.7.html#id31" role="doc-backlink">变量</a><a class="headerlink" href="cmake-language.7.html#variables" title="链接到此标题">¶</a></h2>
+<p>变量是 CMake 语言中存储的基本单位。它们的值始终为字符串类型，尽管某些命令可能会将这些字符串解释为其他类型的值。<span class="target" id="index-0-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 和 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="../command/unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset()</span></code></a> 命令明确设置或取消设置变量，但其他命令也具有修改变量的语义。变量名区分大小写，几乎可以由任何文本组成，但我们建议仅使用字母数字字符加 <code class="docutils literal notranslate"><span class="pre">_</span></code> 和 <code class="docutils literal notranslate"><span class="pre">-</span></code> 组成名称。</p>
+<p>变量具有动态作用域。每个“设置”或“取消设置”操作都会在当前作用域中创建绑定。</p>
+<dl>
+<dt>块作用域</dt><dd><p><span class="target" id="index-0-command:block"></span><a class="reference internal" href="../command/block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令可以为变量绑定创建一个新作用域。</p>
+</dd>
+<dt>函数作用域</dt><dd><p>由 <span class="target" id="index-1-command:function"></span><a class="reference internal" href="../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 命令创建的<a class="reference internal" href="cmake-language.7.html#command-definitions">命令定义</a>，其创建的命令在被调用时，会在一个新的变量绑定作用域内处理所记录的命令。在该作用域内“设置”或“取消设置”变量，仅在当前函数及其中嵌套的调用中可见，函数返回后不可见。</p>
+</dd>
+<dt>目录作用域</dt><dd><p>源树中的每个<a class="reference internal" href="cmake-language.7.html#directories">目录</a>都有自己的变量绑定。在处理目录的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件之前，CMake 会复制父目录中当前定义的所有变量绑定（如果有）来初始化新的目录作用域。当 CMake <a class="reference internal" href="cmake-language.7.html#scripts">脚本</a>通过 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-P"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-P</span></code></a> 处理时，会在一个“目录”作用域内绑定变量。</p>
+<p>不在函数调用内部进行的“设置”或“取消设置”操作会绑定到当前目录作用域。</p>
+</dd>
+<dt>持久缓存</dt><dd><p>CMake 存储了一组独立的“缓存”变量或“缓存条目”，它们的值在项目构建树中的多次运行期间保持不变。缓存条目具有独立的作用域，只能通过显式请求修改，例如使用 <span class="target" id="index-1-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 和 <span class="target" id="index-1-command:unset"></span><a class="reference internal" href="../command/unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 选项。</p>
+</dd>
+</dl>
+<p>求值<a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>时，CMake 首先在函数调用栈（如果有）中搜索绑定，然后回退到当前目录作用域中的绑定（如果有）。如果找到“设置”绑定，则使用其值。如果找到“取消设置”绑定或未找到绑定，CMake 随后会搜索缓存条目。如果找到缓存条目，则使用其值。否则，变量引用求值为空字符串。可以使用 <code class="docutils literal notranslate"><span class="pre">$CACHE{VAR}</span></code> 语法执行直接的缓存条目查找。</p>
+<p><span class="target" id="index-0-manual:cmake-variables(7)"></span><a class="reference internal" href="cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 手册记录了许多由 CMake 提供，或者在项目代码设置时对 CMake 有意义的变量。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 保留了以以下方式开头的标识符：</p>
+<ul class="simple">
+<li><p>以 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 开头（大写、小写或大小写混合），或者</p></li>
+<li><p>以 <code class="docutils literal notranslate"><span class="pre">_CMAKE_</span></code> 开头（大写、小写或大小写混合），或者</p></li>
+<li><p>以 <code class="docutils literal notranslate"><span class="pre">_</span></code> 开头，后跟任何 <span class="target" id="index-0-manual:cmake-commands(7)"></span><a class="reference internal" href="cmake-commands.7.html#manual:cmake-commands(7)" title="cmake-commands(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">命令</span></code></a> 的名称。</p></li>
+</ul>
+</div>
+</section>
+<section id="environment-variables">
+<span id="cmake-language-environment-variables"></span><h2><a class="toc-backref" href="cmake-language.7.html#id32" role="doc-backlink">环境变量</a><a class="headerlink" href="cmake-language.7.html#environment-variables" title="链接到此标题">¶</a></h2>
+<p>环境变量与普通<a class="reference internal" href="cmake-language.7.html#variables">变量</a>类似，区别如下：</p>
+<dl>
+<dt>作用域</dt><dd><p>环境变量在 CMake 进程中具有全局作用域。它们永远不会被缓存。</p>
+</dd>
+<dt>引用</dt><dd><p><a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a>使用 <span class="target" id="index-0-variable:ENV"></span><a class="reference internal" href="../variable/ENV.html#variable:ENV" title="ENV"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">ENV</span></code></a> 操作符，形式为 <code class="docutils literal notranslate"><span class="pre">$ENV{&lt;variable&gt;}</span></code>。</p>
+</dd>
+<dt>初始化</dt><dd><p>CMake 环境变量的初始值是调用进程的值。可以使用 <span class="target" id="index-2-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 和 <span class="target" id="index-2-command:unset"></span><a class="reference internal" href="../command/unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset()</span></code></a> 命令更改值。这些命令仅影响正在运行的 CMake 进程，而不影响整个系统环境。更改后的值不会写回调用进程，也不会被后续的构建或测试进程看到。</p>
+<p>请参阅 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-E-arg-env"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">env</span></code></a> 命令行工具，以便在修改后的环境中运行命令。</p>
+</dd>
+<dt>检查</dt><dd><p>请参阅 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-E-arg-environment"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">environment</span></code></a> 命令行工具以显示所有当前环境变量。</p>
+</dd>
+</dl>
+<p><span class="target" id="index-0-manual:cmake-env-variables(7)"></span><a class="reference internal" href="cmake-env-variables.7.html#manual:cmake-env-variables(7)" title="cmake-env-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-env-variables(7)</span></code></a> 手册记录了对 CMake 有特殊含义的环境变量。</p>
+</section>
+<section id="lists">
+<span id="cmake-language-lists"></span><h2><a class="toc-backref" href="cmake-language.7.html#id33" role="doc-backlink">列表</a><a class="headerlink" href="cmake-language.7.html#lists" title="链接到此标题">¶</a></h2>
+<p>尽管 CMake 中的所有值都存储为字符串，但在某些上下文中（例如在对<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>进行求值时），字符串可以被视为列表。在此类上下文中，字符串通过在不遵循不等数量 <code class="docutils literal notranslate"><span class="pre">[</span></code> 和 <code class="docutils literal notranslate"><span class="pre">]</span></code> 字符且不紧跟在 <code class="docutils literal notranslate"><span class="pre">\</span></code> 之后的 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符处拆分，从而划分为列表元素。序列 <code class="docutils literal notranslate"><span class="pre">\;</span></code> 不会分割值，但在生成的元素中会被替换为 <code class="docutils literal notranslate"><span class="pre">;</span></code>。</p>
+<p>元素列表表示为通过 <code class="docutils literal notranslate"><span class="pre">;</span></code> 连接的分隔字符串。例如，<span class="target" id="index-3-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令将多个值存储到目标变量中作为列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">srcs</span><span class="w"> </span><span class="nb">a.c</span><span class="w"> </span><span class="nb">b.c</span><span class="w"> </span><span class="nb">c.c</span><span class="nf">)</span><span class="w"> </span><span class="c"># sets "srcs" to "a.c;b.c;c.c"</span>
+</pre></div>
+</div>
+<p>列表旨在用于简单的用例，例如源文件列表，不应将其用于复杂的数据处理任务。大多数构造列表的命令不会转义列表元素中的 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符，从而导致嵌套列表被展平。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">x</span><span class="w"> </span><span class="nb">a</span><span class="w"> </span><span class="s">"b;c"</span><span class="nf">)</span><span class="w"> </span><span class="c"># sets "x" to "a;b;c", not "a;b\;c"</span>
+</pre></div>
+</div>
+<p>通常，列表不支持包含 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符的元素。为了避免问题，请考虑以下建议：</p>
+<ul>
+<li><p>许多 CMake 命令、变量和属性的接口都接受分号分隔的列表。除非这些接口记录了直接支持或某种转义/编码分号的方法，否则请避免向这些接口传递包含分号的列表元素。</p></li>
+<li><p>构建列表时，在元素中用其他未使用的占位符代替 <code class="docutils literal notranslate"><span class="pre">;</span></code>。然后在处理列表元素时，再用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 替换该占位符。例如，以下代码使用 <code class="docutils literal notranslate"><span class="pre">|</span></code> 代替 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">mylist</span><span class="w"> </span><span class="nb">a</span><span class="w"> </span><span class="s">"b|c"</span><span class="nf">)</span>
+<span class="nf">foreach(</span><span class="nb">entry</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="nb">mylist</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">string(</span><span class="no">REPLACE</span><span class="w"> </span><span class="s">"|"</span><span class="w"> </span><span class="s">";"</span><span class="w"> </span><span class="nb">entry</span><span class="w"> </span><span class="s">"${entry}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># use "${entry}" normally</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<p><span class="target" id="index-0-module:ExternalProject"></span><a class="reference internal" href="../module/ExternalProject.html#module:ExternalProject" title="ExternalProject"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">ExternalProject</span></code></a> 模块的 <code class="docutils literal notranslate"><span class="pre">LIST_SEPARATOR</span></code> 选项就是一个使用此方法的接口示例。</p>
+</li>
+<li><p>在<span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>列表中，请使用 <span class="target" id="index-0-genex:SEMICOLON"></span><a class="reference internal" href="cmake-generator-expressions.7.html#genex:SEMICOLON" title="SEMICOLON"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;SEMICOLON&gt;</span></code></a> 生成器表达式。</p></li>
+<li><p>在命令调用中，尽可能使用<a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a>语法。被调用的命令将接收带有分号的参数内容，而不会分割。而<a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a>会在分号处被分割。</p></li>
+<li><p>在 <span class="target" id="index-2-command:function"></span><a class="reference internal" href="../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 实现中，避免使用 <code class="docutils literal notranslate"><span class="pre">ARGV</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ARGN</span></code>，它们无法区分值中的分号和分隔值的分号。相反，建议使用命名位置参数以及 <code class="docutils literal notranslate"><span class="pre">ARGC</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ARGV#</span></code> 变量。当使用 <span class="target" id="index-0-command:cmake_parse_arguments"></span><a class="reference internal" href="../command/cmake_parse_arguments.html#command:cmake_parse_arguments" title="cmake_parse_arguments"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments()</span></code></a> 解析参数时，建议使用其 <code class="docutils literal notranslate"><span class="pre">PARSE_ARGV</span></code> 签名，该签名使用 <code class="docutils literal notranslate"><span class="pre">ARGV#</span></code> 变量。</p>
+<p>请注意，此方法不适用于 <span class="target" id="index-1-command:macro"></span><a class="reference internal" href="../command/macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a> 实现，因为它们使用占位符而不是实际变量来引用参数。</p>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-language.7.html#">cmake-language(7)</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#organization">组织结构</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#directories">目录</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#scripts">脚本</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#modules">模块</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-language.7.html#syntax">语法</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#encoding">编码</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#source-files">源文件</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#command-invocations">命令调用</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#command-arguments">命令参数</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#bracket-argument">括号参数</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#quoted-argument">引号参数</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#unquoted-argument">无引号参数</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-language.7.html#escape-sequences">转义序列</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#variable-references">变量引用</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#comments">注释</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#bracket-comment">括号注释</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#line-comment">行注释</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-language.7.html#control-structures">控制结构</a><ul>
+<li><a class="reference internal" href="cmake-language.7.html#conditional-blocks">条件块</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#loops">循环</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#command-definitions">命令定义</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-language.7.html#variables">变量</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#environment-variables">环境变量</a></li>
+<li><a class="reference internal" href="cmake-language.7.html#lists">列表</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake-instrumentation.7.html" title="上一章">cmake-instrumentation(7)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-modules.7.html" title="下一章">cmake-modules(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-language.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-modules.7.html" title="cmake-modules(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-instrumentation.7.html" title="cmake-instrumentation(7)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-language.7.html">cmake-language(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

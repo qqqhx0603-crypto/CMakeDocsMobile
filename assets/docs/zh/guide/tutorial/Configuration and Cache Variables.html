@@ -1,0 +1,562 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第 3 步：配置与缓存变量 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Configuration&#32;and&#32;Cache&#32;Variables.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 4: In-Depth CMake Target Commands" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" />
+    <link rel="prev" title="Step 2: CMake Language Fundamentals" href="CMake&#32;Language&#32;Fundamentals.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="Step 4: In-Depth CMake Target Commands" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMake&#32;Language&#32;Fundamentals.html" title="Step 2: CMake Language Fundamentals" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Configuration&#32;and&#32;Cache&#32;Variables.html">第 3 步：配置和缓存变量</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-3-configuration-and-cache-variables">
+<span id="guide:tutorial/Configuration and Cache Variables"></span><h1>第 3 步：配置与缓存变量<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#step-3-configuration-and-cache-variables" title="链接到此标题">¶</a></h1>
+<p>CMake 项目通常包含一些用户和打包人员关心的项目特定配置变量。CMake 有多种方式可以让调用用户或进程传递这些配置选项，其中最基础的方式是 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志。</p>
+<p>在本步骤中，我们将探讨如何在 CML（CMakeLists.txt）内部提供项目配置选项的细节，以及如何调用 CMake 来利用由 CMake 和各个项目提供的配置选项。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#background" title="链接到此标题">¶</a></h2>
+<p>如果我们有一个支持多种压缩算法的压缩软件 CMake 项目，我们可能希望让项目的打包人员在构建软件时决定启用哪些算法。我们可以通过使用通过 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志设置的变量来实现这一点。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">COMPRESSION_SOFTWARE_USE_ZLIB</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="s">"I will use Zlib!"</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># ...</span>
+<span class="nf">endif()</span>
+
+<span class="nf">if(</span><span class="no">COMPRESSION_SOFTWARE_USE_ZSTD</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="s">"I will use Zstd!"</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># ...</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-DCOMPRESSION_SOFTWARE_USE_ZLIB<span class="o">=</span>ON<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-DCOMPRESSION_SOFTWARE_USE_ZSTD<span class="o">=</span>OFF
+<span class="go">...</span>
+<span class="go">I will use Zlib!</span>
+</pre></div>
+</div>
+<p>当然，我们需要为这些配置选项提供合理的默认值，并提供一种沟通给定选项用途的方法。此功能由 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 命令提供。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">COMPRESSION_SOFTWARE_USE_ZLIB</span><span class="w"> </span><span class="s">"Support Zlib compression"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">option(</span><span class="no">COMPRESSION_SOFTWARE_USE_ZSTD</span><span class="w"> </span><span class="s">"Support Zstd compression"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">COMPRESSION_SOFTWARE_USE_ZLIB</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># Same as before</span>
+<span class="c"># ...</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-DCOMPRESSION_SOFTWARE_USE_ZLIB<span class="o">=</span>OFF
+<span class="go">...</span>
+<span class="go">I will use Zstd!</span>
+</pre></div>
+</div>
+<p>由 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志和 <span class="target" id="index-1-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 创建的名称不是普通变量，而是<strong>缓存（cache）</strong>变量。缓存变量是全局可见的变量，具有<em>粘性（sticky）</em>，即一旦设置后很难更改其值。事实上，它们的粘性非常强，以至于在项目模式下，CMake 会在多次配置之间保存并恢复缓存变量。如果一个缓存变量被设置过一次，它将一直保留，除非被另一个 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志覆盖。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 本身有许多用于配置的普通变量和缓存变量。这些记录在 <span class="target" id="index-0-manual:cmake-variables(7)"></span><a class="reference internal" href="../../manual/cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 中，其操作方式与项目提供的配置变量相同。</p>
+</div>
+<p><span class="target" id="index-0-command:set"></span><a class="reference internal" href="../../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 也可以用于操作缓存变量，但它不会更改已经创建过的变量。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">StickyCacheVariable</span><span class="w"> </span><span class="s">"I will not change"</span><span class="w"> </span><span class="no">CACHE</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="s">""</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">StickyCacheVariable</span><span class="w"> </span><span class="s">"Overwrite StickyCache"</span><span class="w"> </span><span class="no">CACHE</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="s">""</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="s">"StickyCacheVariable: ${StickyCacheVariable}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-P<span class="w"> </span>StickyCacheVariable.cmake
+<span class="go">StickyCacheVariable: I will not change</span>
+</pre></div>
+</div>
+<p>因为 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志在任何其他命令之前处理，所以在设置缓存变量值时，它们具有优先权。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-DStickyCacheVariable<span class="o">=</span><span class="s2">"Commandline always wins"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-P<span class="w"> </span>StickyCacheVariable.cmake
+<span class="go">StickyCacheVariable: Commandline always wins</span>
+</pre></div>
+</div>
+<p>虽然缓存变量通常无法更改，但它们可以被普通变量<em>遮蔽（shadowed）</em>。我们可以通过 <span class="target" id="index-1-command:set"></span><a class="reference internal" href="../../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 一个与缓存变量同名的变量，然后使用 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="../../command/unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset()</span></code></a> 移除该普通变量来观察这一现象。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">ShadowVariable</span><span class="w"> </span><span class="s">"In the shadows"</span><span class="w"> </span><span class="no">CACHE</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="s">""</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">ShadowVariable</span><span class="w"> </span><span class="s">"Hiding the cache variable"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"ShadowVariable: ${ShadowVariable}"</span><span class="nf">)</span>
+
+<span class="nf">unset(</span><span class="nb">ShadowVariable</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"ShadowVariable: ${ShadowVariable}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-P<span class="w"> </span>ShadowVariable.cmake
+<span class="go">ShadowVariable: Hiding the cache variable</span>
+<span class="go">ShadowVariable: In the shadows</span>
+</pre></div>
+</div>
+</section>
+<section id="exercise-1-using-options">
+<h2>练习 1 - 使用选项<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-1-using-options" title="链接到此标题">¶</a></h2>
+<p>我们可以想象一个场景：用户确实需要我们的 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库，而 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 工具只是一个“可有可无”的附加组件。在这种情况下，我们可能希望添加一个选项，允许用户禁用 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 二进制文件的构建，仅构建 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库。</p>
+<p>掌握了选项、条件判断和缓存变量的知识后，我们就具备了实现此配置所需的所有要素。</p>
+<section id="goal">
+<h3>目标<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>添加一个名为 <code class="docutils literal notranslate"><span class="pre">TUTORIAL_BUILD_UTILITIES</span></code> 的选项，以控制是否配置和构建 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 二进制文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 允许我们在配置后确定构建哪些目标。我们的用户可以要求仅构建 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库而不包含 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code>。CMake 还有一些机制可以将目标从 <code class="docutils literal notranslate"><span class="pre">ALL</span></code> 中排除，即构建所有其他可用目标的默认目标。</p>
+<p>然而，完全将目标从配置中排除的选项非常方便且常用，特别是当配置这些目标涉及可能耗时的重量级步骤时。</p>
+<p>如果完全排除打包人员不感兴趣的目标，还能简化我们将在后续步骤中讨论的 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 逻辑。</p>
+</div>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:if"></span><a class="reference internal" href="../../command/if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step3</span></code> 文件夹包含针对 <code class="docutils literal notranslate"><span class="pre">Step1</span></code> 的完整推荐解决方案，以及本步骤相关的 <code class="docutils literal notranslate"><span class="pre">TODO</span></code>。花点时间回顾并重新熟悉一下 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 项目。</p>
+<p>当你觉得自己理解了当前代码后，从 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 开始，一直完成到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">2</span></code>。</p>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>我们现在可以重新配置我们的项目。然而，这次我们希望通过 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志来控制配置。我们再次导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step3</span></code> 并调用 CMake，但这次带上我们的配置选项。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build -DTUTORIAL_BUILD_UTILITIES=OFF</span>
+</pre></div>
+</div>
+<p>现在我们可以像往常一样进行构建。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>构建后，我们应该会观察到没有生成 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件。因为缓存变量具有粘性，即使重新配置也不会改变这一点，尽管选项默认是 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>这不会产生 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件，缓存变量已被“锁定”。要改变这一点，我们有两个选择。首先，我们可以编辑在 CMake 配置运行之间存储缓存变量的文件，即“CMake Cache”。该文件位于 <code class="docutils literal notranslate"><span class="pre">build/CMakeCache.txt</span></code>，在其中我们可以找到该选项的缓存变量。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>//Build the Tutorial executable
+TUTORIAL_BUILD_UTILITIES:BOOL=OFF
+</pre></div>
+</div>
+<p>我们可以将其从 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 改为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，重新运行构建，这样我们就会得到 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 条目的格式为 <code class="docutils literal notranslate"><span class="pre">&lt;Name&gt;:&lt;Type&gt;=&lt;Value&gt;</span></code>，但“类型”仅作为一个提示。无论缓存怎么说，CMake 中的所有对象都是字符串。</p>
+</div>
+<p>或者，我们可以在命令行上更改缓存变量的值，因为命令行是在 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 加载之前运行的，所以它的值优先于缓存文件中的值。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build -DTUTORIAL_BUILD_UTILITIES=ON</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>这样做，我们观察到 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 中的值已从 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 翻转为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，并且 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件已被构建。</p>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们创建我们的 <span class="target" id="index-3-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 来为我们的缓存变量提供一个合理的默认值。</p>
+<details><summary>TODO 1：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-option-tutorial-build-utilities">
+<div class="code-block-caption"><span class="caption-text">TODO 1: CMakeLists.txt</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#cmakelists-txt-option-tutorial-build-utilities" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">TUTORIAL_BUILD_UTILITIES</span><span class="w"> </span><span class="s">"Build the Tutorial executable"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后我们可以检查缓存变量，以有条件地启用 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件（通过添加其子目录）。</p>
+<details><summary>TODO 2：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-if-tutorial-build-utilities">
+<div class="code-block-caption"><span class="caption-text">TODO 2: CMakeLists.txt</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#cmakelists-txt-if-tutorial-build-utilities" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">TUTORIAL_BUILD_UTILITIES</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_subdirectory(</span><span class="nb">Tutorial</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-2-cmake-variables">
+<h2>练习 2 - <code class="docutils literal notranslate"><span class="pre">CMAKE</span></code> 变量<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-2-cmake-variables" title="链接到此标题">¶</a></h2>
+<p>CMake 有几个重要的普通变量和缓存变量，旨在让打包人员控制构建。编译器、默认标志、包搜索位置等决策都由 CMake 自己的配置变量控制。</p>
+<p>其中最重要的是语言标准。因为语言标准会对给定包呈现的 ABI 产生重大影响。例如，库在较新的标准中使用标准 C++ 模板并在早期标准上提供补丁（polyfills）是非常常见的。如果一个库在不同的标准下被使用，那么标准模板和补丁之间的 ABI 不兼容可能导致难以理解的错误和运行时崩溃。</p>
+<p>确保我们所有的目标都在相同的语言标准下构建，可以通过 <span class="target" id="index-0-variable:CMAKE_<LANG>_STANDARD"></span><a class="reference internal" href="../../variable/CMAKE_LANG_STANDARD.html#variable:CMAKE_<LANG>_STANDARD" title="CMAKE_<LANG>_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_STANDARD</span></code></a> 缓存变量来实现。对于 C++，这是 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>因为这些变量非常重要，所以开发者不要在他们的 CML 中覆盖或遮蔽它们同样重要。如果在库需要 C++20 时在 CML 中遮蔽了 <span class="target" id="index-1-variable:CMAKE_<LANG>_STANDARD"></span><a class="reference internal" href="../../variable/CMAKE_LANG_STANDARD.html#variable:CMAKE_<LANG>_STANDARD" title="CMAKE_<LANG>_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_STANDARD</span></code></a>，而打包人员决定用 C++23 构建其余的库和应用程序，这可能导致上述可怕、难以理解的错误。</p>
+<p>如果没有非常强有力的理由，不要 <span class="target" id="index-2-command:set"></span><a class="reference internal" href="../../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 全局的 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 变量。我们将在后续步骤中讨论目标传达定义和最低标准等要求的更好方法。</p>
+</div>
+<p>在本练习中，我们将向库和可执行文件中引入一些 C++20 代码，并通过设置相应的缓存变量使用 C++20 进行构建。</p>
+<section id="id1">
+<h3>目标<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id1" title="此标题的永久链接">¶</a></h3>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">std::format</span></code> 来格式化打印的字符串，而不是使用流操作符。为了确保 <code class="docutils literal notranslate"><span class="pre">std::format</span></code> 的可用性，配置 CMake 为 C++ 目标使用 C++20 标准。</p>
+</section>
+<section id="id2">
+<h3>有用资源<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id2" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-D</span></code></a></p></li>
+<li><p><span class="target" id="index-2-variable:CMAKE_<LANG>_STANDARD"></span><a class="reference internal" href="../../variable/CMAKE_LANG_STANDARD.html#variable:CMAKE_<LANG>_STANDARD" title="CMAKE_<LANG>_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_CXX_STANDARD"></span><a class="reference internal" href="../../variable/CMAKE_CXX_STANDARD.html#variable:CMAKE_CXX_STANDARD" title="CMAKE_CXX_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code></a></p></li>
+<li><p><span class="target" id="index-0-prop_tgt:CXX_STANDARD"></span><a class="reference internal" href="../../prop_tgt/CXX_STANDARD.html#prop_tgt:CXX_STANDARD" title="CXX_STANDARD"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CXX_STANDARD</span></code></a></p></li>
+<li><p><a class="reference external" href="https://cppreference.cn/w/cpp/utility/format/format.html">cppreference &lt;format&gt;</a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>要编辑的文件<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id3" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Tutorial/Tutorial.cxx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MathFunctions/MathFunctions.cxx</span></code></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>开始<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id4" title="此标题的永久链接">¶</a></h3>
+<p>继续编辑 <code class="docutils literal notranslate"><span class="pre">Step3</span></code> 中的文件。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">3</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">7</span></code>。我们将修改我们的打印代码，使用 <code class="docutils literal notranslate"><span class="pre">std::format</span></code> 代替流操作符。</p>
+<p>使用前一个练习中讨论的任何方法，确保你的缓存变量设置正确，以便能够构建 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件。</p>
+</section>
+<section id="id5">
+<h3>构建并运行<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id5" title="此标题的永久链接">¶</a></h3>
+<p>我们需要使用新的标准重新配置我们的项目，我们可以使用与 <code class="docutils literal notranslate"><span class="pre">TUTORIAL_BUILD_UTILITIES</span></code> 缓存变量相同的方法来实现。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build -DCMAKE_CXX_STANDARD=20</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>按照惯例，配置变量以变量提供者为前缀。CMake 配置变量以 <code class="docutils literal notranslate"><span class="pre">CMAKE_</span></code> 为前缀，而项目应以 <code class="docutils literal notranslate"><span class="pre">&lt;PROJECT&gt;_</span></code> 为其变量添加前缀。</p>
+<p>教程配置变量遵循此惯例，并以 <code class="docutils literal notranslate"><span class="pre">TUTORIAL_</span></code> 为前缀。</p>
+</div>
+<p>现在我们已经使用 C++20 进行了配置，可以像往常一样构建了。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>解决方案<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id6" title="此标题的永久链接">¶</a></h3>
+<p>我们需要包含 <code class="docutils literal notranslate"><span class="pre">&lt;format&gt;</span></code> 并使用它。</p>
+<details><summary>TODO 3-5: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorial-tutorial-cxx-include-format">
+<div class="code-block-caption"><span class="caption-text">TODO 3: Tutorial/Tutorial.cxx</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#tutorial-tutorial-cxx-include-format" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;format&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="tutorial-tutorial-cxx-format1">
+<div class="code-block-caption"><span class="caption-text">TODO 4: Tutorial/Tutorial.cxx</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#tutorial-tutorial-cxx-format1" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"Usage: {} number</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="tutorial-tutorial-cxx-format3">
+<div class="code-block-caption"><span class="caption-text">TODO 5: Tutorial/Tutorial.cxx</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#tutorial-tutorial-cxx-format3" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// calculate square root</span>
+<span class="kt">double</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">outputValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mathfunctions</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">inputValue</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"The square root of {} is {}</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">inputValue</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">outputValue</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details><p>再次针对 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库进行同样的操作。</p>
+<details><summary>TODO 6-7: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-include-format">
+<div class="code-block-caption"><span class="caption-text">TODO 6: MathFunctions.cxx</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#mathfunctions-mathfunctions-cxx-include-format" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;format&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-format">
+<div class="code-block-caption"><span class="caption-text">TODO 7: MathFunctions.cxx</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#mathfunctions-mathfunctions-cxx-format" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">delta</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"Computing sqrt of {} to be {}</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-3-cmakepresets-json">
+<h2>练习 3 - CMakePresets.json<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-3-cmakepresets-json" title="链接到此标题">¶</a></h2>
+<p>管理这些配置值很快就会变得难以承受。在 CI 系统中，将其记录为给定 CI 步骤的一部分是合适的。例如，在 Github Actions CI 步骤中，我们可能会看到类似以下的内容</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure and Build</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">cmake \</span>
+<span class="w">      </span><span class="no">-B build \</span>
+<span class="w">      </span><span class="no">-DCMAKE_BUILD_TYPE=Release \</span>
+<span class="w">      </span><span class="no">-DCMAKE_CXX_STANDARD=20 \</span>
+<span class="w">      </span><span class="no">-DCMAKE_CXX_EXTENSIONS=ON \</span>
+<span class="w">      </span><span class="no">-DTUTORIAL_BUILD_UTILITIES=OFF \</span>
+<span class="w">      </span><span class="no"># Possibly many more options</span>
+<span class="w">      </span><span class="no"># ...</span>
+
+<span class="w">    </span><span class="no">cmake --build build</span>
+</pre></div>
+</div>
+<p>在本地开发代码时，即使键入所有这些选项一次也容易出错。如果因任何原因需要进行全新的配置，多次执行可能会让人筋疲力尽。</p>
+<p>这个问题有许多不同的解决方案，最终的选择取决于你作为开发者的偏好。面向 CLI 的开发者通常使用任务运行器（task runners）来调用 CMake 并设置项目所需的选项。大多数 IDE 也有控制 CMake 配置的自定义机制。</p>
+<p>在此完全列举每种可能的配置工作流是不可能的。相反，我们将探讨 CMake 的内置解决方案，即 <span class="target" id="index-0-manual:cmake-presets(7)"></span><a class="reference internal" href="../../manual/cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">Presets</span></code></a>。预设（Presets）为我们提供了一种命名和表达 CMake 配置选项集合的格式。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>预设能够表达完整的工作流，从配置、构建，一直到安装软件包。</p>
+<p>它们比我们此处所能介绍的要灵活得多。我们将仅限于使用它们进行配置。</p>
+</div>
+<p>CMake 预设有两种标准文件，<code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code>，旨在作为项目的一部分并由源代码控制系统跟踪；以及 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code>，旨在用于本地用户配置，不应被跟踪。</p>
+<p>对开发者有用的最简单的预设仅做配置变量这一件事。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"configurePresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example-preset"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"EXAMPLE_FOO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bar"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"EXAMPLE_QUX"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Baz"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>在调用 CMake 时，之前我们可能会执行</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build -DEXAMPLE_FOO=Bar -DEXAMPLE_QUX=Baz</span>
+</pre></div>
+</div>
+<p>现在我们可以使用预设</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -B build --preset example-preset</span>
+</pre></div>
+</div>
+<p>CMake 将搜索名为 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code> 的文件，并加载其中的命名配置（如果可用）。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>命令行标志可以与预设混合使用。命令行标志的优先级高于预设中找到的值。</p>
+</div>
+<p>预设也支持有限的宏，即可以在预设中进行大括号展开的变量。我们唯一感兴趣的是 <code class="docutils literal notranslate"><span class="pre">${sourceDir}</span></code> 宏，它会展开为项目的根目录。我们可以使用它来设置我们的构建目录，从而在配置项目时跳过 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-B"><code class="xref std std-option docutils literal notranslate"><span class="pre">-B</span></code></a> 标志。</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example-preset"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"binaryDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceDir}/build"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="id7">
+<h3>目标<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id7" title="链接到此标题">¶</a></h3>
+<p>使用 CMake 预设而不是命令行标志来配置和构建教程。</p>
+</section>
+<section id="id8">
+<h3>有用资源<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id8" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-1-manual:cmake-presets(7)"></span><a class="reference internal" href="../../manual/cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-presets(7)</span></code></a></p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>要编辑的文件<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id9" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code></p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>入门<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id10" title="链接到此标题">¶</a></h3>
+<p>继续编辑 <code class="docutils literal notranslate"><span class="pre">Step3</span></code> 中的文件。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">8</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">9</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 内部的 <code class="docutils literal notranslate"><span class="pre">TODO</span></code> 需要被<em>替换</em>。当你完成练习时，文件中不应留下任何 <code class="docutils literal notranslate"><span class="pre">TODO</span></code> 键。</p>
+</div>
+<p>你可以通过在配置之前删除现有的构建文件夹来验证预设是否工作正常，这将确保你没有重复使用现有的 CMake 缓存进行配置。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在 CMake 3.24 及更高版本上，可以通过使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-fresh"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--fresh</span></code></a> 进行配置来达到同样的效果。</p>
+</div>
+<p>所有未来的配置更改都将通过 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 文件进行。</p>
+</section>
+<section id="id11">
+<h3>构建和运行<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id11" title="链接到此标题">¶</a></h3>
+<p>我们现在可以使用预设文件来管理我们的配置。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+</pre></div>
+</div>
+<p>预设能够为我们运行构建步骤，但对于本教程，我们将继续手动运行构建。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>解决方案<a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id12" title="链接到此标题">¶</a></h3>
+<p>我们需要做两个更改：首先，我们要将构建目录（也称为“二进制目录”）设置为项目文件夹的 <code class="docutils literal notranslate"><span class="pre">build</span></code> 子目录；其次，我们需要将 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">20</span></code>。</p>
+<details><summary>TODO 8-9: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakepresets-json-initial">
+<div class="code-block-caption"><span class="caption-text">TODO 8-9: CMakePresets.json</span><a class="headerlink" href="Configuration&#32;and&#32;Cache&#32;Variables.html#cmakepresets-json-initial" title="Link to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"configurePresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tutorial"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tutorial Preset"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Preset to use with the tutorial"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"binaryDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceDir}/build"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"CMAKE_CXX_STANDARD"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#">第 3 步：配置和缓存变量</a><ul>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#background">背景</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-1-using-options">练习 1 - 使用选项</a><ul>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#goal">目标</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#solution">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-2-cmake-variables">练习 2 - <code class="docutils literal notranslate"><span class="pre">CMAKE</span></code> 变量</a><ul>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id1">目标</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id2">有用资源</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id3">要编辑的文件</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id4">入门</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id5">构建并运行</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id6">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#exercise-3-cmakepresets-json">练习 3 - CMakePresets.json</a><ul>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id7">目标</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id8">有用资源</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id9">要编辑的文件</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id10">入门</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id11">构建并运行</a></li>
+<li><a class="reference internal" href="Configuration&#32;and&#32;Cache&#32;Variables.html#id12">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMake&#32;Language&#32;Fundamentals.html" title="上一章">第 2 步：CMake 语言基础</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="下一章">第四步：深入 CMake 目标命令</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/Configuration&#32;and&#32;Cache&#32;Variables.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="Step 4: In-Depth CMake Target Commands">下一页</a> |</li>
+        <li class="right">
+          <a href="CMake&#32;Language&#32;Fundamentals.html" title="Step 2: CMake Language Fundamentals">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Configuration&#32;and&#32;Cache&#32;Variables.html">第 3 步：配置和缓存变量</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

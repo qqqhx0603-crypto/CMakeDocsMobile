@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckLinkerFlag — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckLinkerFlag.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckOBJCCompilerFlag" href="CheckOBJCCompilerFlag.html" />
+    <link rel="prev" title="CheckLibraryExists" href="CheckLibraryExists.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckOBJCCompilerFlag.html" title="CheckOBJCCompilerFlag" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckLibraryExists.html" title="CheckLibraryExists" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckLinkerFlag.html">CheckLinkerFlag</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checklinkerflag">
+<span id="module:CheckLinkerFlag"></span><h1>CheckLinkerFlag<a class="headerlink" href="CheckLinkerFlag.html#checklinkerflag" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>该模块提供了一个用于检查编译器是否支持指定链接器标志的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckLinkerFlag</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckLinkerFlag.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_linker_flag">
+<span class="sig-name descname"><span class="pre">check_linker_flag</span></span><a class="headerlink" href="CheckLinkerFlag.html#command:check_linker_flag" title="Link to this definition">¶</a></dt>
+<dd><p>一次性检查编译器是否支持给定的链接器标志</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_linker_flag(</span><span class="nv">&lt;lang&gt;</span><span class="w"> </span><span class="nv">&lt;flag&gt;</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令用于检查 <code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;</span></code> 编译器是否接受链接器标志 <code class="docutils literal notranslate"><span class="pre">&lt;flag&gt;</span></code> 且不产生诊断消息。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;</span></code></dt><dd><p>用于检查的编译器语言。支持的语言包括 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA</span></code>、<code class="docutils literal notranslate"><span class="pre">Fortran</span></code>、<code class="docutils literal notranslate"><span class="pre">HIP</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJC</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJCXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Swift</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> 语言。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.21 新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">HIP</span></code> 语言。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.26 新增：</span>支持 <code class="docutils literal notranslate"><span class="pre">Swift</span></code> 语言。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;flag&gt;</span></code></dt><dd><p>要检查的链接器标志。可以使用<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a>在单个参数中指定多个标志。</p>
+<p>底层实现使用 <span class="target" id="index-0-prop_tgt:LINK_OPTIONS"></span><a class="reference internal" href="../prop_tgt/LINK_OPTIONS.html#prop_tgt:LINK_OPTIONS" title="LINK_OPTIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_OPTIONS</span></code></a> 目标属性来测试指定的标志。可以使用 <code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> (和 <code class="docutils literal notranslate"><span class="pre">SHELL:</span></code>) 前缀，具体如<a class="reference internal" href="CheckLinkerFlag.html#handling-compiler-driver-differences">处理编译器驱动程序差异</a>一节所述。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>用于存储检查结果的变量名。该变量将作为一个内部缓存变量创建。</p>
+</dd>
+</dl>
+<p>该命令会临时设置 <code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_OPTIONS</span></code> 变量，并调用 <span class="target" id="index-0-command:check_source_compiles"></span><a class="reference internal" href="CheckSourceCompiles.html#command:check_source_compiles" title="check_source_compiles"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">check_source_compiles()</span></code></a> 命令（来自 <span class="target" id="index-0-module:CheckSourceCompiles"></span><a class="reference internal" href="CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a> 模块）。</p>
+<p>成功的结果仅表明编译器在获得该链接器标志时未报告错误。该标志是否具有预期的效果超出了本模块的范围。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>由于底层的 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 命令也使用 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 等变量中的标志，这些变量中未知或不支持的标志可能导致此检查出现误报（假阴性）。</p>
+</div>
+<p class="rubric">影响检查的变量</p>
+<p>在调用此命令之前，可以设置以下变量来修改检查的运行方式</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_FLAGS</span></code></dt><dd><p>传递给编译器的额外标志的空格分隔字符串。<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a>在此处无效。<span class="target" id="index-1-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 及其关联的特定于配置的 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 变量的内容会自动置于该变量内容之前，并添加到编译器命令中。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_DEFINITIONS</span></code></dt><dd><p>分号分隔的编译器定义列表，每个定义的形式为 <code class="docutils literal notranslate"><span class="pre">-DFOO</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-DFOO=bar</span></code>。还将自动添加对检查命令的 result variable 参数指定的名称的定义。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_INCLUDES</span></code></dt><dd><p>要传递给编译器的头文件搜索路径的分号分隔列表。这些将是唯一使用的头文件搜索路径；将忽略 <span class="target" id="index-0-prop_dir:INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_dir/INCLUDE_DIRECTORIES.html#prop_dir:INCLUDE_DIRECTORIES" title="INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code></a> 目录属性的内容。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_DIRECTORIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>要传递给链接器的库搜索路径的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>如果此变量评估为布尔真值，则与检查关联的所有状态消息都将被抑制。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="handling-compiler-driver-differences">
+<h2>处理编译器驱动器差异<a class="headerlink" href="CheckLinkerFlag.html#handling-compiler-driver-differences" title="链接到此标题">¶</a></h2>
+<p>为了将选项传递给链接器工具，每个编译器驱动程序都有其特定的语法。可以使用 <code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀和 <code class="docutils literal notranslate"><span class="pre">,</span></code> 分隔符以可移植的方式指定传递给链接器工具的选项。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 将被替换为相应的驱动程序选项，<code class="docutils literal notranslate"><span class="pre">,</span></code> 将被替换为相应的驱动程序分隔符。驱动程序前缀和分隔符由 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINKER_WRAPPER_FLAG.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINKER_WRAPPER_FLAG_SEP.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG_SEP</span></code></a> 变量的值给定。</p>
+<p>例如，对于 <code class="docutils literal notranslate"><span class="pre">Clang</span></code>，<code class="docutils literal notranslate"><span class="pre">"LINKER:-z,defs"</span></code> 会变成 <code class="docutils literal notranslate"><span class="pre">-Xlinker</span> <span class="pre">-z</span> <span class="pre">-Xlinker</span> <span class="pre">defs</span></code>；对于 <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">GCC</span></code>，则会变成 <code class="docutils literal notranslate"><span class="pre">-Wl,-z,defs</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀可以作为 <code class="docutils literal notranslate"><span class="pre">SHELL:</span></code> 前缀表达式的一部分指定。</p>
+<p><code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀支持使用 <code class="docutils literal notranslate"><span class="pre">SHELL:</span></code> 前缀和空格作为分隔符来指定参数，作为一种替代语法。前面的示例将变为 <code class="docutils literal notranslate"><span class="pre">"LINKER:SHELL:-z</span> <span class="pre">defs"</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>不支持在 <code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀的开头以外的任何位置指定 <code class="docutils literal notranslate"><span class="pre">SHELL:</span></code> 前缀。</p>
+</div>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckLinkerFlag.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-checking-linker-flag">
+<h3>示例：检查链接器标志<a class="headerlink" href="CheckLinkerFlag.html#example-checking-linker-flag" title="链接到此标题">¶</a></h3>
+<p>以下示例演示了如何使用此模块检查 <code class="docutils literal notranslate"><span class="pre">-z</span> <span class="pre">relro</span></code> 链接器标志，该标志在许多类 Unix 系统上受支持，用于启用只读重定位以提高二进制安全性。如果链接器支持该标志，则使用 <span class="target" id="index-0-command:target_link_options"></span><a class="reference internal" href="../command/target_link_options.html#command:target_link_options" title="target_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_options()</span></code></a> 将其有条件地添加到可执行目标中。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀用于以可移植且独立于编译器的方式将标志传递给链接器。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckLinkerFlag</span><span class="nf">)</span>
+
+<span class="nf">check_linker_flag(</span><span class="no">C</span><span class="w"> </span><span class="s">"LINKER:-z,relro"</span><span class="w"> </span><span class="no">HAVE_Z_RELRO</span><span class="nf">)</span>
+
+<span class="nf">add_executable(</span><span class="nb">example</span><span class="w"> </span><span class="nb">main.c</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">HAVE_Z_RELRO</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">target_link_options(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="s">"LINKER:-z,relro"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+<section id="example-checking-multiple-flags">
+<h3>示例：检查多个标志<a class="headerlink" href="CheckLinkerFlag.html#example-checking-multiple-flags" title="链接到此标题">¶</a></h3>
+<p>在下面的示例中，同时检查多个链接器标志</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckLinkerFlag</span><span class="nf">)</span>
+
+<span class="nf">check_linker_flag(</span><span class="no">C</span><span class="w"> </span><span class="s">"LINKER:-z,relro;LINKER:-z,now"</span><span class="w"> </span><span class="no">HAVE_FLAGS</span><span class="nf">)</span>
+
+<span class="nf">add_executable(</span><span class="nb">example</span><span class="w"> </span><span class="nb">main.c</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">HAVE_FLAGS</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">target_link_options(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">LINKER</span><span class="o">:</span><span class="p">-</span><span class="nb">z</span><span class="p">,</span><span class="nb">relro</span><span class="w"> </span><span class="no">LINKER</span><span class="o">:</span><span class="p">-</span><span class="nb">z</span><span class="p">,</span><span class="nb">now</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="CheckLinkerFlag.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>使用 <span class="target" id="index-0-variable:CMAKE_LINKER_TYPE"></span><a class="reference internal" href="../variable/CMAKE_LINKER_TYPE.html#variable:CMAKE_LINKER_TYPE" title="CMAKE_LINKER_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINKER_TYPE</span></code></a> 变量指定链接器，该链接器也将被此模块使用。</p></li>
+<li><p><span class="target" id="index-0-module:CheckCompilerFlag"></span><a class="reference internal" href="CheckCompilerFlag.html#module:CheckCompilerFlag" title="CheckCompilerFlag"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckCompilerFlag</span></code></a> 模块用于检查编译器标志是否受支持。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckLinkerFlag.html#">CheckLinkerFlag</a><ul>
+<li><a class="reference internal" href="CheckLinkerFlag.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckLinkerFlag.html#handling-compiler-driver-differences">处理编译器驱动差异</a></li>
+<li><a class="reference internal" href="CheckLinkerFlag.html#examples">示例</a><ul>
+<li><a class="reference internal" href="CheckLinkerFlag.html#example-checking-linker-flag">示例：检查链接器标志</a></li>
+<li><a class="reference internal" href="CheckLinkerFlag.html#example-checking-multiple-flags">示例：检查多个标志</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="CheckLinkerFlag.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckLibraryExists.html" title="上一章">CheckLibraryExists</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckOBJCCompilerFlag.html" title="下一章">CheckOBJCCompilerFlag</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckLinkerFlag.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckOBJCCompilerFlag.html" title="CheckOBJCCompilerFlag">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckLibraryExists.html" title="CheckLibraryExists">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckLinkerFlag.html">CheckLinkerFlag</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

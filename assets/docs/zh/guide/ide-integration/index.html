@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>IDE 集成指南 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="index.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="CMake Release Notes" href="../../release/index.html" />
+    <link rel="prev" title="Importing and Exporting Guide" href="../importing-exporting/index.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="../../release/index.html" title="CMake Release Notes" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../importing-exporting/index.html" title="Importing and Exporting Guide" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">IDE 集成指南</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="guide:IDE Integration Guide">
+<span id="ide-integration-guide"></span><h1><a class="toc-backref" href="index.html#id1" role="doc-backlink">IDE 集成指南</a><a class="headerlink" href="index.html#guide:IDE Integration Guide" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html#guide:IDE Integration Guide" id="id1">IDE 集成指南</a></p>
+<ul>
+<li><p><a class="reference internal" href="index.html#introduction" id="id2">简介</a></p></li>
+<li><p><a class="reference internal" href="index.html#bundling" id="id3">捆绑</a></p></li>
+<li><p><a class="reference internal" href="index.html#presets" id="id4">预设</a></p></li>
+<li><p><a class="reference internal" href="index.html#configuring" id="id5">配置</a></p></li>
+<li><p><a class="reference internal" href="index.html#building" id="id6">构建</a></p></li>
+<li><p><a class="reference internal" href="index.html#testing" id="id7">测试</a></p></li>
+<li><p><a class="reference internal" href="index.html#ides-with-cmake-integration" id="id8">集成 CMake 的 IDE</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="index.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="index.html#introduction" title="此标题的链接">¶</a></h2>
+<p>集成开发环境 (IDE) 可能希望与 CMake 集成，以改善 CMake 用户的使用体验。本文档列出了此类集成的推荐最佳实践。</p>
+</section>
+<section id="bundling">
+<h2><a class="toc-backref" href="index.html#id3" role="doc-backlink">捆绑</a><a class="headerlink" href="index.html#bundling" title="链接到此标题">¶</a></h2>
+<p>许多 IDE 供应商希望将 CMake 的副本与其 IDE 捆绑在一起。捆绑了 CMake 的 IDE 应向用户提供使用外部 CMake 安装而非捆绑版本的选项，以防捆绑版本过时，且用户希望使用更新的版本。</p>
+<p>虽然 IDE 供应商可能倾向于在其应用程序中捆绑不同版本的 CMake，但不建议这样做。CMake 具有强大的向后兼容性保证，因此没有理由不使用比项目要求更新的版本，甚至直接使用最新版本。因此，建议将 CMake 捆绑在应用程序中的 IDE 供应商，在发布时始终包含 CMake 的最新补丁版本。</p>
+<p>建议 IDE 也可以在 CMake 旁边随附一份 Ninja 构建系统的副本。Ninja 在所有支持 CMake 的平台上性能卓越且受支持良好。捆绑 Ninja 的 IDE 应使用 Ninja 1.10 或更高版本，因为它包含了支持 Fortran 构建所需的功能。</p>
+</section>
+<section id="presets">
+<h2><a class="toc-backref" href="index.html#id4" role="doc-backlink">预设 (Presets)</a><a class="headerlink" href="index.html#presets" title="链接到此标题">¶</a></h2>
+<p>CMake 支持一种称为 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 的文件格式，以及其用户特定的对应文件 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code>。该文件包含用户可能需要的各种配置预设信息。每个预设可能有不同的编译器、构建标志等。此格式的详细信息在 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 手册中进行了说明。</p>
+<p>鼓励 IDE 供应商以 CMake 相同的方式读取和评估此文件，并将文件中列出的预设呈现给用户。用户应能够查看（并可能编辑）为给定预设定义的 CMake 缓存变量、环境变量和命令行选项。然后，IDE 应根据这些设置构造适当的 <span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行参数列表，而不是直接使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-preset"><code class="xref std std-option docutils literal notranslate"><span class="pre">--preset=</span></code></a> 选项。<a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-preset"><code class="xref std std-option docutils literal notranslate"><span class="pre">--preset=</span></code></a> 选项仅旨在作为命令行用户的便捷前端，不应由 IDE 使用。</p>
+<p>例如，如果名为 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 的预设指定 <code class="docutils literal notranslate"><span class="pre">Ninja</span></code> 作为生成器，并指定 <code class="docutils literal notranslate"><span class="pre">${sourceDir}/build</span></code> 作为构建目录，IDE 不应运行</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S /path/to/source --preset=ninja</span>
+</pre></div>
+</div>
+<p>而是应该计算 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 预设的设置，然后运行</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S /path/to/source -B /path/to/source/build -G Ninja</span>
+</pre></div>
+</div>
+<p>如果预设包含大量缓存变量，且将所有变量作为 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 标志传递会导致超过平台的命令行长度限制，IDE 则应构造一个临时缓存脚本并使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-C"><code class="xref std std-option docutils literal notranslate"><span class="pre">-C</span></code></a> 标志传递它。</p>
+<p>虽然读取、解析和评估 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 的内容很简单，但这并不容易。除了文档之外，IDE 供应商还可以参考 CMake 源代码和测试用例，以更好地了解如何实现该格式。<a class="reference download internal" download="" href="../../_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json"><code class="xref download docutils literal notranslate"><span class="pre">此文件</span></code></a> 提供了 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 格式的机器可读 JSON 模式，IDE 供应商可能会发现它对验证和提供编辑辅助很有用。</p>
+</section>
+<section id="configuring">
+<h2><a class="toc-backref" href="index.html#id5" role="doc-backlink">配置</a><a class="headerlink" href="index.html#configuring" title="链接到此标题">¶</a></h2>
+<p>调用 <span class="target" id="index-2-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 执行配置步骤的 IDE 可能希望接收有关构建将产生的制品、以及用于构建制品的包含目录、编译定义等的信息。此类信息可以通过使用 <span class="target" id="index-0-manual:cmake-file-api(7)"></span><a class="reference internal" href="../../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">文件 API (File API)</span></code></a> 获得。文件 API 的手册页包含了有关该 API 及其调用方式的更多信息。<span class="target" id="index-0-manual:cmake-server(7)"></span><a class="reference internal" href="../../manual/cmake-server.7.html#manual:cmake-server(7)" title="cmake-server(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">服务器模式 (Server mode)</span></code></a> 已在 CMake 3.20 中移除，不应在 CMake 3.14 或更高版本中使用。</p>
+<p>IDE 应避免创建多于必要的构建树，并且仅在用户希望切换到不同编译器、使用不同编译标志等情况下才创建多个构建树。特别地，IDE 不应创建除了 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 不同之外所有属性都相同的多个单配置构建树，从而有效地创建多配置环境。相反，应为此目的使用 <span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja Multi-Config</span></code></a> 生成器，并结合 <span class="target" id="index-1-manual:cmake-file-api(7)"></span><a class="reference internal" href="../../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">文件 API</span></code></a> 来获取构建配置列表。</p>
+<p>IDE 不应将“额外生成器 (extra generators)”与 Makefile 或 Ninja 生成器一起使用，因为除了 Makefile 或 Ninja 文件外，它们还会生成 IDE 项目文件。相反，应使用 <span class="target" id="index-2-manual:cmake-file-api(7)"></span><a class="reference internal" href="../../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">文件 API</span></code></a> 来获取构建制品列表。</p>
+</section>
+<section id="building">
+<h2><a class="toc-backref" href="index.html#id6" role="doc-backlink">构建</a><a class="headerlink" href="index.html#building" title="链接到此标题">¶</a></h2>
+<p>如果使用 Makefile 或 Ninja 生成器来生成构建树，则不建议直接调用 <code class="docutils literal notranslate"><span class="pre">make</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span></code>。相反，建议 IDE 调用带有 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">--build</span></code></a> 参数的 <span class="target" id="index-3-manual:cmake(1)"></span><a class="reference internal" href="../../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a>，这将依次调用适当的构建工具。</p>
+<p>如果使用 IDE 项目生成器（例如 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 或某个 <a class="reference internal" href="../../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>），且 IDE 理解所使用的项目格式，则 IDE 应读取项目文件并以其原有的方式进行构建。</p>
+<p><span class="target" id="index-3-manual:cmake-file-api(7)"></span><a class="reference internal" href="../../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">文件 API</span></code></a> 可用于从构建树中获取构建配置列表，IDE 应将此列表呈现给用户以供选择构建配置。</p>
+</section>
+<section id="testing">
+<h2><a class="toc-backref" href="index.html#id7" role="doc-backlink">测试</a><a class="headerlink" href="index.html#testing" title="链接到此标题">¶</a></h2>
+<p><span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 支持输出有关可用测试和测试配置信息的 JSON 格式。想要运行 CTest 的 IDE 应获取此信息，并将其用于向用户展示测试列表。</p>
+<p>IDE 不应调用生成的构建系统的 <code class="docutils literal notranslate"><span class="pre">test</span></code> 目标。相反，它们应该直接调用 <span class="target" id="index-1-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a>。</p>
+</section>
+<section id="ides-with-cmake-integration">
+<h2><a class="toc-backref" href="index.html#id8" role="doc-backlink">集成 CMake 的 IDE</a><a class="headerlink" href="index.html#ides-with-cmake-integration" title="链接到此标题">¶</a></h2>
+<p>以下 IDE 原生支持 CMake</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.jetbrains.com/clion/">CLion</a></p></li>
+<li><p><a class="reference external" href="https://kdevelop.org/">KDevelop</a></p></li>
+<li><p><a class="reference external" href="https://www.qt.io/development/tools">QtCreator</a></p></li>
+<li><p><a class="reference external" href="https://www.vim.org/">Vim</a>（通过插件）</p></li>
+<li><p><a class="reference external" href="https://visualstudio.microsoft.com/">Visual Studio</a></p></li>
+<li><p><a class="reference external" href="https://vscode.js.cn/">VSCode</a>（通过插件）</p></li>
+</ul>
+<p>此外，CMake 对某些 IDE 具有内置支持</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../manual/cmake-generators.7.html#ide-build-tool-generators"><span class="std std-ref">IDE 构建工具生成器</span></a>：生成 IDE 原生构建系统，例如 <a class="reference internal" href="../../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio</span></a> 或 <span class="target" id="index-1-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a>。</p></li>
+<li><p><a class="reference internal" href="../../manual/cmake-generators.7.html#extra-generators"><span class="std std-ref">额外生成器</span></a>：扩展 <a class="reference internal" href="../../manual/cmake-generators.7.html#command-line-build-tool-generators"><span class="std std-ref">命令行构建工具生成器</span></a>，以生成挂载到命令行构建系统的 IDE 项目文件。已被 <span class="target" id="index-4-manual:cmake-file-api(7)"></span><a class="reference internal" href="../../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">文件 API</span></code></a> 取代。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="index.html#">IDE 集成指南</a><ul>
+<li><a class="reference internal" href="index.html#introduction">简介</a></li>
+<li><a class="reference internal" href="index.html#bundling">捆绑</a></li>
+<li><a class="reference internal" href="index.html#presets">预设</a></li>
+<li><a class="reference internal" href="index.html#configuring">配置</a></li>
+<li><a class="reference internal" href="index.html#building">构建</a></li>
+<li><a class="reference internal" href="index.html#testing">测试</a></li>
+<li><a class="reference internal" href="index.html#ides-with-cmake-integration">集成 CMake 的 IDE</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../importing-exporting/index.html" title="上一章">导入和导出指南</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="../../release/index.html" title="下一章">CMake 发布说明</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/ide-integration/index.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="../../release/index.html" title="CMake Release Notes">下一页</a> |</li>
+        <li class="right">
+          <a href="../importing-exporting/index.html" title="Importing and Exporting Guide">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="index.html">IDE 集成指南</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

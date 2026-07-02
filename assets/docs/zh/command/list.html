@@ -1,0 +1,432 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>list — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="list.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="load_cache" href="load_cache.html" />
+    <link rel="prev" title="include_guard" href="include_guard.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="load_cache.html" title="load_cache" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="include_guard.html" title="include_guard" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="list.html">list</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="list">
+<span id="command:list"></span><h1>list<a class="headerlink" href="list.html#list" title="链接到此标题">¶</a></h1>
+<p>对 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a> 进行操作。</p>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="list.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="list.html#reading">Reading</a>
+  list(<a class="reference internal" href="list.html#length">LENGTH</a> &lt;list&gt; &lt;out-var&gt;)
+  list(<a class="reference internal" href="list.html#get">GET</a> &lt;list&gt; &lt;element index&gt; [&lt;index&gt; ...] &lt;out-var&gt;)
+  list(<a class="reference internal" href="list.html#join">JOIN</a> &lt;list&gt; &lt;glue&gt; &lt;out-var&gt;)
+  list(<a class="reference internal" href="list.html#sublist">SUBLIST</a> &lt;list&gt; &lt;begin&gt; &lt;length&gt; &lt;out-var&gt;)
+
+<a class="reference internal" href="list.html#search">Search</a>
+  list(<a class="reference internal" href="list.html#find">FIND</a> &lt;list&gt; &lt;value&gt; &lt;out-var&gt;)
+
+<a class="reference internal" href="list.html#modification">Modification</a>
+  list(<a class="reference internal" href="list.html#append">APPEND</a> &lt;list&gt; [&lt;element&gt;...])
+  list(<a class="reference internal" href="list.html#filter">FILTER</a> &lt;list&gt; {INCLUDE | EXCLUDE} REGEX &lt;regex&gt;)
+  list(<a class="reference internal" href="list.html#insert">INSERT</a> &lt;list&gt; &lt;index&gt; [&lt;element&gt;...])
+  list(<a class="reference internal" href="list.html#pop-back">POP_BACK</a> &lt;list&gt; [&lt;out-var&gt;...])
+  list(<a class="reference internal" href="list.html#pop-front">POP_FRONT</a> &lt;list&gt; [&lt;out-var&gt;...])
+  list(<a class="reference internal" href="list.html#prepend">PREPEND</a> &lt;list&gt; [&lt;element&gt;...])
+  list(<a class="reference internal" href="list.html#remove-item">REMOVE_ITEM</a> &lt;list&gt; &lt;value&gt;...)
+  list(<a class="reference internal" href="list.html#remove-at">REMOVE_AT</a> &lt;list&gt; &lt;index&gt;...)
+  list(<a class="reference internal" href="list.html#remove-duplicates">REMOVE_DUPLICATES</a> &lt;list&gt;)
+  list(<a class="reference internal" href="list.html#transform">TRANSFORM</a> &lt;list&gt; &lt;ACTION&gt; [...])
+
+<a class="reference internal" href="list.html#ordering">Ordering</a>
+  list(<a class="reference internal" href="list.html#reverse">REVERSE</a> &lt;list&gt;)
+  list(<a class="reference internal" href="list.html#sort">SORT</a> &lt;list&gt; [...])</pre>
+</section>
+<section id="introduction">
+<h2>简介<a class="headerlink" href="list.html#introduction" title="此标题的链接">¶</a></h2>
+<p><code class="cmake literal docutils notranslate"><span class="pre">list</span></code> 子命令 <a class="reference internal" href="list.html#append"><code class="cmake literal docutils notranslate"><span class="pre">APPEND</span></code></a>, <a class="reference internal" href="list.html#insert"><code class="cmake literal docutils notranslate"><span class="pre">INSERT</span></code></a>, <a class="reference internal" href="list.html#filter"><code class="cmake literal docutils notranslate"><span class="pre">FILTER</span></code></a>, <a class="reference internal" href="list.html#prepend"><code class="cmake literal docutils notranslate"><span class="pre">PREPEND</span></code></a>, <a class="reference internal" href="list.html#pop-back"><code class="cmake literal docutils notranslate"><span class="pre">POP_BACK</span></code></a>, <a class="reference internal" href="list.html#pop-front"><code class="cmake literal docutils notranslate"><span class="pre">POP_FRONT</span></code></a>, <a class="reference internal" href="list.html#remove-at"><code class="cmake literal docutils notranslate"><span class="pre">REMOVE_AT</span></code></a>, <a class="reference internal" href="list.html#remove-item"><code class="cmake literal docutils notranslate"><span class="pre">REMOVE_ITEM</span></code></a>, <a class="reference internal" href="list.html#remove-duplicates"><code class="cmake literal docutils notranslate"><span class="pre">REMOVE_DUPLICATES</span></code></a>, <a class="reference internal" href="list.html#reverse"><code class="cmake literal docutils notranslate"><span class="pre">REVERSE</span></code></a> 和 <a class="reference internal" href="list.html#sort"><code class="cmake literal docutils notranslate"><span class="pre">SORT</span></code></a> 可能会在当前 CMake 变量作用域内创建列表的新值。与 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令类似，<code class="docutils literal notranslate"><span class="pre">list</span></code> 命令会在当前作用域创建新的变量值，即使列表本身实际上是在父作用域中定义的。要将这些操作的结果向上传递，请使用带有 <code class="docutils literal notranslate"><span class="pre">PARENT_SCOPE</span></code> 的 <span class="target" id="index-1-command:set"></span><a class="reference internal" href="set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a>，或者带有 <code class="docutils literal notranslate"><span class="pre">CACHE</span> <span class="pre">INTERNAL</span></code> 的 <span class="target" id="index-2-command:set"></span><a class="reference internal" href="set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a>，也可以使用其他数值传播方式。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 中的列表是一组由 <code class="docutils literal notranslate"><span class="pre">;</span></code> 分隔的字符串。可以使用 <span class="target" id="index-3-command:set"></span><a class="reference internal" href="set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令创建列表。例如，<code class="docutils literal notranslate"><span class="pre">set(var</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">c</span> <span class="pre">d</span> <span class="pre">e)</span></code> 创建了一个包含 <code class="docutils literal notranslate"><span class="pre">a;b;c;d;e</span></code> 的列表，而 <code class="docutils literal notranslate"><span class="pre">set(var</span> <span class="pre">"a</span> <span class="pre">b</span> <span class="pre">c</span> <span class="pre">d</span> <span class="pre">e")</span></code> 则创建了一个字符串或仅包含一个元素的列表。（请注意，宏参数不是变量，因此不能在 <code class="docutils literal notranslate"><span class="pre">LIST</span></code> 命令中使用。）</p>
+<p>单个元素不能包含数量不等且未配对的 <code class="docutils literal notranslate"><span class="pre">[</span></code> 和 <code class="docutils literal notranslate"><span class="pre">]</span></code> 字符，且不能以反斜杠（<code class="docutils literal notranslate"><span class="pre">\</span></code>）结尾。详情请参见 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>指定索引值时，如果 <code class="docutils literal notranslate"><span class="pre">&lt;element</span> <span class="pre">index&gt;</span></code> 为 0 或更大，则从列表开头开始索引，0 代表第一个元素。如果 <code class="docutils literal notranslate"><span class="pre">&lt;element</span> <span class="pre">index&gt;</span></code> 为 -1 或更小，则从列表末尾开始索引，-1 代表最后一个元素。使用负索引计数时需小心：它们不是从 0 开始的。-0 等同于 0，即第一个列表元素。</p>
+</div>
+</section>
+<section id="reading">
+<h2>读取<a class="headerlink" href="list.html#reading" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="length">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">LENGTH</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#length" title="Link to this definition">¶</a></dt>
+<dd><p>返回列表的长度。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="get">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">GET</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;element&nbsp;index&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;element&nbsp;index&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#get" title="Link to this definition">¶</a></dt>
+<dd><p>返回列表中指定索引处的元素列表。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="join">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">JOIN</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;glue&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#join" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>返回一个使用粘合字符串（glue string）连接所有列表元素的字符串。若要连接多个不属于列表的字符串，请使用 <span class="target" id="index-0-command:string"></span><a class="reference internal" href="string.html#join" title="string(join)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(JOIN)</span></code></a>。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="sublist">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">SUBLIST</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;begin&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;length&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#sublist" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>返回给定列表的子列表。如果 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code> 为 0，将返回空列表。如果 <code class="docutils literal notranslate"><span class="pre">&lt;length&gt;</span></code> 为 -1，或者列表小于 <code class="docutils literal notranslate"><span class="pre">&lt;begin&gt;+&lt;length&gt;</span></code>，则返回从 <code class="docutils literal notranslate"><span class="pre">&lt;begin&gt;</span></code> 开始的剩余列表元素。</p>
+</dd></dl>
+
+</section>
+<section id="search">
+<h2>搜索<a class="headerlink" href="list.html#search" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="find">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">FIND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#find" title="Link to this definition">¶</a></dt>
+<dd><p>返回列表中指定元素的索引，如果未找到，则返回 <code class="docutils literal notranslate"><span class="pre">-1</span></code>。</p>
+</dd></dl>
+
+</section>
+<section id="modification">
+<h2>修改<a class="headerlink" href="list.html#modification" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="append">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">APPEND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;element&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#append" title="Link to this definition">¶</a></dt>
+<dd><p>将元素追加到列表中。如果当前作用域中不存在名为 <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> 的变量，其值将被视为为空，元素会被追加到该空列表中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="filter">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">FILTER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&lt;</span></span><span class="no"><span class="pre">INCLUDE</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">EXCLUDE</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">REGEX</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;regular_expression&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#filter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>根据模式包含或移除列表中的项目。在 <code class="docutils literal notranslate"><span class="pre">REGEX</span></code> 模式下，项目将与给定的正则表达式进行匹配。</p>
+<p>有关正则表达式的更多信息，请参阅 <a class="reference internal" href="string.html#regex-specification"><span class="std std-ref">string(REGEX)</span></a>。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="insert">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">INSERT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;element_index&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;element&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;element&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#insert" title="Link to this definition">¶</a></dt>
+<dd><p>在指定索引处插入元素到列表中。指定超出范围的索引是错误的。有效的索引为从 0 到 N（N 为列表长度，含 N）。空列表的长度为 0。如果当前作用域中不存在名为 <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> 的变量，其值将被视为为空，元素会被插入到该空列表中。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="pop-back">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">POP_BACK</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;out-var&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#pop-back" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>如果不提供变量名，则正好移除一个元素。否则，提供 N 个变量名时，将最后 N 个元素的值赋给这些变量，然后从 <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> 中移除这最后 N 个值。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="pop-front">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">POP_FRONT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;out-var&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#pop-front" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>如果不提供变量名，则正好移除一个元素。否则，提供 N 个变量名时，将前 N 个元素的值赋给这些变量，然后从 <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> 中移除这前 N 个值。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="prepend">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">PREPEND</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;element&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#prepend" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>将元素插入到列表的第 0 位。如果当前作用域中不存在名为 <code class="docutils literal notranslate"><span class="pre">&lt;list&gt;</span></code> 的变量，其值将被视为为空，元素会被添加到该空列表的前面。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="remove-item">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">REMOVE_ITEM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#remove-item" title="Link to this definition">¶</a></dt>
+<dd><p>从列表中移除所有匹配指定项的实例。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="remove-at">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">REMOVE_AT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;index&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;index&gt;</span></span><span class="nbsp"> </span><span class="p"><span class="pre">...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#remove-at" title="Link to this definition">¶</a></dt>
+<dd><p>从列表中移除指定索引处的项目。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="remove-duplicates">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">REMOVE_DUPLICATES</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#remove-duplicates" title="Link to this definition">¶</a></dt>
+<dd><p>移除列表中的重复项。列表项的相对顺序将被保留，如果遇到重复项，仅保留第一个实例。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;ACTION&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;SELECTOR&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">OUTPUT_VARIABLE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;output&nbsp;variable&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>通过对列表中所有元素，或通过指定 <code class="docutils literal notranslate"><span class="pre">&lt;SELECTOR&gt;</span></code> 对选定元素应用 <code class="docutils literal notranslate"><span class="pre">&lt;ACTION&gt;</span></code> 来转换列表，并将结果就地存储或存储在指定的输出变量中。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">TRANSFORM</span></code> 子命令不会改变列表中的元素数量。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;SELECTOR&gt;</span></code>，则仅会更改部分元素，其他元素将保持转换前的状态。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;ACTION&gt;</span></code> 指定应用于列表元素的动作。这些动作与 <span class="target" id="index-1-command:string"></span><a class="reference internal" href="string.html#command:string" title="string"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string()</span></code></a> 命令的子命令具有完全相同的语义。<code class="docutils literal notranslate"><span class="pre">&lt;ACTION&gt;</span></code> 必须是以下内容之一：</p>
+<blockquote>
+<div><dl>
+<dt><span class="target" id="index-2-command:string"></span><a class="reference internal" href="string.html#append" title="string(append)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">APPEND</span></code></a>, <span class="target" id="index-3-command:string"></span><a class="reference internal" href="string.html#prepend" title="string(prepend)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">PREPEND</span></code></a></dt><dd><p>向列表的每个元素追加或前置指定值。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform-append">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nf"><span class="pre">(</span></span><span class="no"><span class="pre">APPEND</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">PREPEND</span></span><span class="nf"><span class="pre">)</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform-append" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt><span class="target" id="index-4-command:string"></span><a class="reference internal" href="string.html#tolower" title="string(tolower)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">TOLOWER</span></code></a>, <span class="target" id="index-5-command:string"></span><a class="reference internal" href="string.html#toupper" title="string(toupper)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">TOUPPER</span></code></a></dt><dd><p>将列表的每个元素转换为小写或大写字符。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform-tolower">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="nf"><span class="pre">(</span></span><span class="no"><span class="pre">TOLOWER</span></span><span class="p"><span class="pre">|</span></span><span class="no"><span class="pre">TOUPPER</span></span><span class="nf"><span class="pre">)</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform-tolower" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt><span class="target" id="index-6-command:string"></span><a class="reference internal" href="string.html#strip" title="string(strip)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">STRIP</span></code></a></dt><dd><p>从列表的每个元素中移除首尾空格。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform-strip">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">STRIP</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform-strip" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt><span class="target" id="index-7-command:string"></span><a class="reference internal" href="string.html#genex-strip" title="string(genex_strip)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">GENEX_STRIP</span></code></a></dt><dd><p>从列表的每个元素中去除所有 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform-genex-strip">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">GENEX_STRIP</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform-genex-strip" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt><span class="target" id="index-8-command:string"></span><a class="reference internal" href="string.html#regex-replace" title="string(regex replace)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">REPLACE</span></code></a></dt><dd><p>尽可能多地匹配正则表达式，并为列表的每个元素替换匹配项（与 <span class="target" id="index-9-command:string"></span><a class="reference internal" href="string.html#regex-replace" title="string(regex replace)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">string(REGEX</span> <span class="pre">REPLACE)</span></code></a> 语义相同）。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="transform-replace">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">TRANSFORM</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">REPLACE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;regular_expression&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;replace_expression&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#transform-replace" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 4.1 变更: </span><code class="docutils literal notranslate"><span class="pre">^</span></code> 锚点现在仅匹配输入元素的开头，而不是每次重复搜索的开头。请参阅策略 <span class="target" id="index-0-policy:CMP0186"></span><a class="reference internal" href="../policy/CMP0186.html#policy:CMP0186" title="CMP0186"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0186</span></code></a>。</p>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;SELECTOR&gt;</span></code> 决定转换列表中的哪些元素。一次只能指定一种选择器。当使用时，<code class="docutils literal notranslate"><span class="pre">&lt;SELECTOR&gt;</span></code> 必须是以下内容之一：</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">AT</span></code></dt><dd><p>指定索引列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list(</span><span class="no">TRANSFORM</span><span class="w"> </span><span class="nv">&lt;list&gt;</span><span class="w"> </span><span class="nv">&lt;ACTION&gt;</span><span class="w"> </span><span class="no">AT</span><span class="w"> </span><span class="nv">&lt;index&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;index&gt;</span><span class="w"> </span><span class="p">...]</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FOR</span></code></dt><dd><p>指定一个范围，并可选择性地使用增量来遍历该范围。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list(</span><span class="no">TRANSFORM</span><span class="w"> </span><span class="nv">&lt;list&gt;</span><span class="w"> </span><span class="nv">&lt;ACTION&gt;</span><span class="w"> </span><span class="no">FOR</span><span class="w"> </span><span class="nv">&lt;start&gt;</span><span class="w"> </span><span class="nv">&lt;stop&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;step&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REGEX</span></code></dt><dd><p>指定正则表达式。只有匹配该正则表达式的元素才会被转换。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list(</span><span class="no">TRANSFORM</span><span class="w"> </span><span class="nv">&lt;list&gt;</span><span class="w"> </span><span class="nv">&lt;ACTION&gt;</span><span class="w"> </span><span class="no">REGEX</span><span class="w"> </span><span class="nv">&lt;regular_expression&gt;</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="ordering">
+<h2>排序<a class="headerlink" href="list.html#ordering" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="reverse">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">REVERSE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#reverse" title="Link to this definition">¶</a></dt>
+<dd><p>就地反转列表内容。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="sort">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">list(</span></span><span class="no"><span class="pre">SORT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;list&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">COMPARE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;compare&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">CASE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;case&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">ORDER</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;order&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="list.html#sort" title="Link to this definition">¶</a></dt>
+<dd><p>按字母顺序对列表进行就地排序。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.13 新增: </span>添加了 <code class="docutils literal notranslate"><span class="pre">COMPARE</span></code>, <code class="docutils literal notranslate"><span class="pre">CASE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ORDER</span></code> 选项。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.18 新增: </span>添加了 <code class="docutils literal notranslate"><span class="pre">COMPARE</span> <span class="pre">NATURAL</span></code> 选项。</p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">COMPARE</span></code> 关键字选择排序的比较方法。<code class="docutils literal notranslate"><span class="pre">&lt;compare&gt;</span></code> 选项应为以下内容之一：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">STRING</span></code></dt><dd><p>按字母顺序对字符串列表进行排序。如果未给出 <code class="docutils literal notranslate"><span class="pre">COMPARE</span></code> 选项，这是默认行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_BASENAME</span></code></dt><dd><p>按文件名（basenames）对路径名列表进行排序。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NATURAL</span></code></dt><dd><p>使用自然顺序（请参阅 <code class="docutils literal notranslate"><span class="pre">strverscmp(3)</span></code> 手册）对字符串列表进行排序，即连续的数字被视为整体数字进行比较。例如：列表 <em>10.0 1.1 2.1 8.0 2.0 3.1</em>，如果选择 <code class="docutils literal notranslate"><span class="pre">NATURAL</span></code> 比较，将排序为 <em>1.1 2.0 2.1 3.1 8.0 10.0</em>；如果使用 <code class="docutils literal notranslate"><span class="pre">STRING</span></code> 比较，则排序为 <em>1.1 10.0 2.0 2.1 3.1 8.0</em>。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">CASE</span></code> 关键字选择区分大小写或不区分大小写的排序模式。<code class="docutils literal notranslate"><span class="pre">&lt;case&gt;</span></code> 选项应为以下内容之一：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SENSITIVE</span></code></dt><dd><p>列表项区分大小写进行排序。如果未给出 <code class="docutils literal notranslate"><span class="pre">CASE</span></code> 选项，这是默认行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSENSITIVE</span></code></dt><dd><p>列表项不区分大小写进行排序。仅大小写不同的项，其排序顺序未指定。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>要控制排序顺序，可以使用 <code class="docutils literal notranslate"><span class="pre">ORDER</span></code> 关键字。<code class="docutils literal notranslate"><span class="pre">&lt;order&gt;</span></code> 选项应为以下内容之一：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ASCENDING</span></code></dt><dd><p>按升序排列列表。如果未给出 <code class="docutils literal notranslate"><span class="pre">ORDER</span></code> 选项，这是默认行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESCENDING</span></code></dt><dd><p>按降序排列列表。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="list.html#">list</a><ul>
+<li><a class="reference internal" href="list.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="list.html#introduction">简介</a></li>
+<li><a class="reference internal" href="list.html#reading">读取</a></li>
+<li><a class="reference internal" href="list.html#search">搜索</a></li>
+<li><a class="reference internal" href="list.html#modification">修改</a></li>
+<li><a class="reference internal" href="list.html#ordering">排序</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="include_guard.html" title="上一章">include_guard</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="load_cache.html" title="下一章">load_cache</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/list.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="load_cache.html" title="load_cache">下一页</a> |</li>
+        <li class="right">
+          <a href="include_guard.html" title="include_guard">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="list.html">list</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

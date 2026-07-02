@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>POSITION_INDEPENDENT_CODE — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="POSITION_INDEPENDENT_CODE.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="PRECOMPILE_HEADERS" href="PRECOMPILE_HEADERS.html" />
+    <link rel="prev" title="PDB_OUTPUT_DIRECTORY_&lt;CONFIG&gt;" href="PDB_OUTPUT_DIRECTORY_CONFIG.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="PRECOMPILE_HEADERS.html" title="PRECOMPILE_HEADERS" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="PDB_OUTPUT_DIRECTORY_CONFIG.html" title="PDB_OUTPUT_DIRECTORY_&lt;CONFIG&gt;" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="POSITION_INDEPENDENT_CODE.html">POSITION_INDEPENDENT_CODE</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="position-independent-code">
+<span id="prop_tgt:POSITION_INDEPENDENT_CODE"></span><h1>POSITION_INDEPENDENT_CODE<a class="headerlink" href="POSITION_INDEPENDENT_CODE.html#position-independent-code" title="链接到此标题">¶</a></h1>
+<p>这是一个目标属性，用于指定是否创建启用了与位置无关代码（Position-Independent Code）的目标。</p>
+<p><code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性决定了是否创建与位置无关的可执行文件或库。对于 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code>（共享库）和 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code>（模块库）目标，该属性默认值为 <code class="docutils literal notranslate"><span class="pre">True</span></code>。对于其他目标，该属性在创建时由 <span class="target" id="index-0-variable:CMAKE_POSITION_INDEPENDENT_CODE"></span><a class="reference internal" href="../variable/CMAKE_POSITION_INDEPENDENT_CODE.html#variable:CMAKE_POSITION_INDEPENDENT_CODE" title="CMAKE_POSITION_INDEPENDENT_CODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POSITION_INDEPENDENT_CODE</span></code></a> 变量的值进行初始化（如果已设置）；否则默认为 <code class="docutils literal notranslate"><span class="pre">False</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>对于可执行文件目标，链接步骤受 <span class="target" id="index-0-policy:CMP0083"></span><a class="reference internal" href="../policy/CMP0083.html#policy:CMP0083" title="CMP0083"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0083</span></code></a> 策略和 <span class="target" id="index-0-module:CheckPIESupported"></span><a class="reference internal" href="../module/CheckPIESupported.html#module:CheckPIESupported" title="CheckPIESupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckPIESupported</span></code></a> 模块控制。</p>
+</div>
+<p>与位置无关的代码（PIC）是指无论其绝对内存地址如何，都能正常执行的机器码。这对于共享库尤为重要，因为共享库通常会被不同的程序加载到不同的内存地址中。生成与位置无关的代码可以确保这些库能够在多个进程之间安全高效地共享，而不会导致地址冲突。在某些平台（尤其是类 UNIX 系统）上，生成 PIC 也是创建共享库的必要条件。</p>
+<p>在以下情况下，建议或要求使用与位置无关的代码：</p>
+<ul class="simple">
+<li><p>构建共享库或模块库时（例如使用 <code class="docutils literal notranslate"><span class="pre">add_library(...</span> <span class="pre">SHARED)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">add_library(...</span> <span class="pre">MODULE)</span></code>），PIC 允许在运行时进行动态重定位。</p></li>
+<li><p>构建与位置无关的可执行文件（PIE）时，这可以通过启用地址空间布局随机化（ASLR）来增强安全性。</p></li>
+<li><p>在某些特定类型的链接或沙盒环境中要求使用 PIC 的平台或工具链上。</p></li>
+</ul>
+<p>在某些架构上，启用 PIC 可能会导致代码体积略微增大或运行速度稍慢，但这种性能损耗通常会被其带来的灵活性和安全性优势所抵消。</p>
+<section id="examples">
+<h2>示例<a class="headerlink" href="POSITION_INDEPENDENT_CODE.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>为静态库目标启用 PIC</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">foo</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="nb">foo.c</span><span class="nf">)</span>
+<span class="nf">set_target_properties(</span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为可执行文件目标启用 PIC</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">app</span><span class="w"> </span><span class="nb">app.c</span><span class="nf">)</span>
+
+<span class="nf">set_target_properties(</span><span class="nb">app</span><span class="w"> </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+
+<span class="c"># Additionally, pass PIE-related link-time options to executable(s).</span>
+<span class="nf">include(</span><span class="nb">CheckPIESupported</span><span class="nf">)</span>
+<span class="nf">check_pie_supported()</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="POSITION_INDEPENDENT_CODE.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>使用 <span class="target" id="index-1-module:CheckPIESupported"></span><a class="reference internal" href="../module/CheckPIESupported.html#module:CheckPIESupported" title="CheckPIESupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckPIESupported</span></code></a> 模块，以便为可执行文件向链接器传递与 PIE 相关的选项。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="POSITION_INDEPENDENT_CODE.html#">POSITION_INDEPENDENT_CODE</a><ul>
+<li><a class="reference internal" href="POSITION_INDEPENDENT_CODE.html#examples">示例</a></li>
+<li><a class="reference internal" href="POSITION_INDEPENDENT_CODE.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="PDB_OUTPUT_DIRECTORY_CONFIG.html" title="上一章">PDB_OUTPUT_DIRECTORY_&lt;CONFIG&gt;</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="PRECOMPILE_HEADERS.html" title="下一章">PRECOMPILE_HEADERS</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/POSITION_INDEPENDENT_CODE.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="PRECOMPILE_HEADERS.html" title="PRECOMPILE_HEADERS">下一页</a> |</li>
+        <li class="right">
+          <a href="PDB_OUTPUT_DIRECTORY_CONFIG.html" title="PDB_OUTPUT_DIRECTORY_&lt;CONFIG&gt;">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="POSITION_INDEPENDENT_CODE.html">POSITION_INDEPENDENT_CODE</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

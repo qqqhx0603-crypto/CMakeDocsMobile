@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0119 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0119.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0118" href="CMP0118.html" />
+    <link rel="prev" title="CMP0120" href="CMP0120.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0118.html" title="CMP0118" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0120.html" title="CMP0120" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0119.html">CMP0119</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0119">
+<span id="policy:CMP0119"></span><h1>CMP0119<a class="headerlink" href="CMP0119.html#cmp0119" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p><span class="target" id="index-0-prop_sf:LANGUAGE"></span><a class="reference internal" href="../prop_sf/LANGUAGE.html#prop_sf:LANGUAGE" title="LANGUAGE"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">LANGUAGE</span></code></a> 源文件属性明确指定以指定语言编译。</p>
+<p><span class="target" id="index-1-prop_sf:LANGUAGE"></span><a class="reference internal" href="../prop_sf/LANGUAGE.html#prop_sf:LANGUAGE" title="LANGUAGE"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">LANGUAGE</span></code></a> 源文件属性的文档说明是，该源文件是用指定的语言编写的。在 CMake 3.19 及更早版本中，设置此属性会导致 CMake 使用指定语言的编译器来编译源文件。但是，它仅传递一个明确的标志，告诉编译器将源视为指定的语言，适用于 MSVC-like、XL 和 Embarcadero 编译器以及 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 语言。CMake 3.20 及更高版本更倾向于使用类似于 <code class="docutils literal notranslate"><span class="pre">-x</span> <span class="pre">c</span></code> 的标志，在所有已知此类标志的编译器上明确告诉编译器使用指定的语言。</p>
+<p>此策略为尚未更新以期望此行为的项目提供兼容性。例如，一些项目将 <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code> 属性设置为 <code class="docutils literal notranslate"><span class="pre">C</span></code>，用于汇编语言 <code class="docutils literal notranslate"><span class="pre">.S</span></code> 源文件，以便使用 C 编译器编译它们。此类项目应更新为使用 <code class="docutils literal notranslate"><span class="pre">enable_language(ASM)</span></code>，CMake 通常会在相关平台上将 C 编译器选为汇编器。</p>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是使用其未记录的含义来解释 <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span> <span class="pre">&lt;LANG&gt;</span></code> 属性，即“使用 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;</span></code> 编译器”。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是使用其记录的含义来解释 <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span> <span class="pre">&lt;LANG&gt;</span></code> 属性，即“编译为 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;</span></code> 源”。</p>
+<p>此策略是在 CMake 版本 3.20 中引入的。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake 不会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0120.html" title="上一章">CMP0120</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0118.html" title="下一章">CMP0118</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0119.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0118.html" title="CMP0118">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0120.html" title="CMP0120">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0119.html">CMP0119</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

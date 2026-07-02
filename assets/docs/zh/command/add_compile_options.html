@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>add_compile_options — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="add_compile_options.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="add_custom_command" href="add_custom_command.html" />
+    <link rel="prev" title="add_compile_definitions" href="add_compile_definitions.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="add_custom_command.html" title="add_custom_command" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="add_compile_definitions.html" title="add_compile_definitions" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_compile_options.html">add_compile_options</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="add-compile-options">
+<span id="command:add_compile_options"></span><h1>add_compile_options<a class="headerlink" href="add_compile_options.html#add-compile-options" title="链接到此标题">¶</a></h1>
+<p>向源文件的编译过程中添加选项。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_compile_options(</span><span class="nv">&lt;option&gt;</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>向 <span class="target" id="index-0-prop_dir:COMPILE_OPTIONS"></span><a class="reference internal" href="../prop_dir/COMPILE_OPTIONS.html#prop_dir:COMPILE_OPTIONS" title="COMPILE_OPTIONS"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">COMPILE_OPTIONS</span></code></a> 目录属性添加选项。这些选项在编译当前目录及其子目录下的目标（targets）时使用。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>这些选项不会在链接时使用。请参阅 <span class="target" id="index-0-command:add_link_options"></span><a class="reference internal" href="add_link_options.html#command:add_link_options" title="add_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_link_options()</span></code></a> 命令以了解链接选项。</p>
+</div>
+<section id="arguments">
+<h2>参数<a class="headerlink" href="add_compile_options.html#arguments" title="此标题的链接">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">add_compile_options</span></code> 的参数可以使用语法为 <code class="docutils literal notranslate"><span class="pre">$&lt;...&gt;</span></code> 的生成器表达式（generator expressions）。有关可用表达式，请参阅 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generator-expressions(7)</span></code></a> 手册。有关定义构建系统属性的更多信息，请参阅 <span class="target" id="index-1-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="../manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7)" title="cmake-buildsystem(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-buildsystem(7)</span></code></a> 手册。</p>
+</section>
+<section id="option-de-duplication">
+<h2>选项去重<a class="headerlink" href="add_compile_options.html#option-de-duplication" title="此标题的永久链接">¶</a></h2>
+<p>用于目标的最终选项集通过累积当前目标及其依赖项的使用要求的选项来构建。选项集经过去重以避免重复。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增: </span>虽然去重步骤对于单个选项很有用，但它可能会破坏选项组。例如，<code class="docutils literal notranslate"><span class="pre">-option</span> <span class="pre">A</span> <span class="pre">-option</span> <span class="pre">B</span></code> 会变成 <code class="docutils literal notranslate"><span class="pre">-option</span> <span class="pre">A</span> <span class="pre">B</span></code>。可以使用类似 shell 的引用加上 <code class="docutils literal notranslate"><span class="pre">SHELL:</span></code> 前缀来指定一组选项。<code class="docutils literal notranslate"><span class="pre">SHELL:</span></code> 前缀会被去除，其余的选项字符串将使用 <span class="target" id="index-0-command:separate_arguments"></span><a class="reference internal" href="separate_arguments.html#command:separate_arguments" title="separate_arguments"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">separate_arguments()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">UNIX_COMMAND</span></code> 模式进行解析。例如，<code class="docutils literal notranslate"><span class="pre">"SHELL:-option</span> <span class="pre">A"</span> <span class="pre">"SHELL:-option</span> <span class="pre">B"</span></code> 会变成 <code class="docutils literal notranslate"><span class="pre">-option</span> <span class="pre">A</span> <span class="pre">-option</span> <span class="pre">B</span></code>。</p>
+</div>
+</section>
+<section id="example">
+<h2>示例<a class="headerlink" href="add_compile_options.html#example" title="此标题的链接">¶</a></h2>
+<p>由于不同的编译器支持不同的选项，该命令的典型用法是在特定于编译器的条件语句中使用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if</span> <span class="nf">(</span><span class="no">MSVC</span><span class="nf">)</span>
+<span class="w">    </span><span class="c"># warning level 4</span>
+<span class="w">    </span><span class="nf">add_compile_options(</span><span class="na">/W4</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">    </span><span class="c"># additional warnings</span>
+<span class="w">    </span><span class="nf">add_compile_options(</span><span class="p">-</span><span class="nb">Wall</span><span class="w"> </span><span class="p">-</span><span class="nb">Wextra</span><span class="w"> </span><span class="p">-</span><span class="nb">Wpedantic</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>若要设置特定于语言的选项，请使用 <span class="target" id="index-0-genex:COMPILE_LANGUAGE"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE" title="COMPILE_LANGUAGE"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_LANGUAGE&gt;</span></code></a> 或 <span class="target" id="index-0-genex:COMPILE_LANGUAGE:languages"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE:languages" title="COMPILE_LANGUAGE:languages"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMPILE_LANGUAGE:languages&gt;</span></code></a> 生成器表达式。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="add_compile_options.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>此命令可用于添加任何选项。但是，若要添加预处理器定义和包含目录，建议使用更具体的命令 <span class="target" id="index-0-command:add_compile_definitions"></span><a class="reference internal" href="add_compile_definitions.html#command:add_compile_definitions" title="add_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions()</span></code></a> 和 <span class="target" id="index-0-command:include_directories"></span><a class="reference internal" href="include_directories.html#command:include_directories" title="include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include_directories()</span></code></a>。</p></li>
+<li><p><span class="target" id="index-0-command:target_compile_options"></span><a class="reference internal" href="target_compile_options.html#command:target_compile_options" title="target_compile_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_options()</span></code></a> 命令用于添加目标特定的选项。</p></li>
+<li><p>此命令为所有语言添加编译选项。请使用 <span class="target" id="index-1-genex:COMPILE_LANGUAGE"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMPILE_LANGUAGE" title="COMPILE_LANGUAGE"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">COMPILE_LANGUAGE</span></code></a> 生成器表达式来指定特定于语言的编译选项。</p></li>
+<li><p>源文件属性 <span class="target" id="index-0-prop_sf:COMPILE_OPTIONS"></span><a class="reference internal" href="../prop_sf/COMPILE_OPTIONS.html#prop_sf:COMPILE_OPTIONS" title="COMPILE_OPTIONS"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">COMPILE_OPTIONS</span></code></a> 可为单个源文件添加选项。</p></li>
+<li><p><span class="target" id="index-1-command:add_link_options"></span><a class="reference internal" href="add_link_options.html#command:add_link_options" title="add_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_link_options()</span></code></a> 用于添加链接选项。</p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_<LANG>_FLAGS_<CONFIG>" title="CMAKE_<LANG>_FLAGS_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 添加传递给编译器所有调用的语言范围标志。这包括驱动编译和驱动链接的调用。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="add_compile_options.html#">add_compile_options</a><ul>
+<li><a class="reference internal" href="add_compile_options.html#arguments">参数</a></li>
+<li><a class="reference internal" href="add_compile_options.html#option-de-duplication">选项去重</a></li>
+<li><a class="reference internal" href="add_compile_options.html#example">示例</a></li>
+<li><a class="reference internal" href="add_compile_options.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="add_compile_definitions.html" title="上一章">add_compile_definitions</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="add_custom_command.html" title="下一章">add_custom_command</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/add_compile_options.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="add_custom_command.html" title="add_custom_command">下一页</a> |</li>
+        <li class="right">
+          <a href="add_compile_definitions.html" title="add_compile_definitions">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_compile_options.html">add_compile_options</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

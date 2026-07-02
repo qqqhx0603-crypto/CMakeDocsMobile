@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindBLAS — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindBLAS.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindBullet" href="FindBullet.html" />
+    <link rel="prev" title="FindBISON" href="FindBISON.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindBullet.html" title="FindBullet" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindBISON.html" title="FindBISON" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindBLAS.html">FindBLAS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findblas">
+<span id="module:FindBLAS"></span><h1>FindBLAS<a class="headerlink" href="FindBLAS.html#findblas" title="链接到此标题">¶</a></h1>
+<p>查找已安装的基础线性代数子程序（BLAS）Fortran 库，该库实现了 <a class="reference external" href="https://netlib.org/blas/">BLAS 线性代数接口</a></p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">BLAS</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>必须至少启用 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code> 语言中的一种。</p>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindBLAS.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS::BLAS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>用于封装使用 BLAS 所需的库和使用要求的目标（Target），仅在找到 BLAS 时可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindBLAS.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了实现 BLAS 接口的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS_LINKER_FLAGS</span></code></dt><dd><p>未缓存的必需链接器标志列表（不包括 <code class="docutils literal notranslate"><span class="pre">-l</span></code> 和 <code class="docutils literal notranslate"><span class="pre">-L</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS_LIBRARIES</span></code></dt><dd><p>未缓存的库列表（使用完整路径名），用于链接以使用 BLAS（如果编译器隐式链接了 BLAS，则此列表可能为空）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS95_LIBRARIES</span></code></dt><dd><p>未缓存的库列表（使用完整路径名），用于链接以使用 BLAS95 接口。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLAS95_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了实现 BLAS95 接口的库。</p>
+</dd>
+</dl>
+</section>
+<section id="input-variables">
+<h2>输入变量<a class="headerlink" href="FindBLAS.html#input-variables" title="此标题的链接">¶</a></h2>
+<p>可以设置以下变量来影响此模块的行为：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_STATIC</span></code></dt><dd><p>如果设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，将使用静态链接。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_VENDOR</span></code></dt><dd><p>设置为 <a class="reference internal" href="FindBLAS.html#blas-lapack-vendors"><span class="std std-ref">BLAS/LAPACK 供应商</span></a> 之一，以仅搜索指定供应商的 BLAS。如果不设置，则考虑所有供应商。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_F95</span></code></dt><dd><p>如果设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，该模块将尝试查找 BLAS95 接口。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_PREFER_PKGCONFIG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>如果设置了此项，将优先使用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 搜索 BLAS 库，如果找到，则优先使用该库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_PKGCONFIG_BLAS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>如果设置了此项，<code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 方法将搜索此模块名称，而不是仅仅搜索 <code class="docutils literal notranslate"><span class="pre">blas</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_SIZEOF_INTEGER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>指定 BLAS/LAPACK 库的整数大小</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">4</span></code></dt><dd><p>搜索具有 32 位整数接口的 BLAS/LAPACK。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">8</span></code></dt><dd><p>搜索具有 64 位整数接口的 BLAS/LAPACK。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ANY</span></code></dt><dd><p>搜索任意 BLAS/LAPACK。最有可能找到具有 32 位整数接口的 BLAS/LAPACK。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BLA_THREAD</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>指定 BLAS/LAPACK 线程模型</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SEQ</span></code></dt><dd><p>顺序模型</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OMP</span></code></dt><dd><p>OpenMP 模型</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ANY</span></code></dt><dd><p>搜索任意 BLAS/LAPACK，如果两者均可用，则最有可能找到 <code class="docutils literal notranslate"><span class="pre">OMP</span></code> 版本。</p>
+</dd>
+</dl>
+<p>目前仅由 NVIDIA NVPL 支持。</p>
+</dd>
+</dl>
+</section>
+<section id="blas-lapack-vendors">
+<span id="id1"></span><h2>BLAS/LAPACK 供应商<a class="headerlink" href="FindBLAS.html#blas-lapack-vendors" title="链接到此标题">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Generic</span></code></dt><dd><p>通用参考实现。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ACML</span></code>, <code class="docutils literal notranslate"><span class="pre">ACML_MP</span></code>, <code class="docutils literal notranslate"><span class="pre">ACML_GPU</span></code></dt><dd><p>AMD 核心数学库 (AMD Core Math Library)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AOCL</span></code>, <code class="docutils literal notranslate"><span class="pre">AOCL_mt</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p>AMD CPU 优化库 (AMD Optimizing CPU Libraries)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Apple</span></code>, <code class="docutils literal notranslate"><span class="pre">NAS</span></code></dt><dd><p>Apple BLAS (Accelerate) 和 Apple NAS (vecLib)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Arm</span></code>, <code class="docutils literal notranslate"><span class="pre">Arm_mp</span></code>, <code class="docutils literal notranslate"><span class="pre">Arm_ilp64</span></code>, <code class="docutils literal notranslate"><span class="pre">Arm_ilp64_mp</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>Arm 性能库 (Arm Performance Libraries)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ATLAS</span></code></dt><dd><p>自动调优线性代数软件 (Automatically Tuned Linear Algebra Software)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CXML</span></code>, <code class="docutils literal notranslate"><span class="pre">DXML</span></code></dt><dd><p>Compaq/Digital 扩展数学库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EML</span></code>, <code class="docutils literal notranslate"><span class="pre">EML_mt</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>Elbrus 数学库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FLAME</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>BLIS 框架。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FlexiBLAS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fujitsu_SSL2</span></code>, <code class="docutils literal notranslate"><span class="pre">Fujitsu_SSL2BLAMP</span></code>, <code class="docutils literal notranslate"><span class="pre">Fujitsu_SSL2SVE</span></code>, <code class="docutils literal notranslate"><span class="pre">Fujitsu_SSL2BLAMPSVE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>富士通 SSL2 串行和并行 blas/lapack（带 SVE 指令）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Goto</span></code></dt><dd><p>GotoBLAS。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">IBMESSL</span></code>, <code class="docutils literal notranslate"><span class="pre">IBMESSL_SMP</span></code></p>
+<blockquote>
+<div><p>IBM 工程与科学子程序库。</p>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel</span></code></dt><dd><p>Intel MKL 32 位和 64 位过时版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_32</span></code></dt><dd><p>Intel MKL v10 32 位，线程化代码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_64lp</span></code></dt><dd><p>Intel MKL v10+ 64 位，线程化代码，lp64 模型。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_64lp_seq</span></code></dt><dd><p>Intel MKL v10+ 64 位，顺序代码，lp64 模型。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_64ilp</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>Intel MKL v10+ 64 位，线程化代码，ilp64 模型。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_64ilp_seq</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>Intel MKL v10+ 64 位，顺序代码，ilp64 模型。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Intel10_64_dyn</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>Intel MKL v10+ 64 位，单一动态库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">libblastrampoline</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>使用 PLT trampoline 的 BLAS/LAPACK 多路分解库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NVPL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>NVIDIA 性能库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NVHPC</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>NVIDIA HPC SDK。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OpenBLAS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PhiPACK</span></code></dt><dd><p>便携式高性能 ANSI C (PHiPAC)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SCSL</span></code>, <code class="docutils literal notranslate"><span class="pre">SCSL_mp</span></code></dt><dd><p>科学计算软件库 (Scientific Computing Software Library)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SGIMATH</span></code></dt><dd><p>SGI 科学数学库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SunPerf</span></code></dt><dd><p>Sun 性能库。</p>
+</dd>
+</dl>
+</section>
+<section id="intel-mkl">
+<span id="id2"></span><h2>Intel MKL<a class="headerlink" href="FindBLAS.html#intel-mkl" title="链接到此标题">¶</a></h2>
+<p>要使用 BLAS 的 Intel MKL 实现，项目必须至少启用 <code class="docutils literal notranslate"><span class="pre">C</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 语言之一。在命令行中设置 <code class="docutils literal notranslate"><span class="pre">-DBLA_VENDOR=Intel10_64lp</span></code> 或在项目代码中将 <code class="docutils literal notranslate"><span class="pre">BLA_VENDOR</span></code> 设置为 Intel MKL 变体。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">BLA_VENDOR</span><span class="w"> </span><span class="nb">Intel10_64lp</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="no">BLAS</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为了构建使用 Intel MKL 的项目，最终用户必须首先建立 Intel MKL 环境。</p>
+<dl>
+<dt>Intel oneAPI</dt><dd><p>执行完整的 Intel 环境脚本</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>/opt/intel/oneapi/setvars.sh
+</pre></div>
+</div>
+<p>或者，执行 MKL 组件环境脚本</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>/opt/intel/oneapi/mkl/latest/env/vars.sh
+</pre></div>
+</div>
+</dd>
+<dt>Intel Classic</dt><dd><p>执行完整的 Intel 环境脚本</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>/opt/intel/bin/compilervars.sh<span class="w"> </span>intel64
+</pre></div>
+</div>
+<p>或者，执行 MKL 组件环境脚本</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>/opt/intel/mkl/bin/mklvars.sh<span class="w"> </span>intel64
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>上述环境脚本将 <code class="docutils literal notranslate"><span class="pre">MKLROOT</span></code> 环境变量设置为 MKL 安装的根目录。它们还将运行时库的位置添加到您平台的动态库加载器环境变量（例如 <code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code>）中。这对于链接到 MKL 的程序运行是必需的。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>自 Intel oneAPI 2021.2 起，仅加载 MKL 组件并不能使其所有依赖项可用。特别是，<code class="docutils literal notranslate"><span class="pre">iomp5</span></code> 库必须单独可用，或者通过同时加载编译器组件环境来提供。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>/opt/intel/oneapi/compiler/latest/env/vars.sh
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindBLAS.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 BLAS 并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">BLAS</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">BLAS</span><span class="o">::</span><span class="no">BLAS</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindBLAS.html#">FindBLAS</a><ul>
+<li><a class="reference internal" href="FindBLAS.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindBLAS.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindBLAS.html#input-variables">输入变量</a></li>
+<li><a class="reference internal" href="FindBLAS.html#blas-lapack-vendors">BLAS/LAPACK 供应商</a></li>
+<li><a class="reference internal" href="FindBLAS.html#intel-mkl">Intel MKL</a></li>
+<li><a class="reference internal" href="FindBLAS.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindBISON.html" title="上一章">FindBISON</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindBullet.html" title="下一章">FindBullet</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindBLAS.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindBullet.html" title="FindBullet">下一页</a> |</li>
+        <li class="right">
+          <a href="FindBISON.html" title="FindBISON">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindBLAS.html">FindBLAS</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

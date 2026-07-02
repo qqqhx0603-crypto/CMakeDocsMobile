@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CTEST_COVERAGE_COMMAND — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CTEST_COVERAGE_COMMAND.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CTEST_COVERAGE_EXTRA_FLAGS" href="CTEST_COVERAGE_EXTRA_FLAGS.html" />
+    <link rel="prev" title="CTEST_CONFIGURE_COMMAND" href="CTEST_CONFIGURE_COMMAND.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CTEST_COVERAGE_EXTRA_FLAGS.html" title="CTEST_COVERAGE_EXTRA_FLAGS" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CTEST_CONFIGURE_COMMAND.html" title="CTEST_CONFIGURE_COMMAND" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTEST_COVERAGE_COMMAND.html">CTEST_COVERAGE_COMMAND</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctest-coverage-command">
+<span id="variable:CTEST_COVERAGE_COMMAND"></span><h1>CTEST_COVERAGE_COMMAND<a class="headerlink" href="CTEST_COVERAGE_COMMAND.html#ctest-coverage-command" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>在 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">仪表板客户端</span></a> 脚本中指定 CTest <code class="docutils literal notranslate"><span class="pre">CoverageCommand</span></code> 设置。</p>
+<section id="cobertura">
+<h2>Cobertura<a class="headerlink" href="CTEST_COVERAGE_COMMAND.html#cobertura" title="链接到此标题">¶</a></h2>
+<p>在 Java 多模块项目中，使用 <a class="reference external" href="https://cobertura.github.io/cobertura/">Cobertura</a> 作为覆盖率生成工具可以生成一系列 XML 文件。</p>
+<p>Cobertura 覆盖率解析器期望从单个 XML 文件读取覆盖率数据，该文件包含所有模块的覆盖率数据。Cobertura 具有能够合并给定的 <code class="docutils literal notranslate"><span class="pre">cobertura.ser</span></code> 文件，然后从先前合并的文件生成组合 XML 文件的程序。对于命令行测试，可以在 CTest 查找覆盖率文件之前手动完成此操作。对于脚本构建，将 <code class="docutils literal notranslate"><span class="pre">CTEST_COVERAGE_COMMAND</span></code> 变量设置为指向将执行这些相同步骤的文件，例如 <code class="docutils literal notranslate"><span class="pre">.sh</span></code> 或 <code class="docutils literal notranslate"><span class="pre">.bat</span></code> 文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_COVERAGE_COMMAND</span><span class="w"> </span><span class="p">...</span><span class="na">/run-coverage-and-consolidate.sh</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">run-coverage-and-consolidate.sh</span></code> 脚本可能由 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令创建，并且可能包含以下代码</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nv">CoberturaFiles</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>find<span class="w"> </span><span class="s2">"/path/to/source"</span><span class="w"> </span>-name<span class="w"> </span><span class="s2">"cobertura.ser"</span><span class="k">)</span><span class="s2">"</span>
+<span class="nv">SourceDirs</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>find<span class="w"> </span><span class="s2">"/path/to/source"</span><span class="w"> </span>-name<span class="w"> </span><span class="s2">"java"</span><span class="w"> </span>-type<span class="w"> </span>d<span class="k">)</span><span class="s2">"</span>
+cobertura-merge<span class="w"> </span>--datafile<span class="w"> </span>coberturamerge.ser<span class="w"> </span><span class="nv">$CoberturaFiles</span>
+cobertura-report<span class="w"> </span>--datafile<span class="w"> </span>coberturamerge.ser<span class="w"> </span>--destination<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<span class="w">                 </span>--format<span class="w"> </span>xml<span class="w"> </span><span class="nv">$SourceDirs</span>
+</pre></div>
+</div>
+<p>该脚本使用 <code class="docutils literal notranslate"><span class="pre">find</span></code> 捕获项目源目录下方找到的所有 <code class="docutils literal notranslate"><span class="pre">cobertura.ser</span></code> 文件的路径。它保留文件列表，并将其作为参数提供给 <code class="docutils literal notranslate"><span class="pre">cobertura-merge</span></code> 程序。 <code class="docutils literal notranslate"><span class="pre">--datafile</span></code> 参数表示将把合并结果保存在哪里。</p>
+<p>然后使用 <code class="docutils literal notranslate"><span class="pre">cobertura-report</span></code> 程序使用组合的 <code class="docutils literal notranslate"><span class="pre">coberturamerge.ser</span></code> 文件生成 XML 报告。对 cobertura-report 程序的调用需要一些命名参数。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--datafila</span></code></dt><dd><p>合并的 <code class="docutils literal notranslate"><span class="pre">.ser</span></code> 文件的路径</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--destination</span></code></dt><dd><p>放置输出文件(s)的路径</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--format</span></code></dt><dd><p>要写入输出的文件格式：xml 或 html</p>
+</dd>
+</dl>
+<p>其余提供的参数包括源树中每个模块的 <code class="docutils literal notranslate"><span class="pre">/src/main/java</span></code> 目录的完整路径。需要这些目录，不应忘记。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CTEST_COVERAGE_COMMAND.html#">CTEST_COVERAGE_COMMAND</a><ul>
+<li><a class="reference internal" href="CTEST_COVERAGE_COMMAND.html#cobertura">Cobertura</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CTEST_CONFIGURE_COMMAND.html" title="上一章">CTEST_CONFIGURE_COMMAND</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CTEST_COVERAGE_EXTRA_FLAGS.html" title="下一章">CTEST_COVERAGE_EXTRA_FLAGS</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CTEST_COVERAGE_COMMAND.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CTEST_COVERAGE_EXTRA_FLAGS.html" title="CTEST_COVERAGE_EXTRA_FLAGS">下一页</a> |</li>
+        <li class="right">
+          <a href="CTEST_CONFIGURE_COMMAND.html" title="CTEST_CONFIGURE_COMMAND">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTEST_COVERAGE_COMMAND.html">CTEST_COVERAGE_COMMAND</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

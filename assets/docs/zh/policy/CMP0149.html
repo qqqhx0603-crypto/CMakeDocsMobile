@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0149 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0149.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0148" href="CMP0148.html" />
+    <link rel="prev" title="CMP0150" href="CMP0150.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0148.html" title="CMP0148" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0150.html" title="CMP0150" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0149.html">CMP0149</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0149">
+<span id="policy:CMP0149"></span><h1>CMP0149<a class="headerlink" href="CMP0149.html#cmp0149" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p><a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>默认选择最新的 Windows SDK。</p>
+<p>Visual Studio 生成器会选择一个 Windows SDK 版本，并将其填入 <code class="docutils literal notranslate"><span class="pre">.vcxproj</span></code> 文件中的 <code class="docutils literal notranslate"><span class="pre">WindowsTargetPlatformVersion</span></code> 设置。CMake 会将 <span class="target" id="index-0-variable:CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION.html#variable:CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION" title="CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION</span></code></a> 变量设置为所选的 SDK 版本。</p>
+<p>在 CMake 3.27 之前，SDK 版本始终根据 <span class="target" id="index-0-variable:CMAKE_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_VERSION.html#variable:CMAKE_SYSTEM_VERSION" title="CMAKE_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_VERSION</span></code></a> 变量的值来选择。用户或工具链文件可以将该变量设置为宿主系统上可用的某个精确 Windows SDK 版本。由于 <span class="target" id="index-1-variable:CMAKE_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_VERSION.html#variable:CMAKE_SYSTEM_VERSION" title="CMAKE_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_VERSION</span></code></a> 默认值为 <span class="target" id="index-0-variable:CMAKE_HOST_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_HOST_SYSTEM_VERSION.html#variable:CMAKE_HOST_SYSTEM_VERSION" title="CMAKE_HOST_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_HOST_SYSTEM_VERSION</span></code></a>，且无法保证一定存在匹配的 Windows SDK 版本，因此如果找不到精确匹配版本，CMake 不得不回退使用最新的 Windows SDK 版本。这种做法存在问题：</p>
+<ul class="simple">
+<li><p>是否选择最新的 Windows SDK 取决于宿主 Windows 版本是否恰好与可用的 SDK 版本匹配，这具有不确定性。</p></li>
+<li><p>可能会选到一个未针对 C11 等较新语言标准进行更新的旧版 Windows SDK。</p></li>
+</ul>
+<p>CMake 3.27 及更高版本倾向于忽略 <span class="target" id="index-2-variable:CMAKE_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_VERSION.html#variable:CMAKE_SYSTEM_VERSION" title="CMAKE_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_VERSION</span></code></a> 的精确值，并默认选择当前可用的最新 SDK 版本。如需指定精确的 SDK 版本，可以在 <span class="target" id="index-0-variable:CMAKE_GENERATOR_PLATFORM"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#variable:CMAKE_GENERATOR_PLATFORM" title="CMAKE_GENERATOR_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span></code></a> 变量中使用 <code class="docutils literal notranslate"><span class="pre">version=</span></code> 字段显式指定。请参阅 <a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#visual-studio-platform-selection"><span class="std std-ref">Visual Studio 平台选择</span></a>。</p>
+<p>此策略为那些尚未迁移、仍使用 <span class="target" id="index-3-variable:CMAKE_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_VERSION.html#variable:CMAKE_SYSTEM_VERSION" title="CMAKE_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_VERSION</span></code></a> 来指定精确 SDK 版本的项目、工具链文件和构建脚本提供兼容性。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此策略必须在项目顶层的第一个 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令调用之前设置。因为这是 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a>选择 Windows SDK 的时刻。</p>
+</div>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是尽可能使用 <span class="target" id="index-4-variable:CMAKE_SYSTEM_VERSION"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_VERSION.html#variable:CMAKE_SYSTEM_VERSION" title="CMAKE_SYSTEM_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_VERSION</span></code></a> 的精确值。<code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为则是忽略该变量。</p>
+<p>此策略是在 CMake 版本 3.27 中引入的。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake *不会* 发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0150.html" title="上一章">CMP0150</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0148.html" title="下一章">CMP0148</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0149.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0148.html" title="CMP0148">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0150.html" title="CMP0150">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0149.html">CMP0149</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

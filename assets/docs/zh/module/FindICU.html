@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindICU — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindICU.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindImageMagick" href="FindImageMagick.html" />
+    <link rel="prev" title="FindIcotool" href="FindIcotool.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindImageMagick.html" title="FindImageMagick" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindIcotool.html" title="FindIcotool" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindICU.html">FindICU</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findicu">
+<span id="module:FindICU"></span><h1>FindICU<a class="headerlink" href="FindICU.html#findicu" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>查找国际化组件 Unicode (ICU) 库和程序</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ICU</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增：</span>支持 Windows 上的静态库。</p>
+</div>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindICU.html#components" title="此标题的链接">¶</a></h2>
+<p>此模块支持组件，可以通过以下方式指定</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ICU</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持以下组件</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>查找 ICU 数据库。在 Windows 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">dt</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">i18n</span></code></dt><dd><p>查找 ICU 国际化库。在 Windows 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">in</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">io</span></code></dt><dd><p>查找 ICU 流与 I/O (Unicode stdio) 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">le</span></code></dt><dd><p>查找已弃用的 ICU 布局引擎 (Layout Engine) 库，该库已在 ICU 58 版本中移除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lx</span></code></dt><dd><p>查找用于段落布局的 ICU 布局扩展引擎 (Layout Extensions Engine) 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">测试</span></code></dt><dd><p>查找 ICU 测试套件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tu</span></code></dt><dd><p>查找 ICU 工具实用程序 (Tool Utility) 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uc</span></code></dt><dd><p>查找 ICU 基础通用库 (Common) 和数据库 (Data)。所有其他 ICU 库均依赖此库，建议在使用 ICU 组件时包含此库。</p>
+</dd>
+</dl>
+<p>为了让该模块成功找到 ICU，至少应指定一个组件。</p>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindICU.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">ICU::&lt;component&gt;</span></code></p>
+<blockquote>
+<div><p>封装了指定 ICU 组件使用要求的目标，仅在找到该组件时可用。<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 应按上述列表以小写形式编写。例如，对于国际化库，使用 <code class="docutils literal notranslate"><span class="pre">ICU::i18n</span></code>。</p>
+</div></blockquote>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindICU.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）主要 ICU 程序和库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_VERSION</span></code></dt><dd><p>找到的 ICU 版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_INCLUDE_DIRS</span></code></dt><dd><p>包含 ICU 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_LIBRARIES</span></code></dt><dd><p>需要链接的组件库。</p>
+</dd>
+</dl>
+<p>ICU 程序定义在以下变量中</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENCNVAL_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gencnval</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_ICUINFO_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">icuinfo</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENBRK_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">genbrk</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_ICU-CONFIG_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">icu-config</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENRB_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">genrb</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENDICT_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gendict</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_DERB_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">derb</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_PKGDATA_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">pkgdata</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_UCONV_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">uconv</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENCFU_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gencfu</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_MAKECONV_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">makeconv</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENNORM2_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gennorm2</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENCCODE_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">genccode</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENSPREP_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gensprep</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_ICUPKG_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">icupkg</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_GENCMN_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gencmn</span></code> 可执行文件的路径。</p>
+</dd>
+</dl>
+<p>ICU 组件库定义在以下变量中</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_&lt;COMPONENT&gt;_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了 ICU 组件；<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式编写。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_&lt;COMPONENT&gt;_LIBRARIES</span></code></dt><dd><p>组件库；<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式编写。</p>
+</dd>
+</dl>
+<p>ICU 数据文件定义在以下变量中</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_MAKEFILE_INC</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Makefile.inc</span></code> 文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_PKGDATA_INC</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">pkgdata.inc</span></code> 文件的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindICU.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_&lt;PROGRAM&gt;_EXECUTABLE</span></code></dt><dd><p>可执行文件 <code class="docutils literal notranslate"><span class="pre">&lt;PROGRAM&gt;</span></code> 的路径；<code class="docutils literal notranslate"><span class="pre">&lt;PROGRAM&gt;</span></code> 应以大写形式编写。这些变量对应于上面列出的 ICU 程序结果变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_INCLUDE_DIR</span></code></dt><dd><p>包含 ICU 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_&lt;COMPONENT&gt;_LIBRARY</span></code></dt><dd><p>ICU 组件的库。<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式编写。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindICU.html#hints" title="链接到此标题">¶</a></h2>
+<p>该模块读取有关搜索结果的提示信息，来源为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_ROOT</span></code></dt><dd><p>ICU 安装的根目录。也可以使用环境变量 <code class="docutils literal notranslate"><span class="pre">ICU_ROOT</span></code>；<code class="docutils literal notranslate"><span class="pre">ICU_ROOT</span></code> 变量具有最高优先级。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在大多数情况下，无需设置上述任何变量，除非存在多个版本的 ICU 且需要特定版本。</p>
+</div>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindICU.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 ICU 组件并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ICU</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">i18n</span><span class="w"> </span><span class="nb">io</span><span class="w"> </span><span class="nb">uc</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">i18n</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">io</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">uc</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindICU.html#">FindICU</a><ul>
+<li><a class="reference internal" href="FindICU.html#components">组件</a></li>
+<li><a class="reference internal" href="FindICU.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindICU.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindICU.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindICU.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindICU.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindIcotool.html" title="上一章">FindIcotool</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindImageMagick.html" title="下一章">FindImageMagick</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindICU.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindImageMagick.html" title="FindImageMagick">下一页</a> |</li>
+        <li class="right">
+          <a href="FindIcotool.html" title="FindIcotool">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindICU.html">FindICU</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

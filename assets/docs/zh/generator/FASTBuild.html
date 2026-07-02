@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FASTBuild — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FASTBuild.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Visual Studio 6" href="Visual&#32;Studio&#32;6.html" />
+    <link rel="prev" title="Ninja Multi-Config" href="Ninja&#32;Multi-Config.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Visual&#32;Studio&#32;6.html" title="Visual Studio 6" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="Ninja&#32;Multi-Config.html" title="Ninja Multi-Config" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-generators.7.html" accesskey="U">cmake-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FASTBuild.html">FASTBuild</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fastbuild">
+<span id="generator:FASTBuild"></span><h1>FASTBuild<a class="headerlink" href="FASTBuild.html#fastbuild" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>生成一个 <code class="docutils literal notranslate"><span class="pre">fbuild.bff</span></code> 文件，可用于使用 <a class="reference external" href="https://www.fastbuild.org/docs/home.html">FASTBuild</a> 构建项目。</p>
+<section id="usage">
+<h2>用法<a class="headerlink" href="FASTBuild.html#usage" title="链接到此标题">¶</a></h2>
+<p>在调用 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 时指定生成器</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span><span class="w"> </span>-G<span class="w"> </span>FASTBuild<span class="w"> </span>-B<span class="w"> </span>&lt;path-to-build&gt;<span class="w"> </span><span class="o">[</span>-S<span class="w"> </span>&lt;path-to-source&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>这会将一个名为 <code class="docutils literal notranslate"><span class="pre">fbuild.bff</span></code> 的 FASTBuild 配置文件写入 <code class="docutils literal notranslate"><span class="pre">&lt;path-to-build&gt;</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>该生成器还会为 Visual Studio 和 Xcode 生成 IDE 项目文件，这些文件位于</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;path-to-build&gt;/VisualStudio</span></code> – Visual Studio 解决方案和项目</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;path-to-build&gt;/XCode</span></code> – Xcode 工作区和项目</p></li>
+</ul>
+<p>这些 IDE 文件可以通过构建 <code class="docutils literal notranslate"><span class="pre">xcode</span></code> 或 <code class="docutils literal notranslate"><span class="pre">solution</span></code> 目标来生成，并将使用 FASTBuild 作为后端进行构建。</p>
+</div>
+</section>
+<section id="caching">
+<h2>缓存 (Caching)<a class="headerlink" href="FASTBuild.html#caching" title="链接到此标题">¶</a></h2>
+<p>要启用 FASTBuild 缓存，请使用 <span class="target" id="index-0-variable:CMAKE_FASTBUILD_CACHE_PATH"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_CACHE_PATH.html#variable:CMAKE_FASTBUILD_CACHE_PATH" title="CMAKE_FASTBUILD_CACHE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_CACHE_PATH</span></code></a> 变量或 <code class="docutils literal notranslate"><span class="pre">FASTBUILD_CACHE_PATH</span></code> 环境变量设置缓存路径。</p>
+<p>然后使用 <code class="docutils literal notranslate"><span class="pre">-cache</span></code> 标志进行构建</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build &lt;path-to-build&gt; -- -cache</span>
+</pre></div>
+</div>
+</section>
+<section id="compiler-behavior-variables">
+<h2>编译器行为变量 (Compiler Behavior Variables)<a class="headerlink" href="FASTBuild.html#compiler-behavior-variables" title="链接到此标题">¶</a></h2>
+<p>以下变量控制在生成的 <code class="docutils literal notranslate"><span class="pre">fbuild.bff</span></code> 中如何发出编译器节点。这些设置可能会影响构建确定性、调试信息路径、包含处理以及编译器参数格式化</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_ALLOW_RESPONSE_FILE"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_ALLOW_RESPONSE_FILE.html#variable:CMAKE_FASTBUILD_ALLOW_RESPONSE_FILE" title="CMAKE_FASTBUILD_ALLOW_RESPONSE_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_ALLOW_RESPONSE_FILE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_CLANG_GCC_UPDATE_XLANG_ARG"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_CLANG_GCC_UPDATE_XLANG_ARG.html#variable:CMAKE_FASTBUILD_CLANG_GCC_UPDATE_XLANG_ARG" title="CMAKE_FASTBUILD_CLANG_GCC_UPDATE_XLANG_ARG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_CLANG_GCC_UPDATE_XLANG_ARG</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_CLANG_REWRITE_INCLUDES"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_CLANG_REWRITE_INCLUDES.html#variable:CMAKE_FASTBUILD_CLANG_REWRITE_INCLUDES" title="CMAKE_FASTBUILD_CLANG_REWRITE_INCLUDES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_CLANG_REWRITE_INCLUDES</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_COMPILER_EXTRA_FILES"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_COMPILER_EXTRA_FILES.html#variable:CMAKE_FASTBUILD_COMPILER_EXTRA_FILES" title="CMAKE_FASTBUILD_COMPILER_EXTRA_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_COMPILER_EXTRA_FILES</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_FORCE_RESPONSE_FILE"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_FORCE_RESPONSE_FILE.html#variable:CMAKE_FASTBUILD_FORCE_RESPONSE_FILE" title="CMAKE_FASTBUILD_FORCE_RESPONSE_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_FORCE_RESPONSE_FILE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_SOURCE_MAPPING"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_SOURCE_MAPPING.html#variable:CMAKE_FASTBUILD_SOURCE_MAPPING" title="CMAKE_FASTBUILD_SOURCE_MAPPING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_SOURCE_MAPPING</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_USE_DETERMINISTIC_PATHS"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_USE_DETERMINISTIC_PATHS.html#variable:CMAKE_FASTBUILD_USE_DETERMINISTIC_PATHS" title="CMAKE_FASTBUILD_USE_DETERMINISTIC_PATHS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_USE_DETERMINISTIC_PATHS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_USE_LIGHTCACHE"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_USE_LIGHTCACHE.html#variable:CMAKE_FASTBUILD_USE_LIGHTCACHE" title="CMAKE_FASTBUILD_USE_LIGHTCACHE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_USE_LIGHTCACHE</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_USE_RELATIVE_PATHS"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_USE_RELATIVE_PATHS.html#variable:CMAKE_FASTBUILD_USE_RELATIVE_PATHS" title="CMAKE_FASTBUILD_USE_RELATIVE_PATHS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_USE_RELATIVE_PATHS</span></code></a></p></li>
+</ul>
+</section>
+<section id="configuration-variables">
+<h2>配置变量 (Configuration Variables)<a class="headerlink" href="FASTBuild.html#configuration-variables" title="链接到此标题">¶</a></h2>
+<p>以下变量可用于配置此生成器</p>
+<ul class="simple">
+<li><p><span class="target" id="index-1-variable:CMAKE_FASTBUILD_CACHE_PATH"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_CACHE_PATH.html#variable:CMAKE_FASTBUILD_CACHE_PATH" title="CMAKE_FASTBUILD_CACHE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_CACHE_PATH</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_CAPTURE_SYSTEM_ENV"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_CAPTURE_SYSTEM_ENV.html#variable:CMAKE_FASTBUILD_CAPTURE_SYSTEM_ENV" title="CMAKE_FASTBUILD_CAPTURE_SYSTEM_ENV"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_CAPTURE_SYSTEM_ENV</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_ENV_OVERRIDES"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_ENV_OVERRIDES.html#variable:CMAKE_FASTBUILD_ENV_OVERRIDES" title="CMAKE_FASTBUILD_ENV_OVERRIDES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_ENV_OVERRIDES</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_IDE_ARGS"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_IDE_ARGS.html#variable:CMAKE_FASTBUILD_IDE_ARGS" title="CMAKE_FASTBUILD_IDE_ARGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_IDE_ARGS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_TRACK_BYPRODUCTS_AS_OUTPUT"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_TRACK_BYPRODUCTS_AS_OUTPUT.html#variable:CMAKE_FASTBUILD_TRACK_BYPRODUCTS_AS_OUTPUT" title="CMAKE_FASTBUILD_TRACK_BYPRODUCTS_AS_OUTPUT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_TRACK_BYPRODUCTS_AS_OUTPUT</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FASTBUILD_VERBOSE_GENERATOR"></span><a class="reference internal" href="../variable/CMAKE_FASTBUILD_VERBOSE_GENERATOR.html#variable:CMAKE_FASTBUILD_VERBOSE_GENERATOR" title="CMAKE_FASTBUILD_VERBOSE_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FASTBUILD_VERBOSE_GENERATOR</span></code></a></p></li>
+</ul>
+</section>
+<section id="target-properties">
+<h2>目标属性 (Target Properties)<a class="headerlink" href="FASTBuild.html#target-properties" title="链接到此标题">¶</a></h2>
+<p>以下目标属性可用于针对每个目标微调行为</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-prop_tgt:FASTBUILD_CACHING"></span><a class="reference internal" href="../prop_tgt/FASTBUILD_CACHING.html#prop_tgt:FASTBUILD_CACHING" title="FASTBUILD_CACHING"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FASTBUILD_CACHING</span></code></a> – 为特定目标禁用缓存。</p></li>
+<li><p><span class="target" id="index-0-prop_tgt:FASTBUILD_DISTRIBUTION"></span><a class="reference internal" href="../prop_tgt/FASTBUILD_DISTRIBUTION.html#prop_tgt:FASTBUILD_DISTRIBUTION" title="FASTBUILD_DISTRIBUTION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FASTBUILD_DISTRIBUTION</span></code></a> – 为特定目标禁用分布式编译。</p></li>
+</ul>
+</section>
+<section id="notes">
+<h2>注意事项 (Notes)<a class="headerlink" href="FASTBuild.html#notes" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>此生成器不支持将目录作为自定义命令的输出。如果您确实指定了一个目录作为输出，则应将其标记为 <code class="docutils literal notranslate"><span class="pre">SYMBOLIC</span></code> 属性，以避免出现不正确的行为。</p></li>
+<li><p>强烈建议自定义命令仅使用一个输出。如果指定了多个输出，生成器将发出一条附加规则在构建时检查这些输出。这会增加开销，但这是必要的，因为 FASTBuild 本身只支持每个自定义步骤一个输出。</p></li>
+</ul>
+</section>
+<section id="example">
+<h2>示例<a class="headerlink" href="FASTBuild.html#example" title="此标题的链接">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span><span class="w"> </span>-G<span class="w"> </span>FASTBuild<span class="w"> </span>-B<span class="w"> </span>&lt;path-to-build&gt;<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+cmake<span class="w"> </span>--build<span class="w"> </span>&lt;path-to-build&gt;<span class="w"> </span>--target<span class="w"> </span>my_app
+</pre></div>
+</div>
+<p>这会在 <code class="docutils literal notranslate"><span class="pre">&lt;path-to-build&gt;</span></code> 中生成 <code class="docutils literal notranslate"><span class="pre">fbuild.bff</span></code>，并使用 FASTBuild 构建 <code class="docutils literal notranslate"><span class="pre">my_app</span></code> 目标。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FASTBuild.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-manual:cmake-generators(7)"></span><a class="reference internal" href="../manual/cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generators(7)</span></code></a></p></li>
+<li><p><a class="reference external" href="https://www.fastbuild.org/docs/documentation.html">FASTBuild 文档</a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FASTBuild.html#">FASTBuild</a><ul>
+<li><a class="reference internal" href="FASTBuild.html#usage">用法</a></li>
+<li><a class="reference internal" href="FASTBuild.html#caching">缓存</a></li>
+<li><a class="reference internal" href="FASTBuild.html#compiler-behavior-variables">编译器行为变量</a></li>
+<li><a class="reference internal" href="FASTBuild.html#configuration-variables">配置变量</a></li>
+<li><a class="reference internal" href="FASTBuild.html#target-properties">目标属性</a></li>
+<li><a class="reference internal" href="FASTBuild.html#notes">备注</a></li>
+<li><a class="reference internal" href="FASTBuild.html#example">示例</a></li>
+<li><a class="reference internal" href="FASTBuild.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="Ninja&#32;Multi-Config.html" title="上一章">Ninja 多配置</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Visual&#32;Studio&#32;6.html" title="下一章">Visual Studio 6</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/generator/FASTBuild.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Visual&#32;Studio&#32;6.html" title="Visual Studio 6">下一页</a> |</li>
+        <li class="right">
+          <a href="Ninja&#32;Multi-Config.html" title="Ninja Multi-Config">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-generators.7.html">cmake-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FASTBuild.html">FASTBuild</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

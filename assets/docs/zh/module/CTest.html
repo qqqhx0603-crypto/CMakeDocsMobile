@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CTest — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CTest.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CTestCoverageCollectGCOV" href="CTestCoverageCollectGCOV.html" />
+    <link rel="prev" title="CSharpUtilities" href="CSharpUtilities.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CTestCoverageCollectGCOV.html" title="CTestCoverageCollectGCOV" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CSharpUtilities.html" title="CSharpUtilities" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTest.html">CTest</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctest">
+<span id="module:CTest"></span><h1>CTest<a class="headerlink" href="CTest.html#ctest" title="链接到此标题">¶</a></h1>
+<p>配置项目以使用 CTest/CDash 进行测试</p>
+<p>在项目的顶级 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中包含此模块，以启用 CTest 测试和向 CDash 提交仪表板</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">project(</span><span class="nb">MyProject</span><span class="nf">)</span>
+<span class="p">...</span>
+<span class="nf">include(</span><span class="nb">CTest</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>该模块会自动创建以下变量</p>
+<p><span class="target" id="index-0-variable:BUILD_TESTING"></span><a class="reference internal" href="../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a></p>
+<blockquote>
+<div><p>选项，用于选择 <code class="docutils literal notranslate"><span class="pre">include(CTest)</span></code> 调用 <span class="target" id="index-0-command:enable_testing"></span><a class="reference internal" href="../command/enable_testing.html#command:enable_testing" title="enable_testing"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_testing()</span></code></a> 是否生效。该选项默认情况下为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，当由该模块创建时。</p>
+</div></blockquote>
+<p>包含模块后，使用如下代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">BUILD_TESTING</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># ... CMake code to create tests ...</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>在启用测试时创建测试。</p>
+<p>要启用向 CDash 服务器提交，请在项目的顶部创建一个 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件，内容如下</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_NIGHTLY_START_TIME</span><span class="w"> </span><span class="s">"01:00:00 UTC"</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">CTEST_SUBMIT_URL</span><span class="w"> </span><span class="s">"http://my.cdash.org/submit.php?project=MyProject"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>CDash 服务器可以向项目管理员提供该文件，项目管理员配置 <code class="docutils literal notranslate"><span class="pre">MyProject</span></code>。配置文件中的设置由此 <code class="docutils literal notranslate"><span class="pre">CTest</span></code> 模块和 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 命令行 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">Dashboard Client</span></a> 模式 (<a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-S</span></code></a>) 共用。</p>
+<p>在构建项目以提交到 CDash 时，CTest 会扫描构建输出中的错误和警告，并附带构建日志中的上下文信息进行报告。这种通用方法适用于所有构建工具，但无法提供产生特定问题的命令调用详细信息。可以通过在 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件中设置 <span class="target" id="index-0-variable:CTEST_USE_LAUNCHERS"></span><a class="reference internal" href="../variable/CTEST_USE_LAUNCHERS.html#variable:CTEST_USE_LAUNCHERS" title="CTEST_USE_LAUNCHERS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_USE_LAUNCHERS</span></code></a> 变量来获得更详细的报告</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_USE_LAUNCHERS</span><span class="w"> </span><span class="m">1</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件中。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CSharpUtilities.html" title="上一章">CSharpUtilities</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CTestCoverageCollectGCOV.html" title="下一章">CTestCoverageCollectGCOV</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CTest.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CTestCoverageCollectGCOV.html" title="CTestCoverageCollectGCOV">下一页</a> |</li>
+        <li class="right">
+          <a href="CSharpUtilities.html" title="CSharpUtilities">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CTest.html">CTest</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

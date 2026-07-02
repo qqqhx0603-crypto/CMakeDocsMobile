@@ -1,0 +1,504 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindPkgConfig — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindPkgConfig.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindPNG" href="FindPNG.html" />
+    <link rel="prev" title="FindPike" href="FindPike.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindPNG.html" title="FindPNG" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPike.html" title="FindPike" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPkgConfig.html">FindPkgConfig</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findpkgconfig">
+<span id="module:FindPkgConfig"></span><h1>FindPkgConfig<a class="headerlink" href="FindPkgConfig.html#findpkgconfig" title="链接到此标题">¶</a></h1>
+<p>一个用于 CMake 的 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 模块。</p>
+<p>查找 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件，并提供在 CMake 中使用它的命令</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 是一个用于配置构建依赖信息的可执行命令行程序。最初由 FreeDesktop 开发，它也有多种实现，例如 pkgconf、u-config 等。它从所谓的 PC 元数据文件 (<code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;.pc</span></code>) 读取包数据，这些文件可能随包一起安装。此模块是 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 命令行可执行文件的包装器。</p>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindPkgConfig.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PkgConfig_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>一个布尔值，指示是否找到了（请求版本的）<code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PkgConfig_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>找到的 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 程序的路径名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ARGN</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>要传递给 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的参数列表。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_EXECUTABLE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ARGN</span></code> 都由模块初始化，但可以被用户覆盖。有关这些变量如何初始化，请参阅 <a class="reference internal" href="FindPkgConfig.html#hints">提示</a>。</p>
+</section>
+<section id="commands">
+<h2>命令<a class="headerlink" href="FindPkgConfig.html#commands" title="链接到此标题">¶</a></h2>
+<p>如果找到 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code>，则此模块提供以下命令</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:pkg_check_modules"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_check_modules" title="pkg_check_modules"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:pkg_search_module"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_search_module" title="pkg_search_module"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_search_module()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:pkg_get_variable"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_get_variable" title="pkg_get_variable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_get_variable()</span></code></a></p></li>
+</ul>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:pkg_check_modules">
+<span class="sig-name descname"><span class="pre">pkg_check_modules</span></span><a class="headerlink" href="FindPkgConfig.html#command:pkg_check_modules" title="链接到此定义">¶</a></dt>
+<dd><p>检查所有给定的模块，并在调用范围内设置各种结果变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">pkg_check_modules(</span>
+<span class="w">  </span><span class="nv">&lt;prefix&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_CMAKE_PATH</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_CMAKE_ENVIRONMENT_PATH</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IMPORTED_TARGET</span><span class="w"> </span><span class="p">[</span><span class="no">GLOBAL</span><span class="p">]]</span>
+<span class="w">  </span><span class="nv">&lt;module-spec&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;module-spec&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p class="rubric">参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code></dt><dd><p>添加到指定模块的结果变量的前缀字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><p>如果给出此参数，则不会打印状态消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code></dt><dd><p>如果给出此参数，如果未找到任何指定的模块，则命令将以错误失败。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_CMAKE_PATH</span></code>, <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_ENVIRONMENT_PATH</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p><span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a>、<span class="target" id="index-0-variable:CMAKE_FRAMEWORK_PATH"></span><a class="reference internal" href="../variable/CMAKE_FRAMEWORK_PATH.html#variable:CMAKE_FRAMEWORK_PATH" title="CMAKE_FRAMEWORK_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK_PATH</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_APPBUNDLE_PATH"></span><a class="reference internal" href="../variable/CMAKE_APPBUNDLE_PATH.html#variable:CMAKE_APPBUNDLE_PATH" title="CMAKE_APPBUNDLE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_APPBUNDLE_PATH</span></code></a> 缓存和环境变量将被添加到 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 搜索路径中。<code class="docutils literal notranslate"><span class="pre">NO_CMAKE_PATH</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_ENVIRONMENT_PATH</span></code> 参数分别禁用缓存变量和环境变量的此行为。<code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_USE_CMAKE_PREFIX_PATH</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 会全局禁用此行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IMPORTED_TARGET</span> <span class="pre">[GLOBAL]</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>此参数将创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，命名为 <code class="docutils literal notranslate"><span class="pre">PkgConfig::&lt;prefix&gt;</span></code>，可以直接作为参数传递给 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>。它将一次封装所有指定模块 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;...</span></code> 的使用要求。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>此参数与 <code class="docutils literal notranslate"><span class="pre">IMPORTED_TARGET</span></code> 一起使用，并将使导入目标在全局范围内可用。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span><code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 报告的非库链接器选项存储在 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_OPTIONS"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_OPTIONS.html#prop_tgt:INTERFACE_LINK_OPTIONS" title="INTERFACE_LINK_OPTIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_OPTIONS</span></code></a> 目标属性中。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.18 版本更改：</span>使用 <code class="docutils literal notranslate"><span class="pre">-isystem</span></code> 指定的包含目录存储在 <span class="target" id="index-0-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a> 目标属性中。CMake 的早期版本将它们放在 <span class="target" id="index-0-prop_tgt:INTERFACE_COMPILE_OPTIONS"></span><a class="reference internal" href="../prop_tgt/INTERFACE_COMPILE_OPTIONS.html#prop_tgt:INTERFACE_COMPILE_OPTIONS" title="INTERFACE_COMPILE_OPTIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_COMPILE_OPTIONS</span></code></a> 属性中。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code></dt><dd><p>每个 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code> 可以是裸模块名称（如其 PC 元数据文件名 <code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;.pc</span></code> 中定义的），也可以是带有版本约束的模块名称（支持运算符 <code class="docutils literal notranslate"><span class="pre">=</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>）。以下是名为 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 的模块的各种约束示例</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">foo</span></code> 匹配任何版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foo&lt;2</span></code> 仅匹配 2 之前的版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foo&gt;=3.1</span></code> 匹配 3.1 或更高版本的任何版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foo=1.2.3</span></code> 要求 foo 必须恰好是版本 1.2.3。</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">结果变量</p>
+<p>返回时可能会设置以下变量。存在两组值：一组用于常见情况（<code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;</span> <span class="pre">=</span> <span class="pre">&lt;prefix&gt;</span></code>），另一组用于 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">--static</span></code> 选项调用时提供的信息（<code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;</span> <span class="pre">=</span> <span class="pre">&lt;prefix&gt;_STATIC</span></code>）。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_FOUND</span></code></dt><dd><p>如果模块存在，则设置为 1 的布尔变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_LIBRARIES</span></code></dt><dd><p>仅包含库的列表（不带 <code class="docutils literal notranslate"><span class="pre">-l</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_LINK_LIBRARIES</span></code></dt><dd><p>库及其绝对路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_LIBRARY_DIRS</span></code></dt><dd><p>库的路径（不带 <code class="docutils literal notranslate"><span class="pre">-L</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_LDFLAGS</span></code></dt><dd><p>所有必需的链接器标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_LDFLAGS_OTHER</span></code></dt><dd><p>所有其他链接器标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_INCLUDE_DIRS</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">-I</span></code> 预处理器标志（不带 <code class="docutils literal notranslate"><span class="pre">-I</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_CFLAGS</span></code></dt><dd><p>所有必需的 cflags。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_CFLAGS_OTHER</span></code></dt><dd><p>其他编译器标志。</p>
+</dd>
+</dl>
+<p>除了 <code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_FOUND</span></code> 之外的所有变量都可能是 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，如果关联变量从 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 返回具有多个值。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.18 版本更改：</span>使用 <code class="docutils literal notranslate"><span class="pre">-isystem</span></code> 指定的包含目录存储在 <code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_INCLUDE_DIRS</span></code> 变量中。CMake 的早期版本将它们放在 <code class="docutils literal notranslate"><span class="pre">&lt;XXX&gt;_CFLAGS_OTHER</span></code> 中。</p>
+</div>
+<p>有一些特殊变量，其前缀取决于给定的 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code> 的数量。当只有一个 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code> 时，<code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;</span></code> 将简单地是 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code>，但如果给定了两个或多个 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code> 项，则 <code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;</span></code> 将是 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_&lt;module-name&gt;</span></code>。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;_VERSION</span></code></dt><dd><p>模块的版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;_PREFIX</span></code></dt><dd><p>模块的安装目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;_INCLUDEDIR</span></code></dt><dd><p>模块的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;YYY&gt;_LIBDIR</span></code></dt><dd><p>模块的库目录。</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.8 版本更改：</span>对于任何给定的 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code>，<code class="docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code> 可以使用不同的参数多次调用。CMake 的早期版本缓存并返回第一个成功的结果。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.16 版本更改：</span>如果无法确定找到的库的完整路径，但它仍然对链接器可见，则将其作为 <code class="docutils literal notranslate"><span class="pre">-l&lt;name&gt;</span></code> 传递。CMake 的早期版本在这种情况下失败。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:pkg_search_module">
+<span class="sig-name descname"><span class="pre">pkg_search_module</span></span><a class="headerlink" href="FindPkgConfig.html#command:pkg_search_module" title="链接到此定义">¶</a></dt>
+<dd><p>从一个或多个提供的模块规范中搜索第一个成功的匹配项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">pkg_search_module(</span>
+<span class="w">  </span><span class="nv">&lt;prefix&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_CMAKE_PATH</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">NO_CMAKE_ENVIRONMENT_PATH</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IMPORTED_TARGET</span><span class="w"> </span><span class="p">[</span><span class="no">GLOBAL</span><span class="p">]]</span>
+<span class="w">  </span><span class="nv">&lt;module-spec&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;module-spec&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令的行为和参数与 <span class="target" id="index-1-command:pkg_check_modules"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_check_modules" title="pkg_check_modules"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code></a> 相同，除了它不是检查所有指定的模块，而是搜索第一个成功的匹配项。</p>
+<p>例如，当已知某个包在不同的平台或版本上具有相同的包的可能的多个 <code class="docutils literal notranslate"><span class="pre">&lt;module-spec&gt;</span></code> 时，可以使用此命令。</p>
+<p class="rubric">结果变量</p>
+<p>此命令定义与上述相同的变量，此外还有</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_MODULE_NAME</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>如果找到模块，变量 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_MODULE_NAME</span></code> 将包含匹配模块的名称。如果需要使用 <span class="target" id="index-1-command:pkg_get_variable"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_get_variable" title="pkg_get_variable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_get_variable()</span></code></a> 命令，并带有 <code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;</span></code> 参数，该参数由 <span class="target" id="index-1-command:pkg_search_module"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_search_module" title="pkg_search_module"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_search_module()</span></code></a> 找到，则可以使用此变量。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:pkg_get_variable">
+<span class="sig-name descname"><span class="pre">pkg_get_variable</span></span><a class="headerlink" href="FindPkgConfig.html#command:pkg_get_variable" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>检索 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 变量的值，并将其存储在调用作用域中的结果变量中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">pkg_get_variable(</span>
+<span class="w">  </span><span class="nv">&lt;result-var&gt;</span>
+<span class="w">  </span><span class="nv">&lt;module-name&gt;</span>
+<span class="w">  </span><span class="nv">&lt;var-name&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DEFINE_VARIABLES</span><span class="w"> </span><span class="nv">&lt;key&gt;</span><span class="p">=</span><span class="nv">&lt;value&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p class="rubric">参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>将包含 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 变量值的结果变量的名称。如果 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 为指定的变量 <code class="docutils literal notranslate"><span class="pre">&lt;var-name&gt;</span></code> 返回多个值，则 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 将包含一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;</span></code></dt><dd><p>模块名称，如其 PC 元数据文件名中定义 (<code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;.pc</span></code>)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;var-name&gt;</span></code></dt><dd><p>PC 元数据文件 <code class="docutils literal notranslate"><span class="pre">&lt;module-name&gt;.pc</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEFINE_VARIABLES</span> <span class="pre">&lt;key&gt;=&lt;value&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>指定键值对以重新定义影响使用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 检索的变量的变量。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindPkgConfig.html#hints" title="链接到此标题">¶</a></h2>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package(PkgConfig)</span></code> 之前，此模块接受以下变量以影响此模块的行为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">ENV{PKG_CONFIG_PATH}</span></code></dt><dd><p>环境变量，指定 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 在其中搜索其 <code class="docutils literal notranslate"><span class="pre">.pc</span></code> 文件的其他路径。 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 工具默认使用此变量，而 CMake 还提供更常用的 <span class="target" id="index-1-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 变量来指定查找包及其 <code class="docutils literal notranslate"><span class="pre">.pc</span></code> 文件的其他路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENV{PKG_CONFIG}</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>环境变量，可以设置为 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件的路径，如果尚未设置，则可用于初始化 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_EXECUTABLE</span></code> 变量。</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_EXECUTABLE</span></code></p>
+<blockquote>
+<div><p>可以使用此缓存变量设置为 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件的路径。 模块内部使用此变量调用 <span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.22 更改：</span>如果设置了 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG</span></code> 环境变量，则在使用它作为提示时，仅采用它的第一个参数。</p>
+</div>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ARGN</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>可以使用此缓存变量设置为要传递给 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的其他参数的列表（如果需要）。 如果未提供，则如果已设置，则会从 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG</span></code> 环境变量初始化。 该环境变量中的第一个参数假定为 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 程序，而之后的所有参数都用于初始化 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ARGN</span></code>。 如果未定义此类环境变量，则 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ARGN</span></code> 将初始化为空字符串。 模块不会在将其设置为缓存后更新该变量。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_USE_CMAKE_PREFIX_PATH</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>指定 <span class="target" id="index-2-command:pkg_check_modules"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_check_modules" title="pkg_check_modules"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code></a> 和 <span class="target" id="index-2-command:pkg_search_module"></span><a class="reference internal" href="FindPkgConfig.html#command:pkg_search_module" title="pkg_search_module"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">pkg_search_module()</span></code></a> 是否应将 <span class="target" id="index-2-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a>、<span class="target" id="index-1-variable:CMAKE_FRAMEWORK_PATH"></span><a class="reference internal" href="../variable/CMAKE_FRAMEWORK_PATH.html#variable:CMAKE_FRAMEWORK_PATH" title="CMAKE_FRAMEWORK_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK_PATH</span></code></a> 和 <span class="target" id="index-1-variable:CMAKE_APPBUNDLE_PATH"></span><a class="reference internal" href="../variable/CMAKE_APPBUNDLE_PATH.html#variable:CMAKE_APPBUNDLE_PATH" title="CMAKE_APPBUNDLE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_APPBUNDLE_PATH</span></code></a> 缓存和环境变量中的路径添加到 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 搜索路径。</p>
+<p>如果未设置此变量，则如果 <span class="target" id="index-0-variable:CMAKE_MINIMUM_REQUIRED_VERSION"></span><a class="reference internal" href="../variable/CMAKE_MINIMUM_REQUIRED_VERSION.html#variable:CMAKE_MINIMUM_REQUIRED_VERSION" title="CMAKE_MINIMUM_REQUIRED_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MINIMUM_REQUIRED_VERSION</span></code></a> 为 3.1 或更高版本，则默认启用此行为，否则禁用此行为。</p>
+</div></blockquote>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindPkgConfig.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_FOUND</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自版本 4.2 起已弃用：</span>使用 <code class="docutils literal notranslate"><span class="pre">PkgConfig_FOUND</span></code>，它具有相同的值。</p>
+</div>
+<p>一个布尔值，指示是否找到了（请求版本的）<code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_VERSION_STRING</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自版本 4.2 起已弃用：</span>使用 <code class="docutils literal notranslate"><span class="pre">PkgConfig_VERSION</span></code>，它具有相同的值。</p>
+</div>
+<p>找到的 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的版本。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindPkgConfig.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-finding-pkg-config">
+<h3>示例：查找 pkg-config<a class="headerlink" href="FindPkgConfig.html#examples-finding-pkg-config" title="链接到此标题">¶</a></h3>
+<p>查找 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code></p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 并使其成为必需的（如果未找到，则处理将停止并显示错误消息）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>安静地查找 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code>，不打印状态消息，如在查找模块中常用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examples-using-pkg-check-modules">
+<h3>示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code><a class="headerlink" href="FindPkgConfig.html#examples-using-pkg-check-modules" title="链接到此标题">¶</a></h3>
+<p>检查任何版本的 glib2。 如果找到，则输出变量 <code class="docutils literal notranslate"><span class="pre">GLIB2_VERSION</span></code> 将保存找到的实际版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_check_modules(</span><span class="no">GLIB2</span><span class="w"> </span><span class="nb">glib-2.0</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>以下示例查找至少版本为 2.10 的 glib2。 如果找到，则输出变量 <code class="docutils literal notranslate"><span class="pre">GLIB2_VERSION</span></code> 将保存找到的实际版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_check_modules(</span><span class="no">GLIB2</span><span class="w"> </span><span class="nb">glib-2.0</span><span class="p">&gt;=</span><span class="m">2.10</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>以下示例查找 glib2-2.0（至少版本为 2.10）和任何版本的 gtk2+-2.0。 只有在找到两者时，<code class="docutils literal notranslate"><span class="pre">FOO</span></code> 才会被认为已找到。 变量 <code class="docutils literal notranslate"><span class="pre">FOO_glib-2.0_VERSION</span></code> 和 <code class="docutils literal notranslate"><span class="pre">FOO_gtk+-2.0_VERSION</span></code> 将设置为各自找到的模块版本。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_check_modules(</span><span class="no">FOO</span><span class="w"> </span><span class="nb">glib-2.0</span><span class="p">&gt;=</span><span class="m">2.10</span><span class="w"> </span><span class="nb">gtk+-2.0</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>以下示例需要任何版本的 <code class="docutils literal notranslate"><span class="pre">xrender</span></code></p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+<span class="nf">pkg_check_modules(</span><span class="no">XRENDER</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="nb">xrender</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>成功调用时设置的示例输出变量</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>XRENDER_LIBRARIES=Xrender;X11
+XRENDER_STATIC_LIBRARIES=Xrender;X11;pthread;Xau;Xdmcp
+</pre></div>
+</div>
+</section>
+<section id="example-using-pkg-search-module">
+<h3>示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_search_module()</span></code><a class="headerlink" href="FindPkgConfig.html#example-using-pkg-search-module" title="链接到此标题">¶</a></h3>
+<p>搜索 LibXml2 包，该包可能以不同的模块规范提供（<code class="docutils literal notranslate"><span class="pre">libxml-2.0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">libxml2</span></code>）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_search_module(</span><span class="no">BAR</span><span class="w"> </span><span class="nb">libxml-2.0</span><span class="w"> </span><span class="nb">libxml2</span><span class="w"> </span><span class="nb">libxml</span><span class="p">&gt;=</span><span class="m">2</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+<section id="example-creating-imported-target">
+<h3>示例：创建导入目标<a class="headerlink" href="FindPkgConfig.html#example-creating-imported-target" title="链接到此标题">¶</a></h3>
+<p>在以下示例中，从模块规范创建导入目标，以便直接在项目中使用的，而无需使用查找模块。 这些导入目标可用于例如，在已知包在所有受支持平台上都支持 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 的情况下</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+<span class="nf">pkg_check_modules(</span><span class="no">GTK</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">IMPORTED_TARGET</span><span class="w"> </span><span class="nb">gtk4</span><span class="p">&gt;=</span><span class="m">4.14</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">PkgConfig</span><span class="o">::</span><span class="no">GTK</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-using-pkg-get-variable">
+<h3>示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_get_variable()</span></code><a class="headerlink" href="FindPkgConfig.html#example-using-pkg-get-variable" title="链接到此标题">¶</a></h3>
+<p>从包 Gobject 检索 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 变量 <code class="docutils literal notranslate"><span class="pre">girdir</span></code> 的值</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">PkgConfig</span><span class="w"> </span><span class="no">QUIET</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">PkgConfig_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">pkg_get_variable(</span><span class="no">GI_GIRDIR</span><span class="w"> </span><span class="nb">gobject-introspection-1.0</span><span class="w"> </span><span class="nb">girdir</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"${GI_GIRDIR}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindPkgConfig.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:cmake_pkg_config"></span><a class="reference internal" href="../command/cmake_pkg_config.html#command:cmake_pkg_config" title="cmake_pkg_config"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_pkg_config()</span></code></a> 命令提供了一种现代且更高级的方法，可以在 CMake 中使用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code>，而无需安装 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 可执行文件。</p></li>
+<li><p><a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块</span></a> 了解如何编写查找模块的详细信息。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindPkgConfig.html#">FindPkgConfig</a><ul>
+<li><a class="reference internal" href="FindPkgConfig.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#commands">命令</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindPkgConfig.html#examples-finding-pkg-config">示例：查找 pkg-config</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#examples-using-pkg-check-modules">示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_check_modules()</span></code></a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#example-using-pkg-search-module">示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_search_module()</span></code></a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#example-creating-imported-target">示例：创建导入目标</a></li>
+<li><a class="reference internal" href="FindPkgConfig.html#example-using-pkg-get-variable">示例：使用 <code class="docutils literal notranslate"><span class="pre">pkg_get_variable()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindPkgConfig.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindPike.html" title="上一章">FindPike</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindPNG.html" title="下一章">FindPNG</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindPkgConfig.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindPNG.html" title="FindPNG">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPike.html" title="FindPike">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindPkgConfig.html">FindPkgConfig</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

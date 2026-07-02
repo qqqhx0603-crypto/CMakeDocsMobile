@@ -1,0 +1,494 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindQt4 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindQt4.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindQuickTime" href="FindQuickTime.html" />
+    <link rel="prev" title="FindQt3" href="FindQt3.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindQuickTime.html" title="FindQuickTime" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindQt3.html" title="FindQt3" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindQt4.html">FindQt4</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findqt4">
+<span id="module:FindQt4"></span><h1>FindQt4<a class="headerlink" href="FindQt4.html#findqt4" title="链接至此标题">¶</a></h1>
+<p>查找 Qt4，这是一个用于创建图形用户界面和应用程序的跨平台应用程序开发框架。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt4</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此模块定义了多个导入目标、宏和变量，以便在项目中使用 Qt4。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此模块适用于 Qt 4 版本。从 Qt 5 版本开始，Qt 上游也提供了用于查找 Qt 的导出配置。新代码应遵循 <span class="target" id="index-0-manual:cmake-qt(7)"></span><a class="reference internal" href="../manual/cmake-qt.7.html#manual:cmake-qt(7)" title="cmake-qt(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-qt(7)</span></code></a>，而不是使用此模块。</p>
+</div>
+<p>若要检测 Qt4 软件包，需要 Qt4 的 <code class="docutils literal notranslate"><span class="pre">qmake</span></code> 工具，并且该工具必须在系统路径中可用。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当使用 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a> 时，<code class="docutils literal notranslate"><span class="pre">qtmain.lib</span></code> 静态库会自动链接到 Windows 上的 <span class="target" id="index-0-prop_tgt:WIN32_EXECUTABLE"></span><a class="reference internal" href="../prop_tgt/WIN32_EXECUTABLE.html#prop_tgt:WIN32_EXECUTABLE" title="WIN32_EXECUTABLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">WIN32</span></code></a> 可执行文件中。要全局禁用此功能，请在查找 Qt4 之前设置 <code class="docutils literal notranslate"><span class="pre">QT4_NO_LINK_QTMAIN</span></code> 变量。若要为特定可执行文件禁用此功能，请在该可执行文件上将 <code class="docutils literal notranslate"><span class="pre">QT4_NO_LINK_QTMAIN</span></code> 目标属性设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p>
+</div>
+<section id="qt-build-tools">
+<h2>Qt 构建工具<a class="headerlink" href="FindQt4.html#qt-build-tools" title="链接至此标题">¶</a></h2>
+<p>Qt 依赖一些捆绑工具进行代码生成，例如用于元对象代码生成的 <code class="docutils literal notranslate"><span class="pre">moc</span></code>、用于窗口小部件布局和填充的 <code class="docutils literal notranslate"><span class="pre">uic</span></code>，以及用于虚拟文件系统内容生成的 <code class="docutils literal notranslate"><span class="pre">rcc</span></code>。如果满足适当的条件，这些工具可以由 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 自动调用。更多信息请参阅 <span class="target" id="index-1-manual:cmake-qt(7)"></span><a class="reference internal" href="../manual/cmake-qt.7.html#manual:cmake-qt(7)" title="cmake-qt(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-qt(7)</span></code></a>。</p>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindQt4.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>Qt 库可以使用其相应的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a> 并通过 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令进行链接。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="nb">Qt4</span><span class="o">::</span><span class="nb">QtGui</span><span class="w"> </span><span class="nb">Qt4</span><span class="o">::</span><span class="nb">QtXml</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>链接到导入目标时，在构建 <code class="docutils literal notranslate"><span class="pre">myexe</span></code> 时会自动应用正确的包含目录和编译定义。</p>
+<p>导入目标还会管理它们的依赖关系，因此如果另一个 Qt 库依赖于 <code class="docutils literal notranslate"><span class="pre">Qt4::QtCore</span></code>，则无需显式列出它。同样，在链接 <code class="docutils literal notranslate"><span class="pre">Qt4::QtDeclarative</span></code> 时会自动包含 <code class="docutils literal notranslate"><span class="pre">Qt4::QtGui</span></code>。可以使用 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="../command/if.html#target" title="if(target)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if(TARGET)</span></code></a> 命令检查目标是否存在。</p>
+<p>如果 Qt 工具包库的调试版和发布版都可用，CMake 会根据 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#build-configurations"><span class="std std-ref">构建配置</span></a> 选择合适的版本。</p>
+<p>如果找到，此模块将提供以下导入目标：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtCore</span></code></dt><dd><p>QtCore 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtGui</span></code></dt><dd><p>QtGui 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::Qt3Support</span></code></dt><dd><p>Qt3Support 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtAssistant</span></code></dt><dd><p>QtAssistant 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtAssistantClient</span></code></dt><dd><p>QtAssistantClient 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QAxContainer</span></code></dt><dd><p>QAxContainer 目标（仅限 Windows）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QAxServer</span></code></dt><dd><p>QAxServer 目标（仅限 Windows）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtDBus</span></code></dt><dd><p>QtDBus 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtDeclarative</span></code></dt><dd><p>QtDeclarative 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtDesigner</span></code></dt><dd><p>QtDesigner 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtDesignerComponents</span></code></dt><dd><p>QtDesignerComponents 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtHelp</span></code></dt><dd><p>QtHelp 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtMotif</span></code></dt><dd><p>QtMotif 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtMultimedia</span></code></dt><dd><p>QtMultimedia 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtNetwork</span></code></dt><dd><p>QtNetwork 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtNsPlugin</span></code></dt><dd><p>QtNsPlugin 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtOpenGL</span></code></dt><dd><p>QtOpenGL 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtScript</span></code></dt><dd><p>QtScript 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtScriptTools</span></code></dt><dd><p>QtScriptTools 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtSql</span></code></dt><dd><p>QtSql 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtSvg</span></code></dt><dd><p>QtSvg 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtTest</span></code></dt><dd><p>QtTest 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtUiTools</span></code></dt><dd><p>QtUiTools 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtWebKit</span></code></dt><dd><p>QtWebKit 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtXml</span></code></dt><dd><p>QtXml 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::QtXmlPatterns</span></code></dt><dd><p>QtXmlPatterns 目标</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4::phonon</span></code></dt><dd><p>phonon 目标</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindQt4.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Qt4_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）Qt4。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QT_FOUND</span></code></dt><dd><p>与 <code class="docutils literal notranslate"><span class="pre">Qt4_FOUND</span></code> 相同。布尔值，指示是否找到了（所请求版本的）Qt4。该变量可用于与其他 Qt 查找模块兼容。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QT_VERSION_MAJOR</span></code></dt><dd><p>找到的 Qt 主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QT_VERSION_MINOR</span></code></dt><dd><p>找到的 Qt 次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QT_VERSION_PATCH</span></code></dt><dd><p>找到的 Qt 修补程序版本号。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindQt4.html#hints" title="链接到此标题">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">QT4_NO_LINK_QTMAIN</span></code></dt><dd><p>如果在查找 Qt4 之前设置为布尔值 true，则在 Windows 上全局禁用链接 <code class="docutils literal notranslate"><span class="pre">qtmain.lib</span></code> 静态库。</p>
+</dd>
+</dl>
+</section>
+<section id="macros">
+<h2>宏<a class="headerlink" href="FindQt4.html#macros" title="此标题的链接">¶</a></h2>
+<p>在某些情况下，以更手动的方式调用 Qt 构建工具可能是必要或有用的。此模块提供了以下宏来为此类用途添加目标：</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_wrap_cpp">
+<span class="sig-name descname"><span class="pre">qt4_wrap_cpp</span></span><a class="headerlink" href="FindQt4.html#command:qt4_wrap_cpp" title="链接至此定义">¶</a></dt>
+<dd><p>为在给定输入文件列表上运行 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 创建构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_wrap_cpp(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏创建用于处理包含带有 <code class="docutils literal notranslate"><span class="pre">Q_OBJECT</span></code> 声明的 Qt 类的输入文件列表 <code class="docutils literal notranslate"><span class="pre">&lt;files&gt;</span></code> 的构建规则。还会添加目录级别的预处理器定义。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>存储生成的输出文件列表的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;files&gt;</span></code></dt><dd><p>一个或多个输入源文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code>，则来自该目标的 <code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INTERFACE_COMPILE_DEFINITIONS</span></code> 属性将被传递给 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></dt><dd><p>传递给 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 的可选选项列表，例如执行 <code class="docutils literal notranslate"><span class="pre">moc</span> <span class="pre">-help</span></code> 时显示的选项。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除了使用 <code class="docutils literal notranslate"><span class="pre">qt4_wrap_cpp()</span></code> 之外，还可以设置 <span class="target" id="index-0-variable:CMAKE_AUTOMOC"></span><a class="reference internal" href="../variable/CMAKE_AUTOMOC.html#variable:CMAKE_AUTOMOC" title="CMAKE_AUTOMOC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_AUTOMOC</span></code></a> 变量来自动使用 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 处理源文件。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_wrap_ui">
+<span class="sig-name descname"><span class="pre">qt4_wrap_ui</span></span><a class="headerlink" href="FindQt4.html#command:qt4_wrap_ui" title="链接至此定义">¶</a></dt>
+<dd><p>为在给定的 Qt 设计器 ui 输入文件列表上运行 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 创建构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_wrap_ui(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>存储生成的输出文件名列表的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;files&gt;</span></code></dt><dd><p>一个或多个 Qt 设计器 ui 输入源文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></dt><dd><p>传递给 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 的可选选项列表，例如执行 <code class="docutils literal notranslate"><span class="pre">uic</span> <span class="pre">-help</span></code> 时显示的选项。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除了使用 <code class="docutils literal notranslate"><span class="pre">qt4_wrap_ui()</span></code> 之外，还可以设置 <span class="target" id="index-0-variable:CMAKE_AUTOUIC"></span><a class="reference internal" href="../variable/CMAKE_AUTOUIC.html#variable:CMAKE_AUTOUIC" title="CMAKE_AUTOUIC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_AUTOUIC</span></code></a> 变量来自动使用 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 处理 ui 文件。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_add_resources">
+<span class="sig-name descname"><span class="pre">qt4_add_resources</span></span><a class="headerlink" href="FindQt4.html#command:qt4_add_resources" title="链接至此定义">¶</a></dt>
+<dd><p>为在给定的输入 Qt 资源文件列表上运行 <code class="docutils literal notranslate"><span class="pre">rcc</span></code> 创建构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_add_resources(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>存储生成的输出文件名列表的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;files&gt;</span></code></dt><dd><p>一个或多个 Qt 资源输入源文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></dt><dd><p>传递给 <code class="docutils literal notranslate"><span class="pre">rcc</span></code> 的可选选项列表，例如执行 <code class="docutils literal notranslate"><span class="pre">rcc</span> <span class="pre">-help</span></code> 时显示的选项。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除了使用 <code class="docutils literal notranslate"><span class="pre">qt4_add_resources()</span></code> 之外，还可以设置 <span class="target" id="index-0-variable:CMAKE_AUTORCC"></span><a class="reference internal" href="../variable/CMAKE_AUTORCC.html#variable:CMAKE_AUTORCC" title="CMAKE_AUTORCC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_AUTORCC</span></code></a> 变量来自动使用 <code class="docutils literal notranslate"><span class="pre">rcc</span></code> 处理资源文件。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_generate_moc">
+<span class="sig-name descname"><span class="pre">qt4_generate_moc</span></span><a class="headerlink" href="FindQt4.html#command:qt4_generate_moc" title="链接至此定义">¶</a></dt>
+<dd><p>创建一个通过在给定输入文件上运行 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 来生成输出文件的构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_generate_moc(</span><span class="nv">&lt;input-file&gt;</span><span class="w"> </span><span class="nv">&lt;output-file&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏为 <code class="docutils literal notranslate"><span class="pre">&lt;input-file&gt;</span></code> 创建一个生成 <code class="docutils literal notranslate"><span class="pre">&lt;output-file&gt;</span></code> 的构建规则。如果由于某种原因无法使用 <code class="docutils literal notranslate"><span class="pre">qt4_wrap_cpp()</span></code>（例如需要 moc 文件使用自定义文件名等），请使用此宏。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code>，则来自该目标的 <code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INTERFACE_COMPILE_DEFINITIONS</span></code> 属性将被传递给 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_add_dbus_interface">
+<span class="sig-name descname"><span class="pre">qt4_add_dbus_interface</span></span><a class="headerlink" href="FindQt4.html#command:qt4_add_dbus_interface" title="链接至此定义">¶</a></dt>
+<dd><p>从接口 XML 文件创建接口头文件和实现文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_add_dbus_interface(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;interface-file&gt;</span><span class="w"> </span><span class="nv">&lt;basename&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏从给定的接口 XML 文件 <code class="docutils literal notranslate"><span class="pre">&lt;interface-file&gt;</span></code> 创建接口头文件（<code class="docutils literal notranslate"><span class="pre">&lt;basename&gt;.h</span></code>）和实现文件（<code class="docutils literal notranslate"><span class="pre">&lt;basename&gt;.{cpp,moc}</span></code>），并将其添加到包含源文件列表的变量（指定为变量名 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code>）中。</p>
+<p>通过在输入文件 <code class="docutils literal notranslate"><span class="pre">&lt;interface-file&gt;</span></code> 上设置以下源文件属性，可以将其他参数传递给 <code class="docutils literal notranslate"><span class="pre">qdbusxml2cpp</span></code> 调用：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code></dt><dd><p>指定的文件将被包含在生成的接口头文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CLASSNAME</span></code></dt><dd><p>生成的类的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_NAMESPACE</span></code></dt><dd><p>生成的类将不会被包装在命名空间中。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_add_dbus_interfaces">
+<span class="sig-name descname"><span class="pre">qt4_add_dbus_interfaces</span></span><a class="headerlink" href="FindQt4.html#command:qt4_add_dbus_interfaces" title="链接至此定义">¶</a></dt>
+<dd><p>从多个接口 XML 文件创建接口头文件和实现文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_add_dbus_interfaces(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;interface-files&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏为所有列出的接口 XML 文件 <code class="docutils literal notranslate"><span class="pre">&lt;interface-files&gt;</span></code> 创建接口头文件和实现文件。基本名称将根据 XML 文件的名称自动确定。生成的输出文件列表存储在变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">qt4_add_dbus_interface()</span></code> 中描述的源文件属性也适用于此处。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_add_dbus_adaptor">
+<span class="sig-name descname"><span class="pre">qt4_add_dbus_adaptor</span></span><a class="headerlink" href="FindQt4.html#command:qt4_add_dbus_adaptor" title="链接至此定义">¶</a></dt>
+<dd><p>为 D-Bus 接口生成适配器类。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_add_dbus_adaptor(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="nv">&lt;xmlfile&gt;</span><span class="w"> </span><span class="nv">&lt;parent-header&gt;</span><span class="w"> </span><span class="nv">&lt;parent-classname&gt;</span>
+<span class="w">                     </span><span class="p">[</span><span class="nv">&lt;basename&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;classname&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>从描述接口的 XML 文件创建 D-Bus 适配器（头文件和实现文件），并将其添加到源文件列表中。该适配器将调用转发到在 <code class="docutils literal notranslate"><span class="pre">&lt;parent-header&gt;</span></code> 中定义并命名为 <code class="docutils literal notranslate"><span class="pre">&lt;parent-classname&gt;</span></code> 的父类。生成的输出文件名将为 <code class="docutils literal notranslate"><span class="pre">&lt;basename&gt;adaptor.{cpp,h}</span></code>，如果未给出 <code class="docutils literal notranslate"><span class="pre">&lt;basename&gt;</span></code>，则默认为 XML 文件的基本名称。如果提供了 <code class="docutils literal notranslate"><span class="pre">&lt;classname&gt;</span></code>，它将用作适配器本身的类名。生成的输出文件名存储在变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_generate_dbus_interface">
+<span class="sig-name descname"><span class="pre">qt4_generate_dbus_interface</span></span><a class="headerlink" href="FindQt4.html#command:qt4_generate_dbus_interface" title="链接至此定义">¶</a></dt>
+<dd><p>从给定的头文件生成 D-Bus XML 接口文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_generate_dbus_interface(</span><span class="nv">&lt;header&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;interface&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏创建一个构建规则，用于从给定的 <code class="docutils literal notranslate"><span class="pre">&lt;header&gt;</span></code> 文件中提取声明，以生成相应的 XML 接口文件。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;header&gt;</span></code></dt><dd><p>从中生成 XML 接口文件的头文件路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code></dt><dd><p>生成的 XML 接口文件的路径。如果省略此可选参数，接口文件的名称将由头文件的基本名称构造，并附加后缀 <code class="docutils literal notranslate"><span class="pre">.xml</span></code>。相对路径被解释为相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></dt><dd><p>可以传递给 <code class="docutils literal notranslate"><span class="pre">qdbuscpp2xml</span></code> 的选项列表，例如执行 <code class="docutils literal notranslate"><span class="pre">qdbuscpp2xml</span> <span class="pre">--help</span></code> 时显示的选项。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_create_translation">
+<span class="sig-name descname"><span class="pre">qt4_create_translation</span></span><a class="headerlink" href="FindQt4.html#command:qt4_create_translation" title="链接至此定义">¶</a></dt>
+<dd><p>创建用于生成 TS 和 QM 文件的构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_create_translation(</span><span class="nv">&lt;qm-files-var&gt;</span><span class="w"> </span><span class="nv">&lt;directories&gt;...</span><span class="w"> </span><span class="nv">&lt;sources&gt;...</span>
+<span class="w">                       </span><span class="nv">&lt;ts-files&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏创建构建规则，通过 <code class="docutils literal notranslate"><span class="pre">lupdate</span></code> 从给定的 <code class="docutils literal notranslate"><span class="pre">&lt;directories&gt;</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">&lt;sources&gt;</span></code> 生成 TS（翻译源文件 <code class="docutils literal notranslate"><span class="pre">.ts</span></code>）文件，并由 <code class="docutils literal notranslate"><span class="pre">lrelease</span></code> 生成 QM（Qt 消息文件 <code class="docutils literal notranslate"><span class="pre">.qm</span></code>）文件。TS 文件在源树中创建和/或更新（除非给出完整路径）。QM 文件在构建树中生成。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;qm-files-var&gt;</span></code></dt><dd><p>生成的 QM 文件列表存储在此变量中。可以通过将 <code class="docutils literal notranslate"><span class="pre">&lt;qm-files-var&gt;</span></code> 添加到项目库/可执行文件的源列表中来更新翻译，从而使它们始终保持更新，或者通过添加自定义目标来控制它们何时更新/生成。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;directories&gt;</span></code></dt><dd><p>包含源文件的目录列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;sources&gt;</span></code></dt><dd><p>源文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;ts-files&gt;</span></code></dt><dd><p>TS（翻译源）文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></dt><dd><p>传递给 <code class="docutils literal notranslate"><span class="pre">lupdate</span></code> 的可选标志列表，例如 <code class="docutils literal notranslate"><span class="pre">-extensions</span></code>，用于指定目录扫描的文件扩展名。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_add_translation">
+<span class="sig-name descname"><span class="pre">qt4_add_translation</span></span><a class="headerlink" href="FindQt4.html#command:qt4_add_translation" title="链接至此定义">¶</a></dt>
+<dd><p>创建从给定 TS 文件生成 QM 文件的构建规则。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_add_translation(</span><span class="nv">&lt;qm-files-var&gt;</span><span class="w"> </span><span class="nv">&lt;ts-files&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏创建从给定 TS 文件生成 QM 文件的构建规则，并将生成的 QM 文件名列表存储在 <code class="docutils literal notranslate"><span class="pre">&lt;qm-files-var&gt;</span></code> 变量中。<code class="docutils literal notranslate"><span class="pre">&lt;ts-files&gt;</span></code> 必须存在，且不会以任何方式更新。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_automoc">
+<span class="sig-name descname"><span class="pre">qt4_automoc</span></span><a class="headerlink" href="FindQt4.html#command:qt4_automoc" title="链接至此定义">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 2.8.11 版本起已弃用：</span>请改用 <span class="target" id="index-1-variable:CMAKE_AUTOMOC"></span><a class="reference internal" href="../variable/CMAKE_AUTOMOC.html#variable:CMAKE_AUTOMOC" title="CMAKE_AUTOMOC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_AUTOMOC</span></code></a> 变量提供的功能。</p>
+</div>
+<p>在输入文件上运行 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_automoc(</span><span class="nv">&lt;source-files&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此宏可用于自动处理 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。例如，如果有 <code class="docutils literal notranslate"><span class="pre">foo.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">foo.cpp</span></code> 文件，并且在 <code class="docutils literal notranslate"><span class="pre">foo.h</span></code> 中某个类使用了 <code class="docutils literal notranslate"><span class="pre">Q_OBJECT</span></code> 预处理器宏，则必须在其上运行 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。如果不希望使用 <code class="docutils literal notranslate"><span class="pre">qt4_wrap_cpp()</span></code>（尽管它很可靠且成熟），可以将 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">"foo.moc"</span></code> 插入到 <code class="docutils literal notranslate"><span class="pre">foo.cpp</span></code> 中，然后将 <code class="docutils literal notranslate"><span class="pre">foo.cpp</span></code> 作为参数提供给 <code class="docutils literal notranslate"><span class="pre">qt4_automoc()</span></code>。这将在配置阶段扫描所有列出的 <code class="docutils literal notranslate"><span class="pre">&lt;source-files&gt;</span></code> 以查找此类包含的 moc 文件，如果找到它们，则会生成一个规则，在构建时对附带的头文件 <code class="docutils literal notranslate"><span class="pre">foo.h</span></code> 运行 moc。如果源文件设置了 <span class="target" id="index-0-prop_sf:SKIP_AUTOMOC"></span><a class="reference internal" href="../prop_sf/SKIP_AUTOMOC.html#prop_sf:SKIP_AUTOMOC" title="SKIP_AUTOMOC"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SKIP_AUTOMOC</span></code></a> 属性，则该文件将被此宏忽略。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code>，则来自该目标的 <code class="docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INTERFACE_COMPILE_DEFINITIONS</span></code> 属性将被传递给 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:qt4_use_modules">
+<span class="sig-name descname"><span class="pre">qt4_use_modules</span></span><a class="headerlink" href="FindQt4.html#command:qt4_use_modules" title="链接至此定义">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 2.8.11 版本起已弃用：</span>请改用带有 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a> 的 <span class="target" id="index-1-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>。</p>
+</div>
+<p>为项目提供 Qt 模块以链接到目标。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">qt4_use_modules(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="p">[&lt;</span><span class="no">LINK_PUBLIC</span><span class="p">|</span><span class="no">LINK_PRIVATE</span><span class="p">&gt;]</span><span class="w"> </span><span class="nv">&lt;modules&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此函数使 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 使用来自 Qt 的 <code class="docutils literal notranslate"><span class="pre">&lt;modules&gt;</span></code>。使用 Qt 模块意味着链接到该库，添加相关的模块包含目录，并添加用于使用该模块的相关编译器定义。模块大致等同于 Qt4 组件。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LINK_PUBLIC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LINK_PRIVATE</span></code></dt><dd><p>可选的链接模式，用作 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 调用中的相应参数。</p>
+</dd>
+</dl>
+<p>例如，调用 <code class="docutils literal notranslate"><span class="pre">qt4_use_modules(myexe</span> <span class="pre">Core</span> <span class="pre">Gui</span> <span class="pre">Declarative)</span></code> 将在项目目标 <code class="docutils literal notranslate"><span class="pre">myexe</span></code> 上使用 <code class="docutils literal notranslate"><span class="pre">QtCore</span></code>、<code class="docutils literal notranslate"><span class="pre">QtGui</span></code> 和 <code class="docutils literal notranslate"><span class="pre">QtDeclarative</span></code> 组件。</p>
+</dd></dl>
+
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindQt4.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">QT4_FOUND</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 2.8.11 版本起已弃用：</span>请使用具有相同值的 <code class="docutils literal notranslate"><span class="pre">Qt4_FOUND</span></code>。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindQt4.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 Qt4 的典型用法可能如下：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_AUTOMOC</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">CMAKE_INCLUDE_CURRENT_DIR</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Qt4</span><span class="w"> </span><span class="m">4.4.3</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="nb">QtGui</span><span class="w"> </span><span class="nb">QtXml</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">myexe</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Qt4</span><span class="o">::</span><span class="nb">QtGui</span><span class="w"> </span><span class="nb">Qt4</span><span class="o">::</span><span class="nb">QtXml</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindQt4.html#">FindQt4</a><ul>
+<li><a class="reference internal" href="FindQt4.html#qt-build-tools">Qt 构建工具</a></li>
+<li><a class="reference internal" href="FindQt4.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindQt4.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindQt4.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindQt4.html#macros">宏</a></li>
+<li><a class="reference internal" href="FindQt4.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindQt4.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindQt3.html" title="上一章">FindQt3</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindQuickTime.html" title="下一章">FindQuickTime</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindQt4.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindQuickTime.html" title="FindQuickTime">下一页</a> |</li>
+        <li class="right">
+          <a href="FindQt3.html" title="FindQt3">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindQt4.html">FindQt4</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0058 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0058.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0057" href="CMP0057.html" />
+    <link rel="prev" title="CMP0059" href="CMP0059.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0057.html" title="CMP0057" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0059.html" title="CMP0059" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0058.html">CMP0058</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0058">
+<span id="policy:CMP0058"></span><h1>CMP0058<a class="headerlink" href="CMP0058.html#cmp0058" title="链接到此标题">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为已在 CMake 4.0 版本中移除。此策略必须通过调用 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 或 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 来设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>Ninja 要求必须显式指定自定义命令的副产品（byproducts）。</p>
+<p>当构建过程中生成的中间文件被昂贵的操作或大型依赖树所消耗时，可以通过仅在文件内容发生变化时更新文件时间戳来减少增量重构所需的工作量。采用这种方法时，生成规则必须有一个单独的输出文件，该文件始终更新为比规则的任何依赖项都新的时间戳，以便构建工具仅在输入发生变化时才重新运行该规则。我们将这个单独的输出文件称为规则的“见证文件”（witness），将生成的文件称为规则的“副产品”（byproduct）。</p>
+<p>副产品不能被列为输出，因为允许它们的时间戳早于输入文件。在 CMake 设计之初，没有任何构建工具（如 <code class="docutils literal notranslate"><span class="pre">make</span></code>）能够表达副产品的概念。因此，3.2 版本之前的 CMake 无法指定它们。项目通常不在生成它们的规则中声明副产品。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">witness.txt</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">copy_if_different</span>
+<span class="w">          </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/input.txt</span>
+<span class="w">          </span><span class="nb">byproduct.txt</span><span class="w"> </span><span class="c"># timestamp may not change</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">touch</span><span class="w"> </span><span class="nb">witness.txt</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/input.txt</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">add_custom_target(</span><span class="nb">Provider</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">witness.txt</span><span class="nf">)</span>
+<span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">generated.c</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">expensive-task</span><span class="w"> </span><span class="p">-</span><span class="nb">i</span><span class="w"> </span><span class="nb">byproduct.txt</span><span class="w"> </span><span class="p">-</span><span class="nb">o</span><span class="w"> </span><span class="nb">generated.c</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/byproduct.txt</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">add_library(</span><span class="nb">Consumer</span><span class="w"> </span><span class="nb">generated.c</span><span class="nf">)</span>
+<span class="nf">add_dependencies(</span><span class="nb">Consumer</span><span class="w"> </span><span class="nb">Provider</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>除了 <span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器外，这对所有生成器都适用。Ninja 构建工具看到一条规则将 <code class="docutils literal notranslate"><span class="pre">byproduct.txt</span></code> 列为依赖项，却没有任何规则将其列为输出。即使存在“仅顺序依赖”（order-only dependencies）以确保 <code class="docutils literal notranslate"><span class="pre">byproduct.txt</span></code> 在其使用者需要之前存在，Ninja 仍会报错称无法满足依赖关系并停止构建。有关 Ninja 为何以这种方式工作的更多详细信息，请参阅 <a class="reference external" href="https://github.com/ninja-build/ninja/issues/760">Ninja Issue 760</a> 的讨论。</p>
+<p>Ninja 不希望将副产品留在生成它们的规则中保持未声明状态，而是期望将副产品与其他输出一起列出。此类规则可以标记 <code class="docutils literal notranslate"><span class="pre">restat</span></code> 选项，该选项告诉 Ninja 在规则运行后检查输出的时间戳。这可以防止时间戳未改变的副产品导致其依赖项进行不必要的重新构建。</p>
+<p>由于上述方法没有告诉 CMake 是哪个自定义命令生成了 <code class="docutils literal notranslate"><span class="pre">byproduct.txt</span></code>，因此 Ninja 生成器没有足够的信息将副产品添加为任何规则的输出。CMake 2.8.12 及更高版本通过生成 <code class="docutils literal notranslate"><span class="pre">phony</span></code> 构建规则来解决这个问题，允许使用上述方法的项目进行构建，从而告诉 Ninja 容忍此类缺失文件。然而，这种变通方法阻止了 Ninja 诊断真正缺失的依赖项。它在源内构建（in-source builds）中表现也很差，因为每一个自定义命令依赖（即使是对源文件的依赖）都需要以这种方式处理，因为 CMake 没有足够的信息来确定哪些文件是作为自定义命令的副产品生成的。</p>
+<section id="introducing-byproducts">
+<h2>引入副产品（Byproducts）<a class="headerlink" href="CMP0058.html#introducing-byproducts" title="链接到此标题">¶</a></h2>
+<p>CMake 3.2 在 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 和 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 命令中引入了 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 选项。此选项允许显式指定副产品：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
+<span class="w">  </span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">witness.txt</span>
+<span class="w">  </span><span class="no">BYPRODUCTS</span><span class="w"> </span><span class="nb">byproduct.txt</span><span class="w"> </span><span class="c"># explicit byproduct specification</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">copy_if_different</span>
+<span class="w">          </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="na">/input.txt</span>
+<span class="w">          </span><span class="nb">byproduct.txt</span><span class="w"> </span><span class="c"># timestamp may not change</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 选项被 <span class="target" id="index-1-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器使用，以便在生成它们的自定义命令输出中列出副产品，该选项会被其他生成器忽略。</p>
+<p>CMake 3.3 及更高版本倾向于要求项目显式指定自定义命令的副产品，以便完全避免使用 <code class="docutils literal notranslate"><span class="pre">phony</span></code> 规则的变通方案。引入策略 <code class="docutils literal notranslate"><span class="pre">CMP0058</span></code> 是为了向后兼容仍需要该变通方案的现有项目。</p>
+<p>此策略对除 <span class="target" id="index-2-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 之外的生成器没有影响。此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是为构建树中的未知依赖项生成 Ninja <code class="docutils literal notranslate"><span class="pre">phony</span></code> 规则。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是不生成这些规则，并要求项目显式指定自定义命令的 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code>。</p>
+<p>策略设置必须在项目顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件末尾的作用域内，并具有全局影响。</p>
+<p>此策略在 CMake 3.3 版本中引入。在 CMake 4.0 版本移除之前，它可以通过 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，CMake 在源外构建树中发现未知依赖项时会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMP0058.html#">CMP0058</a><ul>
+<li><a class="reference internal" href="CMP0058.html#introducing-byproducts">引入副产品（Byproducts）</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0059.html" title="上一章">CMP0059</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0057.html" title="下一章">CMP0057</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0058.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0057.html" title="CMP0057">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0059.html" title="CMP0059">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0058.html">CMP0058</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

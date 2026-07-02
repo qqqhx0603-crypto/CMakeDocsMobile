@@ -1,0 +1,2192 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake(1) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake.1.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ctest(1)" href="ctest.1.html" />
+    <link rel="prev" title="Introduction" href="../index.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ctest.1.html" title="ctest(1)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../index.html" title="Introduction" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake.1.html">cmake(1)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake(1)"></span><section id="cmake-1">
+<h1>cmake(1)<a class="headerlink" href="cmake.1.html#cmake-1" title="链接到此标题">¶</a></h1>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="cmake.1.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block"><a class="reference internal" href="cmake.1.html#generate-a-project-buildsystem">Generate a Project Buildsystem</a>
+ cmake [&lt;options&gt;] -B &lt;path-to-build&gt; [-S &lt;path-to-source&gt;]
+ cmake [&lt;options&gt;] &lt;path-to-source | path-to-existing-build&gt;
+
+<a class="reference internal" href="cmake.1.html#build-a-project">Build a Project</a>
+ cmake --build &lt;dir&gt; [&lt;options&gt;] [-- &lt;build-tool-options&gt;]
+
+<a class="reference internal" href="cmake.1.html#install-a-project">Install a Project</a>
+ cmake --install &lt;dir&gt; [&lt;options&gt;]
+
+<a class="reference internal" href="cmake.1.html#open-a-project">Open a Project</a>
+ cmake --open &lt;dir&gt;
+
+<a class="reference internal" href="cmake.1.html#run-a-script">Run a Script</a>
+ cmake [-D &lt;var&gt;=&lt;value&gt;]... -P &lt;cmake-script-file&gt;
+
+<a class="reference internal" href="cmake.1.html#run-a-command-line-tool">Run a Command-Line Tool</a>
+ cmake -E &lt;command&gt; [&lt;options&gt;]
+
+<a class="reference internal" href="cmake.1.html#run-the-find-package-tool">Run the Find-Package Tool</a>
+ cmake --find-package [&lt;options&gt;]
+
+<a class="reference internal" href="cmake.1.html#run-a-workflow-preset">Run a Workflow Preset</a>
+ cmake --workflow &lt;options&gt;
+
+<a class="reference internal" href="cmake.1.html#view-help">View Help</a>
+ cmake --help[-&lt;topic&gt;]</pre>
+</section>
+<section id="description">
+<h2>描述<a class="headerlink" href="cmake.1.html#description" title="链接到此标题">¶</a></h2>
+<p><strong class="program">cmake</strong> 可执行文件是跨平台构建系统生成器 CMake 的命令行接口。上述 <a class="reference internal" href="cmake.1.html#synopsis">摘要 (Synopsis)</a> 列出了该工具可以执行的各种操作，具体描述见下文。</p>
+<p>要使用 CMake 构建软件项目，请 <a class="reference internal" href="cmake.1.html#generate-a-project-buildsystem">生成项目构建系统</a>。您可以选择使用 <strong class="program">cmake</strong> 来 <a class="reference internal" href="cmake.1.html#build-a-project">构建项目</a>、<a class="reference internal" href="cmake.1.html#install-a-project">安装项目</a>，或者直接运行相应的构建工具（例如 <code class="docutils literal notranslate"><span class="pre">make</span></code>）。<strong class="program">cmake</strong> 也可用于 <a class="reference internal" href="cmake.1.html#view-help">查看帮助</a>。</p>
+<p>其他操作旨在供软件开发者在编写 <span class="target" id="index-0-manual:cmake-language(7)"></span><a class="reference internal" href="cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake 语言</span></code></a> 脚本以支持其构建时使用。</p>
+<p>对于可能替代 <strong class="program">cmake</strong> 的图形用户界面，请参阅 <span class="target" id="index-0-manual:ccmake(1)"></span><a class="reference internal" href="ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake</span></code></a> 和 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui</span></code></a>。对于 CMake 测试和打包功能的命令行接口，请参阅 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a> 和 <span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a>。</p>
+<p>有关 CMake 的更多详细信息，请参阅本手册末尾的 <a class="reference internal" href="cmake.1.html#see-also">另请参阅</a> 链接。</p>
+</section>
+<section id="introduction-to-cmake-buildsystems">
+<h2>CMake 构建系统介绍<a class="headerlink" href="cmake.1.html#introduction-to-cmake-buildsystems" title="链接到此标题">¶</a></h2>
+<p><em>构建系统 (buildsystem)</em> 描述了如何使用 <em>构建工具 (build tool)</em> 自动化从源代码构建项目可执行文件和库的过程。例如，构建系统可以是用于命令行 <code class="docutils literal notranslate"><span class="pre">make</span></code> 工具的 <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>，也可以是集成开发环境 (IDE) 的项目文件。为了避免维护多种此类构建系统，项目可以使用以 <span class="target" id="index-1-manual:cmake-language(7)"></span><a class="reference internal" href="cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake 语言</span></code></a> 编写的文件来抽象地指定其构建系统。CMake 会通过一个称为 <em>生成器 (generator)</em> 的后端，从这些文件中为每个用户在本地生成一个首选的构建系统。</p>
+<p>要使用 CMake 生成构建系统，必须选择以下内容</p>
+<dl>
+<dt>源码树 (Source Tree)</dt><dd><p>包含项目提供的源代码文件的顶层目录。项目使用 <span class="target" id="index-2-manual:cmake-language(7)"></span><a class="reference internal" href="cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-language(7)</span></code></a> 手册中描述的文件来指定其构建系统，并从名为 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 的顶层文件开始。这些文件指定了 <span class="target" id="index-0-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="cmake-buildsystem.7.html#manual:cmake-buildsystem(7)" title="cmake-buildsystem(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-buildsystem(7)</span></code></a> 手册中描述的构建目标及其依赖项。</p>
+</dd>
+<dt>构建树 (Build Tree)</dt><dd><p>用于存储构建系统文件和构建输出产物（例如可执行文件和库）的顶层目录。CMake 将写入一个 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件，以标识该目录为构建树，并存储持久化信息，例如构建系统配置选项。</p>
+<p>为了保持源码树的原始状态，可以通过使用独立的专用构建树来执行 <em>源码外构建 (out-of-source build)</em>。同时也支持将构建树放在与源码树相同目录中的 <em>源码内构建 (in-source build)</em>，但不推荐这样做。</p>
+</dd>
+<dt>生成器</dt><dd><p>这决定了要生成的构建系统的类型。有关所有生成器的文档，请参阅 <span class="target" id="index-0-manual:cmake-generators(7)"></span><a class="reference internal" href="cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generators(7)</span></code></a> 手册。运行 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-h"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake --help</span></code></a> 以查看本地可用的生成器列表。可以选择使用下方的 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">-G</span></code></a> 选项来指定生成器，或者直接接受 CMake 为当前平台选择的默认生成器。</p>
+<p>使用 <a class="reference internal" href="cmake-generators.7.html#command-line-build-tool-generators"><span class="std std-ref">命令行构建工具生成器</span></a> 时，CMake 要求编译器工具链所需的环境已在 shell 中配置完毕。使用 <a class="reference internal" href="cmake-generators.7.html#ide-build-tool-generators"><span class="std std-ref">IDE 构建工具生成器</span></a> 时，无需特定的环境。</p>
+</dd>
+</dl>
+</section>
+<section id="generate-a-project-buildsystem">
+<span id="id1"></span><h2>生成项目构建系统<a class="headerlink" href="cmake.1.html#generate-a-project-buildsystem" title="链接到此标题">¶</a></h2>
+<p>运行带有以下命令签名之一的 CMake，以指定源码树和构建树并生成构建系统</p>
+<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">[&lt;options&gt;]</span> <span class="pre">-B</span> <span class="pre">&lt;path-to-build&gt;</span> <span class="pre">[-S</span> <span class="pre">&lt;path-to-source&gt;]</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;path-to-build&gt;</span></code> 作为构建树，<code class="docutils literal notranslate"><span class="pre">&lt;path-to-source&gt;</span></code> 作为源码树。指定的路径可以是绝对路径，也可以是相对于当前工作目录的相对路径。源码树必须包含一个 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件。如果构建树尚不存在，它将被自动创建。例如</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-S<span class="w"> </span>src<span class="w"> </span>-B<span class="w"> </span>build
+</pre></div>
+</div>
+</div></blockquote>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">[&lt;options&gt;]</span> <span class="pre">&lt;path-to-source&gt;</span></code></dt><dd><p>使用当前工作目录作为构建树，<code class="docutils literal notranslate"><span class="pre">&lt;path-to-source&gt;</span></code> 作为源码树。指定的路径可以是绝对路径，也可以是相对于当前工作目录的相对路径。源码树必须包含一个 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件，并且<em>不能</em>包含 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件，因为后者标识了一个已存在的构建树。例如</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>build<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>../src
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">[&lt;options&gt;]</span> <span class="pre">&lt;path-to-existing-build&gt;</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;path-to-existing-build&gt;</span></code> 作为构建树，并从其 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件加载源码树的路径，该文件必须已由先前运行的 CMake 生成。指定的路径可以是绝对路径，也可以是相对于当前工作目录的相对路径。例如</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>cmake<span class="w"> </span>.
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>在所有情况下，<code class="docutils literal notranslate"><span class="pre">&lt;options&gt;</span></code> 都可以是下方的 <a class="reference internal" href="cmake.1.html#options">选项</a> 中的零个或多个。</p>
+<p>上述指定源码树和构建树的样式可以混合使用。使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">-S</span></code></a> 或 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-B"><code class="xref std std-option docutils literal notranslate"><span class="pre">-B</span></code></a> 指定的路径总是分别被分类为源码树或构建树。使用普通参数指定的路径则根据其内容和之前给出的路径类型进行分类。如果只给出了其中一种类型的路径，则另一种将使用当前工作目录 (cwd)。例如</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>命令行</p></th>
+<th class="head"><p>源码目录</p></th>
+<th class="head"><p>构建目录</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-B</span> <span class="pre">build</span></code></p></td>
+<td><p><em>cwd</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-B</span> <span class="pre">build</span> <span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-B</span> <span class="pre">build</span> <span class="pre">-S</span> <span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><em>cwd</em></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">build</span></code> (现有的)</p></td>
+<td><p><em>已加载</em></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><em>cwd</em></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">src</span> <span class="pre">build</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">src</span> <span class="pre">-B</span> <span class="pre">build</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.23 变更: </span>当指定多个源码路径时，CMake 会发出警告。此行为从未被官方记录或支持，但旧版本会意外接受多个源码路径并使用最后指定的路径。请避免传递多个源码路径参数。</p>
+</div>
+<p>生成构建系统后，可以使用相应的原生构建工具来构建项目。例如，在使用 <span class="target" id="index-0-generator:Unix Makefiles"></span><a class="reference internal" href="../generator/Unix&#32;Makefiles.html#generator:Unix Makefiles" title="Unix Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code></a> 生成器之后，可以直接运行 <code class="docutils literal notranslate"><span class="pre">make</span></code></p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make
+<span class="gp">$ </span>make<span class="w"> </span>install
+</pre></div>
+</div>
+</div></blockquote>
+<p>或者，可以使用 <strong class="program">cmake</strong> 来 <a class="reference internal" href="cmake.1.html#build-a-project">构建项目</a>，它会自动选择并调用适当的原生构建工具。</p>
+<section id="options">
+<span id="cmake-options"></span><h3>选项<a class="headerlink" href="cmake.1.html#options" title="链接到此标题">¶</a></h3>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-S">
+<span class="sig-name descname"><span class="pre">-S</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path-to-source&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-S" title="Link to this definition">¶</a></dt>
+<dd><p>要构建的 CMake 项目的根目录路径。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-B">
+<span class="sig-name descname"><span class="pre">-B</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path-to-build&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-B" title="Link to this definition">¶</a></dt>
+<dd><p>CMake 将用作构建目录根目录的目录路径。</p>
+<p>如果该目录不存在，CMake 将创建它。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-C">
+<span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;initial-cache&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-C" title="Link to this definition">¶</a></dt>
+<dd><p>预加载一个脚本以填充缓存。</p>
+<p>当 CMake 首次在空的构建树中运行时，它会创建一个 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件，并使用项目的可自定义设置对其进行填充。此选项可用于指定一个文件，以便在首次通过项目的 CMake 列表文件之前加载缓存条目。加载的条目优先于项目的默认值。给定的文件应该是一个包含 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令的 CMake 脚本，这些命令使用 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 选项，而不是缓存格式的文件。</p>
+<p>脚本中对 <span class="target" id="index-0-variable:CMAKE_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_SOURCE_DIR.html#variable:CMAKE_SOURCE_DIR" title="CMAKE_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_BINARY_DIR.html#variable:CMAKE_BINARY_DIR" title="CMAKE_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code></a> 的引用将指向顶层源码树和构建树。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-D">
+<span id="cmdoption-cmake-D"></span><span class="sig-name descname"><span class="pre">-D</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;:&lt;type&gt;=&lt;value&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-D</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;=&lt;value&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-D" title="Link to this definition">¶</a></dt>
+<dd><p>创建或更新一个 CMake <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目。</p>
+<p>当 CMake 首次在空的构建树中运行时，它会创建一个 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件，并使用项目的可自定义设置对其进行填充。此选项可用于指定一个优先于项目默认值的设置。该选项可以根据需要多次重复，以设置多个 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目。</p>
+<p>如果给出了 <code class="docutils literal notranslate"><span class="pre">:&lt;type&gt;</span></code> 部分，它必须是 <span class="target" id="index-1-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令文档中为其 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 签名指定的类型之一。如果省略了 <code class="docutils literal notranslate"><span class="pre">:&lt;type&gt;</span></code> 部分，则如果该条目尚不存在，它将被创建且不带类型。如果项目中的命令将类型设置为 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FILEPATH</span></code>，则 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 将转换为绝对路径。</p>
+<p>此选项也可以作为单个参数给出：<code class="docutils literal notranslate"><span class="pre">-D&lt;var&gt;:&lt;type&gt;=&lt;value&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-D&lt;var&gt;=&lt;value&gt;</span></code>。</p>
+<p>请务必注意 <code class="docutils literal notranslate"><span class="pre">-C</span></code> 和 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 参数的顺序非常重要。它们将按列出的顺序执行，最后一个参数优于先前的参数。例如，如果您指定 <code class="docutils literal notranslate"><span class="pre">-DCMAKE_BUILD_TYPE=Debug</span></code>，后面跟着一个调用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_BUILD_TYPE</span><span class="w"> </span><span class="s">"Release"</span><span class="w"> </span><span class="no">CACHE</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="s">""</span><span class="w"> </span><span class="no">FORCE</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>的 <code class="docutils literal notranslate"><span class="pre">-C</span></code> 参数，那么 <code class="docutils literal notranslate"><span class="pre">-C</span></code> 参数将优先，<code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> 将设置为 <code class="docutils literal notranslate"><span class="pre">Release</span></code>。但是，如果 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 参数在 <code class="docutils literal notranslate"><span class="pre">-C</span></code> 参数之后，它将被设置为 <code class="docutils literal notranslate"><span class="pre">Debug</span></code>。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">-C</span></code> 文件中的 <code class="docutils literal notranslate"><span class="pre">set(...</span> <span class="pre">CACHE</span> <span class="pre">...)</span></code> 调用未使用 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code>，且 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 参数设置了相同的变量，由于非 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code> 的 <code class="docutils literal notranslate"><span class="pre">set(...</span> <span class="pre">CACHE</span> <span class="pre">...)</span></code> 调用的特性，无论顺序如何，<code class="docutils literal notranslate"><span class="pre">-D</span></code> 参数都会优先。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-U">
+<span class="sig-name descname"><span class="pre">-U</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;globbing_expr&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-U" title="Link to this definition">¶</a></dt>
+<dd><p>从 CMake <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 中删除匹配的条目。</p>
+<p>此选项可用于从 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件中删除一个或多个变量，支持使用 <code class="docutils literal notranslate"><span class="pre">*</span></code> 和 <code class="docutils literal notranslate"><span class="pre">?</span></code> 的 glob 模式表达式。该选项可以根据需要多次重复，以删除多个 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目。</p>
+<p>请谨慎使用，因为这可能会导致您的 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 无法正常工作。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-G">
+<span class="sig-name descname"><span class="pre">-G</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;generator-name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-G" title="Link to this definition">¶</a></dt>
+<dd><p>指定构建系统生成器。</p>
+<p>CMake 可能在特定平台上支持多种原生构建系统。生成器负责生成特定的构建系统。可能的生成器名称在 <span class="target" id="index-1-manual:cmake-generators(7)"></span><a class="reference internal" href="cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generators(7)</span></code></a> 手册中指定。</p>
+<p>如果未指定，CMake 会检查 <span class="target" id="index-0-envvar:CMAKE_GENERATOR"></span><a class="reference internal" href="../envvar/CMAKE_GENERATOR.html#envvar:CMAKE_GENERATOR" title="CMAKE_GENERATOR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code></a> 环境变量，否则将退回到内置的默认选择。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-T">
+<span class="sig-name descname"><span class="pre">-T</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;toolset-spec&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-T" title="Link to this definition">¶</a></dt>
+<dd><p>如果生成器支持，则指定工具集 (toolset)。</p>
+<p>某些 CMake 生成器支持工具集规范，以告诉原生构建系统如何选择编译器。有关详细信息，请参阅 <span class="target" id="index-0-variable:CMAKE_GENERATOR_TOOLSET"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_TOOLSET.html#variable:CMAKE_GENERATOR_TOOLSET" title="CMAKE_GENERATOR_TOOLSET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_TOOLSET</span></code></a> 变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-A">
+<span class="sig-name descname"><span class="pre">-A</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;platform-name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-A" title="Link to this definition">¶</a></dt>
+<dd><p>如果生成器支持，则指定平台名称。</p>
+<p>某些 CMake 生成器支持将平台名称提供给原生构建系统，以选择编译器或 SDK。有关详细信息，请参阅 <span class="target" id="index-0-variable:CMAKE_GENERATOR_PLATFORM"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#variable:CMAKE_GENERATOR_PLATFORM" title="CMAKE_GENERATOR_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span></code></a> 变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-toolchain">
+<span class="sig-name descname"><span class="pre">--toolchain</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;path-to-file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-toolchain" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>指定交叉编译工具链文件，等同于设置 <span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="../variable/CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a> 变量。相对路径被解释为相对于构建目录，如果找不到，则相对于源码目录。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-prefix">
+<span class="sig-name descname"><span class="pre">--install-prefix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;directory&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-prefix" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>指定安装目录，供 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量使用。必须是绝对路径。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-project-file">
+<span class="sig-name descname"><span class="pre">--project-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;project-file-name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-project-file" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>指定替代的项目文件名。</p>
+<p>这决定了 CMake 在配置项目时处理的顶层文件，以及 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 处理的文件。</p>
+<p>默认情况下，这是 <code>CMakeLists.txt</code>。如果设置为其他任何值，则在项目子目录中找不到指定文件时，<code>CMakeLists.txt</code> 将作为回退使用。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此功能旨在供开发者在增量转换期间临时使用，而非用于发布最终产品。当项目文件不是 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 时，CMake 总会发出警告。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Wno-dev">
+<span class="sig-name descname"><span class="pre">-Wno-dev</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Wno-dev" title="Link to this definition">¶</a></dt>
+<dd><p>禁止显示开发者警告。</p>
+<p>禁止显示那些针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的警告。默认情况下，这也将关闭弃用警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Wdev">
+<span class="sig-name descname"><span class="pre">-Wdev</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Wdev" title="Link to this definition">¶</a></dt>
+<dd><p>启用开发者警告。</p>
+<p>启用那些针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的警告。默认情况下，这也将开启弃用警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Wdeprecated">
+<span class="sig-name descname"><span class="pre">-Wdeprecated</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Wdeprecated" title="Link to this definition">¶</a></dt>
+<dd><p>启用已弃用功能警告。</p>
+<p>启用针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的、关于使用已弃用功能的警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Wno-deprecated">
+<span class="sig-name descname"><span class="pre">-Wno-deprecated</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Wno-deprecated" title="Link to this definition">¶</a></dt>
+<dd><p>禁止显示已弃用功能警告。</p>
+<p>禁止显示针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的、关于使用已弃用功能的警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Werror">
+<span class="sig-name descname"><span class="pre">-Werror</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;what&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Werror" title="Link to this definition">¶</a></dt>
+<dd><p>将 CMake 警告视为错误。<code class="docutils literal notranslate"><span class="pre">&lt;what&gt;</span></code> 必须是以下之一</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">开发</span></code></dt><dd><p>使开发者警告成为错误。</p>
+<p>使针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的警告成为错误。默认情况下，这也将把弃用警告也作为错误处理。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">已弃用</span></code></dt><dd><p>使已弃用的宏和函数警告成为错误。</p>
+<p>使针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的、关于使用已弃用的宏和函数的警告成为错误。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-Wno-error">
+<span class="sig-name descname"><span class="pre">-Wno-error</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;what&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-Wno-error" title="Link to this definition">¶</a></dt>
+<dd><p>不要将 CMake 警告视为错误。<code class="docutils literal notranslate"><span class="pre">&lt;what&gt;</span></code> 必须是以下之一</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">开发</span></code></dt><dd><p>使针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的警告不成为错误。默认情况下，这也将关闭弃用警告作为错误处理。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">已弃用</span></code></dt><dd><p>使针对 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件作者的、关于使用已弃用的宏和函数的警告不成为错误。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-fresh">
+<span class="sig-name descname"><span class="pre">--fresh</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-fresh" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>对构建树执行全新配置。这将删除任何现有的 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件和相关的 <code class="docutils literal notranslate"><span class="pre">CMakeFiles/</span></code> 目录，并从头开始重新创建它们。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 变更: </span>对于先前由 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 填充并对策略 <span class="target" id="index-0-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 的依赖项，它们在先前运行中留下的时间戳和脚本文件将被删除。因此，下载、更新和补丁步骤将被强制重新执行。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-L-A-H">
+<span class="sig-name descname"><span class="pre">-L[A][H]</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-L-A-H" title="Link to this definition">¶</a></dt>
+<dd><p>列出非高级缓存变量。</p>
+<p>列出 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 变量将运行 CMake 并列出 CMake <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 中所有未标记为 <code class="docutils literal notranslate"><span class="pre">INTERNAL</span></code> 或 <span class="target" id="index-0-prop_cache:ADVANCED"></span><a class="reference internal" href="../prop_cache/ADVANCED.html#prop_cache:ADVANCED" title="ADVANCED"><code class="xref cmake cmake-prop_cache docutils literal notranslate"><span class="pre">ADVANCED</span></code></a> 的变量。这将有效地显示当前的 CMake 设置，这些设置随后可以使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D</span></code></a> 选项进行更改。更改某些变量可能会导致创建更多变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">A</span></code>，它还将显示高级变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">H</span></code>，它还将显示每个变量的帮助信息。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-LR-A-H">
+<span class="sig-name descname"><span class="pre">-LR[A][H]</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;regex&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-LR-A-H" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>显示特定的非高级缓存变量</p>
+<p>显示 CMake <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 中与给定正则表达式匹配的既非 <code class="docutils literal notranslate"><span class="pre">INTERNAL</span></code> 也非 <span class="target" id="index-1-prop_cache:ADVANCED"></span><a class="reference internal" href="../prop_cache/ADVANCED.html#prop_cache:ADVANCED" title="ADVANCED"><code class="xref cmake cmake-prop_cache docutils literal notranslate"><span class="pre">ADVANCED</span></code></a> 的变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">A</span></code>，它还将显示高级变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">H</span></code>，它还将显示每个变量的帮助信息。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-N">
+<span class="sig-name descname"><span class="pre">-N</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-N" title="Link to this definition">¶</a></dt>
+<dd><p>仅查看模式。</p>
+<p>仅加载缓存。不实际运行配置和生成步骤。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-graphviz">
+<span class="sig-name descname"><span class="pre">--graphviz</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-graphviz" title="Link to this definition">¶</a></dt>
+<dd><p>生成依赖关系的 <a class="reference external" href="https://graphviz.cn/">Graphviz</a> 图</p>
+<p>此选项生成一个 Graphviz 输入文件，其中将包含项目中所有的库和可执行文件依赖关系，展示项目中目标之间的依赖关系，以及链接的外部库。</p>
+<p>当使用 <code class="docutils literal notranslate"><span class="pre">--graphviz=foo.dot</span></code> 选项运行 CMake 时，它会产生</p>
+<ul class="simple">
+<li><p>一个 <code class="docutils literal notranslate"><span class="pre">foo.dot</span></code> 文件，展示项目中的所有依赖关系</p></li>
+<li><p>为每个目标生成一个 <code class="docutils literal notranslate"><span class="pre">foo.dot.&lt;target&gt;</span></code> 文件，展示它所依赖的其他目标</p></li>
+<li><p>为每个目标生成一个 <code class="docutils literal notranslate"><span class="pre">foo.dot.&lt;target&gt;.dependers</span></code> 文件，展示其他哪些目标依赖于它</p></li>
+</ul>
+<p>这些 .dot 文件可以使用 Graphviz 包中的 <em>dot</em> 命令转换为图像</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dot<span class="w"> </span>-Tpng<span class="w"> </span>-o<span class="w"> </span>foo.png<span class="w"> </span>foo.dot
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.10 新增: </span>不同的依赖类型 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code>、<code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 分别表示为实线、虚线和点线边。</p>
+</div>
+<p class="rubric">特定于 Graphviz 支持的变量</p>
+<p>生成的图表可能非常庞大。生成的图表的外观和内容可以使用 <code class="docutils literal notranslate"><span class="pre">CMakeGraphVizOptions.cmake</span></code> 文件进行控制。系统首先在 <span class="target" id="index-1-variable:CMAKE_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_BINARY_DIR.html#variable:CMAKE_BINARY_DIR" title="CMAKE_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code></a> 中搜索此文件，然后在 <span class="target" id="index-1-variable:CMAKE_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_SOURCE_DIR.html#variable:CMAKE_SOURCE_DIR" title="CMAKE_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code></a> 中搜索。如果找到，文件中设置的变量将用于调整生成的 Graphviz 文件的选项。</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_GRAPH_NAME">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_GRAPH_NAME</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_GRAPH_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>图表名称。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: <span class="target" id="index-0-variable:CMAKE_PROJECT_NAME"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_NAME.html#variable:CMAKE_PROJECT_NAME" title="CMAKE_PROJECT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_NAME</span></code></a> 的值</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_GRAPH_HEADER">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_GRAPH_HEADER</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_GRAPH_HEADER" title="Link to this definition">¶</a></dt>
+<dd><p>写入 Graphviz 文件顶部的标头。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: "node [ fontsize = "12" ];"</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_NODE_PREFIX">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_NODE_PREFIX</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_NODE_PREFIX" title="Link to this definition">¶</a></dt>
+<dd><p>Graphviz 文件中每个节点的名称前缀。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: "node"</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_EXECUTABLES">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_EXECUTABLES</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_EXECUTABLES" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除可执行文件。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_STATIC_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_STATIC_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_STATIC_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除静态库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_SHARED_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_SHARED_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_SHARED_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除共享库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_MODULE_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_MODULE_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_MODULE_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除模块库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_INTERFACE_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_INTERFACE_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_INTERFACE_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除接口库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_OBJECT_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_OBJECT_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_OBJECT_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除对象库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_UNKNOWN_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_UNKNOWN_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_UNKNOWN_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除未知库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_EXTERNAL_LIBS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_EXTERNAL_LIBS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_EXTERNAL_LIBS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可从生成的图中排除外部库。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_CUSTOM_TARGETS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_CUSTOM_TARGETS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_CUSTOM_TARGETS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 TRUE 可在生成的图中包含自定义目标。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: FALSE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_IGNORE_TARGETS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_IGNORE_TARGETS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_IGNORE_TARGETS" title="Link to this definition">¶</a></dt>
+<dd><p>用于从生成的图中排除的目标名称的正则表达式列表。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: 空</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_GENERATE_PER_TARGET">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_GENERATE_PER_TARGET</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_GENERATE_PER_TARGET" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可不生成针对每个目标的图 <code class="docutils literal notranslate"><span class="pre">foo.dot.&lt;target&gt;</span></code>。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:GRAPHVIZ_GENERATE_DEPENDERS">
+<span class="sig-name descname"><span class="pre">GRAPHVIZ_GENERATE_DEPENDERS</span></span><a class="headerlink" href="cmake.1.html#variable:GRAPHVIZ_GENERATE_DEPENDERS" title="Link to this definition">¶</a></dt>
+<dd><p>设置为 FALSE 可不生成依赖者图 <code class="docutils literal notranslate"><span class="pre">foo.dot.&lt;target&gt;.dependers</span></code>。</p>
+<ul class="simple">
+<li><p>必须: 否</p></li>
+<li><p>默认值: TRUE</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-system-information">
+<span class="sig-name descname"><span class="pre">--system-information</span></span><span class="sig-prename descclassname"> <span class="pre">[file]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-system-information" title="Link to this definition">¶</a></dt>
+<dd><p>转储有关此系统的信息。</p>
+<p>转储有关当前系统的广泛信息。如果从某个 CMake 项目的二进制树顶部运行，它将转储其他信息，例如缓存、日志文件等。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-print-config-dir">
+<span class="sig-name descname"><span class="pre">--print-config-dir</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-print-config-dir" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>打印用户范围 FileAPI 查询的 CMake 配置目录。</p>
+<p>有关更多详细信息，请参阅 <span class="target" id="index-0-envvar:CMAKE_CONFIG_DIR"></span><a class="reference internal" href="../envvar/CMAKE_CONFIG_DIR.html#envvar:CMAKE_CONFIG_DIR" title="CMAKE_CONFIG_DIR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_CONFIG_DIR</span></code></a>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-log-level">
+<span class="sig-name descname"><span class="pre">--log-level</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;level&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-log-level" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>设置日志 <code class="docutils literal notranslate"><span class="pre">&lt;level&gt;</span></code>。</p>
+<p><span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a> 命令将仅输出指定日志级别或更高级别的消息。有效的日志级别包括 <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>、<code class="docutils literal notranslate"><span class="pre">WARNING</span></code>、<code class="docutils literal notranslate"><span class="pre">NOTICE</span></code>、<code class="docutils literal notranslate"><span class="pre">STATUS</span></code>（默认）、<code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code>、<code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 或 <code class="docutils literal notranslate"><span class="pre">TRACE</span></code>。</p>
+<p>为了使日志级别在 CMake 运行之间持久化，请改为将 <span class="target" id="index-0-variable:CMAKE_MESSAGE_LOG_LEVEL"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_LOG_LEVEL.html#variable:CMAKE_MESSAGE_LOG_LEVEL" title="CMAKE_MESSAGE_LOG_LEVEL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_LOG_LEVEL</span></code></a> 设置为缓存变量。如果同时给出了命令行选项和变量，则命令行选项优先。</p>
+<p>出于向后兼容的原因，<code class="docutils literal notranslate"><span class="pre">--loglevel</span></code> 也被接受为该选项的同义词。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.25 新增: </span>有关 <a class="reference internal" href="../command/cmake_language.html#query-message-log-level"><span class="std std-ref">查询当前消息日志级别</span></a> 的方法，请参阅 <span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="../command/cmake_language.html#command:cmake_language" title="cmake_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language()</span></code></a> 命令。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-log-context">
+<span class="sig-name descname"><span class="pre">--log-context</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-log-context" title="Link to this definition">¶</a></dt>
+<dd><p>启用 <span class="target" id="index-1-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a> 命令，输出附加到每条消息的上下文。</p>
+<p>此选项仅开启当前 CMake 运行的上下文显示。为了使上下文显示在所有后续的 CMake 运行中持久化，请改为将 <span class="target" id="index-0-variable:CMAKE_MESSAGE_CONTEXT_SHOW"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_CONTEXT_SHOW.html#variable:CMAKE_MESSAGE_CONTEXT_SHOW" title="CMAKE_MESSAGE_CONTEXT_SHOW"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_CONTEXT_SHOW</span></code></a> 设置为缓存变量。当给出此命令行选项时，<span class="target" id="index-1-variable:CMAKE_MESSAGE_CONTEXT_SHOW"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_CONTEXT_SHOW.html#variable:CMAKE_MESSAGE_CONTEXT_SHOW" title="CMAKE_MESSAGE_CONTEXT_SHOW"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_CONTEXT_SHOW</span></code></a> 将被忽略。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-sarif-output">
+<span class="sig-name descname"><span class="pre">--sarif-output</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;path&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-sarif-output" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>启用以 SARIF 格式记录 CMake 产生的诊断消息。</p>
+<p>将诊断消息写入指定路径的 SARIF 文件。项目也可以将 <span class="target" id="index-0-variable:CMAKE_EXPORT_SARIF"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_SARIF.html#variable:CMAKE_EXPORT_SARIF" title="CMAKE_EXPORT_SARIF"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_SARIF</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，从而为构建树启用此功能。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debug-trycompile">
+<span class="sig-name descname"><span class="pre">--debug-trycompile</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debug-trycompile" title="Link to this definition">¶</a></dt>
+<dd><p>不要删除为 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> / <span class="target" id="index-0-command:try_run"></span><a class="reference internal" href="../command/try_run.html#command:try_run" title="try_run"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_run()</span></code></a> 调用创建的文件和目录。这对于调试失败的检查非常有用。</p>
+<p>请注意，<span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 的某些使用场景可能会使用同一个构建树，如果项目执行了多个 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>，这将限制此选项的有效性。例如，此类使用可能会更改结果，因为先前 try-compile 的产物可能会导致不同的测试不正确地通过或失败。此选项最好仅在调试时使用。</p>
+<p>（关于上述说明，<span class="target" id="index-1-command:try_run"></span><a class="reference internal" href="../command/try_run.html#command:try_run" title="try_run"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_run()</span></code></a> 命令实际上是一个 <span class="target" id="index-3-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>。两者的任何组合都可能存在所描述的潜在问题。）</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.25 新增: </span>启用此选项后，每个 try-compile 检查都会打印一条日志消息，报告执行检查的目录。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debug-output">
+<span class="sig-name descname"><span class="pre">--debug-output</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debug-output" title="Link to this definition">¶</a></dt>
+<dd><p>将 cmake 置于调试模式。</p>
+<p>在 cmake 运行期间打印额外信息，例如带有 <span class="target" id="index-2-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(send_error)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(SEND_ERROR)</span></code></a> 调用的堆栈跟踪。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debug-find">
+<span class="sig-name descname"><span class="pre">--debug-find</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debug-find" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>将 cmake 查找命令置于调试模式。</p>
+<p>在 cmake 运行期间向标准错误输出额外的查找调用信息。输出旨在供人工阅读，而非解析。有关调试项目中更局部部分的信息，请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_DEBUG_MODE"></span><a class="reference internal" href="../variable/CMAKE_FIND_DEBUG_MODE.html#variable:CMAKE_FIND_DEBUG_MODE" title="CMAKE_FIND_DEBUG_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_DEBUG_MODE</span></code></a> 变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debug-find-pkg">
+<span class="sig-name descname"><span class="pre">--debug-find-pkg</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;pkg&gt;[,...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debug-find-pkg" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>在执行 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(&lt;pkg&gt;)</span></code></a> 调用时，将 cmake 查找命令置于调试模式，其中 <code class="docutils literal notranslate"><span class="pre">&lt;pkg&gt;</span></code> 是给定逗号分隔列表中的一个条目，区分大小写。</p>
+<p>类似于 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-debug-find"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debug-find</span></code></a>，但将范围限制为指定的包。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debug-find-var">
+<span class="sig-name descname"><span class="pre">--debug-find-var</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;var&gt;[,...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debug-find-var" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>当调用 cmake 查找命令并将 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 作为结果变量时，将其置于调试模式，其中 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 是给定逗号分隔列表中的一个条目。</p>
+<p>类似于 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-debug-find"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debug-find</span></code></a>，但将范围限制为指定的变量名。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-trace">
+<span class="sig-name descname"><span class="pre">--trace</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-trace" title="Link to this definition">¶</a></dt>
+<dd><p>将 cmake 置于跟踪模式。</p>
+<p>打印所有已完成调用及其来源的跟踪信息。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-trace-expand">
+<span class="sig-name descname"><span class="pre">--trace-expand</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-trace-expand" title="Link to this definition">¶</a></dt>
+<dd><p>将 cmake 置于跟踪模式。</p>
+<p>类似于 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-trace"><code class="xref std std-option docutils literal notranslate"><span class="pre">--trace</span></code></a>，但变量已展开。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-trace-format">
+<span class="sig-name descname"><span class="pre">--trace-format</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;format&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-trace-format" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>将 cmake 置于跟踪模式并设置跟踪输出格式。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;format&gt;</span></code> 可以是以下值之一。</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">人工</span></code></dt><dd><p>以人类可读的格式打印每一行跟踪信息。这是默认格式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">json-v1</span></code></dt><dd><p>将每一行打印为单独的 JSON 文档。每个文档由换行符 (<code class="docutils literal notranslate"><span class="pre">\n</span></code>) 分隔。保证 JSON 文档内不会出现换行符。</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">JSON 跟踪格式</span><a class="headerlink" href="cmake.1.html#id3" title="Link to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/full/path/to/the/CMake/file.txt"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"line"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"add_executable"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"foo"</span><span class="p">,</span><span class="w"> </span><span class="s2">"bar"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="mf">1579512535.9687231</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"global_frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>成员是</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">file</span></code></dt><dd><p>调用函数所在的 CMake 源文件的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">行</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">file</span></code> 中函数调用开始的行。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">line_end</span></code></dt><dd><p>如果函数调用跨越多行，此字段将设置为函数调用结束的行。如果函数调用跨越单行，此字段将未设置。此字段在 <code class="docutils literal notranslate"><span class="pre">json-v1</span></code> 格式的次版本 2 中添加。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">defer</span></code></dt><dd><p>当函数调用被 <span class="target" id="index-1-command:cmake_language"></span><a class="reference internal" href="../command/cmake_language.html#defer" title="cmake_language(defer)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(DEFER)</span></code></a> 延迟时出现的可选成员。如果存在，其值是一个包含延迟调用 <code class="docutils literal notranslate"><span class="pre">&lt;id&gt;</span></code> 的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cmd</span></code></dt><dd><p>所调用的函数名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">args</span></code></dt><dd><p>所有函数参数的字符串列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt><dd><p>函数调用的时间戳（自纪元以来的秒数）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">frame</span></code></dt><dd><p>在当前正在处理的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 上下文中，被调用函数的堆栈帧深度。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">global_frame</span></code></dt><dd><p>在跟踪中涉及的所有 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中全局跟踪的、被调用函数的堆栈帧深度。此字段在 <code class="docutils literal notranslate"><span class="pre">json-v1</span></code> 格式的次版本 2 中添加。</p>
+</dd>
+</dl>
+<p>此外，第一个输出的 JSON 文档包含当前主次版本的 <code class="docutils literal notranslate"><span class="pre">version</span></code> 键</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">JSON 版本格式</span><a class="headerlink" href="cmake.1.html#id4" title="Link to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>成员是</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>指示 JSON 格式的版本。该版本具有遵循语义版本约定的主分量和次分量。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-trace-source">
+<span class="sig-name descname"><span class="pre">--trace-source</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-trace-source" title="Link to this definition">¶</a></dt>
+<dd><p>将 cmake 置于跟踪模式，但仅输出指定文件的行。</p>
+<p>允许多次使用该选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-trace-redirect">
+<span class="sig-name descname"><span class="pre">--trace-redirect</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-trace-redirect" title="Link to this definition">¶</a></dt>
+<dd><p>将 cmake 置于跟踪模式，并将跟踪输出重定向到文件而不是 stderr。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-warn-uninitialized">
+<span class="sig-name descname"><span class="pre">--warn-uninitialized</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-warn-uninitialized" title="Link to this definition">¶</a></dt>
+<dd><p>警告关于未初始化的值。</p>
+<p>当使用未初始化的变量时，打印警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-warn-unused-vars">
+<span class="sig-name descname"><span class="pre">--warn-unused-vars</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-warn-unused-vars" title="Link to this definition">¶</a></dt>
+<dd><p>不执行任何操作。在 CMake 3.2 及以下版本中，它会启用关于未使用变量的警告。在 CMake 3.3 到 3.18 版本中，该选项已损坏。在 CMake 3.19 及以上版本中，该选项已被移除。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-no-warn-unused-cli">
+<span class="sig-name descname"><span class="pre">--no-warn-unused-cli</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-no-warn-unused-cli" title="Link to this definition">¶</a></dt>
+<dd><p>不警告关于命令行选项。</p>
+<p>不查找命令行上声明但未使用的变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-check-system-vars">
+<span class="sig-name descname"><span class="pre">--check-system-vars</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-check-system-vars" title="Link to this definition">¶</a></dt>
+<dd><p>查找系统文件中变量使用的问题。</p>
+<p>通常，仅在 <span class="target" id="index-2-variable:CMAKE_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_SOURCE_DIR.html#variable:CMAKE_SOURCE_DIR" title="CMAKE_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code></a> 和 <span class="target" id="index-2-variable:CMAKE_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_BINARY_DIR.html#variable:CMAKE_BINARY_DIR" title="CMAKE_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code></a> 中搜索未使用和未初始化的变量。此标志告诉 CMake 也对其他文件发出警告。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-compile-no-warning-as-error">
+<span class="sig-name descname"><span class="pre">--compile-no-warning-as-error</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-compile-no-warning-as-error" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>忽略目标属性 <span class="target" id="index-0-prop_tgt:COMPILE_WARNING_AS_ERROR"></span><a class="reference internal" href="../prop_tgt/COMPILE_WARNING_AS_ERROR.html#prop_tgt:COMPILE_WARNING_AS_ERROR" title="COMPILE_WARNING_AS_ERROR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">COMPILE_WARNING_AS_ERROR</span></code></a> 和变量 <span class="target" id="index-0-variable:CMAKE_COMPILE_WARNING_AS_ERROR"></span><a class="reference internal" href="../variable/CMAKE_COMPILE_WARNING_AS_ERROR.html#variable:CMAKE_COMPILE_WARNING_AS_ERROR" title="CMAKE_COMPILE_WARNING_AS_ERROR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_COMPILE_WARNING_AS_ERROR</span></code></a>，防止警告在编译时被视为错误。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-link-no-warning-as-error">
+<span class="sig-name descname"><span class="pre">--link-no-warning-as-error</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-link-no-warning-as-error" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>忽略目标属性 <span class="target" id="index-0-prop_tgt:LINK_WARNING_AS_ERROR"></span><a class="reference internal" href="../prop_tgt/LINK_WARNING_AS_ERROR.html#prop_tgt:LINK_WARNING_AS_ERROR" title="LINK_WARNING_AS_ERROR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_WARNING_AS_ERROR</span></code></a> 和变量 <span class="target" id="index-0-variable:CMAKE_LINK_WARNING_AS_ERROR"></span><a class="reference internal" href="../variable/CMAKE_LINK_WARNING_AS_ERROR.html#variable:CMAKE_LINK_WARNING_AS_ERROR" title="CMAKE_LINK_WARNING_AS_ERROR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINK_WARNING_AS_ERROR</span></code></a>，防止警告在链接时被视为错误。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-profiling-output">
+<span class="sig-name descname"><span class="pre">--profiling-output</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;path&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-profiling-output" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>与 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-profiling-format"><code class="xref std std-option docutils literal notranslate"><span class="pre">--profiling-format</span></code></a> 结合使用，以输出到给定路径。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-profiling-format">
+<span class="sig-name descname"><span class="pre">--profiling-format</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-profiling-format" title="Link to this definition">¶</a></dt>
+<dd><p>启用以给定格式输出 CMake 脚本的性能分析数据。</p>
+<p>这有助于分析执行的 CMake 脚本的性能。第三方应用程序应被用于将输出处理为人类可读的格式。</p>
+<p>目前支持的值为：<code class="docutils literal notranslate"><span class="pre">google-trace</span></code>，以 Google Trace 格式输出，该格式可以由 Google Chrome 的 <a class="reference external" href="about:tracing">about:tracing</a> 选项卡解析，或使用 Trace Compass 等工具的插件进行解析。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-preset">
+<span id="cmdoption-cmake-preset"></span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;preset&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;preset&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-preset" title="Link to this definition">¶</a></dt>
+<dd><p>从 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code> 文件读取 <span class="target" id="index-0-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">预设 (preset)</span></code></a>，这些文件必须位于与顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件相同的目录中。预设可以指定生成器、构建目录、变量列表以及传递给 CMake 的其他参数。<code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code> 中至少必须存在一个。<span class="target" id="index-1-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake GUI</span></code></a> 也识别并支持 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code> 文件。有关这些文件的完整详细信息，请参阅 <span class="target" id="index-1-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-presets(7)</span></code></a>。</p>
+<p>预设在所有其他命令行选项之前被读取，尽管 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">-S</span></code></a> 选项可用于指定包含 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMakeUserPresets.json</span></code> 文件的源码目录。如果未给定 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">-S</span></code></a>，则假定当前目录为顶层源码目录，且必须包含预设文件。所选预设指定的选项（变量、生成器等）都可以通过在命令行上手动指定它们来覆盖。例如，如果预设将名为 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的变量设置为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，但用户通过 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 参数将其设置为 <code class="docutils literal notranslate"><span class="pre">2</span></code>，则值 <code class="docutils literal notranslate"><span class="pre">2</span></code> 优先。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-list-presets">
+<span class="sig-name descname"><span class="pre">--list-presets</span></span><span class="sig-prename descclassname"><span class="pre">[=&lt;type&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-list-presets" title="Link to this definition">¶</a></dt>
+<dd><p>列出指定 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 的可用预设。<code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 的有效值为 <code class="docutils literal notranslate"><span class="pre">configure</span></code>、<code class="docutils literal notranslate"><span class="pre">build</span></code>、<code class="docutils literal notranslate"><span class="pre">test</span></code>、<code class="docutils literal notranslate"><span class="pre">package</span></code> 或 <code class="docutils literal notranslate"><span class="pre">all</span></code>。如果省略 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code>，则假定为 <code class="docutils literal notranslate"><span class="pre">configure</span></code>。除非使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">-S</span></code></a> 选项指定不同的顶层源码目录，否则当前工作目录必须包含 CMake 预设文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debugger">
+<span class="sig-name descname"><span class="pre">--debugger</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debugger" title="Link to this definition">¶</a></dt>
+<dd><p>启用 CMake 语言的交互式调试。CMake 在 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-debugger-pipe"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debugger-pipe</span></code></a> 命名的管道上公开了一个调试接口，该接口符合 <a class="reference external" href="https://msdocs.cn/debug-adapter-protocol/">调试适配器协议 (Debug Adapter Protocol)</a> 规范，并进行了以下修改。</p>
+<p><code class="docutils literal notranslate"><span class="pre">initialize</span></code> 响应包含一个名为 <code class="docutils literal notranslate"><span class="pre">cmakeVersion</span></code> 的附加字段，用于指定正在调试的 CMake 版本。</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">调试器 initialize 响应</span><a class="headerlink" href="cmake.1.html#id5" title="Link to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"cmakeVersion"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"patch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"full"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.27.0"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>成员是</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">主要版本</span></code></dt><dd><p>指定主版本号的整数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">次要版本</span></code></dt><dd><p>指定次版本号的整数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">patch</span></code></dt><dd><p>指定补丁版本号的整数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">full</span></code></dt><dd><p>指定完整 CMake 版本的字符串。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debugger-pipe">
+<span id="cmdoption-cmake-debugger-pipe"></span><span class="sig-name descname"><span class="pre">--debugger-pipe</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;pipe</span> <span class="pre">name&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--debugger-pipe</span></span><span class="sig-prename descclassname"> <span class="pre">=&lt;pipe</span> <span class="pre">name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debugger-pipe" title="Link to this definition">¶</a></dt>
+<dd><p>用于调试器通信的管道（在 Windows 上）或域套接字（在 Unix 上）名称。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-debugger-dap-log">
+<span id="cmdoption-cmake-debugger-dap-log"></span><span class="sig-name descname"><span class="pre">--debugger-dap-log</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;log</span> <span class="pre">path&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--debugger-dap-log</span></span><span class="sig-prename descclassname"> <span class="pre">=&lt;log</span> <span class="pre">path&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-debugger-dap-log" title="Link to this definition">¶</a></dt>
+<dd><p>将所有调试器通信记录到指定文件。</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="build-a-project">
+<span id="build-tool-mode"></span><h2>构建项目<a class="headerlink" href="cmake.1.html#build-a-project" title="链接到此标题">¶</a></h2>
+<p>CMake 提供了一个命令行签名来构建已生成的项目二进制树</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>&lt;dir&gt;<span class="w">             </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--<span class="w"> </span>&lt;build-tool-options&gt;<span class="o">]</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>&lt;preset&gt;<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--<span class="w"> </span>&lt;build-tool-options&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>这通过以下选项抽象了原生构建工具的命令行接口</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build">
+<span class="sig-name descname"><span class="pre">--build</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build" title="Link to this definition">¶</a></dt>
+<dd><p>要构建的项目二进制目录。这是必需的（除非指定了预设），并且必须位于第一位。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-preset">
+<span id="cmdoption-cmake-build-preset"></span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;preset&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"> <span class="pre">=&lt;preset&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-preset" title="Link to this definition">¶</a></dt>
+<dd><p>使用构建预设来指定构建选项。除非在 <code class="docutils literal notranslate"><span class="pre">--build</span></code> 之后指定了目录，否则项目二进制目录将从 <code class="docutils literal notranslate"><span class="pre">configurePreset</span></code> 键中推断得出。当前工作目录必须包含 CMake 预设文件。有关更多详细信息，请参阅 <span class="target" id="index-2-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">preset</span></code></a>。</p>
+</dd></dl>
+
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 4.3 变更: </span><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code> 现在支持同时指定构建目录和预设。</p>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-list-presets">
+<span class="sig-name descname"><span class="pre">--list-presets</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-list-presets" title="Link to this definition">¶</a></dt>
+<dd><p>列出可用的构建预设。当前工作目录必须包含 CMake 预设文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-j">
+<span id="cmdoption-cmake-build-parallel"></span><span class="sig-name descname"><span class="pre">-j</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;jobs&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;jobs&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-j" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>构建时使用的最大并发进程数。如果省略 <code class="docutils literal notranslate"><span class="pre">&lt;jobs&gt;</span></code>，则使用原生构建工具的默认进程数。</p>
+<p>如果设置了 <span class="target" id="index-0-envvar:CMAKE_BUILD_PARALLEL_LEVEL"></span><a class="reference internal" href="../envvar/CMAKE_BUILD_PARALLEL_LEVEL.html#envvar:CMAKE_BUILD_PARALLEL_LEVEL" title="CMAKE_BUILD_PARALLEL_LEVEL"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_BUILD_PARALLEL_LEVEL</span></code></a> 环境变量，则在该选项未给定时指定默认的并行级别。</p>
+<p>某些原生构建工具总是进行并行构建。使用 <code class="docutils literal notranslate"><span class="pre">&lt;jobs&gt;</span></code> 值为 <code class="docutils literal notranslate"><span class="pre">1</span></code> 可以限制为单个任务。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-t">
+<span id="cmdoption-cmake-build-target"></span><span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;tgt&gt;...</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--target</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;tgt&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-t" title="Link to this definition">¶</a></dt>
+<dd><p>构建 <code class="docutils literal notranslate"><span class="pre">&lt;tgt&gt;</span></code> 而非默认目标。可以指定多个目标，以空格分隔。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-config">
+<span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cfg&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-config" title="Link to this definition">¶</a></dt>
+<dd><p>对于多配置工具，选择配置 <code class="docutils literal notranslate"><span class="pre">&lt;cfg&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-clean-first">
+<span class="sig-name descname"><span class="pre">--clean-first</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-clean-first" title="Link to this definition">¶</a></dt>
+<dd><p>先构建 <code class="docutils literal notranslate"><span class="pre">clean</span></code> 目标，然后再进行构建。（若仅清理，请使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--target</span> <span class="pre">clean</span></code></a>。）</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-resolve-package-references">
+<span class="sig-name descname"><span class="pre">--resolve-package-references</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;value&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-resolve-package-references" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>在构建前解析来自外部包管理器（如 NuGet）的远程包引用。当 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">on</span></code>（默认值）时，包将在构建目标前进行还原。当 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">only</span></code> 时，包将仅被还原，但不执行构建。当 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">off</span></code> 时，不进行包还原。</p>
+<p>如果目标未定义任何包引用，则此选项无效。</p>
+<p>此设置可在构建预设中指定（使用 <code class="docutils literal notranslate"><span class="pre">resolvePackageReferences</span></code>）。如果指定了此命令行选项，预设中的设置将被忽略。</p>
+<p>如果没有提供命令行参数或预设选项，将评估特定于环境的缓存变量以决定是否执行包还原。</p>
+<p>使用 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 时，包引用是使用 <span class="target" id="index-0-prop_tgt:VS_PACKAGE_REFERENCES"></span><a class="reference internal" href="../prop_tgt/VS_PACKAGE_REFERENCES.html#prop_tgt:VS_PACKAGE_REFERENCES" title="VS_PACKAGE_REFERENCES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VS_PACKAGE_REFERENCES</span></code></a> 属性定义的。包引用通过 NuGet 还原。可以通过将 <code class="docutils literal notranslate"><span class="pre">CMAKE_VS_NUGET_PACKAGE_RESTORE</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 来禁用它。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-use-stderr">
+<span class="sig-name descname"><span class="pre">--use-stderr</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-use-stderr" title="Link to this definition">¶</a></dt>
+<dd><p>已忽略。CMake &gt;= 3.0 中的默认行为。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-build-v">
+<span id="cmdoption-cmake-build-verbose"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-build-v" title="Link to this definition">¶</a></dt>
+<dd><p>启用详细输出（如果支持）——包括要执行的构建命令。</p>
+<p>如果设置了 <span class="target" id="index-0-envvar:VERBOSE"></span><a class="reference internal" href="../envvar/VERBOSE.html#envvar:VERBOSE" title="VERBOSE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">VERBOSE</span></code></a> 环境变量或 <span class="target" id="index-0-variable:CMAKE_VERBOSE_MAKEFILE"></span><a class="reference internal" href="../variable/CMAKE_VERBOSE_MAKEFILE.html#variable:CMAKE_VERBOSE_MAKEFILE" title="CMAKE_VERBOSE_MAKEFILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERBOSE_MAKEFILE</span></code></a> 缓存变量，则可以省略此选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake--build-0">
+<span class="sig-name descname"><span class="pre">--</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake--build-0" title="Link to this definition">¶</a></dt>
+<dd><p>将剩余选项传递给原生工具。</p>
+</dd></dl>
+
+<p>运行 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 且不带任何选项以获取快速帮助。</p>
+<section id="generator-specific-build-tool-behavior">
+<h3>特定于生成器的构建工具行为<a class="headerlink" href="cmake.1.html#generator-specific-build-tool-behavior" title="链接到此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code> 在某些生成器上有特殊行为</p>
+<p><span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增：</span>如果第三方工具在 CMake 生成的 <code class="docutils literal notranslate"><span class="pre">.xcodeproj</span></code> 旁边写入了 <code class="docutils literal notranslate"><span class="pre">.xcworkspace</span></code>，则 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code> 改为通过工作区驱动构建。</p>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="install-a-project">
+<h2>安装项目<a class="headerlink" href="cmake.1.html#install-a-project" title="链接到此标题">¶</a></h2>
+<p>CMake 提供了一个命令行签名来安装已生成的项目二进制树</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--install<span class="w"> </span>&lt;dir&gt;<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>这可以在构建项目后用于在不使用生成的构建系统或原生构建工具的情况下执行安装。选项包括</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install">
+<span class="sig-name descname"><span class="pre">--install</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install" title="Link to this definition">¶</a></dt>
+<dd><p>要安装的项目二进制目录。这是必需的，并且必须放在第一位。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-config">
+<span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cfg&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-config" title="Link to this definition">¶</a></dt>
+<dd><p>对于多配置生成器，选择配置 <code class="docutils literal notranslate"><span class="pre">&lt;cfg&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-component">
+<span class="sig-name descname"><span class="pre">--component</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;comp&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-component" title="Link to this definition">¶</a></dt>
+<dd><p>基于组件的安装。仅安装组件 <code class="docutils literal notranslate"><span class="pre">&lt;comp&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-default-directory-permissions">
+<span class="sig-name descname"><span class="pre">--default-directory-permissions</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;permissions&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-default-directory-permissions" title="Link to this definition">¶</a></dt>
+<dd><p>默认目录安装权限。格式为 <code class="docutils literal notranslate"><span class="pre">&lt;u=rwx,g=rx,o=rx&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake--install-0">
+<span class="sig-name descname"><span class="pre">--prefix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;prefix&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake--install-0" title="Link to this definition">¶</a></dt>
+<dd><p>指定替代安装前缀，在安装阶段临时替换 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量的值。</p>
+<p>此选项的主要目的是允许安装到任意位置。这常见于某些安装和打包工作流中。它类似于在安装阶段选择安装目录。例如，在 Windows 上，用户可以选择项目的目标文件夹。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当项目使用 <span class="target" id="index-0-module:GNUInstallDirs"></span><a class="reference internal" href="../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 模块时，会有一些 <a class="reference internal" href="../module/GNUInstallDirs.html#gnuinstalldirs-special-cases"><span class="std std-ref">特殊情况</span></a>，它们是根据配置阶段 <span class="target" id="index-2-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量的值来评估的。即使在安装期间使用了替代前缀，这些结果也会持续存在。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-strip">
+<span class="sig-name descname"><span class="pre">--strip</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-strip" title="Link to this definition">¶</a></dt>
+<dd><p>安装前进行剥离（Strip）。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-v">
+<span id="cmdoption-cmake-install-verbose"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-v" title="Link to this definition">¶</a></dt>
+<dd><p>启用详细输出。</p>
+<p>如果设置了 <span class="target" id="index-1-envvar:VERBOSE"></span><a class="reference internal" href="../envvar/VERBOSE.html#envvar:VERBOSE" title="VERBOSE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">VERBOSE</span></code></a> 环境变量，则可以省略此选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-install-j">
+<span id="cmdoption-cmake-install-parallel"></span><span class="sig-name descname"><span class="pre">-j</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;jobs&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--parallel</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;jobs&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-install-j" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>使用指定数量的任务并行安装。仅在启用了 <span class="target" id="index-0-prop_gbl:INSTALL_PARALLEL"></span><a class="reference internal" href="../prop_gbl/INSTALL_PARALLEL.html#prop_gbl:INSTALL_PARALLEL" title="INSTALL_PARALLEL"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">INSTALL_PARALLEL</span></code></a> 时可用。<span class="target" id="index-0-envvar:CMAKE_INSTALL_PARALLEL_LEVEL"></span><a class="reference internal" href="../envvar/CMAKE_INSTALL_PARALLEL_LEVEL.html#envvar:CMAKE_INSTALL_PARALLEL_LEVEL" title="CMAKE_INSTALL_PARALLEL_LEVEL"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PARALLEL_LEVEL</span></code></a> 环境变量指定了当未提供此选项时的默认并行级别。</p>
+</dd></dl>
+
+<p>运行 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 且不带任何选项以获取快速帮助。</p>
+</section>
+<section id="open-a-project">
+<h2>打开项目<a class="headerlink" href="cmake.1.html#open-a-project" title="链接到此标题">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--open<span class="w"> </span>&lt;dir&gt;
+</pre></div>
+</div>
+<p>在相关联的应用程序中打开已生成的项目。这仅受部分生成器支持。</p>
+</section>
+<section id="run-a-script">
+<span id="script-processing-mode"></span><h2>运行脚本<a class="headerlink" href="cmake.1.html#run-a-script" title="链接到此标题">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span><span class="o">[</span>-D<span class="w"> </span>&lt;var&gt;<span class="o">=</span>&lt;value&gt;<span class="o">]</span>...<span class="w"> </span>-P<span class="w"> </span>&lt;cmake-script-file&gt;<span class="w"> </span><span class="o">[</span>--<span class="w"> </span>&lt;unparsed-options&gt;...<span class="o">]</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-P-D">
+<span class="sig-name descname"><span class="pre">-D</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;=&lt;value&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-P-D" title="Link to this definition">¶</a></dt>
+<dd><p>为脚本模式定义一个变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-P">
+<span class="sig-name descname"><span class="pre">-P</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmake-script-file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-P" title="Link to this definition">¶</a></dt>
+<dd><p>将给定的 CMake 文件作为用 CMake 语言编写的脚本进行处理。不执行配置或生成步骤，且缓存不会被修改。如果使用 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 定义变量，则必须在 <code class="docutils literal notranslate"><span class="pre">-P</span></code> 参数之前进行。</p>
+</dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">--</span></code> 之后的任何选项都不会被 CMake 解析，但它们仍包含在传递给脚本的 <span class="target" id="index-0-variable:CMAKE_ARGV0"></span><a class="reference internal" href="../variable/CMAKE_ARGV0.html#variable:CMAKE_ARGV0" title="CMAKE_ARGV0"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ARGV&lt;n&gt;</span></code></a> 变量集中（包括 <code class="docutils literal notranslate"><span class="pre">--</span></code> 本身）。</p>
+</section>
+<section id="run-a-command-line-tool">
+<span id="id2"></span><h2>运行命令行工具<a class="headerlink" href="cmake.1.html#run-a-command-line-tool" title="链接到此标题">¶</a></h2>
+<p>CMake 通过以下签名提供内置命令行工具</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-E<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E">
+<span class="sig-name descname"><span class="pre">-E</span></span><span class="sig-prename descclassname"> <span class="pre">[help]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E" title="Link to this definition">¶</a></dt>
+<dd><p>运行 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">help</span></code> 获取命令汇总。</p>
+</dd></dl>
+
+<p>可用命令如下</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-bin2c">
+<span class="sig-name descname"><span class="pre">bin2c</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;options&gt;...]</span> <span class="pre">[--]</span> <span class="pre">[&lt;input-file&gt;</span> <span class="pre">[&lt;output-file&gt;]]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-bin2c" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>将二进制文件转换为 C 数组。如果未指定输入文件或为 <code class="docutils literal notranslate"><span class="pre">-</span></code>，则从标准输入读取而非文件。如果未指定输出文件或为 <code class="docutils literal notranslate"><span class="pre">-</span></code>，则写入标准输出而非文件。</p>
+<p>默认情况下，这仅打印字节。可以使用 <code class="docutils literal notranslate"><span class="pre">--template-file</span></code> 参数添加封闭文本。您还可以 <code class="docutils literal notranslate"><span class="pre">#include</span></code> 来自另一个文件的字节，作为 C23 和 C++26 的 <code class="docutils literal notranslate"><span class="pre">#embed</span></code> 指令的即插即用替代品。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">my_bytes</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="cm">/* #embed "bin2c_input.bin" */</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"bin2c_output.c.txt"</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-signed">
+<span class="sig-name descname"><span class="pre">--signed</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-signed" title="Link to this definition">¶</a></dt>
+<dd><p>将字节打印为有符号整数，而非无符号。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-decimal">
+<span class="sig-name descname"><span class="pre">--decimal</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-decimal" title="Link to this definition">¶</a></dt>
+<dd><p>将字节打印为十进制，而非十六进制。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-trailing-comma">
+<span class="sig-name descname"><span class="pre">--trailing-comma</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-trailing-comma" title="Link to this definition">¶</a></dt>
+<dd><p>在最后一个字节后附加尾随逗号（默认不包含）。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-template-file">
+<span class="sig-name descname"><span class="pre">--template-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;template-file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-template-file" title="Link to this definition">¶</a></dt>
+<dd><p>根据模板文件进行格式化。模板文件包含用于数组及可选长度（将是非负十进制整数）的占位符。此类占位符在开始和结束处用 <code class="docutils literal notranslate"><span class="pre">@</span></code> 括起来。此功能类似于以 <code class="docutils literal notranslate"><span class="pre">@ONLY</span></code> 参数调用的 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a>，但只会替换数组和长度占位符，其他任何占位符将保持原样。</p>
+<p>潜在模板文件的示例</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>unsigned char my_bytes[] = {@array@};
+
+size_t length = @length@;
+</pre></div>
+</div>
+<p>数组占位符在模板文件中最多出现一次。长度占位符可在数组占位符之后出现零次或多次，但不得在其之前。</p>
+<p>请注意，长度是打印的元素数量，如果使用了除 <code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span></code> 之外的类型，可能与生成的数组的 <code class="docutils literal notranslate"><span class="pre">sizeof</span></code> 不匹配。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-template-array-placeholder">
+<span class="sig-name descname"><span class="pre">--template-array-placeholder</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;placeholder-name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-template-array-placeholder" title="Link to this definition">¶</a></dt>
+<dd><p>指定模板文件中数组占位符的名称。默认设置为 <code class="docutils literal notranslate"><span class="pre">array</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_bin2c-template-length-placeholder">
+<span class="sig-name descname"><span class="pre">--template-length-placeholder</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;placeholder-name&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_bin2c-template-length-placeholder" title="Link to this definition">¶</a></dt>
+<dd><p>指定模板文件中长度占位符的名称。默认设置为 <code class="docutils literal notranslate"><span class="pre">length</span></code>。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-capabilities">
+<span class="sig-name descname"><span class="pre">capabilities</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-capabilities" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>以 JSON 格式报告 cmake 功能。输出是一个具有以下键的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>包含版本信息的 JSON 对象。键为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>由 cmake <a class="reference internal" href="cmake.1.html#cmdoption-cmake-version"><code class="xref std std-option docutils literal notranslate"><span class="pre">--version</span></code></a> 显示的完整版本字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">主要版本</span></code></dt><dd><p>整数形式的主要版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">次要版本</span></code></dt><dd><p>整数形式的次要版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">patch</span></code></dt><dd><p>整数形式的补丁级别。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">suffix</span></code></dt><dd><p>cmake 版本后缀字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">isDirty</span></code></dt><dd><p>如果 cmake 构建来自未清理（dirty）的代码树，则设置为 true 的布尔值。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">生成器</span></code></dt><dd><p>可用生成器列表。每个生成器都是一个具有以下键的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>包含生成器名称的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">toolsetSupport</span></code></dt><dd><p>如果生成器支持工具集（toolsets），则为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">platformSupport</span></code></dt><dd><p>如果生成器支持平台（platforms），则为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">supportedPlatforms</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>当生成器支持通过 <span class="target" id="index-1-variable:CMAKE_GENERATOR_PLATFORM"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#variable:CMAKE_GENERATOR_PLATFORM" title="CMAKE_GENERATOR_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span></code></a> (<a class="reference internal" href="cmake.1.html#cmdoption-cmake-A"><code class="xref std std-option docutils literal notranslate"><span class="pre">-A</span> <span class="pre">...</span></code></a>) 指定平台时可能出现的可选成员。其值是已知支持的平台列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">extraGenerators</span></code></dt><dd><p>包含与该生成器兼容的所有 <a class="reference internal" href="cmake-generators.7.html#extra-generators"><span class="std std-ref">额外生成器</span></a> 的字符串列表。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fileApi</span></code></dt><dd><p>当 <span class="target" id="index-0-manual:cmake-file-api(7)"></span><a class="reference internal" href="cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-file-api(7)</span></code></a> 可用时出现的可选成员。该值为一个包含一个成员的 JSON 对象</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">requests</span></code></dt><dd><p>包含零个或多个支持的 file-api 请求的 JSON 数组。每个请求都是一个包含以下成员的 JSON 对象</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">种类</span></code></dt><dd><p>指定支持的 <a class="reference internal" href="cmake-file-api.7.html#file-api-object-kinds"><span class="std std-ref">对象种类</span></a> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>一个 JSON 数组，其元素每个都是包含 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 成员的 JSON 对象，指定非负整数版本组件。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">serverMode</span></code></dt><dd><p>如果 cmake 支持服务器模式，则为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。自 CMake 3.20 起始终为 false。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tls</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>如果启用了 TLS 支持，则为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debugger</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p>如果支持 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-debugger"><code class="xref std std-option docutils literal notranslate"><span class="pre">--debugger</span></code></a> 模式，则为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-cat">
+<span class="sig-name descname"><span class="pre">cat</span></span><span class="sig-prename descclassname"> <span class="pre">[--]</span> <span class="pre">&lt;files&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-cat" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>连接文件并打印到标准输出。</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_cat-0">
+<span class="sig-name descname"><span class="pre">--</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_cat-0" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>增加了对双短横线参数 <code class="docutils literal notranslate"><span class="pre">--</span></code> 的支持。这个简单的 <code class="docutils literal notranslate"><span class="pre">cat</span></code> 实现不支持任何选项，因此使用以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头的选项会导致错误。如果文件名以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头，请使用 <code class="docutils literal notranslate"><span class="pre">--</span></code> 指示选项结束。</p>
+</dd></dl>
+
+<div class="versionadded">
+<p><span class="versionmodified added">3.29 版本新增：</span><code class="docutils literal notranslate"><span class="pre">cat</span></code> 现在可以通过传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 参数来打印标准输入。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-chdir">
+<span class="sig-name descname"><span class="pre">chdir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;</span> <span class="pre">&lt;cmd&gt;</span> <span class="pre">[&lt;arg&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-chdir" title="Link to this definition">¶</a></dt>
+<dd><p>更改当前工作目录并运行命令。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-compare_files">
+<span class="sig-name descname"><span class="pre">compare_files</span></span><span class="sig-prename descclassname"> <span class="pre">[--ignore-eol]</span> <span class="pre">&lt;file1&gt;</span> <span class="pre">&lt;file2&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-compare_files" title="Link to this definition">¶</a></dt>
+<dd><p>检查 <code class="docutils literal notranslate"><span class="pre">&lt;file1&gt;</span></code> 是否与 <code class="docutils literal notranslate"><span class="pre">&lt;file2&gt;</span></code> 相同。如果文件相同，则返回 <code class="docutils literal notranslate"><span class="pre">0</span></code>，否则返回 <code class="docutils literal notranslate"><span class="pre">1</span></code>。如果参数无效，则返回 2。</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_compare_files-ignore-eol">
+<span class="sig-name descname"><span class="pre">--ignore-eol</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_compare_files-ignore-eol" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>该选项意味着进行逐行比较，并忽略 LF/CRLF 的差异。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy">
+<span id="cmdoption-cmake-E-arg-copy"></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-prename descclassname"> <span class="pre">-t</span> <span class="pre">&lt;destination&gt;</span> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy" title="Link to this definition">¶</a></dt>
+<dd><p>将文件复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>（可以是文件或目录）。如果指定了多个文件，或者指定了 <code class="docutils literal notranslate"><span class="pre">-t</span></code>，则 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 必须是目录且必须存在。如果未指定 <code class="docutils literal notranslate"><span class="pre">-t</span></code>，则假定最后一个参数是 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>。不支持通配符。<code class="docutils literal notranslate"><span class="pre">copy</span></code> 确实会跟随符号链接。这意味着它不会复制符号链接本身，而是复制它们指向的文件或目录。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>对多个输入文件的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版本新增：</span>对 <code class="docutils literal notranslate"><span class="pre">-t</span></code> 参数的支持。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy_directory">
+<span class="sig-name descname"><span class="pre">copy_directory</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy_directory" title="Link to this definition">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;...</span></code> 目录的内容复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录。如果 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录不存在，则会创建它。<code class="docutils literal notranslate"><span class="pre">copy_directory</span></code> 会跟随符号链接。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>对多个输入目录的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span>该命令现在在源目录不存在时失败。以前它通过创建一个空的空目标目录而成功。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy_directory_if_different">
+<span class="sig-name descname"><span class="pre">copy_directory_if_different</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy_directory_if_different" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;...</span></code> 目录中已更改的内容复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录。如果 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录不存在，则会创建它。</p>
+<p><code class="docutils literal notranslate"><span class="pre">copy_directory_if_different</span></code> 会跟随符号链接。当源目录不存在时，该命令失败。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy_directory_if_newer">
+<span class="sig-name descname"><span class="pre">copy_directory_if_newer</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy_directory_if_newer" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>如果源文件比目标文件更新（基于文件时间戳），则将 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;...</span></code> 目录的内容复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录。如果 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 目录不存在，则会创建它。</p>
+<p><code class="docutils literal notranslate"><span class="pre">copy_directory_if_newer</span></code> 会跟随符号链接。当源目录不存在时，该命令失败。这比 <code class="docutils literal notranslate"><span class="pre">copy_directory_if_different</span></code> 更快，因为它只比较文件时间戳，而不是文件内容。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy_if_different">
+<span class="sig-name descname"><span class="pre">copy_if_different</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy_if_different" title="Link to this definition">¶</a></dt>
+<dd><p>如果文件已更改，则将其复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>（可以是文件或目录）。如果指定了多个文件，则 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 必须是目录且必须存在。<code class="docutils literal notranslate"><span class="pre">copy_if_different</span></code> 会跟随符号链接。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>对多个输入文件的支持。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-copy_if_newer">
+<span class="sig-name descname"><span class="pre">copy_if_newer</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span> <span class="pre">&lt;destination&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-copy_if_newer" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>如果源文件比目标文件更新（基于文件时间戳），则将文件复制到 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>（可以是文件或目录）。如果指定了多个文件，则 <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code> 必须是目录且必须存在。<code class="docutils literal notranslate"><span class="pre">copy_if_newer</span></code> 会跟随符号链接。这比 <code class="docutils literal notranslate"><span class="pre">copy_if_different</span></code> 更快，因为它只比较文件时间戳，而不是文件内容。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-create_symlink">
+<span class="sig-name descname"><span class="pre">create_symlink</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;old&gt;</span> <span class="pre">&lt;new&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-create_symlink" title="Link to this definition">¶</a></dt>
+<dd><p>创建指向 <code class="docutils literal notranslate"><span class="pre">&lt;old&gt;</span></code> 的符号链接 <code class="docutils literal notranslate"><span class="pre">&lt;new&gt;</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增：</span>对在 Windows 上创建符号链接的支持。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>创建 <code class="docutils literal notranslate"><span class="pre">&lt;new&gt;</span></code> 符号链接的路径必须预先存在。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-create_hardlink">
+<span class="sig-name descname"><span class="pre">create_hardlink</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;old&gt;</span> <span class="pre">&lt;new&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-create_hardlink" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>创建指向 <code class="docutils literal notranslate"><span class="pre">&lt;old&gt;</span></code> 的硬链接 <code class="docutils literal notranslate"><span class="pre">&lt;new&gt;</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>创建 <code class="docutils literal notranslate"><span class="pre">&lt;new&gt;</span></code> 硬链接的路径必须预先存在。<code class="docutils literal notranslate"><span class="pre">&lt;old&gt;</span></code> 必须预先存在。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-echo">
+<span class="sig-name descname"><span class="pre">echo</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;string&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-echo" title="Link to this definition">¶</a></dt>
+<dd><p>将参数作为文本显示。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-echo_append">
+<span class="sig-name descname"><span class="pre">echo_append</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;string&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-echo_append" title="Link to this definition">¶</a></dt>
+<dd><p>将参数作为文本显示，但不换行。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-env">
+<span class="sig-name descname"><span class="pre">env</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;options&gt;]</span> <span class="pre">[--]</span> <span class="pre">&lt;command&gt;</span> <span class="pre">[&lt;arg&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-env" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>在修改后的环境中运行命令。选项包括</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_env-arg-NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><span class="sig-prename descclassname"><span class="pre">=VALUE</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_env-arg-NAME" title="Link to this definition">¶</a></dt>
+<dd><p>将 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> 的当前值替换为 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_env-unset">
+<span class="sig-name descname"><span class="pre">--unset</span></span><span class="sig-prename descclassname"><span class="pre">=NAME</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_env-unset" title="Link to this definition">¶</a></dt>
+<dd><p>取消设置 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> 的当前值。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_env-modify">
+<span class="sig-name descname"><span class="pre">--modify</span></span><span class="sig-prename descclassname"> <span class="pre">ENVIRONMENT_MODIFICATION</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_env-modify" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>将单个 <span class="target" id="index-0-prop_test:ENVIRONMENT_MODIFICATION"></span><a class="reference internal" href="../prop_test/ENVIRONMENT_MODIFICATION.html#prop_test:ENVIRONMENT_MODIFICATION" title="ENVIRONMENT_MODIFICATION"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT_MODIFICATION</span></code></a> 操作应用于修改后的环境。</p>
+<p><code class="docutils literal notranslate"><span class="pre">NAME=VALUE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--unset=NAME</span></code> 选项分别等同于 <code class="docutils literal notranslate"><span class="pre">--modify</span> <span class="pre">NAME=set:VALUE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--modify</span> <span class="pre">NAME=unset:</span></code>。请注意，<code class="docutils literal notranslate"><span class="pre">--modify</span> <span class="pre">NAME=reset:</span></code> 会将 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> 重置为 <strong class="program">cmake</strong> 启动时拥有的值（或将其取消设置），而不是重置为最近的 <code class="docutils literal notranslate"><span class="pre">NAME=VALUE</span></code> 选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_env-0">
+<span class="sig-name descname"><span class="pre">--</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_env-0" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>增加了对双短横线参数 <code class="docutils literal notranslate"><span class="pre">--</span></code> 的支持。使用 <code class="docutils literal notranslate"><span class="pre">--</span></code> 停止解释选项/环境变量，并将下一个参数视为命令，即使它以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头或包含 <code class="docutils literal notranslate"><span class="pre">=</span></code>。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-environment">
+<span class="sig-name descname"><span class="pre">environment</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-environment" title="Link to this definition">¶</a></dt>
+<dd><p>显示当前的环境变量。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-false">
+<span class="sig-name descname"><span class="pre">false</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-false" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>什么都不做，并以 1 的退出代码退出。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-make_directory">
+<span class="sig-name descname"><span class="pre">make_directory</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-make_directory" title="Link to this definition">¶</a></dt>
+<dd><p>创建 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 目录。如有必要，同时创建父目录。如果目录已存在，它将被静默忽略。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>对多个输入目录的支持。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-md5sum">
+<span class="sig-name descname"><span class="pre">md5sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-md5sum" title="Link to this definition">¶</a></dt>
+<dd><p>以 <code class="docutils literal notranslate"><span class="pre">md5sum</span></code> 兼容格式创建文件的 MD5 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>351abe79cd3800b38cdfb25d45015a15  file1.txt
+052f86c15bbde68af55c7f7b340ab639  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sha1sum">
+<span class="sig-name descname"><span class="pre">sha1sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sha1sum" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">sha1sum</span></code> 兼容格式创建文件的 SHA1 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>4bb7932a29e6f73c97bb9272f2bdc393122f86e0  file1.txt
+1df4c8f318665f9a5f2ed38f55adadb7ef9f559c  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sha224sum">
+<span class="sig-name descname"><span class="pre">sha224sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sha224sum" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">sha224sum</span></code> 兼容格式创建文件的 SHA224 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b9b9346bc8437bbda630b0b7ddfc5ea9ca157546dbbf4c613192f930  file1.txt
+6dfbe55f4d2edc5fe5c9197bca51ceaaf824e48eba0cc453088aee24  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sha256sum">
+<span class="sig-name descname"><span class="pre">sha256sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sha256sum" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">sha256sum</span></code> 兼容格式创建文件的 SHA256 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>76713b23615d31680afeb0e9efe94d47d3d4229191198bb46d7485f9cb191acc  file1.txt
+15b682ead6c12dedb1baf91231e1e89cfc7974b3787c1e2e01b986bffadae0ea  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sha384sum">
+<span class="sig-name descname"><span class="pre">sha384sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sha384sum" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code> 兼容格式创建文件的 SHA384 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>acc049fedc091a22f5f2ce39a43b9057fd93c910e9afd76a6411a28a8f2b8a12c73d7129e292f94fc0329c309df49434  file1.txt
+668ddeb108710d271ee21c0f3acbd6a7517e2b78f9181c6a2ff3b8943af92b0195dcb7cce48aa3e17893173c0a39e23d  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sha512sum">
+<span class="sig-name descname"><span class="pre">sha512sum</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sha512sum" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">sha512sum</span></code> 兼容格式创建文件的 SHA512 校验和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>2a78d7a6c5328cfb1467c63beac8ff21794213901eaadafd48e7800289afbc08e5fb3e86aa31116c945ee3d7bf2a6194489ec6101051083d1108defc8e1dba89  file1.txt
+7a0b54896fe5e70cca6dd643ad6f672614b189bf26f8153061c4d219474b05dad08c4e729af9f4b009f1a1a280cb625454bf587c690f4617c27e3aebdf3b7a2d  file2.txt
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>传递 <code class="docutils literal notranslate"><span class="pre">-</span></code> 可从标准输入读取。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-prename descclassname"> <span class="pre">[-f]</span> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-remove" title="Link to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 3.17 版本起已弃用。</span></p>
+</div>
+<p>删除文件。计划的行为是如果所列出的任何文件已不存在，命令返回非零退出代码，但不记录任何消息。<code class="docutils literal notranslate"><span class="pre">-f</span></code> 选项将此行为更改为在此类情况下返回零退出代码（即成功）。<code class="docutils literal notranslate"><span class="pre">remove</span></code> 不会跟随符号链接。这意味着它只删除符号链接，而不删除它们指向的文件。</p>
+<p>该实现是有缺陷的，总是返回 0。如果不破坏向后兼容性，它无法修复。请改用 <code class="docutils literal notranslate"><span class="pre">rm</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-remove_directory">
+<span class="sig-name descname"><span class="pre">remove_directory</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dir&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-remove_directory" title="Link to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自 3.17 版本起已弃用。</span></p>
+</div>
+<p>删除 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 目录及其内容。如果目录不存在，它将被静默忽略。请改用 <code class="docutils literal notranslate"><span class="pre">rm</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span>对多个目录的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.16 版本新增：</span>如果 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 是到目录的符号链接，则仅删除符号链接。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;oldname&gt;</span> <span class="pre">&lt;newname&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-rename" title="Link to this definition">¶</a></dt>
+<dd><p>重命名文件或目录（在同一卷上）。如果名称为 <code class="docutils literal notranslate"><span class="pre">&lt;newname&gt;</span></code> 的文件已存在，则它将被静默替换。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-rm">
+<span class="sig-name descname"><span class="pre">rm</span></span><span class="sig-prename descclassname"> <span class="pre">[-rRf]</span> <span class="pre">[--]</span> <span class="pre">&lt;file|dir&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-rm" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>删除文件 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 或目录 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>。使用 <code class="docutils literal notranslate"><span class="pre">-r</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-R</span></code> 以递归方式删除目录及其内容。如果任何列出的文件/目录不存在，命令返回非零退出代码，但不记录任何消息。<code class="docutils literal notranslate"><span class="pre">-f</span></code> 选项将行为更改为在此类情况下返回零退出代码（即成功）。使用 <code class="docutils literal notranslate"><span class="pre">--</span></code> 停止解释选项并将所有剩余参数视为路径，即使它们以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-sleep">
+<span class="sig-name descname"><span class="pre">sleep</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;number&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-sleep" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">新增于 3.0 版本。</span></p>
+</div>
+<p>休眠 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 秒。<code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 可以是浮点数。由于启动/停止 CMake 可执行文件的开销，实际的最小值约为 0.1 秒。这在 CMake 脚本中插入延迟很有用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Sleep for about 0.5 seconds</span>
+<span class="nf">execute_process(</span><span class="no">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">sleep</span><span class="w"> </span><span class="m">0.5</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-tar">
+<span class="sig-name descname"><span class="pre">tar</span></span><span class="sig-prename descclassname"> <span class="pre">[cxt][vf][zjJ]</span> <span class="pre">file.tar</span> <span class="pre">[&lt;options&gt;]</span> <span class="pre">[--]</span> <span class="pre">[&lt;pathname&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-tar" title="Link to this definition">¶</a></dt>
+<dd><p>创建或提取 tar 或 zip 归档文件。选项包括</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-c">
+<span class="sig-name descname"><span class="pre">c</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-c" title="Link to this definition">¶</a></dt>
+<dd><p>创建包含指定文件的新归档文件。如果使用，则 <code class="docutils literal notranslate"><span class="pre">&lt;pathname&gt;...</span></code> 参数是必需的。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-x">
+<span class="sig-name descname"><span class="pre">x</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-x" title="Link to this definition">¶</a></dt>
+<dd><p>从归档文件中提取到磁盘。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span><code class="docutils literal notranslate"><span class="pre">&lt;pathname&gt;...</span></code> 参数可用于仅提取选定的文件或目录。提取选定文件或目录时，必须提供其确切名称（包括路径），如列表（<code class="docutils literal notranslate"><span class="pre">-t</span></code>）所打印的那样。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.3 版本变更：</span>包含路径遍历序列（<code class="docutils literal notranslate"><span class="pre">..</span></code>）或绝对路径的归档条目会被出于安全原因拒绝。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-t">
+<span class="sig-name descname"><span class="pre">t</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-t" title="Link to this definition">¶</a></dt>
+<dd><p>列出归档内容。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span><code class="docutils literal notranslate"><span class="pre">&lt;pathname&gt;...</span></code> 参数可用于仅列出选定的文件或目录。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-v">
+<span class="sig-name descname"><span class="pre">v</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-v" title="Link to this definition">¶</a></dt>
+<dd><p>产生详细输出。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-z">
+<span class="sig-name descname"><span class="pre">z</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-z" title="Link to this definition">¶</a></dt>
+<dd><p>使用 gzip (Deflate) 压缩生成的归档文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-j">
+<span class="sig-name descname"><span class="pre">j</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-j" title="Link to this definition">¶</a></dt>
+<dd><p>使用 bzip2 压缩生成的归档文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-arg-J">
+<span class="sig-name descname"><span class="pre">J</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-arg-J" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>使用 XZ (LZMA2) 压缩生成的归档文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-zstd">
+<span class="sig-name descname"><span class="pre">--zstd</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-zstd" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>使用 Zstandard 压缩生成的归档文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-lzma">
+<span class="sig-name descname"><span class="pre">--lzma</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-lzma" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>使用 LZMA 算法压缩生成的归档文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-files-from">
+<span class="sig-name descname"><span class="pre">--files-from</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;file&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-files-from" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>从给定文件中读取文件名，每行一个。空白行被忽略。行不能以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头，除非是 <code class="docutils literal notranslate"><span class="pre">--add-file=&lt;name&gt;</span></code> 以添加名称以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头的文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-format">
+<span class="sig-name descname"><span class="pre">--format</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;format&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-format" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>指定要创建的归档文件的格式。支持的格式有</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">7zip</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gnutar</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pax</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">paxr</span></code> (受限 pax，默认)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">raw</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>如果使用此格式，则只有一个文件将使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-E_tar-cmake-tar-compression-method"><code class="xref std std-option docutils literal notranslate"><span class="pre">--cmake-tar-compression-method</span></code></a> 指定的压缩类型进行压缩。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zip</span></code></p></li>
+</ul>
+<p>如果未指定压缩方法，则压缩方法取决于格式</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">7zip</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">LZMA</span></code> 压缩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zip</span></code> 使用 <code class="docutils literal notranslate"><span class="pre">Deflate</span></code> 压缩</p></li>
+<li><p>其他格式默认不使用压缩</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">4.3 版本新增：</span><code class="docutils literal notranslate"><span class="pre">7zip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zip</span></code> 格式支持更改默认压缩方法和压缩级别。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-mtime">
+<span class="sig-name descname"><span class="pre">--mtime</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;date&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-mtime" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>指定在 tarball 条目中记录的修改时间。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-cmake-tar-compression-method">
+<span class="sig-name descname"><span class="pre">--cmake-tar-compression-method</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;compression-method&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-cmake-tar-compression-method" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;compression-method&gt;</span></code> 必须是以下之一</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code> 或 <code class="docutils literal notranslate"><span class="pre">store</span></code> - 不使用压缩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deflate</span></code> 或 <code class="docutils literal notranslate"><span class="pre">gzip</span></code> - 基于 Deflate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bzip2</span></code> - 基于 BZip2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lzma</span></code> - 基于 LZMA</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lzma2</span></code> 或 <code class="docutils literal notranslate"><span class="pre">xz</span></code> - 基于 LZMA2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ppmd</span></code> - 基于 PPMd</p>
+<p>此压缩方法仅由 <code class="docutils literal notranslate"><span class="pre">7zip</span></code> 归档格式支持。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zstd</span></code> - 基于 Zstandard</p></li>
+</ul>
+<p>这是压缩方法选择的第二种变体。它提供了比经典类 <code class="docutils literal notranslate"><span class="pre">tar</span></code> 接口更多的压缩方法。您可以使用其中任何一种。</p>
+<p>默认值取决于 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-E_tar-format"><code class="xref std std-option docutils literal notranslate"><span class="pre">--format</span></code></a> 选项的值，并将在相应章节中描述。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-cmake-tar-compression-level">
+<span class="sig-name descname"><span class="pre">--cmake-tar-compression-level</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;compression-level&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-cmake-tar-compression-level" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;compression-level&gt;</span></code> 应介于 <code class="docutils literal notranslate"><span class="pre">0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">9</span></code> 之间，默认值为 <code class="docutils literal notranslate"><span class="pre">0</span></code>。当指定 <code class="docutils literal notranslate"><span class="pre">--cmake-tar-compression-level</span></code> 选项时，必须选择压缩算法。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Zstd</span></code> 算法的 <code class="docutils literal notranslate"><span class="pre">&lt;compression-level&gt;</span></code> 可设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 到 <code class="docutils literal notranslate"><span class="pre">19</span></code> 之间，<code class="docutils literal notranslate"><span class="pre">zip</span></code> 格式除外。</p>
+<p>值 <code class="docutils literal notranslate"><span class="pre">0</span></code> 用于指定默认压缩级别。它由归档库后端自动选择，而不是直接由 CMake 本身设置。默认压缩级别可能因归档格式、平台等而异。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-cmake-tar-threads">
+<span class="sig-name descname"><span class="pre">--cmake-tar-threads</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;number&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-cmake-tar-threads" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 个线程对归档进行操作。目前仅支持多线程压缩。</p>
+<p>如果设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，则将使用机器上可用的核心数量。请注意，并非所有压缩模式在所有环境中都支持线程。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-touch">
+<span class="sig-name descname"><span class="pre">--touch</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-touch" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>使用当前本地时间戳，而不是从归档文件中提取文件时间戳。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E_tar-0">
+<span class="sig-name descname"><span class="pre">--</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E_tar-0" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>停止解释选项，并将所有剩余参数视为文件名，即使它们以 <code class="docutils literal notranslate"><span class="pre">-</span></code> 开头。</p>
+</dd></dl>
+
+<div class="versionadded">
+<p><span class="versionmodified added">3.1 版本新增：</span>对 LZMA (7zip) 的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span>即使某些文件不可读，该命令现在也继续向归档文件中添加文件。此行为与经典的 <code class="docutils literal notranslate"><span class="pre">tar</span></code> 工具更一致。该命令现在还解析所有标志，如果提供了无效标志，则会发出警告。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-time">
+<span class="sig-name descname"><span class="pre">time</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;command&gt;</span> <span class="pre">[&lt;args&gt;...]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-time" title="Link to this definition">¶</a></dt>
+<dd><p>运行 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code> 并显示经过的时间（包括 CMake 前端的开销）。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>该命令现在适当地将带有空格或特殊字符的参数传递给子进程。这可能会破坏通过其自身的额外引用或转义来解决该错误的脚本。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-touch">
+<span class="sig-name descname"><span class="pre">touch</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-touch" title="Link to this definition">¶</a></dt>
+<dd><p>如果文件不存在，则创建 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。如果 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 存在，则更改其访问和修改时间。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-touch_nocreate">
+<span class="sig-name descname"><span class="pre">touch_nocreate</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;file&gt;...</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-touch_nocreate" title="Link to this definition">¶</a></dt>
+<dd><p>如果文件存在则修改时间戳，但不要创建它。如果文件不存在，它将被静默忽略。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-true">
+<span class="sig-name descname"><span class="pre">true</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-true" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>什么都不做，并以 0 的退出代码退出。</p>
+</dd></dl>
+
+<section id="windows-specific-command-line-tools">
+<h3>Windows 特定命令行工具<a class="headerlink" href="cmake.1.html#windows-specific-command-line-tools" title="链接到此标题">¶</a></h3>
+<p>以下 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span></code> 命令仅在 Windows 上可用</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-delete_regv">
+<span class="sig-name descname"><span class="pre">delete_regv</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;key&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-delete_regv" title="Link to this definition">¶</a></dt>
+<dd><p>删除 Windows 注册表值。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-env_vs8_wince">
+<span class="sig-name descname"><span class="pre">env_vs8_wince</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sdkname&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-env_vs8_wince" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>显示一个批处理文件，该文件为 VS2005 中安装的 Windows CE SDK 设置环境。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-env_vs9_wince">
+<span class="sig-name descname"><span class="pre">env_vs9_wince</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sdkname&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-env_vs9_wince" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>显示一个批处理文件，该文件为 VS2008 中安装的 Windows CE SDK 设置环境。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-E-arg-write_regv">
+<span class="sig-name descname"><span class="pre">write_regv</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;key&gt;</span> <span class="pre">&lt;value&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-E-arg-write_regv" title="Link to this definition">¶</a></dt>
+<dd><p>写入 Windows 注册表值。</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="run-the-find-package-tool">
+<span id="find-package-tool-mode"></span><h2>运行 Find-Package 工具<a class="headerlink" href="cmake.1.html#run-the-find-package-tool" title="链接到此标题">¶</a></h2>
+<p>CMake 为基于 Makefile 的项目提供了一个类似于 pkg-config 的助手</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--find-package<span class="w"> </span><span class="o">[</span>&lt;options&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>由于一些技术限制，此模式支持不佳。它保留用于兼容性，但不应在新项目中使用。</p>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-find-package-find-package">
+<span class="sig-name descname"><span class="pre">--find-package</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-find-package-find-package" title="Link to this definition">¶</a></dt>
+<dd><p>它使用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令搜索包并将结果标志打印到标准输出。这可以用来代替 pkg-config 来查找纯基于 Makefile 的项目或基于 Autoconf 的项目中的已安装库（使用系统上 <code class="docutils literal notranslate"><span class="pre">share/aclocal/cmake.m4</span></code> 中安装的辅助宏）。</p>
+<p>使用此选项时，需要以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">find_package(&lt;PackageName&gt;)</span></code> 中调用的包名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPILER_ID</span></code></dt><dd><p>用于搜索包的 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_ID"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_ID.html#variable:CMAKE_LANG_COMPILER_ID" title="CMAKE_LANG_COMPILER_ID"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">编译器 ID</span></code></a>，即 GNU/Intel/Clang/MSVC 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">语言</span></code></dt><dd><p>用于搜索包的语言，即 C/CXX/Fortran/ASM 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MODE</span></code></dt><dd><p>包搜索模式。值可以是以下之一</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXIST</span></code></dt><dd><p>仅检查给定包是否存在。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMPILE</span></code></dt><dd><p>打印编译使用给定包的目标文件所需的标志。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LINK</span></code></dt><dd><p>打印使用给定包进行链接所需的标志。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SILENT</span></code></dt><dd><p>（可选）如果为 TRUE，则不打印查找结果消息。</p>
+</dd>
+</dl>
+<p>例如</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--find-package<span class="w"> </span>-DNAME<span class="o">=</span>CURL<span class="w"> </span>-DCOMPILER_ID<span class="o">=</span>GNU<span class="w"> </span>-DLANGUAGE<span class="o">=</span>C<span class="w"> </span>-DMODE<span class="o">=</span>LINK
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="run-a-workflow-preset">
+<span id="workflow-mode"></span><h2>运行工作流预设<a class="headerlink" href="cmake.1.html#run-a-workflow-preset" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><span class="target" id="index-3-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">Presets</span></code></a> 提供了一种按顺序执行多个构建步骤的方法</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--workflow<span class="w"> </span>&lt;options&gt;
+</pre></div>
+</div>
+<p>选项包括</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-workflow">
+<span class="sig-name descname"><span class="pre">--workflow</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-workflow" title="Link to this definition">¶</a></dt>
+<dd><p>使用以下选项之一选择 <a class="reference internal" href="cmake-presets.7.html#workflow-preset"><span class="std std-ref">工作流预设</span></a>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-workflow-preset">
+<span id="cmdoption-cmake-workflow-preset"></span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;preset&gt;</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"><span class="pre">=&lt;preset&gt;</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-workflow-preset" title="Link to this definition">¶</a></dt>
+<dd><p>使用工作流预设来指定工作流。项目二进制目录是从初始配置预设中推断出来的。当前工作目录必须包含 CMake 预设文件。更多详情请参阅 <span class="target" id="index-4-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">preset</span></code></a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span>当紧跟在 <code class="docutils literal notranslate"><span class="pre">--workflow</span></code> 选项之后时，可以省略 <code class="docutils literal notranslate"><span class="pre">--preset</span></code> 参数，直接给出 <code class="docutils literal notranslate"><span class="pre">&lt;preset&gt;</span></code> 名称。这意味着以下语法是有效的</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>--workflow<span class="w"> </span>my-preset
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-workflow-list-presets">
+<span class="sig-name descname"><span class="pre">--list-presets</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-workflow-list-presets" title="Link to this definition">¶</a></dt>
+<dd><p>列出可用的工作流预设。当前工作目录必须包含 CMake 预设文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-workflow-fresh">
+<span class="sig-name descname"><span class="pre">--fresh</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-workflow-fresh" title="Link to this definition">¶</a></dt>
+<dd><p>对构建树执行全新的配置，其效果与 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-fresh"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--fresh</span></code></a> 相同。</p>
+</dd></dl>
+
+</section>
+<section id="view-help">
+<h2>查看帮助<a class="headerlink" href="cmake.1.html#view-help" title="链接到此标题">¶</a></h2>
+<p>要打印 CMake 文档中的选定页面，请使用</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--help<span class="o">[</span>-&lt;topic&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>并配合以下选项之一</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-version">
+<span id="cmdoption-cmake-version"></span><span id="cmdoption-cmake-V"></span><span id="cmdoption-cmake-version"></span><span class="sig-name descname"><span class="pre">-version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/V</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-version" title="Link to this definition">¶</a></dt>
+<dd><p>显示程序名称/版本横幅并退出。如果指定了 <code class="docutils literal notranslate"><span class="pre">json-v1</span></code>，则以 JSON 格式打印扩展版本信息。JSON 输出包含 CMake 及其依赖项的版本。如果给定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，输出将被打印到该指定文件。</p>
+<p>JSON 输出格式以机器可读的形式由 <a class="reference download internal" download="" href="../_downloads/8841c8b524587a9aee211c0ac198f604/version-schema.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 描述。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-h">
+<span id="cmdoption-cmake-H"></span><span id="cmdoption-cmake-help"></span><span id="cmdoption-cmake-help"></span><span id="cmdoption-cmake-usage"></span><span id="cmdoption-cmake-0"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-H</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-help</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-usage</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/?</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-h" title="Link to this definition">¶</a></dt>
+<dd><p>打印使用信息并退出。</p>
+<p>使用说明描述了基本的命令行界面及其选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-1">
+<span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;keyword&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-1" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个 CMake 关键字的帮助。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;keyword&gt;</span></code> 可以是属性、变量、命令、策略、生成器或模块。</p>
+<p>相关的 <code class="docutils literal notranslate"><span class="pre">&lt;keyword&gt;</span></code> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.28 版本变更：</span>在 CMake 3.28 之前，此选项仅支持命令名称。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-full">
+<span class="sig-name descname"><span class="pre">--help-full</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-full" title="Link to this definition">¶</a></dt>
+<dd><p>打印所有帮助手册并退出。</p>
+<p>所有手册都以人类可读的文本格式打印。如果给定，输出将打印到指定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-manual">
+<span class="sig-name descname"><span class="pre">--help-manual</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;man&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-manual" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个帮助手册并退出。</p>
+<p>指定的手册以人类可读的文本格式打印。如果给定，输出将打印到指定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-manual-list">
+<span class="sig-name descname"><span class="pre">--help-manual-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-manual-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可用的帮助手册并退出。</p>
+<p>列表包含所有可以通过使用 `--help-manual` 选项后跟手册名称来获取帮助的手册。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-command">
+<span class="sig-name descname"><span class="pre">--help-command</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmd&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-command" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个命令的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-commands(7)"></span><a class="reference internal" href="cmake-commands.7.html#manual:cmake-commands(7)" title="cmake-commands(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-commands(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-command-list">
+<span class="sig-name descname"><span class="pre">--help-command-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-command-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可获取帮助的命令并退出。</p>
+<p>列表包含所有可以通过使用 `--help-command` 选项后跟命令名称来获取帮助的命令。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-commands">
+<span class="sig-name descname"><span class="pre">--help-commands</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-commands" title="此定义的链接">¶</a></dt>
+<dd><p>打印 cmake-commands 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-commands(7)"></span><a class="reference internal" href="cmake-commands.7.html#manual:cmake-commands(7)" title="cmake-commands(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-commands(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-module">
+<span class="sig-name descname"><span class="pre">--help-module</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;mod&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-module" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个模块的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-module-list">
+<span class="sig-name descname"><span class="pre">--help-module-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-module-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可获取帮助的模块并退出。</p>
+<p>列表包含所有可以通过使用 `--help-module` 选项后跟模块名称来获取帮助的模块。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-modules">
+<span class="sig-name descname"><span class="pre">--help-modules</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-modules" title="此定义的链接">¶</a></dt>
+<dd><p>打印 cmake-modules 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-policy">
+<span class="sig-name descname"><span class="pre">--help-policy</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmp&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-policy" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个策略的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-policies(7)"></span><a class="reference internal" href="cmake-policies.7.html#manual:cmake-policies(7)" title="cmake-policies(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-policies(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-policy-list">
+<span class="sig-name descname"><span class="pre">--help-policy-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-policy-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可获取帮助的策略并退出。</p>
+<p>列表包含所有可以通过使用 `--help-policy` 选项后跟策略名称来获取帮助的策略。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-policies">
+<span class="sig-name descname"><span class="pre">--help-policies</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-policies" title="此定义的链接">¶</a></dt>
+<dd><p>打印 cmake-policies 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-policies(7)"></span><a class="reference internal" href="cmake-policies.7.html#manual:cmake-policies(7)" title="cmake-policies(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-policies(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-property">
+<span class="sig-name descname"><span class="pre">--help-property</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;prop&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-property" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个属性的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-properties(7)"></span><a class="reference internal" href="cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-property-list">
+<span class="sig-name descname"><span class="pre">--help-property-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-property-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可获取帮助的属性并退出。</p>
+<p>列表包含所有可以通过使用 `--help-property` 选项后跟属性名称来获取帮助的属性。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-properties">
+<span class="sig-name descname"><span class="pre">--help-properties</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-properties" title="此定义的链接">¶</a></dt>
+<dd><p>打印 cmake-properties 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-properties(7)"></span><a class="reference internal" href="cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-variable">
+<span class="sig-name descname"><span class="pre">--help-variable</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-variable" title="此定义的链接">¶</a></dt>
+<dd><p>打印一个变量的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-variables(7)"></span><a class="reference internal" href="cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-variable-list">
+<span class="sig-name descname"><span class="pre">--help-variable-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-variable-list" title="此定义的链接">¶</a></dt>
+<dd><p>列出可获取帮助的变量并退出。</p>
+<p>列表包含所有可以通过使用 `--help-variable` 选项后跟变量名称来获取帮助的变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cmake-help-variables">
+<span class="sig-name descname"><span class="pre">--help-variables</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cmake.1.html#cmdoption-cmake-help-variables" title="此定义的链接">¶</a></dt>
+<dd><p>打印 cmake-variables 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-variables(7)"></span><a class="reference internal" href="cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<p>要查看项目可用的预设（presets），请使用</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>&lt;source-dir&gt;<span class="w"> </span>--list-presets
+</pre></div>
+</div>
+</section>
+<section id="return-value-exit-code">
+<span id="cmake-exit-code"></span><h2>返回值（退出代码）<a class="headerlink" href="cmake.1.html#return-value-exit-code" title="此标题的链接">¶</a></h2>
+<p>正常终止时，<strong class="program">cmake</strong> 可执行文件返回退出代码 <code class="docutils literal notranslate"><span class="pre">0</span></code>。</p>
+<p>如果终止是由命令 <span class="target" id="index-3-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(fatal_error)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(FATAL_ERROR)</span></code></a> 或其他错误条件引起的，则返回非零退出代码。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="cmake.1.html#see-also" title="链接到此标题">¶</a></h2>
+<p>以下资源可用于获取使用 CMake 的帮助</p>
+<dl>
+<dt>主页</dt><dd><p><a class="reference external" href="https://cmake.com.cn">https://cmake.com.cn</a></p>
+<p>学习 CMake 的主要起点。</p>
+</dd>
+<dt>在线文档和社区资源</dt><dd><p><a class="reference external" href="https://cmake.com.cn/documentation">https://cmake.com.cn/documentation</a></p>
+<p>此网页上可以找到可用文档和社区资源的链接。</p>
+</dd>
+<dt>论坛</dt><dd><p><a class="reference external" href="https://discourse.cmake.org">https://discourse.cmake.org</a></p>
+<p>论坛用于讨论和提问 CMake。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake.1.html#">cmake(1)</a><ul>
+<li><a class="reference internal" href="cmake.1.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="cmake.1.html#description">描述</a></li>
+<li><a class="reference internal" href="cmake.1.html#introduction-to-cmake-buildsystems">CMake 构建系统介绍</a></li>
+<li><a class="reference internal" href="cmake.1.html#generate-a-project-buildsystem">生成项目构建系统</a><ul>
+<li><a class="reference internal" href="cmake.1.html#options">选项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake.1.html#build-a-project">构建项目</a><ul>
+<li><a class="reference internal" href="cmake.1.html#generator-specific-build-tool-behavior">生成器特定的构建工具行为</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake.1.html#install-a-project">安装项目</a></li>
+<li><a class="reference internal" href="cmake.1.html#open-a-project">打开项目</a></li>
+<li><a class="reference internal" href="cmake.1.html#run-a-script">运行脚本</a></li>
+<li><a class="reference internal" href="cmake.1.html#run-a-command-line-tool">运行命令行工具</a><ul>
+<li><a class="reference internal" href="cmake.1.html#windows-specific-command-line-tools">Windows 专用命令行工具</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake.1.html#run-the-find-package-tool">运行 Find-Package 工具</a></li>
+<li><a class="reference internal" href="cmake.1.html#run-a-workflow-preset">运行工作流预设（Workflow Preset）</a></li>
+<li><a class="reference internal" href="cmake.1.html#view-help">查看帮助</a></li>
+<li><a class="reference internal" href="cmake.1.html#return-value-exit-code">返回值（退出代码）</a></li>
+<li><a class="reference internal" href="cmake.1.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../index.html" title="上一章">简介</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ctest.1.html" title="下一章">ctest(1)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake.1.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ctest.1.html" title="ctest(1)">下一页</a> |</li>
+        <li class="right">
+          <a href="../index.html" title="Introduction">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake.1.html">cmake(1)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

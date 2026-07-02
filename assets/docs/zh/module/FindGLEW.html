@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindGLEW — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindGLEW.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindGLUT" href="FindGLUT.html" />
+    <link rel="prev" title="FindGit" href="FindGit.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindGLUT.html" title="FindGLUT" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGit.html" title="FindGit" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindGLEW.html">FindGLEW</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findglew">
+<span id="module:FindGLEW"></span><h1>FindGLEW<a class="headerlink" href="FindGLEW.html#findglew" title="链接到此标题">¶</a></h1>
+<p>查找 OpenGL 扩展包库 (GLEW)</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">GLEW</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>GLEW 是一个跨平台的 C/C++ 库，它通过提供高效的运行时机制来查询和加载核心规范之外的 OpenGL 功能，从而帮助管理 OpenGL 扩展。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增：</span> 调试和发布库变体分别查找。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增: </span>如果 GLEW 是使用其基于 CMake 的构建系统构建的，它会提供一个 CMake 软件包配置文件 (<code class="docutils literal notranslate"><span class="pre">GLEWConfig.cmake</span></code>)。本模块现已将其纳入考量，并首先尝试以<em>配置模式 (config mode)</em> 查找 GLEW。如果配置文件不可用，它将回退到<em>模块模式 (module mode)</em> 并搜索标准路径。</p>
+</div>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindGLEW.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW::GLEW</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>封装了 GLEW 使用需求的主导入目标，在找到 GLEW 时可用。它根据可用性映射到 <code class="docutils literal notranslate"><span class="pre">GLEW::glew</span></code> 或 <code class="docutils literal notranslate"><span class="pre">GLEW::glew_s</span></code> 目标的使用需求。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW::glew</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>封装共享 GLEW 库使用需求的目标。如果找到 GLEW 且未通过 <code class="docutils literal notranslate"><span class="pre">GLEW_USE_STATIC_LIBS</span></code> 提示变量（见下文）请求静态库，则此目标可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW::glew_s</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>封装静态 GLEW 库使用需求的目标。如果找到 GLEW 且 <code class="docutils literal notranslate"><span class="pre">GLEW_USE_STATIC_LIBS</span></code> 提示变量设置为布尔值 true，则此目标可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindGLEW.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了 GLEW（及其请求的版本）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>找到的 GLEW 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_VERSION_MAJOR</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>找到的 GLEW 主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_VERSION_MINOR</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>找到的 GLEW 次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_VERSION_MICRO</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>找到的 GLEW 微版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_INCLUDE_DIRS</span></code></dt><dd><p>使用 GLEW 库所需的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_LIBRARIES</span></code></dt><dd><p>使用 GLEW 库进行链接所需的库文件（根据配置的不同为共享库或静态库）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_SHARED_LIBRARIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>使用共享 GLEW 库进行链接所需的库文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_STATIC_LIBRARIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>使用静态 GLEW 库进行链接所需的库文件。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindGLEW.html#hints" title="链接到此标题">¶</a></h2>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package(GLEW)</span></code> 之前，本模块接受以下变量来影响其行为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_USE_STATIC_LIBS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>设置为布尔值 true 以查找静态 GLEW 库，并创建用于静态链接的 <code class="docutils literal notranslate"><span class="pre">GLEW::glew_s</span></code> 导入目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GLEW_VERBOSE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>设置为布尔值 true 以输出本模块的详细日志。例如，可用于调试。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindGLEW.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 GLEW 并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">GLEW</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">GLEW</span><span class="o">::</span><span class="no">GLEW</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果找到，则使用静态 GLEW 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">GLEW_USE_STATIC_LIBS</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="no">GLEW</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">GLEW</span><span class="o">::</span><span class="no">GLEW</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindGLEW.html#">FindGLEW</a><ul>
+<li><a class="reference internal" href="FindGLEW.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindGLEW.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindGLEW.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindGLEW.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindGit.html" title="上一章">FindGit</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindGLUT.html" title="下一章">FindGLUT</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindGLEW.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindGLUT.html" title="FindGLUT">下一页</a> |</li>
+        <li class="right">
+          <a href="FindGit.html" title="FindGit">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindGLEW.html">FindGLEW</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

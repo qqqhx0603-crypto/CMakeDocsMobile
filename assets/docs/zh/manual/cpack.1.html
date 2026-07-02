@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cpack(1) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cpack.1.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-gui(1)" href="cmake-gui.1.html" />
+    <link rel="prev" title="ctest(1)" href="ctest.1.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-gui.1.html" title="cmake-gui(1)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest.1.html" title="ctest(1)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cpack.1.html">cpack(1)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cpack(1)"></span><section id="cpack-1">
+<h1>cpack(1)<a class="headerlink" href="cpack.1.html#cpack-1" title="链接到此标题">¶</a></h1>
+<section id="synopsis">
+<h2>概要<a class="headerlink" href="cpack.1.html#synopsis" title="链接到此标题">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cpack [&lt;options&gt;]
+</pre></div>
+</div>
+</section>
+<section id="description">
+<h2>描述<a class="headerlink" href="cpack.1.html#description" title="链接到此标题">¶</a></h2>
+<p><strong class="program">cpack</strong> 可执行文件是 CMake 的打包程序。它以多种格式生成安装程序和源文件包。</p>
+<p>对于每种安装程序或包格式，<strong class="program">cpack</strong> 都有一个特定的后端，称为“生成器”（generator）。生成器负责生成所需的输入并调用特定的包创建工具。这些安装程序或包生成器不应与 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake</span></code></a> 命令的 Makefile 生成器混淆。</p>
+<p>所有受支持的生成器均在 <span class="target" id="index-0-manual:cpack-generators(7)"></span><a class="reference internal" href="cpack-generators.7.html#manual:cpack-generators(7)" title="cpack-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack-generators</span></code></a> 手册中列出。<code class="docutils literal notranslate"><span class="pre">cpack</span> <span class="pre">--help</span></code> 命令会打印目标平台支持的生成器列表。用户可以通过 <span class="target" id="index-0-variable:CPACK_GENERATOR"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 变量或命令行选项 <a class="reference internal" href="cpack.1.html#cmdoption-cpack-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">-G</span></code></a> 来选择使用的生成器。</p>
+<p><strong class="program">cpack</strong> 程序由以 <span class="target" id="index-0-manual:cmake-language(7)"></span><a class="reference internal" href="cmake-language.7.html#manual:cmake-language(7)" title="cmake-language(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">语言</span></code></a>编写的配置文件控制。除非通过命令行选项 <a class="reference internal" href="cpack.1.html#cmdoption-cpack-config"><code class="xref std std-option docutils literal notranslate"><span class="pre">--config</span></code></a> 另行指定，否则默认使用当前目录下的 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 文件。</p>
+<p>在标准 CMake 工作流程中，如果项目的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中包含了 <span class="target" id="index-0-module:CPack"></span><a class="reference internal" href="../module/CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 模块，则 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 文件将由 <span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake</span></code></a> 可执行文件自动生成。</p>
+</section>
+<section id="options">
+<h2>选项<a class="headerlink" href="cpack.1.html#options" title="链接到此标题">¶</a></h2>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-G">
+<span class="sig-name descname"><span class="pre">-G</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;generators&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-G" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">&lt;generators&gt;</span></code> 是一个<a class="reference internal" href="cmake-language.7.html#cmake-language-lists"><span class="std std-ref">以分号分隔的列表</span></a>，包含生成器的名称。<strong class="program">cpack</strong> 将遍历此列表，并根据 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 配置文件中提供的详细信息，以相应生成器的格式生成包。如果未提供此选项，则 <span class="target" id="index-1-variable:CPACK_GENERATOR"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 变量将决定默认使用的生成器集。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-C">
+<span class="sig-name descname"><span class="pre">-C</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;configurations&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-C" title="Link to this definition">¶</a></dt>
+<dd><p>指定要打包的项目配置（例如 <code class="docutils literal notranslate"><span class="pre">Debug</span></code>、<code class="docutils literal notranslate"><span class="pre">Release</span></code> 等），其中 <code class="docutils literal notranslate"><span class="pre">&lt;configurations&gt;</span></code> 是一个<a class="reference internal" href="cmake-language.7.html#cmake-language-lists"><span class="std std-ref">以分号分隔的列表</span></a>。当 CMake 项目使用多配置生成器（如 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 或 <a class="reference internal" href="cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio</span></a>）时，此选项用于告知 <strong class="program">cpack</strong> 将哪些构建出的可执行文件包含在包中。用户需负责确保在调用 <strong class="program">cpack</strong> 之前，列表中指定的配置已经构建完毕。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-D">
+<span class="sig-name descname"><span class="pre">-D</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;=&lt;value&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-D" title="Link to this definition">¶</a></dt>
+<dd><p>设置 CPack 变量。这将覆盖在 <strong class="program">cpack</strong> 读取的输入文件中为 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 设置的任何值。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-config">
+<span class="sig-name descname"><span class="pre">--config</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;configFile&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-config" title="Link to this definition">¶</a></dt>
+<dd><p>指定 <strong class="program">cpack</strong> 读取的配置文件，以提供打包详情。默认情况下，将使用当前目录中的 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-V">
+<span id="cmdoption-cpack-verbose"></span><span class="sig-name descname"><span class="pre">-V</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-V" title="Link to this definition">¶</a></dt>
+<dd><p>以详细输出模式运行 <strong class="program">cpack</strong>。这可用于显示包生成工具的更多详细信息，适合项目开发者使用。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-debug">
+<span class="sig-name descname"><span class="pre">--debug</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-debug" title="Link to this definition">¶</a></dt>
+<dd><p>以调试输出模式运行 <strong class="program">cpack</strong>。此选项主要供 <strong class="program">cpack</strong> 自身的开发者使用，项目开发者通常不需要。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-trace">
+<span class="sig-name descname"><span class="pre">--trace</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-trace" title="Link to this definition">¶</a></dt>
+<dd><p>将底层的 cmake 脚本置于追踪模式。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-trace-expand">
+<span class="sig-name descname"><span class="pre">--trace-expand</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-trace-expand" title="Link to this definition">¶</a></dt>
+<dd><p>将底层的 cmake 脚本置于展开追踪模式。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-P">
+<span class="sig-name descname"><span class="pre">-P</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;packageName&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-P" title="Link to this definition">¶</a></dt>
+<dd><p>覆盖/定义用于打包的 <span class="target" id="index-0-variable:CPACK_PACKAGE_NAME"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_NAME" title="CPACK_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_NAME</span></code></a> 变量的值。在 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 文件中为此变量设置的任何值都将被忽略。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-R">
+<span class="sig-name descname"><span class="pre">-R</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;packageVersion&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-R" title="Link to this definition">¶</a></dt>
+<dd><p>覆盖/定义用于打包的 <span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION" title="CPACK_PACKAGE_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION</span></code></a> 变量的值。它将覆盖 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 文件中设置的值，或从 <span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_MAJOR"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION_MAJOR" title="CPACK_PACKAGE_VERSION_MAJOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MAJOR</span></code></a>、<span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_MINOR"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION_MINOR" title="CPACK_PACKAGE_VERSION_MINOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></code></a> 和 <span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_PATCH"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VERSION_PATCH" title="CPACK_PACKAGE_VERSION_PATCH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></code></a> 自动计算出的值。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-B">
+<span class="sig-name descname"><span class="pre">-B</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;packageDirectory&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-B" title="Link to this definition">¶</a></dt>
+<dd><p>覆盖/定义 <span class="target" id="index-0-variable:CPACK_PACKAGE_DIRECTORY"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_DIRECTORY" title="CPACK_PACKAGE_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DIRECTORY</span></code></a>，它控制 CPack 执行打包工作的目录。默认情况下，生成的包将在该位置创建，并且在该目录下还会创建一个 <code class="docutils literal notranslate"><span class="pre">_CPack_Packages</span></code> 子目录，用作包创建过程中的工作区。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-vendor">
+<span class="sig-name descname"><span class="pre">--vendor</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;vendorName&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-vendor" title="Link to this definition">¶</a></dt>
+<dd><p>覆盖/定义 <span class="target" id="index-0-variable:CPACK_PACKAGE_VENDOR"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_VENDOR" title="CPACK_PACKAGE_VENDOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VENDOR</span></code></a>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-preset">
+<span class="sig-name descname"><span class="pre">--preset</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;presetName&gt;</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-preset" title="Link to this definition">¶</a></dt>
+<dd><p>使用 <span class="target" id="index-0-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-presets(7)</span></code></a> 中的预设。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-list-presets">
+<span class="sig-name descname"><span class="pre">--list-presets</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-list-presets" title="Link to this definition">¶</a></dt>
+<dd><p>列出 <span class="target" id="index-1-manual:cmake-presets(7)"></span><a class="reference internal" href="cmake-presets.7.html#manual:cmake-presets(7)" title="cmake-presets(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-presets(7)</span></code></a> 中的预设。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-version">
+<span id="cmdoption-cpack-version"></span><span id="cmdoption-cpack-0"></span><span id="cmdoption-cpack-version"></span><span class="sig-name descname"><span class="pre">-version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/V</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/version</span></span><span class="sig-prename descclassname"><span class="pre">[=json-v1]</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-version" title="Link to this definition">¶</a></dt>
+<dd><p>显示程序名称/版本横幅并退出。如果指定了 <code class="docutils literal notranslate"><span class="pre">json-v1</span></code>，则以 JSON 格式打印扩展版本信息。JSON 输出包含 CMake 及其依赖项的版本。如果给定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，输出将被打印到该指定文件。</p>
+<p>JSON 输出格式以机器可读的形式由 <a class="reference download internal" download="" href="../_downloads/8841c8b524587a9aee211c0ac198f604/version-schema.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 描述。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-h">
+<span id="cmdoption-cpack-H"></span><span id="cmdoption-cpack-help"></span><span id="cmdoption-cpack-help"></span><span id="cmdoption-cpack-usage"></span><span id="cmdoption-cpack-1"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-H</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-help</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-usage</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">/?</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-h" title="Link to this definition">¶</a></dt>
+<dd><p>打印使用信息并退出。</p>
+<p>使用说明描述了基本的命令行界面及其选项。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-2">
+<span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;keyword&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-2" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个 CMake 关键字的帮助。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;keyword&gt;</span></code> 可以是属性、变量、命令、策略、生成器或模块。</p>
+<p>相关的 <code class="docutils literal notranslate"><span class="pre">&lt;keyword&gt;</span></code> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.28 版本变更：</span>在 CMake 3.28 之前，此选项仅支持命令名称。</p>
+</div>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-full">
+<span class="sig-name descname"><span class="pre">--help-full</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-full" title="Link to this definition">¶</a></dt>
+<dd><p>打印所有帮助手册并退出。</p>
+<p>所有手册都以人类可读的文本格式打印。如果给定，输出将打印到指定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-manual">
+<span class="sig-name descname"><span class="pre">--help-manual</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;man&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-manual" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个帮助手册并退出。</p>
+<p>指定的手册以人类可读的文本格式打印。如果给定，输出将打印到指定 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-manual-list">
+<span class="sig-name descname"><span class="pre">--help-manual-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-manual-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可用的帮助手册并退出。</p>
+<p>列表包含所有可以通过使用 `--help-manual` 选项后跟手册名称来获取帮助的手册。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-command">
+<span class="sig-name descname"><span class="pre">--help-command</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmd&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-command" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个命令的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-commands(7)"></span><a class="reference internal" href="cmake-commands.7.html#manual:cmake-commands(7)" title="cmake-commands(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-commands(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-command-list">
+<span class="sig-name descname"><span class="pre">--help-command-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-command-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可获取帮助的命令并退出。</p>
+<p>列表包含所有可以通过使用 `--help-command` 选项后跟命令名称来获取帮助的命令。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-commands">
+<span class="sig-name descname"><span class="pre">--help-commands</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-commands" title="Link to this definition">¶</a></dt>
+<dd><p>打印 cmake-commands 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-commands(7)"></span><a class="reference internal" href="cmake-commands.7.html#manual:cmake-commands(7)" title="cmake-commands(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-commands(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-module">
+<span class="sig-name descname"><span class="pre">--help-module</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;mod&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-module" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个模块的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-module-list">
+<span class="sig-name descname"><span class="pre">--help-module-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-module-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可获取帮助的模块并退出。</p>
+<p>列表包含所有可以通过使用 `--help-module` 选项后跟模块名称来获取帮助的模块。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-modules">
+<span class="sig-name descname"><span class="pre">--help-modules</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-modules" title="Link to this definition">¶</a></dt>
+<dd><p>打印 cmake-modules 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-modules(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-policy">
+<span class="sig-name descname"><span class="pre">--help-policy</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmp&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-policy" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个策略的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-policies(7)"></span><a class="reference internal" href="cmake-policies.7.html#manual:cmake-policies(7)" title="cmake-policies(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-policies(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-policy-list">
+<span class="sig-name descname"><span class="pre">--help-policy-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-policy-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可获取帮助的策略并退出。</p>
+<p>列表包含所有可以通过使用 `--help-policy` 选项后跟策略名称来获取帮助的策略。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-policies">
+<span class="sig-name descname"><span class="pre">--help-policies</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-policies" title="Link to this definition">¶</a></dt>
+<dd><p>打印 cmake-policies 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-policies(7)"></span><a class="reference internal" href="cmake-policies.7.html#manual:cmake-policies(7)" title="cmake-policies(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-policies(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-property">
+<span class="sig-name descname"><span class="pre">--help-property</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;prop&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-property" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个属性的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-properties(7)"></span><a class="reference internal" href="cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-property-list">
+<span class="sig-name descname"><span class="pre">--help-property-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-property-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可获取帮助的属性并退出。</p>
+<p>列表包含所有可以通过使用 `--help-property` 选项后跟属性名称来获取帮助的属性。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-properties">
+<span class="sig-name descname"><span class="pre">--help-properties</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-properties" title="Link to this definition">¶</a></dt>
+<dd><p>打印 cmake-properties 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-properties(7)"></span><a class="reference internal" href="cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-variable">
+<span class="sig-name descname"><span class="pre">--help-variable</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var&gt;</span> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-variable" title="Link to this definition">¶</a></dt>
+<dd><p>打印一个变量的帮助并退出。</p>
+<p><span class="target" id="index-0-manual:cmake-variables(7)"></span><a class="reference internal" href="cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 手册条目以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-variable-list">
+<span class="sig-name descname"><span class="pre">--help-variable-list</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-variable-list" title="Link to this definition">¶</a></dt>
+<dd><p>列出可获取帮助的变量并退出。</p>
+<p>列表包含所有可以通过使用 `--help-variable` 选项后跟变量名称来获取帮助的变量。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-cpack-help-variables">
+<span class="sig-name descname"><span class="pre">--help-variables</span></span><span class="sig-prename descclassname"> <span class="pre">[&lt;file&gt;]</span></span><a class="headerlink" href="cpack.1.html#cmdoption-cpack-help-variables" title="Link to this definition">¶</a></dt>
+<dd><p>打印 cmake-variables 手册并退出。</p>
+<p><span class="target" id="index-1-manual:cmake-variables(7)"></span><a class="reference internal" href="cmake-variables.7.html#manual:cmake-variables(7)" title="cmake-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-variables(7)</span></code></a> 手册以人类可读的文本格式打印。如果指定了 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，则输出将打印到该文件。</p>
+</dd></dl>
+
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="cpack.1.html#see-also" title="链接到此标题">¶</a></h2>
+<p>以下资源可用于获取使用 CMake 的帮助</p>
+<dl>
+<dt>主页</dt><dd><p><a class="reference external" href="https://cmake.com.cn">https://cmake.com.cn</a></p>
+<p>学习 CMake 的主要起点。</p>
+</dd>
+<dt>在线文档和社区资源</dt><dd><p><a class="reference external" href="https://cmake.com.cn/documentation">https://cmake.com.cn/documentation</a></p>
+<p>此网页上可以找到可用文档和社区资源的链接。</p>
+</dd>
+<dt>论坛</dt><dd><p><a class="reference external" href="https://discourse.cmake.org">https://discourse.cmake.org</a></p>
+<p>论坛用于讨论和提问 CMake。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cpack.1.html#">cpack(1)</a><ul>
+<li><a class="reference internal" href="cpack.1.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="cpack.1.html#description">描述</a></li>
+<li><a class="reference internal" href="cpack.1.html#options">选项</a></li>
+<li><a class="reference internal" href="cpack.1.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ctest.1.html" title="上一章">ctest(1)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-gui.1.html" title="下一章">cmake-gui(1)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cpack.1.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-gui.1.html" title="cmake-gui(1)">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest.1.html" title="ctest(1)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cpack.1.html">cpack(1)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

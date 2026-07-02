@@ -1,0 +1,598 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-packages(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-packages.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-policies(7)" href="cmake-policies.7.html" />
+    <link rel="prev" title="SquishTestScript" href="../module/SquishTestScript.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-policies.7.html" title="cmake-policies(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../module/SquishTestScript.html" title="SquishTestScript" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-packages.7.html">cmake-packages(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-packages(7)"></span><section id="cmake-packages-7">
+<h1><a class="toc-backref" href="cmake-packages.7.html#id8" role="doc-backlink">cmake-packages(7)</a><a class="headerlink" href="cmake-packages.7.html#cmake-packages-7" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-packages.7.html#cmake-packages-7" id="id8">cmake-packages(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#introduction" id="id9">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#using-packages" id="id10">使用包</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#config-file-packages" id="id11">配置文件包 (Config-file Packages)</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#find-module-packages" id="id12">查找模块包 (Find-module Packages)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-layout" id="id13">包布局</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-configuration-file" id="id14">包配置文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-version-file" id="id15">包版本文件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#creating-packages" id="id16">创建包</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#creating-a-package-configuration-file" id="id17">创建包配置文件</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#creating-a-package-configuration-file-for-the-build-tree" id="id18">为构建树创建包配置文件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#creating-relocatable-packages" id="id19">创建可重定位包</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-registry" id="id20">包注册表</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-packages.7.html#user-package-registry" id="id21">用户包注册表</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#system-package-registry" id="id22">系统包注册表</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#disabling-the-package-registry" id="id23">禁用包注册表</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-registry-example" id="id24">包注册表示例</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#package-registry-ownership" id="id25">包注册表所有权</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-packages.7.html#id9" role="doc-backlink">简介</a><a class="headerlink" href="cmake-packages.7.html#introduction" title="链接到此标题">¶</a></h2>
+<p>包为基于 CMake 的构建系统提供依赖信息。包通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令进行查找。使用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的结果要么是一组 <span class="target" id="index-0-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标，要么是一组对应于构建相关信息的变量。</p>
+</section>
+<section id="using-packages">
+<h2><a class="toc-backref" href="cmake-packages.7.html#id10" role="doc-backlink">使用包</a><a class="headerlink" href="cmake-packages.7.html#using-packages" title="链接到此标题">¶</a></h2>
+<p>CMake 直接支持两种形式的包：<a class="reference internal" href="cmake-packages.7.html#id1">配置文件包</a> 和 <a class="reference internal" href="cmake-packages.7.html#find-module-packages">查找模块包</a>。通过 <span class="target" id="index-0-module:FindPkgConfig"></span><a class="reference internal" href="../module/FindPkgConfig.html#module:FindPkgConfig" title="FindPkgConfig"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindPkgConfig</span></code></a> 模块也提供了对 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 包的间接支持。在所有情况下，<span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的基本调用形式都是相同的。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt4</span><span class="w"> </span><span class="m">4.7.0</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"> </span><span class="c"># CMake provides a Qt4 find-module</span>
+<span class="nf">find_package(</span><span class="nb">Qt5Core</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"> </span><span class="c"># Qt provides a Qt5 package config file.</span>
+<span class="nf">find_package(</span><span class="nb">LibXml2</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span><span class="w"> </span><span class="c"># Use pkg-config via the LibXml2 find-module</span>
+</pre></div>
+</div>
+<p>在已知上游提供了包配置文件，且仅应使用该文件的情况下，可以将 <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> 关键字传递给 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt5Core</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Qt5Gui</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">CONFIG</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>类似地，<code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 关键字表示仅使用查找模块。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt4</span><span class="w"> </span><span class="m">4.7.0</span><span class="w"> </span><span class="no">MODULE</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>明确指定包类型可以改善用户在找不到包时看到的错误信息。</p>
+<p>两种类型的包都支持指定包的组件，既可以在 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 关键字之后</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt5</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="nb">Widgets</span><span class="w"> </span><span class="nb">Xml</span><span class="w"> </span><span class="nb">Sql</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者作为单独的 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 列表</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt5</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Widgets</span><span class="w"> </span><span class="nb">Xml</span><span class="w"> </span><span class="nb">Sql</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者作为单独的 <code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 列表</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Qt5</span><span class="w"> </span><span class="m">5.1.0</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Widgets</span>
+<span class="w">                       </span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nb">Xml</span><span class="w"> </span><span class="nb">Sql</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 的处理由包本身定义。</p>
+<p>通过将 <span class="target" id="index-0-variable:CMAKE_DISABLE_FIND_PACKAGE_<PackageName>"></span><a class="reference internal" href="../variable/CMAKE_DISABLE_FIND_PACKAGE_PackageName.html#variable:CMAKE_DISABLE_FIND_PACKAGE_<PackageName>" title="CMAKE_DISABLE_FIND_PACKAGE_<PackageName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_DISABLE_FIND_PACKAGE_&lt;PackageName&gt;</span></code></a> 变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，将不会搜索 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 包，且结果始终为 <code class="docutils literal notranslate"><span class="pre">NOTFOUND</span></code>。同样，将 <span class="target" id="index-0-variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"></span><a class="reference internal" href="../variable/CMAKE_REQUIRE_FIND_PACKAGE_PackageName.html#variable:CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>" title="CMAKE_REQUIRE_FIND_PACKAGE_<PackageName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_REQUIRE_FIND_PACKAGE_&lt;PackageName&gt;</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 会使该包成为 REQUIRED（必需）。</p>
+<section id="config-file-packages">
+<span id="id1"></span><h3><a class="toc-backref" href="cmake-packages.7.html#id11" role="doc-backlink">配置文件包</a><a class="headerlink" href="cmake-packages.7.html#config-file-packages" title="链接到此标题">¶</a></h3>
+<p>配置文件包是一组由上游提供给下游使用的文件。CMake 会在多个位置搜索包配置文件，具体描述见 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 文档。CMake 用户告诉 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 在非标准路径中搜索包的最简单方法是设置 <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> 缓存变量。</p>
+<p>配置文件包由上游供应商作为开发包的一部分提供，即它们属于头文件以及为协助下游使用该包而提供的任何其他文件。</p>
+<p>使用配置文件包时，一组提供包状态信息的变量也会被自动设置。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量将根据是否找到包而设置为 true 或 false。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code> 缓存变量会被设置为包配置文件的位置。</p>
+</section>
+<section id="find-module-packages">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id12" role="doc-backlink">查找模块包</a><a class="headerlink" href="cmake-packages.7.html#find-module-packages" title="链接到此标题">¶</a></h3>
+<p>查找模块是一个包含一组规则的文件，用于查找依赖项的必要部分，主要是头文件和库。通常，当上游不是使用 CMake 构建的，或者不具备提供包配置文件的 CMake 感知能力时，就需要查找模块。与包配置文件不同，它不随上游发布，而是由下游通过猜测具有平台特定提示的文件位置来查找文件。</p>
+<p>与上游提供的包配置文件不同，没有单一的参考点来标识包已找到，因此 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量不会由 <span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令自动设置。不过，按照惯例，它通常会被设置，并且应该由查找模块的作者进行设置。同样，没有 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code> 变量，而是每个制品（如库位置和头文件位置）都提供一个单独的缓存变量。</p>
+<p>有关创建查找模块文件的更多信息，请参阅 <span class="target" id="index-0-manual:cmake-developer(7)"></span><a class="reference internal" href="cmake-developer.7.html#manual:cmake-developer(7)" title="cmake-developer(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-developer(7)</span></code></a> 手册。</p>
+</section>
+</section>
+<section id="package-layout">
+<h2><a class="toc-backref" href="cmake-packages.7.html#id13" role="doc-backlink">包布局</a><a class="headerlink" href="cmake-packages.7.html#package-layout" title="链接到此标题">¶</a></h2>
+<p>配置文件包包含一个 <a class="reference internal" href="cmake-packages.7.html#package-configuration-file">包配置文件</a>，以及可选的随项目分发的 <a class="reference internal" href="cmake-packages.7.html#package-version-file">包版本文件</a>。</p>
+<section id="package-configuration-file">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id14" role="doc-backlink">包配置文件</a><a class="headerlink" href="cmake-packages.7.html#package-configuration-file" title="链接到此标题">¶</a></h3>
+<p>假设有一个项目 <code class="docutils literal notranslate"><span class="pre">Foo</span></code> 安装了以下文件</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/include/foo-1.2/foo.h
+&lt;prefix&gt;/lib/foo-1.2/libfoo.a
+</pre></div>
+</div>
+<p>它还可以提供一个 CMake 包配置文件</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/lib/cmake/foo-1.2/FooConfig.cmake
+</pre></div>
+</div>
+<p>其内容定义了 <span class="target" id="index-1-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标或定义变量，例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ...</span>
+<span class="c"># (compute PREFIX relative to file location)</span>
+<span class="c"># ...</span>
+<span class="nf">set(</span><span class="nb">Foo_INCLUDE_DIRS</span><span class="w"> </span><span class="o">${</span><span class="nt">PREFIX</span><span class="o">}</span><span class="na">/include/foo-1.2</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">Foo_LIBRARIES</span><span class="w"> </span><span class="o">${</span><span class="nt">PREFIX</span><span class="o">}</span><span class="na">/lib/foo-1.2/libfoo.a</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果另一个项目希望使用 <code class="docutils literal notranslate"><span class="pre">Foo</span></code>，它只需要定位 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 文件并加载它，即可获取有关包内容位置所需的所有信息。由于包配置文件由包安装过程提供，它已经了解所有文件的位置。</p>
+<p><span class="target" id="index-6-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令可用于搜索包配置文件。此命令构建一组安装前缀，并在每个前缀下的多个位置进行搜索。给定名称 <code class="docutils literal notranslate"><span class="pre">Foo</span></code>，它会查找名为 <code class="docutils literal notranslate"><span class="pre">FooConfig.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">foo-config.cmake</span></code> 的文件。位置的全集在 <span class="target" id="index-7-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令文档中指定。它查找的位置之一是</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/lib/cmake/Foo*/
+</pre></div>
+</div>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">Foo*</span></code> 是一个不区分大小写的匹配表达式。在我们的示例中，匹配表达式将匹配 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib/cmake/foo-1.2</span></code>，包配置文件将被找到。</p>
+<p>一旦找到，包配置文件会立即加载。它与包版本文件一起，包含了项目使用该包所需的所有信息。</p>
+</section>
+<section id="package-version-file">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id15" role="doc-backlink">包版本文件</a><a class="headerlink" href="cmake-packages.7.html#package-version-file" title="链接到此标题">¶</a></h3>
+<p>当 <span class="target" id="index-8-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令找到候选包配置文件时，它会在其旁边查找版本文件。加载版本文件是为了测试包版本是否与请求的版本兼容。如果版本文件声明兼容，则接受配置文件。否则将其忽略。</p>
+<p>包版本文件的名称必须与包配置文件名称匹配，但在 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 扩展名之前附加了 <code class="docutils literal notranslate"><span class="pre">-version</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Version</span></code>。例如，以下文件</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/lib/cmake/foo-1.3/foo-config.cmake
+&lt;prefix&gt;/lib/cmake/foo-1.3/foo-config-version.cmake
+</pre></div>
+</div>
+<p>和</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;prefix&gt;/lib/cmake/bar-4.2/BarConfig.cmake
+&lt;prefix&gt;/lib/cmake/bar-4.2/BarConfigVersion.cmake
+</pre></div>
+</div>
+<p>它们分别是包配置文件和相应的包版本文件对。</p>
+<p>当 <span class="target" id="index-9-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令加载版本文件时，它首先设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_NAME</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION</span></code></dt><dd><p>完整请求版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MAJOR</span></code></dt><dd><p>如果已请求，则为主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_MINOR</span></code></dt><dd><p>如果已请求，则为次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_PATCH</span></code></dt><dd><p>如果已请求，则为补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_TWEAK</span></code></dt><dd><p>如果已请求，则为微调版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_FIND_VERSION_COUNT</span></code></dt><dd><p>版本组件的数量，0 到 4</p>
+</dd>
+</dl>
+<p>版本文件必须使用这些变量来检查它是否与请求的版本兼容或完全匹配，并设置以下变量作为结果</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION</span></code></dt><dd><p>完整提供的版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_EXACT</span></code></dt><dd><p>如果版本完全匹配，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_COMPATIBLE</span></code></dt><dd><p>如果版本兼容，则为 True</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_UNSUITABLE</span></code></dt><dd><p>如果任何版本均不适用，则为 True</p>
+</dd>
+</dl>
+<p>版本文件在嵌套作用域中加载，因此它们可以自由设置任何变量作为其计算的一部分。当版本文件完成并检查完输出变量后，find_package 命令会清除该作用域。当版本文件声明与请求的版本兼容时，find_package 命令会为项目设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION</span></code></dt><dd><p>完整提供的版本字符串</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MAJOR</span></code></dt><dd><p>如果已提供，则为主版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MINOR</span></code></dt><dd><p>如果已提供，则为次版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_PATCH</span></code></dt><dd><p>如果已提供，则为补丁版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_TWEAK</span></code></dt><dd><p>如果已提供，则为微调版本号，否则为 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_COUNT</span></code></dt><dd><p>版本组件的数量，0 到 4</p>
+</dd>
+</dl>
+<p>这些变量报告实际找到的包版本。其名称中的 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 部分与传递给 <span class="target" id="index-10-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的参数匹配。</p>
+</section>
+</section>
+<section id="creating-packages">
+<span id="id2"></span><h2><a class="toc-backref" href="cmake-packages.7.html#id16" role="doc-backlink">创建包</a><a class="headerlink" href="cmake-packages.7.html#creating-packages" title="链接到此标题">¶</a></h2>
+<p>通常，上游依赖 CMake 本身，并可以使用某些 CMake 工具来创建包文件。考虑一个提供单个共享库的上游项目</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">project(</span><span class="nb">UpstreamLib</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="no">CMAKE_INCLUDE_CURRENT_DIR</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="no">CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="nb">Upstream_VERSION</span><span class="w"> </span><span class="m">3.4.1</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GenerateExportHeader</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="nb">climbingstats.cpp</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">ClimbingStats</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">VERSION</span><span class="w"> </span><span class="o">${</span><span class="nt">Upstream_VERSION</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">SOVERSION</span><span class="w"> </span><span class="m">3</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">  </span><span class="nb">INTERFACE_ClimbingStats_MAJOR_VERSION</span><span class="w"> </span><span class="m">3</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span>
+<span class="w">  </span><span class="no">COMPATIBLE_INTERFACE_STRING</span><span class="w"> </span><span class="nb">ClimbingStats_MAJOR_VERSION</span>
+<span class="nf">)</span>
+
+<span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">ClimbingStatsTargets</span>
+<span class="w">  </span><span class="no">LIBRARY</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">lib</span>
+<span class="w">  </span><span class="no">ARCHIVE</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">lib</span>
+<span class="w">  </span><span class="no">RUNTIME</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">bin</span>
+<span class="w">  </span><span class="no">INCLUDES</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">include</span>
+<span class="nf">)</span>
+<span class="nf">install(</span>
+<span class="w">  </span><span class="no">FILES</span>
+<span class="w">    </span><span class="nb">climbingstats.h</span>
+<span class="w">    </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}/climbingstats_export.h"</span>
+<span class="w">  </span><span class="no">DESTINATION</span>
+<span class="w">    </span><span class="nb">include</span>
+<span class="w">  </span><span class="no">COMPONENT</span>
+<span class="w">    </span><span class="nb">Devel</span>
+<span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">CMakePackageConfigHelpers</span><span class="nf">)</span>
+<span class="nf">write_basic_package_version_file(</span>
+<span class="w">  </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}/ClimbingStats/ClimbingStatsConfigVersion.cmake"</span>
+<span class="w">  </span><span class="no">VERSION</span><span class="w"> </span><span class="o">${</span><span class="nt">Upstream_VERSION</span><span class="o">}</span>
+<span class="w">  </span><span class="no">COMPATIBILITY</span><span class="w"> </span><span class="nb">AnyNewerVersion</span>
+<span class="nf">)</span>
+
+<span class="nf">export(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">ClimbingStatsTargets</span>
+<span class="w">  </span><span class="no">FILE</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}/ClimbingStats/ClimbingStatsTargets.cmake"</span>
+<span class="w">  </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nb">Upstream</span><span class="o">::</span>
+<span class="nf">)</span>
+<span class="nf">configure_file(</span><span class="na">cmake/ClimbingStatsConfig.cmake</span>
+<span class="w">  </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}/ClimbingStats/ClimbingStatsConfig.cmake"</span>
+<span class="w">  </span><span class="no">COPYONLY</span>
+<span class="nf">)</span>
+
+<span class="nf">set(</span><span class="nb">ConfigPackageLocation</span><span class="w"> </span><span class="na">lib/cmake/ClimbingStats</span><span class="nf">)</span>
+<span class="nf">install(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">ClimbingStatsTargets</span>
+<span class="w">  </span><span class="no">FILE</span>
+<span class="w">    </span><span class="nb">ClimbingStatsTargets.cmake</span>
+<span class="w">  </span><span class="no">NAMESPACE</span>
+<span class="w">    </span><span class="nb">Upstream</span><span class="o">::</span>
+<span class="w">  </span><span class="no">DESTINATION</span>
+<span class="w">    </span><span class="o">${</span><span class="nt">ConfigPackageLocation</span><span class="o">}</span>
+<span class="nf">)</span>
+<span class="nf">install(</span>
+<span class="w">  </span><span class="no">FILES</span>
+<span class="w">    </span><span class="na">cmake/ClimbingStatsConfig.cmake</span>
+<span class="w">    </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}/ClimbingStats/ClimbingStatsConfigVersion.cmake"</span>
+<span class="w">  </span><span class="no">DESTINATION</span>
+<span class="w">    </span><span class="o">${</span><span class="nt">ConfigPackageLocation</span><span class="o">}</span>
+<span class="w">  </span><span class="no">COMPONENT</span>
+<span class="w">    </span><span class="nb">Devel</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><span class="target" id="index-0-module:CMakePackageConfigHelpers"></span><a class="reference internal" href="../module/CMakePackageConfigHelpers.html#module:CMakePackageConfigHelpers" title="CMakePackageConfigHelpers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePackageConfigHelpers</span></code></a> 模块提供了一个用于创建简单 <code class="docutils literal notranslate"><span class="pre">ConfigVersion.cmake</span></code> 文件的宏。此文件设置包的版本。当调用 <span class="target" id="index-11-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 时，CMake 会读取它以确定与请求版本的兼容性，并设置一些特定于版本的变量 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MAJOR</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_VERSION_MINOR</span></code> 等。<span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令用于导出 <code class="docutils literal notranslate"><span class="pre">ClimbingStatsTargets</span></code> 导出集中的目标，该集先前由 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令定义。此命令生成包含 <span class="target" id="index-2-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标的 <code class="docutils literal notranslate"><span class="pre">ClimbingStatsTargets.cmake</span></code> 文件，适用于下游使用，并安排将其安装到 <code class="docutils literal notranslate"><span class="pre">lib/cmake/ClimbingStats</span></code>。生成的 <code class="docutils literal notranslate"><span class="pre">ClimbingStatsConfigVersion.cmake</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cmake/ClimbingStatsConfig.cmake</span></code> 被安装到同一位置，从而完成包的创建。</p>
+<p>生成的 <span class="target" id="index-3-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标设置了适当的属性来定义其 <a class="reference internal" href="cmake-buildsystem.7.html#target-usage-requirements"><span class="std std-ref">使用要求</span></a>，例如 <span class="target" id="index-0-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a>、<span class="target" id="index-0-prop_tgt:INTERFACE_COMPILE_DEFINITIONS"></span><a class="reference internal" href="../prop_tgt/INTERFACE_COMPILE_DEFINITIONS.html#prop_tgt:INTERFACE_COMPILE_DEFINITIONS" title="INTERFACE_COMPILE_DEFINITIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_COMPILE_DEFINITIONS</span></code></a> 以及其他相关的内置 <code class="docutils literal notranslate"><span class="pre">INTERFACE_</span></code> 属性。列在 <span class="target" id="index-0-prop_tgt:COMPATIBLE_INTERFACE_STRING"></span><a class="reference internal" href="../prop_tgt/COMPATIBLE_INTERFACE_STRING.html#prop_tgt:COMPATIBLE_INTERFACE_STRING" title="COMPATIBLE_INTERFACE_STRING"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">COMPATIBLE_INTERFACE_STRING</span></code></a> 中的用户定义属性的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 变体以及其他 <a class="reference internal" href="cmake-buildsystem.7.html#compatible-interface-properties"><span class="std std-ref">兼容接口属性</span></a> 也会传播到生成的 <span class="target" id="index-4-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标。在上述情况下，<code class="docutils literal notranslate"><span class="pre">ClimbingStats_MAJOR_VERSION</span></code> 被定义为一个字符串，该字符串必须在任何使用者的依赖项之间兼容。通过在当前版本和下一个版本的 <code class="docutils literal notranslate"><span class="pre">ClimbingStats</span></code> 中设置此自定义用户属性，如果尝试将版本 3 与版本 4 一起使用，<span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 将发出诊断信息。如果包的不同主版本设计为不兼容，包可以选择采用这种模式。</p>
+<p>在导出目标以进行安装时，会指定一个带有双冒号的 <code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code>。这种双冒号的惯例给 CMake 一个提示，即当下游使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令时，该名称是一个 <span class="target" id="index-5-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标。这样，如果提供该包的项目尚未找到，CMake 就可以发出诊断信息。</p>
+<p>在这种情况下，当使用 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 时，指定了 <code class="docutils literal notranslate"><span class="pre">INCLUDES</span> <span class="pre">DESTINATION</span></code>。这导致 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标的 <span class="target" id="index-1-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a> 使用 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 中的 <code class="docutils literal notranslate"><span class="pre">include</span></code> 目录进行填充。当 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标被下游使用时，它会自动消耗来自该属性的条目。</p>
+<section id="creating-a-package-configuration-file">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id17" role="doc-backlink">创建包配置文件</a><a class="headerlink" href="cmake-packages.7.html#creating-a-package-configuration-file" title="链接到此标题">¶</a></h3>
+<p>在这种情况下，<code class="docutils literal notranslate"><span class="pre">ClimbingStatsConfig.cmake</span></code> 文件可以很简单</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStatsTargets.cmake"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>因为这允许下游使用 <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标。如果 <code class="docutils literal notranslate"><span class="pre">ClimbingStats</span></code> 包需要提供任何宏，它们应该放在一个单独的文件中，该文件安装到与 <code class="docutils literal notranslate"><span class="pre">ClimbingStatsConfig.cmake</span></code> 文件相同的位置，并从中包含。</p>
+<p>这也可以扩展到涵盖依赖项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ...</span>
+<span class="nf">add_library(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="nb">climbingstats.cpp</span><span class="nf">)</span>
+<span class="nf">generate_export_header(</span><span class="nb">ClimbingStats</span><span class="nf">)</span>
+
+<span class="nf">find_package(</span><span class="nb">Stats</span><span class="w"> </span><span class="m">2.6.4</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">Stats</span><span class="o">::</span><span class="nb">Types</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>由于 <code class="docutils literal notranslate"><span class="pre">Stats::Types</span></code> 目标是 <code class="docutils literal notranslate"><span class="pre">ClimbingStats</span></code> 的 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 依赖项，下游也必须找到 <code class="docutils literal notranslate"><span class="pre">Stats</span></code> 包并链接到 <code class="docutils literal notranslate"><span class="pre">Stats::Types</span></code> 库。为此，应在 <code class="docutils literal notranslate"><span class="pre">ClimbingStatsConfig.cmake</span></code> 文件中查找 <code class="docutils literal notranslate"><span class="pre">Stats</span></code> 包。<span class="target" id="index-0-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeFindDependencyMacro</span></code></a> 中的 <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code> 宏通过传播包是 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>、<code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 等来提供帮助。包的所有 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 依赖项都应在 <code class="docutils literal notranslate"><span class="pre">Config.cmake</span></code> 文件中找到</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeFindDependencyMacro</span><span class="nf">)</span>
+<span class="nf">find_dependency(</span><span class="nb">Stats</span><span class="w"> </span><span class="m">2.6.4</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStatsTargets.cmake"</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStatsMacros.cmake"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">find_dependency</span></code> 宏还会将 <code class="docutils literal notranslate"><span class="pre">ClimbingStats_FOUND</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">False</span></code>（如果未找到依赖项），并附带一条诊断信息，说明如果没有 <code class="docutils literal notranslate"><span class="pre">Stats</span></code> 包，就无法使用 <code class="docutils literal notranslate"><span class="pre">ClimbingStats</span></code> 包。</p>
+<p>如果下游使用 <span class="target" id="index-12-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 时指定了 <code class="docutils literal notranslate"><span class="pre">COMPONENTS</span></code>，它们会列在 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_COMPONENTS</span></code> 变量中。如果某个特定组件是非可选的，则 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FIND_REQUIRED_&lt;comp&gt;</span></code> 将为真。这可以在包配置文件中通过逻辑进行测试</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeFindDependencyMacro</span><span class="nf">)</span>
+<span class="nf">find_dependency(</span><span class="nb">Stats</span><span class="w"> </span><span class="m">2.6.4</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStatsTargets.cmake"</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStatsMacros.cmake"</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="nb">_ClimbingStats_supported_components</span><span class="w"> </span><span class="nb">Plot</span><span class="w"> </span><span class="nb">Table</span><span class="nf">)</span>
+
+<span class="nf">foreach(</span><span class="nb">_comp</span><span class="w"> </span><span class="o">${</span><span class="nt">ClimbingStats_FIND_COMPONENTS</span><span class="o">}</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if</span> <span class="nf">(</span><span class="no">NOT</span><span class="w"> </span><span class="s">";${_ClimbingStats_supported_components};"</span><span class="w"> </span><span class="no">MATCHES</span><span class="w"> </span><span class="s">";${_comp};"</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">ClimbingStats_FOUND</span><span class="w"> </span><span class="nb">False</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">ClimbingStats_NOT_FOUND_MESSAGE</span><span class="w"> </span><span class="s">"Unsupported component: ${_comp}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="w">  </span><span class="nf">include(</span><span class="s">"${CMAKE_CURRENT_LIST_DIR}/ClimbingStats${_comp}Targets.cmake"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+</pre></div>
+</div>
+<p>在此，<code class="docutils literal notranslate"><span class="pre">ClimbingStats_NOT_FOUND_MESSAGE</span></code> 被设置为诊断信息，说明无法找到包是因为指定了无效组件。这个消息变量可以在 <code class="docutils literal notranslate"><span class="pre">_FOUND</span></code> 变量设置为 <code class="docutils literal notranslate"><span class="pre">False</span></code> 的任何情况下设置，并将显示给用户。</p>
+<section id="creating-a-package-configuration-file-for-the-build-tree">
+<h4><a class="toc-backref" href="cmake-packages.7.html#id18" role="doc-backlink">为构建树创建包配置文件</a><a class="headerlink" href="cmake-packages.7.html#creating-a-package-configuration-file-for-the-build-tree" title="链接到此标题">¶</a></h4>
+<p><span class="target" id="index-0-command:export"></span><a class="reference internal" href="../command/export.html#command:export" title="export(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(EXPORT)</span></code></a> 命令创建一个特定于构建树且不可重定位的 <span class="target" id="index-6-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标定义文件。这同样可以与合适的包配置文件和包版本文件结合使用，为构建树定义一个包，该包可以在不安装的情况下使用。构建树的使用者只需确保 <span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 包含构建目录，或者在缓存中将 <code class="docutils literal notranslate"><span class="pre">ClimbingStats_DIR</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">&lt;build_dir&gt;/ClimbingStats</span></code>。</p>
+</section>
+</section>
+<section id="creating-relocatable-packages">
+<span id="id3"></span><h3><a class="toc-backref" href="cmake-packages.7.html#id19" role="doc-backlink">创建可重定位的包</a><a class="headerlink" href="cmake-packages.7.html#creating-relocatable-packages" title="链接到此标题">¶</a></h3>
+<p>可重定位的包不得引用构建包的机器上绝对路径的文件，因为这些路径在安装包的机器上可能不存在。</p>
+<p>由 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 创建的包旨在实现可重定位，使用相对于包本身位置的路径。为 <code class="docutils literal notranslate"><span class="pre">EXPORT</span></code> 定义目标的接口时，请记住包含目录应指定为相对于 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 的相对路径。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nb">tgt</span><span class="w"> </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="c"># Wrong, not relocatable:</span>
+<span class="w">  </span><span class="o">$&lt;</span><span class="no">INSTALL_INTERFACE</span><span class="o">:${</span><span class="nt">CMAKE_INSTALL_PREFIX</span><span class="o">}</span><span class="na">/include/TgtName</span><span class="p">&gt;</span>
+<span class="nf">)</span>
+
+<span class="nf">target_include_directories(</span><span class="nb">tgt</span><span class="w"> </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="c"># Ok, relocatable:</span>
+<span class="w">  </span><span class="o">$&lt;</span><span class="no">INSTALL_INTERFACE</span><span class="o">:</span><span class="na">include/TgtName</span><span class="p">&gt;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">$&lt;INSTALL_PREFIX&gt;</span></code> <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 可以用作安装前缀的占位符，而不会导致包不可重定位。如果使用了复杂的生成器表达式，这是必要的。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nb">tgt</span><span class="w"> </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="c"># Ok, relocatable:</span>
+<span class="w">  </span><span class="o">$&lt;</span><span class="no">INSTALL_INTERFACE</span><span class="o">:$&lt;$&lt;</span><span class="no">CONFIG</span><span class="o">:</span><span class="nb">Debug</span><span class="p">&gt;</span><span class="o">:$&lt;</span><span class="no">INSTALL_PREFIX</span><span class="p">&gt;</span><span class="na">/include/TgtName</span><span class="p">&gt;&gt;</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>这也适用于引用外部依赖项的路径。不建议使用与依赖项相关的路径填充任何可能包含路径的属性，例如 <span class="target" id="index-2-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a> 和 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a>。例如，此代码对于可重定位包可能无法很好地工作。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="o">${</span><span class="nt">Foo_LIBRARIES</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nt">Bar_LIBRARIES</span><span class="o">}</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">target_include_directories(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">INTERFACE</span>
+<span class="w">  </span><span class="s">"$&lt;INSTALL_INTERFACE:${Foo_INCLUDE_DIRS};${Bar_INCLUDE_DIRS}&gt;"</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>引用的变量可能包含<strong>在制作包的机器上找到的</strong>库和包含目录的绝对路径。这将创建一个具有硬编码依赖路径的包，不适合重定位。</p>
+<p>理想情况下，此类依赖项应通过其自己的 <a class="reference internal" href="cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">IMPORTED 目标</span></a> 使用，这些目标拥有自己的 <span class="target" id="index-0-prop_tgt:IMPORTED_LOCATION"></span><a class="reference internal" href="../prop_tgt/IMPORTED_LOCATION.html#prop_tgt:IMPORTED_LOCATION" title="IMPORTED_LOCATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_LOCATION</span></code></a> 和适当地填充的使用要求属性（如 <span class="target" id="index-3-prop_tgt:INTERFACE_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_INCLUDE_DIRECTORIES.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES" title="INTERFACE_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_INCLUDE_DIRECTORIES</span></code></a>）。这些导入的目标随后可以与 <span class="target" id="index-1-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令一起使用，用于 <code class="docutils literal notranslate"><span class="pre">ClimbingStats</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">ClimbingStats</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="nb">Foo</span><span class="o">::</span><span class="nb">Foo</span><span class="w"> </span><span class="nb">Bar</span><span class="o">::</span><span class="nb">Bar</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>使用这种方法，包仅通过 <a class="reference internal" href="cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">IMPORTED 目标</span></a> 的名称引用其外部依赖项。当使用者使用安装的包时，使用者将运行适当的 <span class="target" id="index-13-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令（通过上面描述的 <code class="docutils literal notranslate"><span class="pre">find_dependency</span></code> 宏）来查找依赖项，并使用其自身机器上的适当路径填充导入的目标。</p>
+<p>不幸的是，许多随 CMake 附带的 <span class="target" id="index-0-manual:cmake-modules(7)"></span><a class="reference internal" href="cmake-modules.7.html#manual:cmake-modules(7)" title="cmake-modules(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">模块</span></code></a> 尚未提供 <a class="reference internal" href="cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">IMPORTED 目标</span></a>，因为它们的开发早于这种方法。这种情况可能会随着时间的推移逐步改善。使用此类模块创建可重定位包的解决方法包括</p>
+<ul class="simple">
+<li><p>在构建包时，将每个 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARY</span></code> 缓存条目仅指定为库名称，例如 <code class="docutils literal notranslate"><span class="pre">-DFoo_LIBRARY=foo</span></code>。这会告诉相应的查找模块仅使用 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 填充 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARIES</span></code>，从而要求链接器搜索库，而不是硬编码路径。</p></li>
+<li><p>或者，在安装包内容之后但在创建用于再分发的包安装二进制文件之前，手动将绝对路径替换为占位符，以便安装工具在安装包时进行替换。</p></li>
+</ul>
+</section>
+</section>
+<section id="package-registry">
+<span id="id4"></span><h2><a class="toc-backref" href="cmake-packages.7.html#id20" role="doc-backlink">包注册表</a><a class="headerlink" href="cmake-packages.7.html#package-registry" title="链接到此标题">¶</a></h2>
+<p>CMake 提供了两个中心位置来注册已在系统任何位置构建或安装的包</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-packages.7.html#user-package-registry">用户包注册表</a></p></li>
+<li><p><a class="reference internal" href="cmake-packages.7.html#system-package-registry">系统包注册表</a></p></li>
+</ul>
+<p>注册表对于帮助项目在非标准安装位置或直接在其自己的构建树中查找包特别有用。项目可以（使用其自身的方法，见下文）填充用户或系统注册表以引用其位置。在任一情况下，包都应在注册位置存储一个 <a class="reference internal" href="cmake-packages.7.html#package-configuration-file">包配置文件</a> (<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code>) 和可选的 <a class="reference internal" href="cmake-packages.7.html#package-version-file">包版本文件</a> (<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code>)。</p>
+<p><span class="target" id="index-14-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令会将搜索两个包注册表作为其文档中指定的搜索步骤的一部分。如果它拥有足够的权限，它还会删除指向不存在的目录或不包含匹配包配置文件的目录的陈旧包注册表条目。</p>
+<section id="user-package-registry">
+<span id="id5"></span><h3><a class="toc-backref" href="cmake-packages.7.html#id21" role="doc-backlink">用户包注册表</a><a class="headerlink" href="cmake-packages.7.html#user-package-registry" title="链接到此标题">¶</a></h3>
+<p>用户包注册表存储在每个用户的特定位置。<span class="target" id="index-1-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a> 命令可用于在用户包注册表中注册项目构建树。CMake 目前不提供将安装树添加到用户包注册表的界面。如果需要，安装程序必须手动教学以注册其包。</p>
+<p>在 Windows 上，用户包注册表存储在 <code class="docutils literal notranslate"><span class="pre">HKEY_CURRENT_USER</span></code> 下的一个注册表项中。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 可能出现在注册表项下</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HKEY_CURRENT_USER\Software\Kitware\CMake\Packages\&lt;PackageName&gt;
+</pre></div>
+</div>
+<p>作为一个 <code class="docutils literal notranslate"><span class="pre">REG_SZ</span></code> 值，具有任意名称，指定包含包配置文件的目录。</p>
+<p>在 UNIX 平台上，用户包注册表存储在用户主目录下的 <code class="docutils literal notranslate"><span class="pre">~/.cmake/packages</span></code> 中。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 可能出现在目录</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>~/.cmake/packages/&lt;PackageName&gt;
+</pre></div>
+</div>
+<p>作为一个具有任意名称的文件，其内容指定了包含包配置文件的目录。</p>
+</section>
+<section id="system-package-registry">
+<span id="id6"></span><h3><a class="toc-backref" href="cmake-packages.7.html#id22" role="doc-backlink">系统包注册表</a><a class="headerlink" href="cmake-packages.7.html#system-package-registry" title="链接到此标题">¶</a></h3>
+<p>系统包注册表存储在系统范围的位置。CMake 目前不提供添加到系统包注册表的界面。如果需要，安装程序必须手动教学以注册其包。</p>
+<p>在 Windows 上，系统包注册表存储在 <code class="docutils literal notranslate"><span class="pre">HKEY_LOCAL_MACHINE</span></code> 下的一个注册表项中。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 可能出现在注册表项下</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HKEY_LOCAL_MACHINE\Software\Kitware\CMake\Packages\&lt;PackageName&gt;
+</pre></div>
+</div>
+<p>作为一个 <code class="docutils literal notranslate"><span class="pre">REG_SZ</span></code> 值，具有任意名称，指定包含包配置文件的目录。</p>
+<p>非 Windows 平台上没有系统包注册表。</p>
+</section>
+<section id="disabling-the-package-registry">
+<span id="id7"></span><h3><a class="toc-backref" href="cmake-packages.7.html#id23" role="doc-backlink">禁用包注册表</a><a class="headerlink" href="cmake-packages.7.html#disabling-the-package-registry" title="链接到此标题">¶</a></h3>
+<p>在某些情况下，使用包注册表并不理想。CMake 允许使用以下变量禁用它们</p>
+<ul class="simple">
+<li><p>当 <span class="target" id="index-0-policy:CMP0090"></span><a class="reference internal" href="../policy/CMP0090.html#policy:CMP0090" title="CMP0090"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0090</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，<span class="target" id="index-2-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a> 命令不会填充用户包注册表，除非 <span class="target" id="index-0-variable:CMAKE_EXPORT_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_PACKAGE_REGISTRY.html#variable:CMAKE_EXPORT_PACKAGE_REGISTRY" title="CMAKE_EXPORT_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_PACKAGE_REGISTRY</span></code></a> 变量显式启用它。当 <span class="target" id="index-1-policy:CMP0090"></span><a class="reference internal" href="../policy/CMP0090.html#policy:CMP0090" title="CMP0090"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0090</span></code></a> <em>没有</em>设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，<span class="target" id="index-3-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a> 会填充用户包注册表，除非 <span class="target" id="index-0-variable:CMAKE_EXPORT_NO_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_NO_PACKAGE_REGISTRY.html#variable:CMAKE_EXPORT_NO_PACKAGE_REGISTRY" title="CMAKE_EXPORT_NO_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_NO_PACKAGE_REGISTRY</span></code></a> 变量显式禁用它。</p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FIND_USE_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_PACKAGE_REGISTRY</span></code></a> 当设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> 时，会在所有 <span class="target" id="index-15-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用中禁用用户包注册表。</p></li>
+<li><p>已弃用的 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY" title="CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY</span></code></a> 当设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 时，会在所有 <span class="target" id="index-16-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用中禁用用户包注册表。当已设置 <span class="target" id="index-1-variable:CMAKE_FIND_USE_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_PACKAGE_REGISTRY</span></code></a> 时，此变量将被忽略。</p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY" title="CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY</span></code></a> 在所有 <span class="target" id="index-17-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用中禁用系统包注册表。</p></li>
+</ul>
+</section>
+<section id="package-registry-example">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id24" role="doc-backlink">包注册表示例</a><a class="headerlink" href="cmake-packages.7.html#package-registry-example" title="链接到此标题">¶</a></h3>
+<p>命名包注册表条目的一种简单惯例是使用内容哈希。它们是确定性的且不太可能冲突（<span class="target" id="index-4-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a> 使用此方法）。引用特定目录的条目名称只是目录路径本身的内容哈希。</p>
+<p>如果项目安排包注册表条目存在，例如</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; reg query HKCU\Software\Kitware\CMake\Packages\MyPackage
+HKEY_CURRENT_USER\Software\Kitware\CMake\Packages\MyPackage
+ 45e7d55f13b87179bb12f907c8de6fc4 REG_SZ c:/Users/Me/Work/lib/cmake/MyPackage
+ 7b4a9844f681c80ce93190d4e3185db9 REG_SZ c:/Users/Me/Work/MyPackage-build
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat<span class="w"> </span>~/.cmake/packages/MyPackage/7d1fb77e07ce59a81bed093bbee945bd
+<span class="go">/home/me/work/lib/cmake/MyPackage</span>
+<span class="gp">$ </span>cat<span class="w"> </span>~/.cmake/packages/MyPackage/f92c1db873a1937f3100706657c63e07
+<span class="go">/home/me/work/MyPackage-build</span>
+</pre></div>
+</div>
+<p>那么 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">MyPackage</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将搜索已注册的位置以查找包配置文件 (<code class="docutils literal notranslate"><span class="pre">MyPackageConfig.cmake</span></code>)。单个包的包注册表条目之间的搜索顺序未指定，条目名称（本例中的哈希）没有意义。注册的位置可能包含包版本文件 (<code class="docutils literal notranslate"><span class="pre">MyPackageConfigVersion.cmake</span></code>)，以告知 <span class="target" id="index-18-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 特定位置是否适合请求的版本。</p>
+</section>
+<section id="package-registry-ownership">
+<h3><a class="toc-backref" href="cmake-packages.7.html#id25" role="doc-backlink">包注册表所有权</a><a class="headerlink" href="cmake-packages.7.html#package-registry-ownership" title="链接到此标题">¶</a></h3>
+<p>包注册表条目由它们引用的项目安装分别拥有。包安装程序负责添加其自己的条目，相应的卸载程序负责删除它。</p>
+<p><span class="target" id="index-5-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a> 命令使用项目构建树的位置填充用户包注册表。构建树往往会被开发人员删除，并且没有可以触发其条目删除的“卸载”事件。为了保持注册表的整洁，<span class="target" id="index-19-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令在拥有足够权限的情况下会自动删除它遇到的陈旧条目。一旦调用了 <span class="target" id="index-6-command:export"></span><a class="reference internal" href="../command/export.html#package" title="export(package)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">export(PACKAGE)</span></code></a>，CMake 就不提供删除引用现有构建树的条目的界面。但是，如果项目从构建树中删除了其包配置文件，则引用该位置的条目将被视为陈旧。</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-packages.7.html#">cmake-packages(7)</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#using-packages">使用包</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#config-file-packages">配置文件包 (Config-file Packages)</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#find-module-packages">查找模块包 (Find-module Packages)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-packages.7.html#package-layout">包布局</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#package-configuration-file">包配置文件</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#package-version-file">包版本文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-packages.7.html#creating-packages">创建包</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#creating-a-package-configuration-file">创建包配置文件</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#creating-a-package-configuration-file-for-the-build-tree">为构建树创建包配置文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-packages.7.html#creating-relocatable-packages">创建可重定位包</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-packages.7.html#package-registry">包注册表</a><ul>
+<li><a class="reference internal" href="cmake-packages.7.html#user-package-registry">用户包注册表</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#system-package-registry">系统包注册表</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#disabling-the-package-registry">禁用包注册表</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#package-registry-example">包注册表示例</a></li>
+<li><a class="reference internal" href="cmake-packages.7.html#package-registry-ownership">包注册表所有权</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../module/SquishTestScript.html" title="上一章">SquishTestScript</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-policies.7.html" title="下一章">cmake-policies(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-packages.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-policies.7.html" title="cmake-policies(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="../module/SquishTestScript.html" title="SquishTestScript">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-packages.7.html">cmake-packages(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

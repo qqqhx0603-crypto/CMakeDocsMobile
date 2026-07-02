@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>set_property — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="set_property.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="site_name" href="site_name.html" />
+    <link rel="prev" title="set_directory_properties" href="set_directory_properties.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="site_name.html" title="site_name" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="set_directory_properties.html" title="set_directory_properties" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="set_property.html">set_property</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="set-property">
+<span id="command:set_property"></span><h1>set_property<a class="headerlink" href="set_property.html#set-property" title="链接到此标题">¶</a></h1>
+<p>在给定的作用域内设置命名属性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_property(</span><span class="p">{</span><span class="no">GLOBAL</span><span class="w">                                    </span><span class="p">|</span>
+<span class="w">              </span><span class="no">DIRECTORY</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w">                         </span><span class="p">|</span>
+<span class="w">              </span><span class="no">TARGET</span><span class="w">    </span><span class="nv">&lt;target&gt;...</span><span class="w">                     </span><span class="p">|</span>
+<span class="w">              </span><span class="no">FILE_SET</span><span class="w">  </span><span class="nv">&lt;file_set&gt;...</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="w">   </span><span class="p">|</span>
+<span class="w">              </span><span class="no">SOURCE</span><span class="w">    </span><span class="nv">&lt;source&gt;...</span>
+<span class="w">                        </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="p">...]</span>
+<span class="w">                        </span><span class="p">[</span><span class="no">TARGET_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;targets&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">|</span>
+<span class="w">              </span><span class="no">INSTALL</span><span class="w">   </span><span class="nv">&lt;file&gt;...</span><span class="w">                       </span><span class="p">|</span>
+<span class="w">              </span><span class="no">TEST</span><span class="w">      </span><span class="nv">&lt;test&gt;...</span>
+<span class="w">                        </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w">               </span><span class="p">|</span>
+<span class="w">              </span><span class="no">CACHE</span><span class="w">     </span><span class="nv">&lt;entry&gt;...</span><span class="p">}</span>
+<span class="w">             </span><span class="p">[</span><span class="no">APPEND</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">APPEND_STRING</span><span class="p">]</span>
+<span class="w">             </span><span class="no">PROPERTY</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;value&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在作用域内的一个或多个对象上设置一个属性。</p>
+<p>第一个参数决定了设置属性的作用域。它必须是以下选项之一：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code></dt><dd><p>该作用域是唯一的，不需要名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code></dt><dd><p>作用域默认为当前目录，但其他（已由 CMake 处理过的）目录可以通过完整路径或相对路径来命名。相对路径被视为相对于当前源目录。另请参阅 <span class="target" id="index-0-command:set_directory_properties"></span><a class="reference internal" href="set_directory_properties.html#command:set_directory_properties" title="set_directory_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_directory_properties()</span></code></a> 命令。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span> <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以引用二进制目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span></code></dt><dd><p>作用域可以命名零个或多个现有的目标（target）。另请参阅 <span class="target" id="index-0-command:set_target_properties"></span><a class="reference internal" href="set_target_properties.html#command:set_target_properties" title="set_target_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_target_properties()</span></code></a> 命令。</p>
+<p><a class="reference internal" href="../manual/cmake-buildsystem.7.html#alias-targets"><span class="std std-ref">别名目标（Alias Targets）</span></a> 不支持设置目标属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>作用域可以命名零个或多个现有的文件集（file set）。</p>
+<p>必须包含以下选项：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><p>附加该文件集的目标。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE</span></code></dt><dd><p>作用域可以命名零个或多个源文件。默认情况下，源文件属性仅对在同一目录（<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>）中添加的目标可见。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增：</span>可以使用以下一个或两个子选项在其他目录作用域中设置可见性：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span> <span class="pre">&lt;dirs&gt;...</span></code></dt><dd><p>源文件属性将在每个 <code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code> 目录的作用域中设置。CMake 必须已经知晓这些目录，或者是通过调用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 添加的，或者是顶级源目录。相对路径被视为相对于当前源目录。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code> 可以引用二进制目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET_DIRECTORY</span> <span class="pre">&lt;targets&gt;...</span></code></dt><dd><p>源文件属性将在创建了指定 <code class="docutils literal notranslate"><span class="pre">&lt;targets&gt;</span></code> 中任意一个的目录作用域中设置（因此这些 <code class="docutils literal notranslate"><span class="pre">&lt;targets&gt;</span></code> 必须已经存在）。</p>
+</dd>
+</dl>
+</div>
+<p>另请参阅 <span class="target" id="index-0-command:set_source_files_properties"></span><a class="reference internal" href="set_source_files_properties.html#command:set_source_files_properties" title="set_source_files_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_source_files_properties()</span></code></a> 命令。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>作用域可以命名零个或多个已安装的文件路径。这些路径可供 CPack 使用以影响部署。</p>
+<p>属性键和值均可使用生成器表达式（generator expressions）。特定属性可能适用于已安装的文件和/或目录。</p>
+<p>路径组件必须使用正斜杠分隔，必须经过规范化且区分大小写。</p>
+<p>要使用相对路径引用安装前缀本身，请使用 <code class="docutils literal notranslate"><span class="pre">.</span></code>。</p>
+<p>目前已安装文件的属性仅针对 WIX 生成器定义，其中给定的路径是相对于安装前缀的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST</span></code></dt><dd><p>作用域仅限于调用该命令所在的目录。它可以命名零个或多个现有的测试。另请参阅命令 <span class="target" id="index-0-command:set_tests_properties"></span><a class="reference internal" href="set_tests_properties.html#command:set_tests_properties" title="set_tests_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_tests_properties()</span></code></a>。</p>
+<p>对于通过 <span class="target" id="index-0-command:add_test"></span><a class="reference internal" href="add_test.html#command:add_test" title="add_test(name)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test(NAME)</span></code></a> 特征创建的测试，测试属性值可以使用 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 来指定。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.28 版本新增：</span>可以使用以下子选项在其他目录作用域中设置可见性：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>测试属性将在 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 目录的作用域内设置。CMake 必须已经知晓该目录，或者是通过调用 <span class="target" id="index-1-command:add_subdirectory"></span><a class="reference internal" href="add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 添加的，或者是顶级源目录。相对路径被视为相对于当前源目录。<code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 可以引用二进制目录。</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CACHE</span></code></dt><dd><p>作用域必须命名零个或多个现有的缓存条目。</p>
+</dd>
+</dl>
+<p>必须的 <code class="docutils literal notranslate"><span class="pre">PROPERTY</span></code> 选项后面紧跟要设置的属性名称。其余参数用于以分号分隔列表的形式构成属性值。</p>
+<p>如果提供了 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 选项，该列表将被附加到任何现有的属性值之后（空值会被忽略且不会被附加）。如果提供了 <code class="docutils literal notranslate"><span class="pre">APPEND_STRING</span></code> 选项，该字符串将作为字符串附加到任何现有的属性值之后，即它会生成一个更长的字符串，而不是字符串列表。当对定义为支持 <code class="docutils literal notranslate"><span class="pre">INHERITED</span></code> 行为的属性使用 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 或 <code class="docutils literal notranslate"><span class="pre">APPEND_STRING</span></code> 时（参见 <span class="target" id="index-0-command:define_property"></span><a class="reference internal" href="define_property.html#command:define_property" title="define_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">define_property()</span></code></a>），在查找要附加到的初始值时不会发生继承。如果该属性尚未在指定作用域中直接设置，则该命令的行为将如同未提供 <code class="docutils literal notranslate"><span class="pre">APPEND</span></code> 或 <code class="docutils literal notranslate"><span class="pre">APPEND_STRING</span></code> 一样。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>全局可见的源文件属性 <span class="target" id="index-0-prop_sf:GENERATED"></span><a class="reference internal" href="../prop_sf/GENERATED.html#prop_sf:GENERATED" title="GENERATED"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">GENERATED</span></code></a>。有关详细信息，请参阅其文档。</p>
+</div>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="set_property.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-1-command:define_property"></span><a class="reference internal" href="define_property.html#command:define_property" title="define_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">define_property()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_property"></span><a class="reference internal" href="get_property.html#command:get_property" title="get_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_property()</span></code></a></p></li>
+<li><p>有关每个作用域中的属性列表，请参阅 <span class="target" id="index-0-manual:cmake-properties(7)"></span><a class="reference internal" href="../manual/cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 手册。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="set_property.html#">set_property</a><ul>
+<li><a class="reference internal" href="set_property.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="set_directory_properties.html" title="上一章">set_directory_properties</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="site_name.html" title="下一章">site_name</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/set_property.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="site_name.html" title="site_name">下一页</a> |</li>
+        <li class="right">
+          <a href="set_directory_properties.html" title="set_directory_properties">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="set_property.html">set_property</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

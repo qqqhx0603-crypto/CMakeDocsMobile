@@ -1,0 +1,699 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-configure-log(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-configure-log.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-cxxmodules(7)" href="cmake-cxxmodules.7.html" />
+    <link rel="prev" title="cmake-compile-features(7)" href="cmake-compile-features.7.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-cxxmodules.7.html" title="cmake-cxxmodules(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-compile-features.7.html" title="cmake-compile-features(7)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-configure-log.7.html">cmake-configure-log(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-configure-log(7)"></span><section id="cmake-configure-log-7">
+<h1><a class="toc-backref" href="cmake-configure-log.7.html#id6" role="doc-backlink">cmake-configure-log(7)</a><a class="headerlink" href="cmake-configure-log.7.html#cmake-configure-log-7" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#cmake-configure-log-7" id="id6">cmake-configure-log(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#introduction" id="id7">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#log-structure" id="id8">日志结构</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#log-versioning" id="id9">日志版本控制</a></p></li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding" id="id10">文本块编码</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kinds" id="id11">事件种类</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kind-message" id="id12">事件种类 <code class="docutils literal notranslate"><span class="pre">message</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#message-v1-event" id="id13"><code class="docutils literal notranslate"><span class="pre">message-v1</span></code> 事件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kind-try-compile" id="id14">事件种类 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#try-compile-v1-event" id="id15"><code class="docutils literal notranslate"><span class="pre">try_compile-v1</span></code> 事件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kind-try-run" id="id16">事件种类 <code class="docutils literal notranslate"><span class="pre">try_run</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#try-run-v1-event" id="id17"><code class="docutils literal notranslate"><span class="pre">try_run-v1</span></code> 事件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kind-find" id="id18">事件种类 <code class="docutils literal notranslate"><span class="pre">find</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#find-v1-event" id="id19"><code class="docutils literal notranslate"><span class="pre">find-v1</span></code> 事件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#event-kind-find-package" id="id20">事件种类 <code class="docutils literal notranslate"><span class="pre">find_package</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-configure-log.7.html#find-package-v1-event" id="id21"><code class="docutils literal notranslate"><span class="pre">find_package-v1</span></code> 事件</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-configure-log.7.html#id7" role="doc-backlink">简介</a><a class="headerlink" href="cmake-configure-log.7.html#introduction" title="链接到此标题">¶</a></h2>
+<p>CMake 会记录一份运行日志（称为 <em>configure log</em>），用于记录配置（Configure）步骤中发生的特定事件。configure log <em>并不</em>包含配置项目时打印的所有输出、错误或消息。它记录的是有关特定事件的详细信息，例如 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 对工具链的检查，旨在用于调试构建树的配置。</p>
+<p>对于人工查看，此版本的 CMake 会将 configure log 写入以下文件：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="o">${</span><span class="nt">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="na">/CMakeFiles/CMakeConfigureLog.yaml</span>
+</pre></div>
+</div>
+<p>然而，<em>日志文件的位置和名称在未来的 CMake 版本中可能会发生变化</em>。读取 configure log 的工具应使用 <a class="reference internal" href="cmake-file-api.7.html#file-api-configurelog"><span class="std std-ref">configureLog</span></a> 查询向 <span class="target" id="index-0-manual:cmake-file-api(7)"></span><a class="reference internal" href="cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-file-api(7)</span></code></a> 获取其位置。详情请参阅下方的 <a class="reference internal" href="cmake-configure-log.7.html#log-versioning">日志版本控制</a> 部分。</p>
+</section>
+<section id="log-structure">
+<h2><a class="toc-backref" href="cmake-configure-log.7.html#id8" role="doc-backlink">日志结构</a><a class="headerlink" href="cmake-configure-log.7.html#log-structure" title="链接到此标题">¶</a></h2>
+<p>configure log 的设计既便于机器阅读，也便于人工阅读。</p>
+<p>日志文件是一个 YAML 文档流，包含零个或多个由文档标记分隔的 YAML 文档。每个文档以 <code class="docutils literal notranslate"><span class="pre">---</span></code> 文档标记行开始，包含一个记录了 CMake 一次“配置”步骤事件的单个 YAML 映射；如果配置步骤正常结束，则以 <code class="docutils literal notranslate"><span class="pre">...</span></code> 文档标记行结尾。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"try_compile-v1"</span>
+<span class="w">    </span><span class="c1"># (other fields omitted)</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"try_compile-v1"</span>
+<span class="w">    </span><span class="c1"># (other fields omitted)</span>
+<span class="nn">...</span>
+</pre></div>
+</div>
+<p>每当 CMake 配置构建树并记录新事件时，就会向日志中追加一个新的文档。</p>
+<p>每个文档根映射的键包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">events</span></code></dt><dd><p>一个 YAML 块序列节点，对应于 CMake 一次“配置”步骤中记录的事件。每个事件都是一个 YAML 节点，包含下方记录的 <a class="reference internal" href="cmake-configure-log.7.html#event-kinds">事件种类</a> 之一。</p>
+</dd>
+</dl>
+<section id="log-versioning">
+<h3><a class="toc-backref" href="cmake-configure-log.7.html#id9" role="doc-backlink">日志版本控制</a><a class="headerlink" href="cmake-configure-log.7.html#log-versioning" title="链接到此标题">¶</a></h3>
+<p>每种 <a class="reference internal" href="cmake-configure-log.7.html#event-kinds">事件种类</a> 都是独立进行版本控制的。事件日志条目提供的键集取决于其主要版本。当记录一个事件时，运行中的 CMake 版本所知的该事件种类的最新版本会被写入日志。</p>
+<p>读取 configure log 的工具必须忽略其无法理解的事件种类和版本。</p>
+<ul class="simple">
+<li><p>未来的 CMake 版本可能会引入新的事件种类或版本。</p></li>
+<li><p>如果使用不同版本的 CMake 重新配置现有的构建树，日志可能包含同一事件种类的不同版本。</p></li>
+<li><p>如果 <span class="target" id="index-1-manual:cmake-file-api(7)"></span><a class="reference internal" href="cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-file-api(7)</span></code></a> 查询请求一个或多个 <a class="reference internal" href="cmake-file-api.7.html#file-api-configurelog"><span class="std std-ref">configureLog</span></a> 对象版本，日志可能包含同一事件的多个条目，每个条目带有该事件种类不同的版本。</p></li>
+</ul>
+<p>IDE 应在运行 CMake 之前，通过写入 <span class="target" id="index-2-manual:cmake-file-api(7)"></span><a class="reference internal" href="cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-file-api(7)</span></code></a> 查询来请求特定的 <a class="reference internal" href="cmake-file-api.7.html#file-api-configurelog"><span class="std std-ref">configureLog</span></a> 对象版本，然后仅按照 file-api 回复中的描述来读取 configure log。</p>
+</section>
+<section id="text-block-encoding">
+<h3><a class="toc-backref" href="cmake-configure-log.7.html#id10" role="doc-backlink">文本块编码</a><a class="headerlink" href="cmake-configure-log.7.html#text-block-encoding" title="链接到此标题">¶</a></h3>
+<p>为了使日志便于人工阅读，文本块始终使用 YAML 字面量块标量 (<code class="docutils literal notranslate"><span class="pre">|</span></code>) 表示。由于字面量块标量不支持转义，反斜杠和不可打印字符会在应用层进行编码：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">\\</span></code> 编码为一个反斜杠。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">\xXX</span></code> 使用两个十六进制数字 <code class="docutils literal notranslate"><span class="pre">XX</span></code> 编码一个字节。</p></li>
+</ul>
+</section>
+</section>
+<section id="event-kinds">
+<span id="configure-log-event-kinds"></span><h2><a class="toc-backref" href="cmake-configure-log.7.html#id11" role="doc-backlink">事件种类</a><a class="headerlink" href="cmake-configure-log.7.html#event-kinds" title="链接到此标题">¶</a></h2>
+<p>每种事件种类都由以下形式的 YAML 映射表示：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;kind&gt;-v&lt;major&gt;"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"&lt;file&gt;:&lt;line&gt;</span><span class="nv"> </span><span class="s">(&lt;function&gt;)"</span>
+<span class="nt">checks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Checking</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">something"</span>
+<span class="c1">#...event-specific keys...</span>
+</pre></div>
+</div>
+<p>所有事件共有的键包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">种类</span></code></dt><dd><p>一个标识事件种类和主要版本的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">回溯</span></code></dt><dd><p>一个 YAML 块序列，报告事件发生时 CMake 源代码位置的调用栈，从最近到最远。每个节点是一个字符串，指定一个格式为 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;:&lt;line&gt;</span> <span class="pre">(&lt;function&gt;)</span></code> 的位置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checks</span></code></dt><dd><p>一个可选键，当事件发生时存在至少一个挂起的 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(check_start)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(CHECK_START)</span></code></a> 时会出现。其值为一个 YAML 块序列，报告挂起的检查栈，从最近到最远。每个节点是一个包含挂起检查消息的字符串。</p>
+</dd>
+</dl>
+<p>额外的映射键特定于每种（版本化的）事件种类，如下所述。</p>
+<section id="event-kind-message">
+<span id="message-configure-log-event"></span><h3><a class="toc-backref" href="cmake-configure-log.7.html#id12" role="doc-backlink">事件种类 <code class="docutils literal notranslate"><span class="pre">message</span></code></a><a class="headerlink" href="cmake-configure-log.7.html#event-kind-message" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-1-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(configure_log)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(CONFIGURE_LOG)</span></code></a> 命令记录 <code class="docutils literal notranslate"><span class="pre">message</span></code> 事件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">message</span></code> 事件只有一个主要版本，即版本 1。</p>
+<section id="message-v1-event">
+<span id="id1"></span><h4><a class="toc-backref" href="cmake-configure-log.7.html#id13" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">message-v1</span></code> 事件</a><a class="headerlink" href="cmake-configure-log.7.html#message-v1-event" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">message-v1</span></code> 事件是一个 YAML 映射。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"message-v1"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CMakeLists.txt:123</span><span class="nv"> </span><span class="s">(message)"</span>
+<span class="nt">checks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Checking</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">something"</span>
+<span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no"># ...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">message-v1</span></code> 映射特有的键包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">message</span></code></dt><dd><p>一个 YAML 字面量块标量，包含使用我们的 <a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding">文本块编码</a> 表示的消息文本。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="event-kind-try-compile">
+<span id="try-compile-configure-log-event"></span><h3><a class="toc-backref" href="cmake-configure-log.7.html#id14" role="doc-backlink">事件种类 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code></a><a class="headerlink" href="cmake-configure-log.7.html#event-kind-try-compile" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 命令记录 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 事件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">try_compile</span></code> 事件只有一个主要版本，即版本 1。</p>
+<section id="try-compile-v1-event">
+<span id="id2"></span><h4><a class="toc-backref" href="cmake-configure-log.7.html#id15" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">try_compile-v1</span></code> 事件</a><a class="headerlink" href="cmake-configure-log.7.html#try-compile-v1-event" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">try_compile-v1</span></code> 事件是一个 YAML 映射。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"try_compile-v1"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CMakeLists.txt:123</span><span class="nv"> </span><span class="s">(try_compile)"</span>
+<span class="nt">checks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Checking</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">something"</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Explicit</span><span class="nv"> </span><span class="s">LOG_DESCRIPTION"</span>
+<span class="nt">directories</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/.../TryCompile-01234"</span>
+<span class="w">  </span><span class="nt">binary</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/.../TryCompile-01234"</span>
+<span class="nt">cmakeVariables</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SOME_VARIABLE</span><span class="p">:</span><span class="w"> </span><span class="s">"Some</span><span class="nv"> </span><span class="s">Value"</span>
+<span class="nt">buildResult</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">variable</span><span class="p">:</span><span class="w"> </span><span class="s">"COMPILE_RESULT"</span>
+<span class="w">  </span><span class="nt">cached</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">stdout</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no"># ...</span>
+<span class="w">  </span><span class="nt">exitCode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">try_compile-v1</span></code> 映射特有的键包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">描述</span></code></dt><dd><p>一个可选键，在使用 <code class="docutils literal notranslate"><span class="pre">LOG_DESCRIPTION</span> <span class="pre">&lt;text&gt;</span></code> 选项时出现。其值为包含描述 <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> 的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directories</span></code></dt><dd><p>描述与编译尝试关联的目录的映射。它包含以下键：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>指定 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 项目源目录的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">binary</span></code></dt><dd><p>指定 <span class="target" id="index-3-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 项目二进制目录的字符串。对于非项目调用，这通常与源目录相同。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cmakeVariables</span></code></dt><dd><p>一个可选键，在 CMake 自动或由于 <span class="target" id="index-0-variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"></span><a class="reference internal" href="../variable/CMAKE_TRY_COMPILE_PLATFORM_VARIABLES.html#variable:CMAKE_TRY_COMPILE_PLATFORM_VARIABLES" title="CMAKE_TRY_COMPILE_PLATFORM_VARIABLES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TRY_COMPILE_PLATFORM_VARIABLES</span></code></a> 变量而将变量传播到测试项目时出现。其值为从变量名到其值的映射。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">buildResult</span></code></dt><dd><p>描述编译测试代码结果的映射。它包含以下键：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">variable</span></code></dt><dd><p>指定存储尝试构建测试项目结果的 CMake 变量名的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cached</span></code></dt><dd><p>一个布尔值，指示上述结果 <code class="docutils literal notranslate"><span class="pre">variable</span></code> 是否存储在 CMake 缓存中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stdout</span></code></dt><dd><p>一个 YAML 字面量块标量，包含构建测试项目的输出，使用我们的 <a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding">文本块编码</a> 表示。这包含来自标准输出 (stdout) 和标准错误 (stderr) 的构建输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exitCode</span></code></dt><dd><p>指定尝试构建测试项目时构建工具退出代码的整数。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="event-kind-try-run">
+<span id="try-run-configure-log-event"></span><h3><a class="toc-backref" href="cmake-configure-log.7.html#id16" role="doc-backlink">事件种类 <code class="docutils literal notranslate"><span class="pre">try_run</span></code></a><a class="headerlink" href="cmake-configure-log.7.html#event-kind-try-run" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-0-command:try_run"></span><a class="reference internal" href="../command/try_run.html#command:try_run" title="try_run"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_run()</span></code></a> 命令记录 <code class="docutils literal notranslate"><span class="pre">try_run</span></code> 事件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">try_run</span></code> 事件只有一个主要版本，即版本 1。</p>
+<section id="try-run-v1-event">
+<span id="id3"></span><h4><a class="toc-backref" href="cmake-configure-log.7.html#id17" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">try_run-v1</span></code> 事件</a><a class="headerlink" href="cmake-configure-log.7.html#try-run-v1-event" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">try_run-v1</span></code> 事件是一个 YAML 映射。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"try_run-v1"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CMakeLists.txt:456</span><span class="nv"> </span><span class="s">(try_run)"</span>
+<span class="nt">checks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Checking</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">something"</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Explicit</span><span class="nv"> </span><span class="s">LOG_DESCRIPTION"</span>
+<span class="nt">directories</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/.../TryCompile-56789"</span>
+<span class="w">  </span><span class="nt">binary</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/.../TryCompile-56789"</span>
+<span class="nt">buildResult</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">variable</span><span class="p">:</span><span class="w"> </span><span class="s">"COMPILE_RESULT"</span>
+<span class="w">  </span><span class="nt">cached</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">stdout</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no"># ...</span>
+<span class="w">  </span><span class="nt">exitCode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="nt">runResult</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">variable</span><span class="p">:</span><span class="w"> </span><span class="s">"RUN_RESULT"</span>
+<span class="w">  </span><span class="nt">cached</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">stdout</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no"># ...</span>
+<span class="w">  </span><span class="nt">stderr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no"># ...</span>
+<span class="w">  </span><span class="nt">exitCode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">try_run-v1</span></code> 映射特有的键包括 <a class="reference internal" href="cmake-configure-log.7.html#try-compile-v1-event">try_compile-v1 事件</a> 记录的键，以及：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">runResult</span></code></dt><dd><p>描述运行测试代码结果的映射。它包含以下键：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">variable</span></code></dt><dd><p>指定存储尝试运行测试可执行文件结果的 CMake 变量名的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cached</span></code></dt><dd><p>一个布尔值，指示上述结果 <code class="docutils literal notranslate"><span class="pre">variable</span></code> 是否存储在 CMake 缓存中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stdout</span></code></dt><dd><p>一个可选键，在测试项目构建成功时出现。其值为一个 YAML 字面量块标量，包含运行测试可执行文件的输出，使用我们的 <a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding">文本块编码</a> 表示。</p>
+<p>如果使用了 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code>，stdout 和 stderr 会被合并捕获，因此这将包含两者。否则，这仅包含 stdout 输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stderr</span></code></dt><dd><p>一个可选键，在测试项目构建成功且未使用 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code> 选项时出现。其值为一个 YAML 字面量块标量，包含运行测试可执行文件的输出，使用我们的 <a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding">文本块编码</a> 表示。</p>
+<p>如果使用了 <code class="docutils literal notranslate"><span class="pre">RUN_OUTPUT_VARIABLE</span></code>，stdout 和 stderr 会被合并捕获在 <code class="docutils literal notranslate"><span class="pre">stdout</span></code> 键中，此键将不会出现。否则，这将包含 stderr 输出。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exitCode</span></code></dt><dd><p>一个可选键，在测试项目构建成功时出现。其值为指定退出代码的整数，或者是包含尝试运行测试可执行文件时产生的错误消息的字符串。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="event-kind-find">
+<span id="find-configure-log-event"></span><h3><a class="toc-backref" href="cmake-configure-log.7.html#id18" role="doc-backlink">事件种类 <code class="docutils literal notranslate"><span class="pre">find</span></code></a><a class="headerlink" href="cmake-configure-log.7.html#event-kind-find" title="链接到此标题">¶</a></h3>
+<p><span class="target" id="index-0-command:find_file"></span><a class="reference internal" href="../command/find_file.html#command:find_file" title="find_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_file()</span></code></a>、<span class="target" id="index-0-command:find_path"></span><a class="reference internal" href="../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a>、<span class="target" id="index-0-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 和 <span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 命令记录 <code class="docutils literal notranslate"><span class="pre">find</span></code> 事件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">find</span></code> 事件只有一个主要版本，即版本 1。</p>
+<section id="find-v1-event">
+<span id="id4"></span><h4><a class="toc-backref" href="cmake-configure-log.7.html#id19" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">find-v1</span></code> 事件</a><a class="headerlink" href="cmake-configure-log.7.html#find-v1-event" title="链接到此标题">¶</a></h4>
+<div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">find-v1</span></code> 事件是一个 YAML 映射。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"find-v1"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CMakeLists.txt:456</span><span class="nv"> </span><span class="s">(find_program)"</span>
+<span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"program"</span>
+<span class="nt">variable</span><span class="p">:</span><span class="w"> </span><span class="s">"PROGRAM_PATH"</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Docstring</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">variable"</span>
+<span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">SearchFramework</span><span class="p">:</span><span class="w"> </span><span class="s">"NEVER"</span>
+<span class="w">  </span><span class="nt">SearchAppBundle</span><span class="p">:</span><span class="w"> </span><span class="s">"NEVER"</span>
+<span class="w">  </span><span class="nt">CMAKE_FIND_USE_CMAKE_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">CMAKE_FIND_USE_INSTALL_PREFIX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"name1"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"name2"</span>
+<span class="nt">candidate_directories</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/path/to/search"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/other/path/to/search"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/path/to/found"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/further/path/to/search"</span>
+<span class="nt">searched_directories</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/path/to/search"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/other/path/to/search"</span>
+<span class="nt">found</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/found/program"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">find-v1</span></code> 映射特有的键包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>描述执行搜索的命令的字符串。为 <code class="docutils literal notranslate"><span class="pre">file</span></code>、<code class="docutils literal notranslate"><span class="pre">path</span></code>、<code class="docutils literal notranslate"><span class="pre">program</span></code> 或 <code class="docutils literal notranslate"><span class="pre">library</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">variable</span></code></dt><dd><p>搜索存储结果的变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">描述</span></code></dt><dd><p>变量的文档字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">settings</span></code></dt><dd><p>搜索活动状态下的搜索设置。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SearchFramework</span></code></dt><dd><p>描述如何执行框架搜索的字符串。为 <code class="docutils literal notranslate"><span class="pre">FIRST</span></code>、<code class="docutils literal notranslate"><span class="pre">LAST</span></code>、<code class="docutils literal notranslate"><span class="pre">ONLY</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code> 之一。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SearchAppBundle</span></code></dt><dd><p>描述如何执行应用程序包搜索的字符串。为 <code class="docutils literal notranslate"><span class="pre">FIRST</span></code>、<code class="docutils literal notranslate"><span class="pre">LAST</span></code>、<code class="docutils literal notranslate"><span class="pre">ONLY</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code> 之一。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_APPBUNDLE"></span><a class="reference internal" href="../variable/CMAKE_FIND_APPBUNDLE.html#variable:CMAKE_FIND_APPBUNDLE" title="CMAKE_FIND_APPBUNDLE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_APPBUNDLE</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PATH</span></code></dt><dd><p>指示搜索时是否使用 CMake 特定缓存变量的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_PATH.html#variable:CMAKE_FIND_USE_CMAKE_PATH" title="CMAKE_FIND_USE_CMAKE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span></code></dt><dd><p>指示搜索时是否使用 CMake 特定环境变量的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span></code></dt><dd><p>指示搜索时是否使用平台特定环境变量的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span></code></dt><dd><p>指示搜索时是否使用平台特定 CMake 变量的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_SYSTEM_PATH.html#variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH" title="CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_INSTALL_PREFIX</span></code></dt><dd><p>指示搜索时是否使用安装前缀的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_INSTALL_PREFIX.html#variable:CMAKE_FIND_USE_INSTALL_PREFIX" title="CMAKE_FIND_USE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_INSTALL_PREFIX</span></code></a>。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">names</span></code></dt><dd><p>查询查找的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">candidate_directories</span></code></dt><dd><p>搜索期间按顺序查看的候选目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">searched_directories</span></code></dt><dd><p>搜索过程中按顺序查看的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">found</span></code></dt><dd><p>表示找到的值的字符串，如果未找到则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">search_context</span></code></dt><dd><p>变量名到其指定的搜索路径的映射（取决于变量，可能为字符串或字符串数组）。环境变量被包裹在 <code class="docutils literal notranslate"><span class="pre">ENV{</span></code> 和 <code class="docutils literal notranslate"><span class="pre">}</span></code> 之间，否则使用 CMake 变量。仅使用指定了路径的变量。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">package_stack</span></code></dt><dd><p>对象数组，其中包含由 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用提供的路径栈。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">package_paths</span></code></dt><dd><p>调用栈中由 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令提供的路径。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="event-kind-find-package">
+<span id="find-package-configure-log-event"></span><h3><a class="toc-backref" href="cmake-configure-log.7.html#id20" role="doc-backlink">事件种类 <code class="docutils literal notranslate"><span class="pre">find_package</span></code></a><a class="headerlink" href="cmake-configure-log.7.html#event-kind-find-package" title="链接到此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p><span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令记录 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 事件。</p>
+<p><code class="docutils literal notranslate"><span class="pre">find_package</span></code> 事件只有一个主要版本，即版本 1。</p>
+<section id="find-package-v1-event">
+<span id="id5"></span><h4><a class="toc-backref" href="cmake-configure-log.7.html#id21" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">find_package-v1</span></code> 事件</a><a class="headerlink" href="cmake-configure-log.7.html#find-package-v1-event" title="链接到此标题">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">find_package-v1</span></code> 事件是一个 YAML 映射。</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"find_package-v1"</span>
+<span class="nt">backtrace</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CMakeLists.txt:456</span><span class="nv"> </span><span class="s">(find_program)"</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"PackageName"</span>
+<span class="nt">components</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"Component"</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">configs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PackageNameConfig.cmake</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"cmake"</span>
+<span class="w">  </span><span class="p p-Indicator">-</span>
+<span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">packagename-config.cmake</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="s">"cmake"</span>
+<span class="nt">version_request</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"1.0"</span>
+<span class="w">  </span><span class="nt">version_complete</span><span class="p">:</span><span class="w"> </span><span class="s">"1.0...1.5"</span>
+<span class="w">  </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="s">"INCLUDE"</span>
+<span class="w">  </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="s">"INCLUDE"</span>
+<span class="w">  </span><span class="nt">exact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="s">"optional"</span>
+<span class="w">  </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">global</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">policy_scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">bypass_provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">hints</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/hint/path"</span>
+<span class="w">  </span><span class="nt">names</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"name1"</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"name2"</span>
+<span class="w">  </span><span class="nt">search_paths</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"/search/path"</span>
+<span class="w">  </span><span class="nt">path_suffixes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">""</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"suffix"</span>
+<span class="w">  </span><span class="nt">registry_view</span><span class="p">:</span><span class="w"> </span><span class="s">"HOST"</span>
+<span class="w">  </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_CMAKE_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_INSTALL_PREFIX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_PACKAGE_ROOT_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">CMAKE_FIND_ROOT_PATH_MODE</span><span class="p">:</span><span class="w"> </span><span class="s">"BOTH"</span>
+<span class="w">  </span><span class="nt">candidates</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/config/PackageName/PackageNameConfig.cmake"</span>
+<span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"config"</span>
+<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="s">"insufficient_version"</span>
+<span class="w">    </span><span class="p p-Indicator">-</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/config/PackageName/packagename-config.cmake"</span>
+<span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"config"</span>
+<span class="w">      </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="s">"no_exist"</span>
+<span class="w">  </span><span class="nt">found</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/config/PackageName-2.5/PackageNameConfig.cmake"</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">"config"</span>
+<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"2.5"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">find_package-v1</span></code> 映射特有的键包括：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>所请求包的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">组件</span></code></dt><dd><p>如果存在，为一个对象数组，包含以下字段：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>组件名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">required</span></code></dt><dd><p>指示组件是必须的还是可选的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">found</span></code></dt><dd><p>指示组件是否找到的布尔值。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">configs</span></code></dt><dd><p>如果存在，为一个对象数组，指示要搜索的配置文件。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">filename</span></code></dt><dd><p>配置文件的文件名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">种类</span></code></dt><dd><p>文件种类。为 <code class="docutils literal notranslate"><span class="pre">cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cps</span></code> 之一。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version_request</span></code></dt><dd><p>指示搜索版本约束的对象。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>所需最低版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version_complete</span></code></dt><dd><p>用户提供的版本范围。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">min</span></code></dt><dd><p>指示版本范围下界是 <code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 还是 <code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max</span></code></dt><dd><p>指示版本范围上界是 <code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> 还是 <code class="docutils literal notranslate"><span class="pre">EXCLUDE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exact</span></code></dt><dd><p>指示是否请求 <code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 版本匹配的布尔值。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">settings</span></code></dt><dd><p>搜索活动状态下的搜索设置。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">required</span></code></dt><dd><p>搜索的需求请求。为 <code class="docutils literal notranslate"><span class="pre">optional</span></code>、<code class="docutils literal notranslate"><span class="pre">optional_explicit</span></code>、<code class="docutils literal notranslate"><span class="pre">required_explicit</span></code>、<code class="docutils literal notranslate"><span class="pre">required_from_package_variable</span></code> 或 <code class="docutils literal notranslate"><span class="pre">required_from_find_variable</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">quiet</span></code></dt><dd><p>指示搜索是否为 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">global</span></code></dt><dd><p>指示是否提供了 <code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code> 关键字的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">policy_scope</span></code></dt><dd><p>指示是否提供了 <code class="docutils literal notranslate"><span class="pre">NO_POLICY_SCOPE</span></code> 关键字的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bypass_provider</span></code></dt><dd><p>指示是否提供了 <code class="docutils literal notranslate"><span class="pre">BYPASS_PROVIDER</span></code> 关键字的布尔值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hints</span></code></dt><dd><p>作为 <code class="docutils literal notranslate"><span class="pre">HINTS</span></code> 提供的路径数组。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">names</span></code></dt><dd><p>搜索时使用的包名称数组，由 <code class="docutils literal notranslate"><span class="pre">NAMES</span></code> 提供。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">search_paths</span></code></dt><dd><p>要搜索的路径数组，由 <code class="docutils literal notranslate"><span class="pre">PATHS</span></code> 提供。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">path_suffixes</span></code></dt><dd><p>搜索时使用的后缀数组，由 <code class="docutils literal notranslate"><span class="pre">PATH_SUFFIXES</span></code> 提供。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">registry_view</span></code></dt><dd><p>搜索所请求的 <code class="docutils literal notranslate"><span class="pre">REGISTRY_VIEW</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">paths</span></code></dt><dd><p>搜索活动状态下的路径设置。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PATH</span></code></dt><dd><p>指示搜索时是否使用 CMake 特定缓存变量的布尔值。请参阅 <span class="target" id="index-1-variable:CMAKE_FIND_USE_CMAKE_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_PATH.html#variable:CMAKE_FIND_USE_CMAKE_PATH" title="CMAKE_FIND_USE_CMAKE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span></code></dt><dd><p>指示搜索时是否使用 CMake 特定环境变量的布尔值。请参阅 <span class="target" id="index-1-variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span></code></dt><dd><p>指示搜索时是否使用平台特定环境变量的布尔值。请参阅 <span class="target" id="index-1-variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH.html#variable:CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH" title="CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span></code></dt><dd><p>指示搜索时是否使用平台特定 CMake 变量的布尔值。请参阅 <span class="target" id="index-1-variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_CMAKE_SYSTEM_PATH.html#variable:CMAKE_FIND_USE_CMAKE_SYSTEM_PATH" title="CMAKE_FIND_USE_CMAKE_SYSTEM_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_SYSTEM_PATH</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_INSTALL_PREFIX</span></code></dt><dd><p>指示搜索时是否使用安装前缀的布尔值。请参阅 <span class="target" id="index-1-variable:CMAKE_FIND_USE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_INSTALL_PREFIX.html#variable:CMAKE_FIND_USE_INSTALL_PREFIX" title="CMAKE_FIND_USE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_INSTALL_PREFIX</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY</span></code></dt><dd><p>指示是否在 CMake 包注册表中搜索该包的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_PACKAGE_REGISTRY</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY</span></code></dt><dd><p>指示是否在系统 CMake 包注册表中搜索该包的布尔值。请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY"></span><a class="reference internal" href="../variable/CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY.html#variable:CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY" title="CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH_MODE</span></code></dt><dd><p>指示当前生效的根路径模式的字符串，由 <code class="docutils literal notranslate"><span class="pre">CMAKE_FIND_ROOT_PATH_BOTH</span></code>、<code class="docutils literal notranslate"><span class="pre">ONLY_CMAKE_FIND_ROOT_PATH</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NO_CMAKE_FIND_ROOT_PATH</span></code> 参数选择。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">candidates</span></code></dt><dd><p>已拒绝的候选路径数组。每个元素包含以下键：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>被考量的文件路径。对于依赖提供程序，该值为 <code class="docutils literal notranslate"><span class="pre">dependency_provider::&lt;COMMAND_NAME&gt;</span></code> 格式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>查找该文件的模式。为 <code class="docutils literal notranslate"><span class="pre">module</span></code>、<code class="docutils literal notranslate"><span class="pre">cps</span></code>、<code class="docutils literal notranslate"><span class="pre">cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">provider</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reason</span></code></dt><dd><p>路径被拒绝的原因。为 <code class="docutils literal notranslate"><span class="pre">insufficient_version</span></code>、<code class="docutils literal notranslate"><span class="pre">no_exist</span></code>、<code class="docutils literal notranslate"><span class="pre">ignored</span></code>、<code class="docutils literal notranslate"><span class="pre">no_config_file</span></code> 或 <code class="docutils literal notranslate"><span class="pre">not_found</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">message</span></code></dt><dd><p>如果存在，为一个描述为什么该包被视为未找到的字符串。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">found</span></code></dt><dd><p>如果包已找到，则为有关找到文件的信息。如果未找到，则为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。可用键包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>找到该包的模块或配置的路径。对于依赖提供程序，该值为 <code class="docutils literal notranslate"><span class="pre">dependency_provider::&lt;COMMAND_NAME&gt;</span></code> 格式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>考量该路径的模式。为 <code class="docutils literal notranslate"><span class="pre">module</span></code>、<code class="docutils literal notranslate"><span class="pre">cps</span></code>、<code class="docutils literal notranslate"><span class="pre">cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">provider</span></code> 之一。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">版本</span></code></dt><dd><p>报告的包版本。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">search_context</span></code></dt><dd><p>变量名到其指定的搜索路径的映射（取决于变量，可能为字符串或字符串数组）。环境变量被包裹在 <code class="docutils literal notranslate"><span class="pre">ENV{</span></code> 和 <code class="docutils literal notranslate"><span class="pre">}</span></code> 之间，否则使用 CMake 变量。仅使用指定了路径的变量。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">package_stack</span></code></dt><dd><p>对象数组，其中包含由 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用提供的路径栈。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">package_paths</span></code></dt><dd><p>调用栈中由 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令提供的路径。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#">cmake-configure-log(7)</a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#log-structure">日志结构</a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#log-versioning">日志版本控制</a></li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#text-block-encoding">文本块编码</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kinds">事件种类</a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kind-message">事件种类 <code class="docutils literal notranslate"><span class="pre">message</span></code></a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#message-v1-event"><code class="docutils literal notranslate"><span class="pre">message-v1</span></code> 事件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kind-try-compile">事件种类 <code class="docutils literal notranslate"><span class="pre">try_compile</span></code></a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#try-compile-v1-event"><code class="docutils literal notranslate"><span class="pre">try_compile-v1</span></code> 事件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kind-try-run">事件种类 <code class="docutils literal notranslate"><span class="pre">try_run</span></code></a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#try-run-v1-event"><code class="docutils literal notranslate"><span class="pre">try_run-v1</span></code> 事件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kind-find">事件种类 <code class="docutils literal notranslate"><span class="pre">find</span></code></a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#find-v1-event"><code class="docutils literal notranslate"><span class="pre">find-v1</span></code> 事件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-configure-log.7.html#event-kind-find-package">事件种类 <code class="docutils literal notranslate"><span class="pre">find_package</span></code></a><ul>
+<li><a class="reference internal" href="cmake-configure-log.7.html#find-package-v1-event"><code class="docutils literal notranslate"><span class="pre">find_package-v1</span></code> 事件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake-compile-features.7.html" title="上一章">cmake-compile-features(7)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-cxxmodules.7.html" title="下一章">cmake-cxxmodules(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-configure-log.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-cxxmodules.7.html" title="cmake-cxxmodules(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-compile-features.7.html" title="cmake-compile-features(7)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-configure-log.7.html">cmake-configure-log(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake_parse_arguments — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake_parse_arguments.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake_path" href="cmake_path.html" />
+    <link rel="prev" title="cmake_minimum_required" href="cmake_minimum_required.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake_path.html" title="cmake_path" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_minimum_required.html" title="cmake_minimum_required" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_parse_arguments.html">cmake_parse_arguments</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-parse-arguments">
+<span id="command:cmake_parse_arguments"></span><h1>cmake_parse_arguments<a class="headerlink" href="cmake_parse_arguments.html#cmake-parse-arguments" title="链接到此标题">¶</a></h1>
+<p>解析函数或宏的参数。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_parse_arguments(</span><span class="nv">&lt;prefix&gt;</span><span class="w"> </span><span class="nv">&lt;options&gt;</span><span class="w"> </span><span class="nv">&lt;one_value_keywords&gt;</span>
+<span class="w">                      </span><span class="nv">&lt;multi_value_keywords&gt;</span><span class="w"> </span><span class="nv">&lt;args&gt;...</span><span class="nf">)</span>
+
+<span class="nf">cmake_parse_arguments(</span><span class="no">PARSE_ARGV</span><span class="w"> </span><span class="nv">&lt;N&gt;</span><span class="w"> </span><span class="nv">&lt;prefix&gt;</span><span class="w"> </span><span class="nv">&lt;options&gt;</span>
+<span class="w">                      </span><span class="nv">&lt;one_value_keywords&gt;</span><span class="w"> </span><span class="nv">&lt;multi_value_keywords&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增：</span>此命令现已原生实现。此前，它定义在 <span class="target" id="index-0-module:CMakeParseArguments"></span><a class="reference internal" href="../module/CMakeParseArguments.html#module:CMakeParseArguments" title="CMakeParseArguments"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeParseArguments</span></code></a> 模块中。</p>
+</div>
+<p>此命令用于宏或函数中。它处理传递给该宏或函数的参数，并定义一组变量来保存各个选项的值。</p>
+<p>第一个签名读取在 <code class="docutils literal notranslate"><span class="pre">&lt;args&gt;...</span></code> 中传递的参数。这可以在 <span class="target" id="index-0-command:macro"></span><a class="reference internal" href="macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a> 或 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 中使用。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增：</span><code class="docutils literal notranslate"><span class="pre">PARSE_ARGV</span></code> 签名仅用于 <span class="target" id="index-1-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 函数体中。在这种情况下，被解析的参数来自于调用函数的 <code class="docutils literal notranslate"><span class="pre">ARGV#</span></code> 变量。解析从第 <code class="docutils literal notranslate"><span class="pre">&lt;N&gt;</span></code> 个参数开始，其中 <code class="docutils literal notranslate"><span class="pre">&lt;N&gt;</span></code> 是一个无符号整数。这允许参数值中包含 <code class="docutils literal notranslate"><span class="pre">;</span></code> 等特殊字符。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;options&gt;</span></code> 参数包含相应函数或宏的所有选项。这些关键字后面不跟任何值，例如 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 关键字。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 参数包含此函数或宏的所有后跟一个值的关键字，例如 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 关键字。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;multi_value_keywords&gt;</span></code> 参数包含此函数或宏的所有可以后跟多个值的关键字，例如 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">TARGETS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 关键字。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.5 版本变更：</span>所有关键字必须唯一。每个关键字在 <code class="docutils literal notranslate"><span class="pre">&lt;options&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;multi_value_keywords&gt;</span></code> 中只能指定一次。如果违反唯一性，将发出警告。</p>
+</div>
+<p>完成后，<code class="docutils literal notranslate"><span class="pre">cmake_parse_arguments</span></code> 将为 <code class="docutils literal notranslate"><span class="pre">&lt;options&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;multi_value_keywords&gt;</span></code> 中列出的每个关键字，考虑一个由给定的 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">"_"</span></code> 和相应关键字名称组成的变量。对于 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;multi_value_keywords&gt;</span></code>，这些变量将保存参数列表中的相应值，如果未提供关联的关键字，则该变量将处于未定义状态（策略 <span class="target" id="index-0-policy:CMP0174"></span><a class="reference internal" href="../policy/CMP0174.html#policy:CMP0174" title="CMP0174"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0174</span></code></a> 也可能影响 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 的行为）。对于 <code class="docutils literal notranslate"><span class="pre">&lt;options&gt;</span></code> 关键字，这些变量始终会被定义：如果存在该关键字，则设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>；如果不存在，则设置为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>。</p>
+<p>所有剩余参数将收集在变量 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_UNPARSED_ARGUMENTS</span></code> 中；如果所有参数均被识别，该变量将保持未定义。事后可以检查此变量，以查看宏或函数是否使用了未识别的参数进行调用。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增：</span>未提供任何值的 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keywords&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;multi_value_keywords&gt;</span></code> 将被收集在变量 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_KEYWORDS_MISSING_VALUES</span></code> 中；如果所有关键字都接收到了值，该变量将保持未定义。可以检查此变量以查看是否存在缺少值的关键字。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span>如果 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keyword&gt;</span></code> 后跟一个空字符串作为值，策略 <span class="target" id="index-1-policy:CMP0174"></span><a class="reference internal" href="../policy/CMP0174.html#policy:CMP0174" title="CMP0174"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0174</span></code></a> 将控制是否定义相应的 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_&lt;keyword&gt;</span></code> 变量。</p>
+</div>
+<p>请仔细选择 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code>，以避免与现有变量名冲突。在函数内部使用时，使用前缀 <code class="docutils literal notranslate"><span class="pre">arg</span></code> 通常是合适的。有一个非常强的惯例是所有关键字都使用全大写，因此该前缀产生的变量形式为 <code class="docutils literal notranslate"><span class="pre">arg_SOME_KEYWORD</span></code>。这使得代码更具可读性，并最大限度地减少了与缓存变量（其也有全大写的强惯例）冲突的可能性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">my_install</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">options</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">oneValueArgs</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="no">RENAME</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">multiValueArgs</span><span class="w"> </span><span class="no">TARGETS</span><span class="w"> </span><span class="no">CONFIGURATIONS</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">cmake_parse_arguments(</span><span class="no">PARSE_ARGV</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">arg</span>
+<span class="w">        </span><span class="s">"${options}"</span><span class="w"> </span><span class="s">"${oneValueArgs}"</span><span class="w"> </span><span class="s">"${multiValueArgs}"</span>
+<span class="w">    </span><span class="nf">)</span>
+
+<span class="w">    </span><span class="c"># The above will set or unset variables with the following names:</span>
+<span class="w">    </span><span class="c">#   arg_OPTIONAL</span>
+<span class="w">    </span><span class="c">#   arg_FAST</span>
+<span class="w">    </span><span class="c">#   arg_DESTINATION</span>
+<span class="w">    </span><span class="c">#   arg_RENAME</span>
+<span class="w">    </span><span class="c">#   arg_TARGETS</span>
+<span class="w">    </span><span class="c">#   arg_CONFIGURATIONS</span>
+<span class="w">    </span><span class="c">#</span>
+<span class="w">    </span><span class="c"># The following will also be set or unset:</span>
+<span class="w">    </span><span class="c">#   arg_UNPARSED_ARGUMENTS</span>
+<span class="w">    </span><span class="c">#   arg_KEYWORDS_MISSING_VALUES</span>
+</pre></div>
+</div>
+<p>在宏内部使用时，<code class="docutils literal notranslate"><span class="pre">arg</span></code> 可能不是合适的前缀，因为代码会影响调用作用域。如果同一作用域内调用的另一个宏在调用 <code class="docutils literal notranslate"><span class="pre">cmake_parse_arguments()</span></code> 时也使用了 <code class="docutils literal notranslate"><span class="pre">arg</span></code>，并且两个宏之间有任何公共关键字，那么后续调用的变量可能会覆盖或删除前一个宏调用的变量。因此，建议在 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> 中加入宏名称中唯一的部分，例如 <code class="docutils literal notranslate"><span class="pre">arg_lowercase_macro_name</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">macro(</span><span class="nb">my_install</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">options</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">oneValueArgs</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="no">RENAME</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">multiValueArgs</span><span class="w"> </span><span class="no">TARGETS</span><span class="w"> </span><span class="no">CONFIGURATIONS</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">cmake_parse_arguments(</span><span class="nb">arg_my_install</span>
+<span class="w">        </span><span class="s">"${options}"</span><span class="w"> </span><span class="s">"${oneValueArgs}"</span><span class="w"> </span><span class="s">"${multiValueArgs}"</span>
+<span class="w">        </span><span class="o">${</span><span class="nt">ARGN</span><span class="o">}</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">    </span><span class="c"># ...</span>
+<span class="nf">endmacro()</span>
+
+<span class="nf">macro(</span><span class="nb">my_special_install</span><span class="nf">)</span>
+<span class="w">    </span><span class="c"># NOTE: Has the same keywords as my_install()</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">options</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">oneValueArgs</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="no">RENAME</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">set(</span><span class="nb">multiValueArgs</span><span class="w"> </span><span class="no">TARGETS</span><span class="w"> </span><span class="no">CONFIGURATIONS</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">cmake_parse_arguments(</span><span class="nb">arg_my_special_install</span>
+<span class="w">        </span><span class="s">"${options}"</span><span class="w"> </span><span class="s">"${oneValueArgs}"</span><span class="w"> </span><span class="s">"${multiValueArgs}"</span>
+<span class="w">        </span><span class="o">${</span><span class="nt">ARGN</span><span class="o">}</span>
+<span class="w">    </span><span class="nf">)</span>
+<span class="w">    </span><span class="c"># ...</span>
+<span class="nf">endmacro()</span>
+</pre></div>
+</div>
+<p>假设上述宏依次调用，如下所示</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">my_install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="nb">bar</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">bin</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="nb">blub</span><span class="w"> </span><span class="no">CONFIGURATIONS</span><span class="nf">)</span>
+<span class="nf">my_special_install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">barry</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">sbin</span><span class="w"> </span><span class="no">RENAME</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在完成这两个调用后，以下内容描述了将被设置或取消设置的变量</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>arg_my_install_OPTIONAL = TRUE
+arg_my_install_FAST = FALSE # was not present in call to my_install
+arg_my_install_DESTINATION = "bin"
+arg_my_install_RENAME &lt;UNSET&gt; # was not present
+arg_my_install_TARGETS = "foo;bar"
+arg_my_install_CONFIGURATIONS &lt;UNSET&gt; # was not present
+arg_my_install_UNPARSED_ARGUMENTS = "blub" # nothing expected after "OPTIONAL"
+arg_my_install_KEYWORDS_MISSING_VALUES = "CONFIGURATIONS" # value was missing
+
+arg_my_special_install_OPTIONAL = FALSE # was not present
+arg_my_special_install_FAST = TRUE
+arg_my_special_install_DESTINATION = "sbin"
+arg_my_special_install_RENAME &lt;UNSET&gt; # value was missing
+arg_my_special_install_TARGETS = "barry"
+arg_my_special_install_CONFIGURATIONS &lt;UNSET&gt; # was not present
+arg_my_special_install_UNPARSED_ARGUMENTS &lt;UNSET&gt;
+arg_my_special_install_KEYWORDS_MISSING_VALUES = "RENAME"
+</pre></div>
+</div>
+<p>关键字会终止值列表。如果关键字直接出现在 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keyword&gt;</span></code> 之后，则该 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keyword&gt;</span></code> 不会接收到任何值，且该关键字会被添加到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_KEYWORDS_MISSING_VALUES</span></code> 变量中。在上面的例子中，对 <code class="docutils literal notranslate"><span class="pre">my_special_install()</span></code> 的调用包含了 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code> 关键字，紧接着是 <code class="docutils literal notranslate"><span class="pre">FAST</span></code> 关键字。在这种情况下，<code class="docutils literal notranslate"><span class="pre">FAST</span></code> 终止了对 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code> 关键字的处理。<code class="docutils literal notranslate"><span class="pre">arg_my_special_install_FAST</span></code> 被设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，<code class="docutils literal notranslate"><span class="pre">arg_my_special_install_RENAME</span></code> 被取消设置，并且 <code class="docutils literal notranslate"><span class="pre">arg_my_special_install_KEYWORDS_MISSING_VALUES</span></code> 包含值 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code>。</p>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="cmake_parse_arguments.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:macro"></span><a class="reference internal" href="macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake_parse_arguments.html#">cmake_parse_arguments</a><ul>
+<li><a class="reference internal" href="cmake_parse_arguments.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake_minimum_required.html" title="上一章">cmake_minimum_required</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake_path.html" title="下一章">cmake_path</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/cmake_parse_arguments.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake_path.html" title="cmake_path">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_minimum_required.html" title="cmake_minimum_required">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_parse_arguments.html">cmake_parse_arguments</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>BundleUtilities — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="BundleUtilities.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckCCompilerFlag" href="CheckCCompilerFlag.html" />
+    <link rel="prev" title="AndroidTestUtilities" href="AndroidTestUtilities.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckCCompilerFlag.html" title="CheckCCompilerFlag" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="AndroidTestUtilities.html" title="AndroidTestUtilities" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="BundleUtilities.html">BundleUtilities</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bundleutilities">
+<span id="module:BundleUtilities"></span><h1>BundleUtilities<a class="headerlink" href="BundleUtilities.html#bundleutilities" title="指向此标题的链接">¶</a></h1>
+<p>此模块提供了用于使用 CMake 组装独立、捆绑式（bundle-style）应用程序的实用命令，例如 macOS 的 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 捆绑包，或其他操作系统上类似的基于目录的应用程序捆绑包。</p>
+<p>在 CMake 安装中通过以下方式加载此模块：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">BundleUtilities</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>请勿在配置时（即在 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中）使用此模块。相反，应在 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#code" title="install(code)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(CODE)</span></code></a> 或 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#script" title="install(script)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SCRIPT)</span></code></a> 中引入并调用其命令。</p>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="BundleUtilities.html#commands" title="链接到此标题">¶</a></h2>
+<p>本模块提供以下命令</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:copy_and_fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:copy_and_fixup_bundle" title="copy_and_fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">copy_and_fixup_bundle()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:verify_app"></span><a class="reference internal" href="BundleUtilities.html#command:verify_app" title="verify_app"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">verify_app()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_bundle_main_executable"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_main_executable" title="get_bundle_main_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_main_executable()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_dotapp_dir"></span><a class="reference internal" href="BundleUtilities.html#command:get_dotapp_dir" title="get_dotapp_dir"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_dotapp_dir()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_bundle_and_executable"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_and_executable" title="get_bundle_and_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_and_executable()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_bundle_all_executables"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_all_executables" title="get_bundle_all_executables"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_all_executables()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_item_key"></span><a class="reference internal" href="BundleUtilities.html#command:get_item_key" title="get_item_key"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_item_key()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_item_rpaths"></span><a class="reference internal" href="BundleUtilities.html#command:get_item_rpaths" title="get_item_rpaths"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_item_rpaths()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:clear_bundle_keys"></span><a class="reference internal" href="BundleUtilities.html#command:clear_bundle_keys" title="clear_bundle_keys"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">clear_bundle_keys()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:set_bundle_key_values"></span><a class="reference internal" href="BundleUtilities.html#command:set_bundle_key_values" title="set_bundle_key_values"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_bundle_key_values()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:get_bundle_keys"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_keys" title="get_bundle_keys"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_keys()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:copy_resolved_item_into_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:copy_resolved_item_into_bundle" title="copy_resolved_item_into_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">copy_resolved_item_into_bundle()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:copy_resolved_framework_into_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:copy_resolved_framework_into_bundle" title="copy_resolved_framework_into_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">copy_resolved_framework_into_bundle()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:fixup_bundle_item"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle_item" title="fixup_bundle_item"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle_item()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:verify_bundle_prerequisites"></span><a class="reference internal" href="BundleUtilities.html#command:verify_bundle_prerequisites" title="verify_bundle_prerequisites"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">verify_bundle_prerequisites()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:verify_bundle_symlinks"></span><a class="reference internal" href="BundleUtilities.html#command:verify_bundle_symlinks" title="verify_bundle_symlinks"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">verify_bundle_symlinks()</span></code></a></p></li>
+</ul>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fixup_bundle">
+<span class="sig-name descname"><span class="pre">fixup_bundle</span></span><a class="headerlink" href="BundleUtilities.html#command:fixup_bundle" title="指向此定义的链接">¶</a></dt>
+<dd><p>准备一个捆绑包以进行分发，方法是修复其内部依赖项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">fixup_bundle(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令会对 <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code> 捆绑包进行就地修改，使其成为独立且可移植的，以便可以拖放到另一台机器上运行（前提是所有系统库均兼容）。</p>
+<p>此命令会收集捆绑包内所有可执行文件和库的依赖项（键）。对于每个依赖项，它会将所需文件复制到捆绑包中，并根据它们各自的先决条件进行调整。完成后，它会清除收集到的键，并调用 <span class="target" id="index-1-command:verify_app"></span><a class="reference internal" href="BundleUtilities.html#command:verify_app" title="verify_app"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">verify_app()</span></code></a> 命令以确保最终的捆绑包确实是独立的。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code></dt><dd><p>要修复的捆绑包路径。这可以是一个 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录或指向可执行文件的直接路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code></dt><dd><p>必须修复但无法通过 <code class="docutils literal notranslate"><span class="pre">otool</span></code> 输出分析自动确定的库列表（例如 <code class="docutils literal notranslate"><span class="pre">插件</span></code>）。如果将插件作为此参数传递给此命令，则应在调用此命令之前将它们安装或复制到捆绑包中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表。当给定没有路径信息的目标时，首先搜索这些路径。然后还会搜索标准系统位置：<code class="docutils literal notranslate"><span class="pre">PATH</span></code>、框架位置、<code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>可选的要忽略的文件名列表（例如 <code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">"vcredist_x86.exe;vcredist_x64.exe"</span></code>）。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:copy_and_fixup_bundle">
+<span class="sig-name descname"><span class="pre">copy_and_fixup_bundle</span></span><a class="headerlink" href="BundleUtilities.html#command:copy_and_fixup_bundle" title="指向此定义的链接">¶</a></dt>
+<dd><p>复制捆绑包并就地修复新的拷贝</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_and_fixup_bundle(</span><span class="nv">&lt;src&gt;</span><span class="w"> </span><span class="nv">&lt;dst&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令在位置 <code class="docutils literal notranslate"><span class="pre">&lt;dst&gt;</span></code> 创建捆绑包 <code class="docutils literal notranslate"><span class="pre">&lt;src&gt;</span></code> 的副本，然后在 <code class="docutils literal notranslate"><span class="pre">&lt;dst&gt;</span></code> 处就地修复该新拷贝。</p>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;src&gt;</span></code></dt><dd><p>正在复制的捆绑包的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dst&gt;</span></code></dt><dd><p>捆绑包拷贝的目标目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code></dt><dd><p>必须修复但无法通过 <code class="docutils literal notranslate"><span class="pre">otool</span></code> 输出分析自动确定的库列表（例如 <code class="docutils literal notranslate"><span class="pre">插件</span></code>）。如果将插件作为此参数传递给此命令，则应在调用此命令之前将它们安装或复制到捆绑包中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表。当给定没有路径信息的目标时，首先搜索这些路径。然后还会搜索标准系统位置：<code class="docutils literal notranslate"><span class="pre">PATH</span></code>、框架位置、<code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:verify_app">
+<span class="sig-name descname"><span class="pre">verify_app</span></span><a class="headerlink" href="BundleUtilities.html#command:verify_app" title="指向此定义的链接">¶</a></dt>
+<dd><p>通过运行分析工具验证应用程序捆绑包是否有效</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">verify_app(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果应用程序未能通过验证，则会发出 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(fatal_error)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(FATAL_ERROR)</span></code></a>，从而停止安装过程。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code></dt><dd><p>要验证的应用程序路径。这可以是一个 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录或独立的可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>可选的要忽略的文件名列表（例如 <code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">"vcredist_x86.exe;vcredist_x64.exe"</span></code>）。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_bundle_main_executable">
+<span class="sig-name descname"><span class="pre">get_bundle_main_executable</span></span><a class="headerlink" href="BundleUtilities.html#command:get_bundle_main_executable" title="指向此定义的链接">¶</a></dt>
+<dd><p>检索给定应用程序捆绑包中的主可执行文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_main_executable(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>结果存储在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中，并将包含捆绑包主可执行文件的完整路径名，如果无法确定，则为以 <code class="docutils literal notranslate"><span class="pre">error:</span></code> 为前缀的字符串。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_dotapp_dir">
+<span class="sig-name descname"><span class="pre">get_dotapp_dir</span></span><a class="headerlink" href="BundleUtilities.html#command:get_dotapp_dir" title="指向此定义的链接">¶</a></dt>
+<dd><p>定位给定可执行文件的封闭 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_dotapp_dir(</span><span class="nv">&lt;exe&gt;</span><span class="w"> </span><span class="nv">&lt;dotapp-dir-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令在给定可执行文件的完整路径时，检索名称以 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 结尾的最近父目录，并将其存储到 <code class="docutils literal notranslate"><span class="pre">&lt;dotapp-dir-var&gt;</span></code> 变量中。如果没有这样的父目录，则它仅检索包含可执行文件的目录。</p>
+<p>检索到的目录可能存在，也可能不存在。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_bundle_and_executable">
+<span class="sig-name descname"><span class="pre">get_bundle_and_executable</span></span><a class="headerlink" href="BundleUtilities.html#command:get_bundle_and_executable" title="指向此定义的链接">¶</a></dt>
+<dd><p>接受 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录名或嵌套在 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录中的可执行文件名，并检索 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录的路径及其主可执行文件的路径</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_and_executable(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;bundle-var&gt;</span><span class="w"> </span><span class="nv">&lt;executable-var&gt;</span><span class="w"> </span><span class="nv">&lt;valid-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code></dt><dd><p>正在处理的应用程序名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;bundle-var&gt;</span></code></dt><dd><p>用于存储生成的 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录路径的变量名。如果发生任何错误，此变量将包含以字符串 <code class="docutils literal notranslate"><span class="pre">error:</span></code> 为前缀的错误消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;executable-var&gt;</span></code></dt><dd><p>用于存储生成的对应主可执行文件的变量名。如果发生任何错误，此变量将包含以字符串 <code class="docutils literal notranslate"><span class="pre">error:</span></code> 为前缀的错误消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;valid-var&gt;</span></code></dt><dd><p>用于存储布尔结果的变量名，表示此命令是否成功。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_bundle_all_executables">
+<span class="sig-name descname"><span class="pre">get_bundle_all_executables</span></span><a class="headerlink" href="BundleUtilities.html#command:get_bundle_all_executables" title="指向此定义的链接">¶</a></dt>
+<dd><p>获取给定捆绑包的所有可执行文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_all_executables(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;exes-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令递归扫描 <code class="docutils literal notranslate"><span class="pre">&lt;bundle&gt;</span></code> 捆绑包以查找所有可执行文件，并将它们存储到变量 <code class="docutils literal notranslate"><span class="pre">&lt;exes-var&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_item_key">
+<span class="sig-name descname"><span class="pre">get_item_key</span></span><a class="headerlink" href="BundleUtilities.html#command:get_item_key" title="指向此定义的链接">¶</a></dt>
+<dd><p>为给定项生成唯一键</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_item_key(</span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;key-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>给定 <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> 文件名，此命令生成一个 <code class="docutils literal notranslate"><span class="pre">&lt;key-var&gt;</span></code> 键，考虑到需要复制或修复以使捆绑包独立的一组库，该键应该是唯一的。本质上，这是包含扩展名的文件名，并将 <code class="docutils literal notranslate"><span class="pre">.</span></code> 替换为 <code class="docutils literal notranslate"><span class="pre">_</span></code>。</p>
+<p>此键用作 CMake 变量的前缀，以便一组变量可以基于其键与给定项关联。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_item_rpaths">
+<span class="sig-name descname"><span class="pre">get_item_rpaths</span></span><a class="headerlink" href="BundleUtilities.html#command:get_item_rpaths" title="指向此定义的链接">¶</a></dt>
+<dd><p>获取给定项的 RPATH（运行时搜索路径）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_item_rpaths(</span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;rpaths-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令获取 <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> 文件名的 RPATH，并将其存储到提供的变量名 <code class="docutils literal notranslate"><span class="pre">&lt;rpaths-var&gt;</span></code> 中。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:clear_bundle_keys">
+<span class="sig-name descname"><span class="pre">clear_bundle_keys</span></span><a class="headerlink" href="BundleUtilities.html#command:clear_bundle_keys" title="指向此定义的链接">¶</a></dt>
+<dd><p>清除所有与键关联的变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">clear_bundle_keys(</span><span class="nv">&lt;keys-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令遍历 <code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code> 键列表，清除与每个键关联的所有变量。循环结束后，它会清除键列表本身。当处理完键列表后，应在 <span class="target" id="index-1-command:get_bundle_keys"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_keys" title="get_bundle_keys"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_keys()</span></code></a> 命令之后调用此命令。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:set_bundle_key_values">
+<span class="sig-name descname"><span class="pre">set_bundle_key_values</span></span><a class="headerlink" href="BundleUtilities.html#command:set_bundle_key_values" title="指向此定义的链接">¶</a></dt>
+<dd><p>将键添加到键列表中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_bundle_key_values(</span>
+<span class="w">  </span><span class="nv">&lt;keys-var&gt;</span>
+<span class="w">  </span><span class="nv">&lt;context&gt;</span>
+<span class="w">  </span><span class="nv">&lt;item&gt;</span>
+<span class="w">  </span><span class="nv">&lt;exepath&gt;</span>
+<span class="w">  </span><span class="nv">&lt;dirs&gt;</span>
+<span class="w">  </span><span class="nv">&lt;copyflag&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="nv">&lt;rpaths&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code> 键添加到给定项的列表中（如果需要）。如果添加，还会设置与该键关联的所有变量。</p>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code></dt><dd><p>用于持有要添加到给定项列表中的键名的变量名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;context&gt;</span></code></dt><dd><p>用于 Apple 操作系统上 <code class="docutils literal notranslate"><span class="pre">@loader_path</span></code> 替换的顶层加载路径。解析项时，<code class="docutils literal notranslate"><span class="pre">@loader_path</span></code> 引用将相对于给定上下文值（大概是另一个库）的目录进行解析。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code></dt><dd><p>要为其添加键的项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exepath&gt;</span></code></dt><dd><p>用于 Apple 操作系统上 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 替换的顶层可执行文件路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表。当给定没有路径信息的目标时，首先搜索这些路径。然后还会搜索标准系统位置：<code class="docutils literal notranslate"><span class="pre">PATH</span></code>、框架位置、<code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;copyflag&gt;</span></code></dt><dd><p>如果设置为 <code class="docutils literal notranslate"><span class="pre">1</span></code>，则将保留库的符号链接结构。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;rpaths&gt;</span></code></dt><dd><p>可执行文件或库的可选运行时搜索路径，有助于查找文件。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:get_bundle_keys">
+<span class="sig-name descname"><span class="pre">get_bundle_keys</span></span><a class="headerlink" href="BundleUtilities.html#command:get_bundle_keys" title="指向此定义的链接">¶</a></dt>
+<dd><p>获取捆绑包键</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_keys(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="nv">&lt;keys-var&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令遍历 <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code> 捆绑包（以及作为额外 <code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code> 给出的项）内的所有可执行文件和库文件，并积累代表它们的键列表。它设置与每个键关联的值，以便可以遍历所有这些值，并将先决条件库复制到捆绑包中，然后执行适当的 <code class="docutils literal notranslate"><span class="pre">install_name_tool</span></code> 修复。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code></dt><dd><p>要修复的捆绑包路径。这可以是一个 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 目录或指向可执行文件的直接路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code></dt><dd><p>必须修复但无法通过 <code class="docutils literal notranslate"><span class="pre">otool</span></code> 输出分析自动确定的库列表（例如 <code class="docutils literal notranslate"><span class="pre">插件</span></code>）。如果将插件作为此参数传递给此命令，则应在调用此命令之前将它们安装或复制到捆绑包中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表。当给定没有路径信息的目标时，首先搜索这些路径。然后还会搜索标准系统位置：<code class="docutils literal notranslate"><span class="pre">PATH</span></code>、框架位置、<code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code></dt><dd><p>用于持有代表捆绑包内所有可执行文件和库文件的键列表的变量名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>可选的要忽略的文件名列表（例如 <code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">"vcredist_x86.exe;vcredist_x64.exe"</span></code>）。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:copy_resolved_item_into_bundle">
+<span class="sig-name descname"><span class="pre">copy_resolved_item_into_bundle</span></span><a class="headerlink" href="BundleUtilities.html#command:copy_resolved_item_into_bundle" title="指向此定义的链接">¶</a></dt>
+<dd><p>如有必要，将已解析的项复制到捆绑包中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_resolved_item_into_bundle(</span><span class="nv">&lt;resolved-item&gt;</span><span class="w"> </span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-item&gt;</span></code> 与 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> “相同”，则无需复制。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:copy_resolved_framework_into_bundle">
+<span class="sig-name descname"><span class="pre">copy_resolved_framework_into_bundle</span></span><a class="headerlink" href="BundleUtilities.html#command:copy_resolved_framework_into_bundle" title="指向此定义的链接">¶</a></dt>
+<dd><p>如有必要，将已解析的框架复制到捆绑包中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_resolved_framework_into_bundle(</span><span class="nv">&lt;resolved-item&gt;</span><span class="w"> </span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-item&gt;</span></code> 与 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> “相同”，则无需复制。</p>
+<p>在调用此命令之前，可以设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BU_COPY_FULL_FRAMEWORK_CONTENTS</span></code></dt><dd><p>默认情况下，未设置此变量。如果应将完整框架嵌入到捆绑包中，请在调用 <span class="target" id="index-1-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a> 命令之前将此变量设置为布尔真值。默认情况下，此命令会复制框架 dylib 本身以及框架的 <code class="docutils literal notranslate"><span class="pre">Resources</span></code> 目录。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fixup_bundle_item">
+<span class="sig-name descname"><span class="pre">fixup_bundle_item</span></span><a class="headerlink" href="BundleUtilities.html#command:fixup_bundle_item" title="指向此定义的链接">¶</a></dt>
+<dd><p>修复捆绑包项</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">fixup_bundle_item(</span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="w"> </span><span class="nv">&lt;exepath&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令获取 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> 的直接/非系统先决条件，并为每个先决条件将其引用方式更改为该先决条件的 <code class="docutils literal notranslate"><span class="pre">_EMBEDDED_ITEM</span></code> 键控变量的值。最有可能更改为 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 样式的引用。</p>
+<p>此命令要求 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> 已经在捆绑包<code class="docutils literal notranslate"><span class="pre">内部</span></code>。换句话说，如果插件作为其 <code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code> 参数传递给 <span class="target" id="index-2-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a> 命令，则应在调用 <span class="target" id="index-3-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a> 命令之前将它们安装或复制到捆绑包中。</p>
+<p>此外，它会将正在修复的项的 ID 更改为其自己的 <code class="docutils literal notranslate"><span class="pre">_EMBEDDED_ITEM</span></code> 值。</p>
+<p>更改会累积在局部变量中，并在本命令结束时对 <code class="docutils literal notranslate"><span class="pre">install_name_tool</span></code> 命令行工具进行<em>一次</em>调用，同时应用所有更改。</p>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code></dt><dd><p>要修复的捆绑包项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;exepath&gt;</span></code></dt><dd><p>用于 Apple 操作系统上 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 替换的顶层可执行文件路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dirs&gt;</span></code></dt><dd><p>可能找到库的路径列表。当给定没有路径信息的目标时，首先搜索这些路径。然后还会搜索标准系统位置：<code class="docutils literal notranslate"><span class="pre">PATH</span></code>、框架位置、<code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等。</p>
+</dd>
+</dl>
+<p>在调用此命令之前，可以设置以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BU_CHMOD_BUNDLE_ITEMS</span></code></dt><dd><p>如果此变量设置为布尔真值，则在 <code class="docutils literal notranslate"><span class="pre">install_name_tool</span></code> 工具尝试更改它们之前，捆绑包项将被标记为可写。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:verify_bundle_prerequisites">
+<span class="sig-name descname"><span class="pre">verify_bundle_prerequisites</span></span><a class="headerlink" href="BundleUtilities.html#command:verify_bundle_prerequisites" title="指向此定义的链接">¶</a></dt>
+<dd><p>验证捆绑包内所有文件的所有先决条件的集合是否包含在捆绑包内，或者是否为被假定在任何地方都存在的 <code class="docutils literal notranslate"><span class="pre">system</span></code> 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">verify_bundle_prerequisites(</span>
+<span class="w">  </span><span class="nv">&lt;bundle&gt;</span>
+<span class="w">  </span><span class="nv">&lt;result-var&gt;</span>
+<span class="w">  </span><span class="nv">&lt;info-var&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;bundle&gt;</span></code></dt><dd><p>正在验证的捆绑包名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>用于存储验证是否成功的布尔结果的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;info-var&gt;</span></code></dt><dd><p>用于持有验证产生的任何信息性消息的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">&lt;files&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>可选的要忽略的文件名列表（例如 <code class="docutils literal notranslate"><span class="pre">IGNORE_ITEM</span> <span class="pre">"vcredist_x86.exe;vcredist_x64.exe"</span></code>）。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:verify_bundle_symlinks">
+<span class="sig-name descname"><span class="pre">verify_bundle_symlinks</span></span><a class="headerlink" href="BundleUtilities.html#command:verify_bundle_symlinks" title="指向此定义的链接">¶</a></dt>
+<dd><p>验证在指定捆绑包中找到的任何符号链接是否指向已存在于捆绑包中的其他文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">verify_bundle_symlinks(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="w"> </span><span class="nv">&lt;info-var&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>任何指向外部文件的符号链接都会导致此命令验证失败。</p>
+<p>参数为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;bundle&gt;</span></code></dt><dd><p>正在验证的捆绑包名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>用于存储验证是否成功的布尔结果的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;info-var&gt;</span></code></dt><dd><p>用于持有验证产生的任何信息性消息的变量名称。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="BundleUtilities.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>在安装阶段执行的安装代码中使用此模块</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="BundleUtilities.html#id1" title="此代码的永久链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># ...</span>
+
+<span class="nf">install(</span><span class="no">CODE</span><span class="w"> </span><span class="s">"</span>
+<span class="s">  include(BundleUtilities)</span>
+<span class="s">  set(BU_CHMOD_BUNDLE_ITEMS TRUE)</span>
+<span class="s">  fixup_bundle(</span>
+<span class="s">    \"${fixup_exe}\"</span>
+<span class="s">    \"${plugins}\"</span>
+<span class="s">    \"${bin_dir};${library_dir};${binary_dir}\"</span>
+<span class="s">  )</span>
+<span class="s">"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="BundleUtilities.html#">BundleUtilities</a><ul>
+<li><a class="reference internal" href="BundleUtilities.html#commands">命令</a></li>
+<li><a class="reference internal" href="BundleUtilities.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="AndroidTestUtilities.html" title="上一章">AndroidTestUtilities</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckCCompilerFlag.html" title="下一章">CheckCCompilerFlag</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/BundleUtilities.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckCCompilerFlag.html" title="CheckCCompilerFlag">下一页</a> |</li>
+        <li class="right">
+          <a href="AndroidTestUtilities.html" title="AndroidTestUtilities">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="BundleUtilities.html">BundleUtilities</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

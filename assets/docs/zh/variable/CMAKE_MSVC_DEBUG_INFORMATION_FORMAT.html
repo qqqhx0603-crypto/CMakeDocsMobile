@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_MSVC_DEBUG_INFORMATION_FORMAT — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_MSVC_RUNTIME_CHECKS" href="CMAKE_MSVC_RUNTIME_CHECKS.html" />
+    <link rel="prev" title="CMAKE_MODULE_LINKER_FLAGS_INIT" href="CMAKE_MODULE_LINKER_FLAGS_INIT.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_MSVC_RUNTIME_CHECKS.html" title="CMAKE_MSVC_RUNTIME_CHECKS" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_MODULE_LINKER_FLAGS_INIT.html" title="CMAKE_MODULE_LINKER_FLAGS_INIT" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-msvc-debug-information-format">
+<span id="variable:CMAKE_MSVC_DEBUG_INFORMATION_FORMAT"></span><h1>CMAKE_MSVC_DEBUG_INFORMATION_FORMAT<a class="headerlink" href="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html#cmake-msvc-debug-information-format" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p>选择面向 MSVC ABI 的 MSVC 调试信息格式。此变量用于在所有目标（Target）创建时初始化其 <span class="target" id="index-0-prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../prop_tgt/MSVC_DEBUG_INFORMATION_FORMAT.html#prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT" title="MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 属性。它还会通过调用 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 命令传播到测试项目中。</p>
+<p>允许的值为</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Embedded</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-Z7</span></code> 或等效标志进行编译，以生成包含完整符号调试信息的对象文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ProgramDatabase</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-Zi</span></code> 或等效标志进行编译，以生成包含所有符号调试信息的程序数据库（Program Database）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EditAndContinue</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-ZI</span></code> 或等效标志进行编译，以生成支持“编辑并继续”（Edit and Continue）功能的程序数据库。</p>
+</dd>
+</dl>
+<p>对于不以 MSVC ABI 为目标编译器的编译器，此值将被忽略，但当使用以 MSVC ABI 为目标编译器的编译器时，不受支持的值将被视为错误。</p>
+<p>该值也可以为空字符串（<code class="docutils literal notranslate"><span class="pre">""</span></code>），这种情况下 CMake 不会显式添加任何调试信息格式标志。</p>
+<p>使用 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a> 来支持按配置指定。例如，以下代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</span><span class="w"> </span><span class="s">"$&lt;$&lt;CONFIG:Debug,RelWithDebInfo&gt;:ProgramDatabase&gt;"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为所有后续目标选择 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RelWithDebInfo</span></code> 配置的程序数据库调试信息格式。</p>
+<p>如果未设置此变量，则不会自动设置 <span class="target" id="index-1-prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT"></span><a class="reference internal" href="../prop_tgt/MSVC_DEBUG_INFORMATION_FORMAT.html#prop_tgt:MSVC_DEBUG_INFORMATION_FORMAT" title="MSVC_DEBUG_INFORMATION_FORMAT"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MSVC_DEBUG_INFORMATION_FORMAT</span></code></a> 目标属性。如果该属性未设置，CMake 将使用默认值 <code class="docutils literal notranslate"><span class="pre">$&lt;$&lt;CONFIG:Debug,RelWithDebInfo&gt;:ProgramDatabase&gt;</span></code> 选择调试信息格式（如果编译器支持），否则使用 <code class="docutils literal notranslate"><span class="pre">$&lt;$&lt;CONFIG:Debug,RelWithDebInfo&gt;:Embedded&gt;</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>仅当在启用使用 MSVC ABI 编译器的语言的第一个 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令之前，将策略 <span class="target" id="index-0-policy:CMP0141"></span><a class="reference internal" href="../policy/CMP0141.html#policy:CMP0141" title="CMP0141"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0141</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此变量才有效。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_MODULE_LINKER_FLAGS_INIT.html" title="上一章">CMAKE_MODULE_LINKER_FLAGS_INIT</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_MSVC_RUNTIME_CHECKS.html" title="下一章">CMAKE_MSVC_RUNTIME_CHECKS</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_MSVC_RUNTIME_CHECKS.html" title="CMAKE_MSVC_RUNTIME_CHECKS">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_MODULE_LINKER_FLAGS_INIT.html" title="CMAKE_MODULE_LINKER_FLAGS_INIT">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html">CMAKE_MSVC_DEBUG_INFORMATION_FORMAT</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

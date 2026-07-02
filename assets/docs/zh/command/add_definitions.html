@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>add_definitions — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="add_definitions.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="add_dependencies" href="add_dependencies.html" />
+    <link rel="prev" title="add_custom_target" href="add_custom_target.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="add_dependencies.html" title="add_dependencies" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="add_custom_target.html" title="add_custom_target" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_definitions.html">add_definitions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="add-definitions">
+<span id="command:add_definitions"></span><h1>add_definitions<a class="headerlink" href="add_definitions.html#add-definitions" title="链接到此标题">¶</a></h1>
+<p>向源文件的编译中添加 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 定义标志。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_definitions(</span><span class="p">-</span><span class="no">DFOO</span><span class="w"> </span><span class="p">-</span><span class="no">DBAR</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为当前目录中的目标（无论是在此命令调用之前还是之后添加），以及在之后添加的子目录中的目标，向编译器命令行添加定义。 此命令可用于添加任何标志，但其意图是添加预处理器定义。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此命令已被替代方案取代</p>
+<ul class="simple">
+<li><p>使用 <span class="target" id="index-0-command:add_compile_definitions"></span><a class="reference internal" href="add_compile_definitions.html#command:add_compile_definitions" title="add_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_definitions()</span></code></a> 添加预处理器定义。</p></li>
+<li><p>使用 <span class="target" id="index-0-command:include_directories"></span><a class="reference internal" href="include_directories.html#command:include_directories" title="include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include_directories()</span></code></a> 添加包含目录。</p></li>
+<li><p>使用 <span class="target" id="index-0-command:add_compile_options"></span><a class="reference internal" href="add_compile_options.html#command:add_compile_options" title="add_compile_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_compile_options()</span></code></a> 添加其他选项。</p></li>
+</ul>
+</div>
+<p>以 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 或 <code class="docutils literal notranslate"><span class="pre">/D</span></code> 开头的，看起来像预处理器定义的标志，会自动添加到当前目录的 <span class="target" id="index-0-prop_dir:COMPILE_DEFINITIONS"></span><a class="reference internal" href="../prop_dir/COMPILE_DEFINITIONS.html#prop_dir:COMPILE_DEFINITIONS" title="COMPILE_DEFINITIONS"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">COMPILE_DEFINITIONS</span></code></a> 目录属性中。 具有非平凡值的定义可能会保留在标志集中，而不是出于向后兼容的原因进行转换。 请参阅 <span class="target" id="index-1-prop_dir:COMPILE_DEFINITIONS"></span><a class="reference internal" href="../prop_dir/COMPILE_DEFINITIONS.html#prop_dir:COMPILE_DEFINITIONS" title="COMPILE_DEFINITIONS"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">目录</span></code></a>、<span class="target" id="index-0-prop_tgt:COMPILE_DEFINITIONS"></span><a class="reference internal" href="../prop_tgt/COMPILE_DEFINITIONS.html#prop_tgt:COMPILE_DEFINITIONS" title="COMPILE_DEFINITIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">目标</span></code></a>、<span class="target" id="index-0-prop_sf:COMPILE_DEFINITIONS"></span><a class="reference internal" href="../prop_sf/COMPILE_DEFINITIONS.html#prop_sf:COMPILE_DEFINITIONS" title="COMPILE_DEFINITIONS"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">源文件</span></code></a> <code class="docutils literal notranslate"><span class="pre">COMPILE_DEFINITIONS</span></code> 属性的文档，了解有关将预处理器定义添加到特定范围和配置的详细信息。</p>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="add_definitions.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>有关定义构建系统属性的更多信息，请参阅 <span class="target" id="index-0-manual:cmake-buildsystem(7)"></span><a class="reference internal" href="../manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7)" title="cmake-buildsystem(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-buildsystem(7)</span></code></a> 手册。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="add_definitions.html#">add_definitions</a><ul>
+<li><a class="reference internal" href="add_definitions.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="add_custom_target.html" title="上一章">add_custom_target</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="add_dependencies.html" title="下一章">add_dependencies</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/add_definitions.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="add_dependencies.html" title="add_dependencies">下一页</a> |</li>
+        <li class="right">
+          <a href="add_custom_target.html" title="add_custom_target">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="add_definitions.html">add_definitions</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

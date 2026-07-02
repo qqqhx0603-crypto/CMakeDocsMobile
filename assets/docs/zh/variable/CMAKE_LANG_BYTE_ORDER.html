@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_&lt;LANG&gt;_BYTE_ORDER — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_LANG_BYTE_ORDER.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_&lt;LANG&gt;_COMPILE_OBJECT" href="CMAKE_LANG_COMPILE_OBJECT.html" />
+    <link rel="prev" title="CMAKE_&lt;LANG&gt;_ARCHIVER_WRAPPER_FLAG_SEP" href="CMAKE_LANG_ARCHIVER_WRAPPER_FLAG_SEP.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_LANG_COMPILE_OBJECT.html" title="CMAKE_&lt;LANG&gt;_COMPILE_OBJECT" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_LANG_ARCHIVER_WRAPPER_FLAG_SEP.html" title="CMAKE_&lt;LANG&gt;_ARCHIVER_WRAPPER_FLAG_SEP" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_LANG_BYTE_ORDER.html">CMAKE_&lt;LANG&gt;_BYTE_ORDER</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-lang-byte-order">
+<span id="variable:CMAKE_<LANG>_BYTE_ORDER"></span><h1>CMAKE_&lt;LANG&gt;_BYTE_ORDER<a class="headerlink" href="CMAKE_LANG_BYTE_ORDER.html#cmake-lang-byte-order" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>如果已知，则 <code class="docutils literal notranslate"><span class="pre">&lt;LANG&gt;</span></code> 编译器目标架构的字节序。如果已定义且不为空，则该值是以下之一：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BIG_ENDIAN</span></code></dt><dd><p>目标架构是大端序。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LITTLE_ENDIAN</span></code></dt><dd><p>目标架构是小端序。</p>
+</dd>
+</dl>
+<p>此变量针对语言 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJC</span></code>、<code class="docutils literal notranslate"><span class="pre">OBJCXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> 定义。</p>
+<p>如果 <span class="target" id="index-0-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 指定了多个架构，则只有当所有架构共享相同的字节序时，<code class="docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_BYTE_ORDER</span></code> 的值才不为空。</p>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CMAKE_LANG_BYTE_ORDER.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="example-checking-endianness">
+<h3>示例：检查字节序<a class="headerlink" href="CMAKE_LANG_BYTE_ORDER.html#example-checking-endianness" title="链接到此标题">¶</a></h3>
+<p>在 CMake 项目中检查目标架构的字节序（字节顺序），其中 <code class="docutils literal notranslate"><span class="pre">C</span></code> 语言是启用的语言之一，并将结果存储在变量 <code class="docutils literal notranslate"><span class="pre">WORDS_BIGENDIAN</span></code> 中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">CMAKE_C_BYTE_ORDER</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"BIG_ENDIAN"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">elseif(</span><span class="no">CMAKE_C_BYTE_ORDER</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"LITTLE_ENDIAN"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">FALSE</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">FALSE</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">WARNING</span><span class="w"> </span><span class="s">"Endianness could not be determined."</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>或者，如果项目没有启用 <code class="docutils literal notranslate"><span class="pre">C</span></code> 语言，则可以用其他启用的语言替换。例如，如果启用了 <code class="docutils literal notranslate"><span class="pre">CXX</span></code></p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">CMAKE_CXX_BYTE_ORDER</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"BIG_ENDIAN"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">elseif(</span><span class="no">CMAKE_CXX_BYTE_ORDER</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"LITTLE_ENDIAN"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">FALSE</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">FALSE</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">WARNING</span><span class="w"> </span><span class="s">"Endianness could not be determined."</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>请注意，在大多数情况下，这可以通过仅检查大端目标来简化</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">CMAKE_C_BYTE_ORDER</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"BIG_ENDIAN"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">else()</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">WORDS_BIGENDIAN</span><span class="w"> </span><span class="no">FALSE</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+<section id="example-per-language-endianness-check">
+<h3>示例：逐语言字节序检查<a class="headerlink" href="CMAKE_LANG_BYTE_ORDER.html#example-per-language-endianness-check" title="链接到此标题">¶</a></h3>
+<p>如今使用的架构通常在编译器之间保持字节序一致。但以下情况逐语言字节序检查可能很重要</p>
+<ul class="simple">
+<li><p>交叉编译到不同的架构（例如，大端嵌入式系统）。</p></li>
+<li><p>异构工具链，其中一个目标架构用于 C 语言，而另一个目标架构用于不同的语言。</p></li>
+<li><p>跨平台重用的静态库或二进制文件（例如，分发预编译的 CUDA 内核）。</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">CMAKE_C_BYTE_ORDER</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"C byte order: ${CMAKE_C_BYTE_ORDER}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">if(</span><span class="no">CMAKE_CXX_BYTE_ORDER</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"C++ byte order: ${CMAKE_CXX_BYTE_ORDER}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">if(</span><span class="no">CMAKE_CUDA_BYTE_ORDER</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"CUDA byte order: ${CMAKE_CUDA_BYTE_ORDER}"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMAKE_LANG_BYTE_ORDER.html#">CMAKE_&lt;LANG&gt;_BYTE_ORDER</a><ul>
+<li><a class="reference internal" href="CMAKE_LANG_BYTE_ORDER.html#examples">示例</a><ul>
+<li><a class="reference internal" href="CMAKE_LANG_BYTE_ORDER.html#example-checking-endianness">示例：检查字节序</a></li>
+<li><a class="reference internal" href="CMAKE_LANG_BYTE_ORDER.html#example-per-language-endianness-check">示例：逐语言字节序检查</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_LANG_ARCHIVER_WRAPPER_FLAG_SEP.html" title="上一章">CMAKE_&lt;LANG&gt;_ARCHIVER_WRAPPER_FLAG_SEP</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_LANG_COMPILE_OBJECT.html" title="下一章">CMAKE_&lt;LANG&gt;_COMPILE_OBJECT</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_LANG_BYTE_ORDER.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_LANG_COMPILE_OBJECT.html" title="CMAKE_&lt;LANG&gt;_COMPILE_OBJECT">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_LANG_ARCHIVER_WRAPPER_FLAG_SEP.html" title="CMAKE_&lt;LANG&gt;_ARCHIVER_WRAPPER_FLAG_SEP">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_LANG_BYTE_ORDER.html">CMAKE_&lt;LANG&gt;_BYTE_ORDER</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>variable_watch — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="variable_watch.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="while" href="while.html" />
+    <link rel="prev" title="unset" href="unset.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="while.html" title="while" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="unset.html" title="unset" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="variable_watch.html">variable_watch</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="variable-watch">
+<span id="command:variable_watch"></span><h1>variable_watch<a class="headerlink" href="variable_watch.html#variable-watch" title="链接到此标题">¶</a></h1>
+<p>监视 CMake 变量的变化。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">variable_watch(</span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;command&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果指定的 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 发生变化，并且没有提供 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code>，则会打印一条消息以告知该变化。</p>
+<p>如果提供了 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code>，则会执行该命令。该命令将接收以下参数：<code class="docutils literal notranslate"><span class="pre">COMMAND(&lt;variable&gt;</span> <span class="pre">&lt;access&gt;</span> <span class="pre">&lt;value&gt;</span> <span class="pre">&lt;current_list_file&gt;</span> <span class="pre">&lt;stack&gt;)</span></code></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></dt><dd><p>正在访问的变量的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;access&gt;</span></code></dt><dd><p>以下之一：<code class="docutils literal notranslate"><span class="pre">READ_ACCESS</span></code>、<code class="docutils literal notranslate"><span class="pre">UNKNOWN_READ_ACCESS</span></code>、<code class="docutils literal notranslate"><span class="pre">MODIFIED_ACCESS</span></code>、<code class="docutils literal notranslate"><span class="pre">UNKNOWN_MODIFIED_ACCESS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">REMOVED_ACCESS</span></code>。 <code class="docutils literal notranslate"><span class="pre">UNKNOWN_</span></code> 值仅在变量从未设置时使用。 一旦设置，即使变量稍后被取消设置，在同一次 CMake 运行期间也不会再次使用它们。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code></dt><dd><p>变量的值。 在修改时，这是变量的新（修改后）值。 在删除时，该值为空。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;current_list_file&gt;</span></code></dt><dd><p>执行访问的文件完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;stack&gt;</span></code></dt><dd><p>当前在文件包含堆栈上的所有文件的绝对路径列表，从最底层的文件开始，到当前处理的文件（即 <code class="docutils literal notranslate"><span class="pre">current_list_file</span></code>）结束。</p>
+</dd>
+</dl>
+<p>请注意，对于某些访问（例如 <span class="target" id="index-0-command:list"></span><a class="reference internal" href="list.html#append" title="list(append)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list(APPEND)</span></code></a>），观察者会执行两次，先进行读取访问，然后进行写入访问。 另外请注意，对变量的 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="if.html#defined" title="if(defined)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if(DEFINED)</span></code></a> 查询不会被注册为访问，并且观察者不会被执行。</p>
+<p>只有非缓存变量才能使用此命令进行监视。 永远不会监视对缓存变量的访问。 但是，缓存变量 <code class="docutils literal notranslate"><span class="pre">var</span></code> 的存在会导致对非缓存变量 <code class="docutils literal notranslate"><span class="pre">var</span></code> 的访问不使用 <code class="docutils literal notranslate"><span class="pre">UNKNOWN_</span></code> 前缀，即使非缓存变量 <code class="docutils literal notranslate"><span class="pre">var</span></code> 从未存在过。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="unset.html" title="上一章">unset</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="while.html" title="下一章">while</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/variable_watch.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="while.html" title="while">下一页</a> |</li>
+        <li class="right">
+          <a href="unset.html" title="unset">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="variable_watch.html">variable_watch</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

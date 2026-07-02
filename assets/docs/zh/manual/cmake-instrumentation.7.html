@@ -1,0 +1,603 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-instrumentation(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-instrumentation.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake-language(7)" href="cmake-language.7.html" />
+    <link rel="prev" title="Sublime Text 2" href="../generator/Sublime&#32;Text&#32;2.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake-language.7.html" title="cmake-language(7)" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="../generator/Sublime&#32;Text&#32;2.html" title="Sublime Text 2" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-instrumentation.7.html">cmake-instrumentation(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-instrumentation(7)"></span><section id="cmake-instrumentation-7">
+<h1><a class="toc-backref" href="cmake-instrumentation.7.html#id1" role="doc-backlink">cmake-instrumentation(7)</a><a class="headerlink" href="cmake-instrumentation.7.html#cmake-instrumentation-7" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#cmake-instrumentation-7" id="id1">cmake-instrumentation(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#introduction" id="id2">简介</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#data-collection" id="id3">数据收集</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#indexing" id="id4">索引</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#callbacks" id="id5">回调</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation" id="id6">启用 Instrumentation</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-project-level" id="id7">在项目级别启用 Instrumentation</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-user-level" id="id8">在用户级别启用 Instrumentation</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-for-cdash-submissions" id="id9">为 CDash 提交启用 Instrumentation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#api-v1" id="id10">API v1</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files" id="id11">v1 查询文件</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#data-version" id="id12">数据版本</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file" id="id13">v1 片段文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-index-file" id="id14">v1 索引文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-cmake-content-file" id="id15">v1 CMake 内容文件</a></p></li>
+<li><p><a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file" id="id16">Google Trace 文件</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake-instrumentation.7.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="cmake-instrumentation.7.html#introduction" title="此标题的链接">¶</a></h2>
+<p>CMake Instrumentation API 允许在 CMake 项目的配置、生成、构建、测试和安装步骤中收集计时数据、目标信息和系统诊断信息。</p>
+<p>此功能仅适用于使用 <a class="reference internal" href="cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a>、<a class="reference internal" href="cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 或 <span class="target" id="index-0-generator:FASTBuild"></span><a class="reference internal" href="../generator/FASTBuild.html#generator:FASTBuild" title="FASTBuild"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">FASTBuild</span></code></a> 的项目。</p>
+<p>所有与 CMake Instrumentation API 的交互都必须指定 API 版本和数据版本。目前支持的 API 版本是 <a class="reference internal" href="cmake-instrumentation.7.html#api-v1">API v1</a>；目前支持的数据版本是 <a class="reference internal" href="cmake-instrumentation.7.html#data-version">1.0</a>。</p>
+<section id="data-collection">
+<h3><a class="toc-backref" href="cmake-instrumentation.7.html#id3" role="doc-backlink">数据收集</a><a class="headerlink" href="cmake-instrumentation.7.html#data-collection" title="链接到此标题">¶</a></h3>
+<p>每当启用 Instrumentation 时执行命令，项目构建树中就会创建一个包含该命令特定数据的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a>。这些文件将保留到 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生之后。</p>
+<p>CMake 设置了 <span class="target" id="index-0-prop_gbl:RULE_LAUNCH_COMPILE"></span><a class="reference internal" href="../prop_gbl/RULE_LAUNCH_COMPILE.html#prop_gbl:RULE_LAUNCH_COMPILE" title="RULE_LAUNCH_COMPILE"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">RULE_LAUNCH_COMPILE</span></code></a>、<span class="target" id="index-0-prop_gbl:RULE_LAUNCH_LINK"></span><a class="reference internal" href="../prop_gbl/RULE_LAUNCH_LINK.html#prop_gbl:RULE_LAUNCH_LINK" title="RULE_LAUNCH_LINK"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">RULE_LAUNCH_LINK</span></code></a> 和 <span class="target" id="index-0-prop_gbl:RULE_LAUNCH_CUSTOM"></span><a class="reference internal" href="../prop_gbl/RULE_LAUNCH_CUSTOM.html#prop_gbl:RULE_LAUNCH_CUSTOM" title="RULE_LAUNCH_CUSTOM"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">RULE_LAUNCH_CUSTOM</span></code></a> 全局属性，以将每个编译、链接和自定义命令调用包装在执行 Instrumentation 并写入 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 的启动程序中。如果项目已使用 <span class="target" id="index-0-module:CTestUseLaunchers"></span><a class="reference internal" href="../module/CTestUseLaunchers.html#module:CTestUseLaunchers" title="CTestUseLaunchers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CTestUseLaunchers</span></code></a> 配置，则启动程序除了执行该模块通常处理的通信外，还将收集 Instrumentation 数据。</p>
+</section>
+<section id="indexing">
+<span id="cmake-instrumentation-indexing"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id4" role="doc-backlink">索引</a><a class="headerlink" href="cmake-instrumentation.7.html#indexing" title="链接到此标题">¶</a></h3>
+<p>索引是整理生成的 Instrumentation 数据的过程。索引发生在称为“钩子”(hooks) 的特定间隔，例如在每次构建之后。这些钩子作为 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 的一部分进行配置。每当触发钩子时，就会生成一个索引文件，其中包含比上次索引更新的片段文件列表。</p>
+<p>索引也可以通过手动调用 <a class="reference internal" href="ctest.1.html#cmdoption-ctest-collect-instrumentation"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">--collect-instrumentation</span></code></a> 来执行。</p>
+</section>
+<section id="callbacks">
+<span id="cmake-instrumentation-callbacks"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id5" role="doc-backlink">回调</a><a class="headerlink" href="cmake-instrumentation.7.html#callbacks" title="链接到此标题">¶</a></h3>
+<p>作为 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 的一部分，用户可以提供一系列回调函数，旨在处理此功能收集的数据。</p>
+<p>每当 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生时，每个提供的回调函数都会被执行，并将生成的索引文件的路径作为参数传递。</p>
+<p>这些定义在用户级别或项目级别的回调函数应读取 Instrumentation 数据并执行任何需要的处理。一旦所有回调完成，索引文件及其列出的片段将被 CMake 自动删除。请注意，回调绝不应手动移动或删除这些数据文件，因为其他回调可能需要它们。</p>
+</section>
+</section>
+<section id="enabling-instrumentation">
+<h2><a class="toc-backref" href="cmake-instrumentation.7.html#id6" role="doc-backlink">启用 Instrumentation</a><a class="headerlink" href="cmake-instrumentation.7.html#enabling-instrumentation" title="链接到此标题">¶</a></h2>
+<p>可以为单个 CMake 项目启用 Instrumentation，也可以为用户配置和构建的所有 CMake 项目启用。在这两种情况下，请参阅 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 以了解配置此功能的详细信息。</p>
+<section id="enabling-instrumentation-at-the-project-level">
+<h3><a class="toc-backref" href="cmake-instrumentation.7.html#id7" role="doc-backlink">在项目级别启用 Instrumentation</a><a class="headerlink" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-project-level" title="链接到此标题">¶</a></h3>
+<p>项目代码可以使用 <span class="target" id="index-0-command:cmake_instrumentation"></span><a class="reference internal" href="../command/cmake_instrumentation.html#command:cmake_instrumentation" title="cmake_instrumentation"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_instrumentation()</span></code></a> 命令包含 Instrumentation 查询。</p>
+<p>此外，查询文件可以手动放置在构建树顶部的 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/instrumentation/&lt;version&gt;/query/</span></code> 下。此版本的 CMake 仅支持一个版本方案，即 <a class="reference internal" href="cmake-instrumentation.7.html#api-v1">API v1</a>。</p>
+</section>
+<section id="enabling-instrumentation-at-the-user-level">
+<h3><a class="toc-backref" href="cmake-instrumentation.7.html#id8" role="doc-backlink">在用户级别启用 Instrumentation</a><a class="headerlink" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-user-level" title="链接到此标题">¶</a></h3>
+<p>可以通过将查询文件放置在 <span class="target" id="index-0-envvar:CMAKE_CONFIG_DIR"></span><a class="reference internal" href="../envvar/CMAKE_CONFIG_DIR.html#envvar:CMAKE_CONFIG_DIR" title="CMAKE_CONFIG_DIR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_CONFIG_DIR</span></code></a> 下的 <code class="docutils literal notranslate"><span class="pre">&lt;config_dir&gt;/instrumentation/&lt;version&gt;/query/</span></code> 中，在用户级别配置 Instrumentation。</p>
+</section>
+<section id="enabling-instrumentation-for-cdash-submissions">
+<h3><a class="toc-backref" href="cmake-instrumentation.7.html#id9" role="doc-backlink">为 CDash 提交启用 Instrumentation</a><a class="headerlink" href="cmake-instrumentation.7.html#enabling-instrumentation-for-cdash-submissions" title="链接到此标题">¶</a></h3>
+<p>当以 <a class="reference internal" href="ctest.1.html#dashboard-client"><span class="std std-ref">Dashboard Client</span></a> 模式使用 <span class="target" id="index-0-module:CTest"></span><a class="reference internal" href="../module/CTest.html#module:CTest" title="CTest"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CTest</span></code></a> 时，可以通过设置 <span class="target" id="index-0-envvar:CTEST_USE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_INSTRUMENTATION.html#envvar:CTEST_USE_INSTRUMENTATION" title="CTEST_USE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_INSTRUMENTATION</span></code></a> 环境变量来启用 Instrumentation。这样做会自动启用 <code class="docutils literal notranslate"><span class="pre">dynamicSystemInformation</span></code> 选项。</p>
+<p>下表显示了每种 Instrumentation 命令类型如何映射到相应类型的 CTest XML 文件。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><a class="reference internal" href="cmake-instrumentation.7.html#cmake-instrumentation-data-v1"><span class="std std-ref">片段角色</span></a></p></th>
+<th class="head"><p>CTest XML 文件</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">configure</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Configure.xml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Configure.xml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">link</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">自定义</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">构建</span></code></p></td>
+<td><p>未使用！</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cmakeBuild</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cmakeInstall</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">安装</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ctest</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Build.xml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">测试</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Test.xml</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>默认情况下，报告给 CDash 的命令行在第一个空格处被截断。您可以通过将 <span class="target" id="index-0-envvar:CTEST_USE_VERBOSE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_VERBOSE_INSTRUMENTATION.html#envvar:CTEST_USE_VERBOSE_INSTRUMENTATION" title="CTEST_USE_VERBOSE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_VERBOSE_INSTRUMENTATION</span></code></a> 设置为 1 来选择报告完整命令行（包括参数）。</p>
+<p>或者，您可以使用 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 通过 <code class="docutils literal notranslate"><span class="pre">cdashSubmit</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cdashVerbose</span></code> 选项为 CDash 启用 Instrumentation。</p>
+<p>为了使提交的 <code class="docutils literal notranslate"><span class="pre">Build.xml</span></code> 文件能够正确对片段文件进行分组，所有配置和构建命令都应在 Dashboard Client 模式下使用 CTest 执行。</p>
+</section>
+</section>
+<section id="api-v1">
+<span id="cmake-instrumentation-api-v1"></span><h2><a class="toc-backref" href="cmake-instrumentation.7.html#id10" role="doc-backlink">API v1</a><a class="headerlink" href="cmake-instrumentation.7.html#api-v1" title="链接到此标题">¶</a></h2>
+<p>API 版本指定了 Instrumentation 目录的布局，以及查询文件和 <span class="target" id="index-1-command:cmake_instrumentation"></span><a class="reference internal" href="../command/cmake_instrumentation.html#command:cmake_instrumentation" title="cmake_instrumentation"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_instrumentation()</span></code></a> 命令参数的一般格式。</p>
+<p>Instrumentation API v1 位于项目构建树中 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/</span></code>（用于输出数据和项目级查询）或 <code class="docutils literal notranslate"><span class="pre">&lt;config_dir&gt;/</span></code>（用于用户级查询）下的 <code class="docutils literal notranslate"><span class="pre">instrumentation/v1/</span></code> 目录中。此目录的 <code class="docutils literal notranslate"><span class="pre">v1</span></code> 组件代表 API 版本。它具有以下子目录：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">query/</span></code></dt><dd><p>存放用户或客户端编写的查询文件。任何带有 <code class="docutils literal notranslate"><span class="pre">.json</span></code> 文件扩展名的文件都将被识别为查询文件。这些文件由创建它们的客户端或用户所有。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">query/generated/</span></code></dt><dd><p>存放由 CMake 项目通过 <span class="target" id="index-2-command:cmake_instrumentation"></span><a class="reference internal" href="../command/cmake_instrumentation.html#command:cmake_instrumentation" title="cmake_instrumentation"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_instrumentation()</span></code></a> 命令或 <span class="target" id="index-1-envvar:CTEST_USE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_INSTRUMENTATION.html#envvar:CTEST_USE_INSTRUMENTATION" title="CTEST_USE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_INSTRUMENTATION</span></code></a> 变量生成的查询文件。这些文件由 CMake 所有，并在 CMake 配置步骤中自动删除和重新生成。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data/</span></code></dt><dd><p>存放项目收集的 Instrumentation 数据。CMake 拥有所有数据文件，它们不应被其他进程删除。此处收集的数据将保留到 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生且所有 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 执行完毕之后。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data/index/</span></code></dt><dd><p>收集数据的子集，包含任何 <a class="reference internal" href="cmake-instrumentation.7.html#v1-index-file">v1 索引文件</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data/content/</span></code></dt><dd><p>收集数据的子集，包含任何 <a class="reference internal" href="cmake-instrumentation.7.html#v1-cmake-content-file">v1 CMake 内容文件</a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data/trace/</span></code></dt><dd><p>收集数据的子集，包含从最近的 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 创建的 <a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file">Google Trace 文件</a>。与其他数据文件不同，最近的跟踪文件在 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生且所有 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 执行完毕后仍然保留，直到下一次 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cdash/</span></code></dt><dd><p>存放内部用于生成要提交给 CDash 的 XML 内容的临时文件。</p>
+</dd>
+</dl>
+<section id="v1-query-files">
+<span id="cmake-instrumentation-v1-query-files"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id11" role="doc-backlink">v1 查询文件</a><a class="headerlink" href="cmake-instrumentation.7.html#v1-query-files" title="链接到此标题">¶</a></h3>
+<p>任何在 <code class="docutils literal notranslate"><span class="pre">instrumentation/v1/query/</span></code> 目录下带有 <code class="docutils literal notranslate"><span class="pre">.json</span></code> 扩展名的文件都被识别为 Instrumentation 数据查询。</p>
+<p>这些文件必须包含一个具有以下键的 JSON 对象。<code class="docutils literal notranslate"><span class="pre">version</span></code> 键是必需的，所有其他字段都是可选的。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>要生成的片段文件的数据版本。</p>
+<p>在查询文件中，它可以写成整数形式的主版本号，也可以写成包含 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 成员的对象。例如，<code class="docutils literal notranslate"><span class="pre">1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;major&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;minor&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code> 都表示请求版本 <code class="docutils literal notranslate"><span class="pre">1.0</span></code>。次版本号可以省略。即使请求较早的次版本，CMake 也始终生成最新次版本的插桩数据。</p>
+<p>目前唯一支持的版本是 <code class="docutils literal notranslate"><span class="pre">1.0</span></code>。未知数据版本的查询文件会被忽略。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></dt><dd><p>用于处理收集到的 Instrumentation 数据的 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 命令行字符串列表。每当执行这些回调时，生成的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-index-file">v1 索引文件</a> 的完整路径会被追加到字符串中包含的参数中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hooks</span></code></dt><dd><p>指定何时应自动进行 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 的字符串列表。这些是应该整理 Instrumentation 数据并调用用户 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 来处理数据的间隔。此列表中的元素应为以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">postGenerate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preBuild</span></code>（在调用 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 或 <code class="docutils literal notranslate"><span class="pre">make</span></code> 时调用）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postBuild</span></code>（在 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 或 <code class="docutils literal notranslate"><span class="pre">make</span></code> 完成时调用）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preCMakeBuild</span></code>（在调用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 时调用）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postCMakeBuild</span></code>（在 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 完成时调用）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postCMakeInstall</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postCMakeWorkflow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postCTest</span></code></p></li>
+</ul>
+<p>当使用 <span class="target" id="index-0-generator:MSYS Makefiles"></span><a class="reference internal" href="../generator/MSYS&#32;Makefiles.html#generator:MSYS Makefiles" title="MSYS Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">MSYS</span> <span class="pre">Makefiles</span></code></a> 或 <span class="target" id="index-1-generator:FASTBuild"></span><a class="reference internal" href="../generator/FASTBuild.html#generator:FASTBuild" title="FASTBuild"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">FASTBuild</span></code></a> 生成器时，不支持 <code class="docutils literal notranslate"><span class="pre">preBuild</span></code> 和 <code class="docutils literal notranslate"><span class="pre">postBuild</span></code>。此外，当通过 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 调用构建工具时，它们不会被触发。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">options</span></code></dt><dd><p>用于启用某些可选行为的字符串列表，包括收集某些额外数据。此列表中的元素应为以下之一：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">staticSystemInformation</span></code></dt><dd><p>启用收集有关运行 CMake 的宿主机机器的静态信息。此数据在 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 期间收集，并包含在生成的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-index-file">v1 索引文件</a> 中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dynamicSystemInformation</span></code></dt><dd><p>启用收集有关运行 CMake 的宿主机机器的动态信息。数据针对 CMake 生成的每个 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 进行收集，并包括命令执行前后立即的信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cdashSubmit</span></code></dt><dd><p>启用将 Instrumentation 数据包含在 CDash 中。这等同于启用了 <span class="target" id="index-2-envvar:CTEST_USE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_INSTRUMENTATION.html#envvar:CTEST_USE_INSTRUMENTATION" title="CTEST_USE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_INSTRUMENTATION</span></code></a> 环境变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cdashVerbose</span></code></dt><dd><p>启用在提交给 CDash 的数据中包含完整的未截断命令。等同于启用了 <span class="target" id="index-1-envvar:CTEST_USE_VERBOSE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_VERBOSE_INSTRUMENTATION.html#envvar:CTEST_USE_VERBOSE_INSTRUMENTATION" title="CTEST_USE_VERBOSE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_VERBOSE_INSTRUMENTATION</span></code></a> 和 <span class="target" id="index-3-envvar:CTEST_USE_INSTRUMENTATION"></span><a class="reference internal" href="../envvar/CTEST_USE_INSTRUMENTATION.html#envvar:CTEST_USE_INSTRUMENTATION" title="CTEST_USE_INSTRUMENTATION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CTEST_USE_INSTRUMENTATION</span></code></a> 环境变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trace</span></code></dt><dd><p>启用在 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 期间生成 <a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file">Google Trace 文件</a>，以可视化收集到的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 中的数据。</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+<p>列出的 <code class="docutils literal notranslate"><span class="pre">callbacks</span></code> 将在指定的钩子处<em>至少</em>被调用一次。当存在多个查询文件时，它们之间的 <code class="docutils literal notranslate"><span class="pre">callbacks</span></code>、<code class="docutils literal notranslate"><span class="pre">hooks</span></code> 和 <code class="docutils literal notranslate"><span class="pre">options</span></code> 将被合并。因此，如果任何查询文件包含任何 <code class="docutils literal notranslate"><span class="pre">hooks</span></code>，则跨所有查询文件的每个 <code class="docutils literal notranslate"><span class="pre">callback</span></code> 将在所有查询文件的每个 <code class="docutils literal notranslate"><span class="pre">hook</span></code> 处执行。此外，如果任何查询文件使用 <code class="docutils literal notranslate"><span class="pre">options</span></code> 字段请求可选数据，任何相关数据都将出现在所有片段文件中。用户编写的 <code class="docutils literal notranslate"><span class="pre">callbacks</span></code> 应该能够处理这种可选数据的存在，因为它可能是由不相关的查询请求的。</p>
+<p>JSON 格式由 <a class="reference download internal" download="" href="../_downloads/eb9fce565e82cb518917ef965f4ecf04/query-v1-schema.json"><code class="xref download docutils literal notranslate"><span class="pre">此 JSON 模式</span></code></a> 以机器可读的形式描述。</p>
+<p>示例</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"callbacks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"/usr/bin/python callback.py"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"/usr/bin/cmake -P callback.cmake arg"</span><span class="p">,</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"hooks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"postCMakeBuild"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"postCMakeInstall"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"staticSystemInformation"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"dynamicSystemInformation"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"cdashSubmit"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"trace"</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>在此示例中，在每次 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 或 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 调用后，将在 <code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/instrumentation/v1/data/index</span></code> 中生成索引文件 <code class="docutils literal notranslate"><span class="pre">index-&lt;timestamp&gt;.json</span></code>，其中包含自上次索引以来创建的数据片段文件列表。命令 <code class="docutils literal notranslate"><span class="pre">/usr/bin/python</span> <span class="pre">callback.py</span> <span class="pre">index-&lt;timestamp&gt;.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/usr/bin/cmake</span> <span class="pre">-P</span> <span class="pre">callback.cmake</span> <span class="pre">arg</span> <span class="pre">index-&lt;timestamp&gt;.json</span></code> 将按该顺序执行。索引文件将包含 <code class="docutils literal notranslate"><span class="pre">staticSystemInformation</span></code> 数据，索引中列出的每个片段文件都将包含 <code class="docutils literal notranslate"><span class="pre">dynamicSystemInformation</span></code> 数据。此外，索引文件将包含生成的 <a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file">Google Trace 文件</a> 的路径。一旦两个回调都完成，索引文件及其列出的数据文件（包括片段文件，但不包括跟踪文件）将从项目构建树中删除。Instrumentation 数据将出现在提交给 CDash 的 XML 文件中，但由于未启用 <code class="docutils literal notranslate"><span class="pre">cdashVerbose</span></code>，命令字符串将被截断。</p>
+</section>
+</section>
+<section id="data-version">
+<span id="cmake-instrumentation-data-version"></span><span id="cmake-instrumentation-data-v1"></span><h2><a class="toc-backref" href="cmake-instrumentation.7.html#id12" role="doc-backlink">数据版本</a><a class="headerlink" href="cmake-instrumentation.7.html#data-version" title="链接到此标题">¶</a></h2>
+<p>数据版本指定了 <a class="reference internal" href="cmake-instrumentation.7.html#api-v1">API v1</a> 在 <a class="reference internal" href="cmake-instrumentation.7.html#data-collection">数据收集</a> 和 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 过程中生成的输出文件内容。</p>
+<p><a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 或 <span class="target" id="index-3-command:cmake_instrumentation"></span><a class="reference internal" href="../command/cmake_instrumentation.html#command:cmake_instrumentation" title="cmake_instrumentation"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_instrumentation()</span></code></a> 调用应请求特定的数据版本；CMake 会生成对应版本的 v1 数据文件，并发送给该查询定义的用户 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a>。</p>
+<p>目前唯一支持的版本是 <code class="docutils literal notranslate"><span class="pre">1.0</span></code>。当删除或重新格式化已有数据、导致解析这些数据的脚本可能与新格式不兼容时，会创建新的主版本号；当新增数据可用时，会创建新的次版本号。</p>
+<section id="v1-snippet-file">
+<span id="cmake-instrumentation-v1-snippet-file"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id13" role="doc-backlink">v1 片段文件</a><a class="headerlink" href="cmake-instrumentation.7.html#v1-snippet-file" title="链接到此标题">¶</a></h3>
+<p>片段文件是为作为 CMake 构建或安装步骤一部分调用的每个编译、链接和自定义命令生成的，并包含有关执行的命令的 Instrumentation 数据。此外，以下情况也会创建片段文件：</p>
+<ul class="simple">
+<li><p>CMake 配置步骤</p></li>
+<li><p>CMake 生成步骤</p></li>
+<li><p>整个构建步骤（使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 执行）</p></li>
+<li><p>整个安装步骤（使用 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 执行）</p></li>
+<li><p>每次调用 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a> 来 <a class="reference internal" href="ctest.1.html#run-tests"><span class="std std-ref">运行测试</span></a> 时（即使未找到测试）</p></li>
+<li><p><span class="target" id="index-1-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a> 执行的每个单独测试</p></li>
+</ul>
+<p>这些文件将保留在构建树中，直到 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生且任何用户指定的 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 执行完毕。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>配置和生成片段文件在生成步骤完成之前不会由 CMake 写入。当使用 <span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 或 <span class="target" id="index-0-manual:ccmake(1)"></span><a class="reference internal" href="ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a> 时，仅触发配置步骤而不生成项目文件将不会生成任何配置片段。一旦运行了生成步骤，每次运行配置步骤就会有一个配置片段。</p>
+</div>
+<p>片段文件的文件名语法为 <code class="docutils literal notranslate"><span class="pre">&lt;role&gt;-&lt;hash&gt;-&lt;timestamp&gt;.json</span></code>，并包含以下数据：</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>片段文件的 <a class="reference internal" href="cmake-instrumentation.7.html#data-version">数据版本</a>。目前始终写为 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;major&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;minor&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">命令</span></code></dt><dd><p>执行的完整命令。当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">build</span></code> 时排除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">workingDir</span></code></dt><dd><p>执行 <code class="docutils literal notranslate"><span class="pre">command</span></code> 的工作目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">result</span></code></dt><dd><p>命令的退出代码，为一个整数。当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">build</span></code> 时，这将为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">role</span></code></dt><dd><p>执行的命令类型，将为以下值之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">configure</span></code>：CMake 配置步骤</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate</span></code>：CMake 生成步骤</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compile</span></code>：构建期间调用的单个编译步骤</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link</span></code>：构建期间调用的单个链接步骤</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">custom</span></code>：构建期间调用的单个自定义命令</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build</span></code>：完整的 <code class="docutils literal notranslate"><span class="pre">make</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 调用（非通过 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a>）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmakeBuild</span></code>：完整的 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a> 调用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmakeInstall</span></code>：完整的 <a class="reference internal" href="cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 调用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">install</span></code>：单个 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-P</span> <span class="pre">cmake_install.cmake</span></code> 调用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ctest</span></code>：完整的 <span class="target" id="index-2-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a> 命令调用</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>：<span class="target" id="index-3-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a> 执行的单个测试</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">目标</span></code></dt><dd><p>与命令关联的 CMake 目标。仅在 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">compile</span></code> 或 <code class="docutils literal notranslate"><span class="pre">link</span></code> 时，或者当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">custom</span></code> 且自定义命令通过 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#target" title="add_custom_command(target)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command(TARGET)</span></code></a> 附加到目标时包含。结合 <code class="docutils literal notranslate"><span class="pre">cmakeContent</span></code>，这可用于查找目标 <span class="target" id="index-0-prop_tgt:TYPE"></span><a class="reference internal" href="../prop_tgt/TYPE.html#prop_tgt:TYPE" title="TYPE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TYPE</span></code></a> 和 <span class="target" id="index-0-prop_tgt:LABELS"></span><a class="reference internal" href="../prop_tgt/LABELS.html#prop_tgt:LABELS" title="LABELS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LABELS</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">timeStart</span></code></dt><dd><p>命令开始的时间，表示为自系统纪元以来的毫秒数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">duration</span></code></dt><dd><p>命令运行的持续时间，以毫秒表示。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">outputs</span></code></dt><dd><p>命令的输出文件，为一个数组。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为以下之一时包含：<code class="docutils literal notranslate"><span class="pre">compile</span></code>、<code class="docutils literal notranslate"><span class="pre">link</span></code>、<code class="docutils literal notranslate"><span class="pre">custom</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">outputSizes</span></code></dt><dd><p>以字节为单位的 <code class="docutils literal notranslate"><span class="pre">outputs</span></code> 大小，为一个数组。对于不存在的文件，大小为 0。在与 <code class="docutils literal notranslate"><span class="pre">outputs</span></code> 字段相同的条件下包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">源</span></code></dt><dd><p>正在编译的源文件。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">compile</span></code> 时包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">language</span></code></dt><dd><p>正在编译的源文件的语言。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">compile</span></code> 或 <code class="docutils literal notranslate"><span class="pre">link</span></code> 时包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">testName</span></code></dt><dd><p>正在执行的测试名称。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">test</span></code> 时包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">config</span></code></dt><dd><p><a class="reference internal" href="cmake-buildsystem.7.html#build-configurations"><span class="std std-ref">构建配置</span></a>，例如 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Debug</span></code>。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为以下之一时包含：<code class="docutils literal notranslate"><span class="pre">compile</span></code>、<code class="docutils literal notranslate"><span class="pre">link</span></code>、<code class="docutils literal notranslate"><span class="pre">custom</span></code>、<code class="docutils literal notranslate"><span class="pre">install</span></code>、<code class="docutils literal notranslate"><span class="pre">test</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dynamicSystemInformation</span></code></dt><dd><p>指定收集有关运行 CMake 的宿主机机器的动态信息。针对 CMake 生成的每个片段文件收集数据，并包括命令执行前后立即的数据。仅当通过 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 启用时包含。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">beforeHostMemoryUsed</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">timeStart</span></code> 时已使用的宿主机内存（以 KiB 为单位）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">afterHostMemoryUsed</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">timeStart</span> <span class="pre">+</span> <span class="pre">duration</span></code> 时已使用的宿主机内存（以 KiB 为单位）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">beforeCPULoadAverage</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">timeStart</span></code> 时的平均 CPU 负载，如果无法确定则为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">afterCPULoadAverage</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">timeStart</span> <span class="pre">+</span> <span class="pre">duration</span></code> 时的平均 CPU 负载，如果无法确定则为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cmakeContent</span></code></dt><dd><p>位于 <code class="docutils literal notranslate"><span class="pre">data</span></code> 下的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-cmake-content-file">v1 CMake 内容文件</a> 的路径，其中包含有关负责生成此片段中 <code class="docutils literal notranslate"><span class="pre">command</span></code> 的 CMake 配置和生成步骤的信息。使用 <span class="target" id="index-1-manual:cmake-gui(1)"></span><a class="reference internal" href="cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 或 <span class="target" id="index-1-manual:ccmake(1)"></span><a class="reference internal" href="ccmake.1.html#manual:ccmake(1)" title="ccmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ccmake(1)</span></code></a> 时，此字段对于生成步骤之前的所有配置步骤可能为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">showOnly</span></code></dt><dd><p>一个布尔值，表示是否将 <a class="reference internal" href="ctest.1.html#cmdoption-ctest-N"><code class="xref std std-option docutils literal notranslate"><span class="pre">--show-only</span></code></a> 选项传递给了 <span class="target" id="index-4-manual:ctest(1)"></span><a class="reference internal" href="ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest</span></code></a>。仅当 <code class="docutils literal notranslate"><span class="pre">role</span></code> 为 <code class="docutils literal notranslate"><span class="pre">ctest</span></code> 时包含。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>示例</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"command"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"\"/usr/bin/c++\" \"-MD\" \"-MT\" \"CMakeFiles/main.dir/main.cxx.o\" \"-MF\" \"CMakeFiles/main.dir/main.cxx.o.d\" \"-o\" \"CMakeFiles/main.dir/main.cxx.o\" \"-c\" \"&lt;src&gt;/main.cxx\""</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"role"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"compile"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"main"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"language"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"C++"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"outputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"CMakeFiles/main.dir/main.cxx.o"</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"outputSizes"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"source"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;src&gt;/main.cxx"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"config"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Debug"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dynamicSystemInformation"</span><span class="w"> </span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"afterCPULoadAverage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">2.3500000000000001</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"afterHostMemoryUsed"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">6635680.0</span>
+<span class="w">    </span><span class="nt">"beforeCPULoadAverage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">2.3500000000000001</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"beforeHostMemoryUsed"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">6635832.0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"timeStart"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1737053448177</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"duration"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"cmakeContent"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"content/cmake-2025-07-11T12-46-32-0572.json"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="v1-index-file">
+<h3><a class="toc-backref" href="cmake-instrumentation.7.html#id14" role="doc-backlink">v1 索引文件</a><a class="headerlink" href="cmake-instrumentation.7.html#v1-index-file" title="链接到此标题">¶</a></h3>
+<p>索引文件包含 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 的列表。它充当导航 Instrumentation 数据的入口点。它们在 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生时生成，并在任何用户指定的 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 执行后删除。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>索引文件的 <a class="reference internal" href="cmake-instrumentation.7.html#data-version">数据版本</a>。目前始终写为 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;major&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;minor&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">buildDir</span></code></dt><dd><p>CMake 项目的构建目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dataDir</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;build&gt;/.cmake/instrumentation/v1/data/</span></code> 目录的完整路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hook</span></code></dt><dd><p>负责生成索引文件的钩子名称。除了可以通过 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 之一指定的钩子外，如果通过调用 <a class="reference internal" href="ctest.1.html#cmdoption-ctest-collect-instrumentation"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">--collect-instrumentation</span></code></a> 执行索引，则此值可能设置为 <code class="docutils literal notranslate"><span class="pre">manual</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">snippets</span></code></dt><dd><p>包含 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 的列表。这包括自上一个索引文件创建以来生成的所有片段文件。文件路径相对于 <code class="docutils literal notranslate"><span class="pre">dataDir</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trace</span></code></dt><dd><p>包含 <a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file">Google Trace 文件</a> 的路径。这包括来自索引文件中所有相应 <code class="docutils literal notranslate"><span class="pre">snippets</span></code> 的数据。文件路径相对于 <code class="docutils literal notranslate"><span class="pre">dataDir</span></code>。仅当通过 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 启用时包含。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">staticSystemInformation</span></code></dt><dd><p>指定收集有关运行 CMake 的宿主机机器的静态信息。如果 CMake 无法确定任何给定字段的值，则它将为 <code class="docutils literal notranslate"><span class="pre">null</span></code>。有关以下每个字段的描述，请参阅 <span class="target" id="index-0-command:cmake_host_system_information"></span><a class="reference internal" href="../command/cmake_host_system_information.html#command:cmake_host_system_information" title="cmake_host_system_information"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_host_system_information()</span></code></a>。</p>
+<p>仅当通过 <a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a> 启用时包含。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OSName</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OSPlatform</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OSRelease</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OSVersion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">familyId</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostname</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is64Bits</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelId</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modelName</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberOfLogicalCPU</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberOfPhysicalCPU</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processorAPICID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processorCacheSize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processorClockFrequency</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">processorName</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">totalPhysicalMemory</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">totalVirtualMemory</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vendorID</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vendorString</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>示例</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"hook"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manual"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"buildDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;build&gt;"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"dataDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;build&gt;/.cmake/instrumentation/v1/data"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"snippets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"configure-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"generate-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"compile-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"compile-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"link-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"install-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"ctest-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"test-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"test-&lt;hash&gt;-&lt;timestamp&gt;.json"</span><span class="p">,</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"trace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"trace/trace-&lt;timestamp&gt;.json"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="v1-cmake-content-file">
+<span id="cmake-instrumentation-v1-cmake-content-file"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id15" role="doc-backlink">v1 CMake 内容文件</a><a class="headerlink" href="cmake-instrumentation.7.html#v1-cmake-content-file" title="链接到此标题">¶</a></h3>
+<p>CMake 内容文件包含有关 CMake 配置和生成步骤的信息。每个 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 都提供指向其中一个文件的路径，该文件对应于负责生成其命令的 CMake 调用。</p>
+<p>每个 CMake 内容文件包含以下内容：</p>
+<blockquote>
+<div><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">project</span></code></dt><dd><p><span class="target" id="index-0-variable:CMAKE_PROJECT_NAME"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_NAME.html#variable:CMAKE_PROJECT_NAME" title="CMAKE_PROJECT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_NAME</span></code></a> 的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">自定义</span></code></dt><dd><p>一个对象，其中包含用户通过 <span class="target" id="index-3-command:cmake_instrumentation"></span><a class="reference internal" href="../command/cmake_instrumentation.html#command:cmake_instrumentation" title="cmake_instrumentation"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_instrumentation()</span></code></a> 命令的 <a class="reference internal" href="../command/cmake_instrumentation.html#cmake-instrumentation-custom-content"><span class="std std-ref">自定义 CMake 内容</span></a> 功能指定的任意 JSON 数据。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>CMake 内容文件的 <a class="reference internal" href="cmake-instrumentation.7.html#data-version">数据版本</a>。目前始终写为 <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;major&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;minor&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">targets</span></code></dt><dd><p>一个包含按名称索引且具有相应 Instrumentation 数据的 CMake 目标的对象。每个目标包含以下内容：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>目标的 <span class="target" id="index-1-prop_tgt:TYPE"></span><a class="reference internal" href="../prop_tgt/TYPE.html#prop_tgt:TYPE" title="TYPE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TYPE</span></code></a> 属性。仅包含 <code class="docutils literal notranslate"><span class="pre">EXECUTABLE</span></code>、<code class="docutils literal notranslate"><span class="pre">STATIC_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">SHARED_LIBRARY</span></code>、<code class="docutils literal notranslate"><span class="pre">MODULE_LIBRARY</span></code> 和 <code class="docutils literal notranslate"><span class="pre">OBJECT_LIBRARY</span></code> 目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">labels</span></code></dt><dd><p>目标的 <span class="target" id="index-1-prop_tgt:LABELS"></span><a class="reference internal" href="../prop_tgt/LABELS.html#prop_tgt:LABELS" title="LABELS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LABELS</span></code></a> 属性。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="google-trace-file">
+<span id="cmake-instrumentation-google-trace-file"></span><h3><a class="toc-backref" href="cmake-instrumentation.7.html#id16" role="doc-backlink">Google Trace 文件</a><a class="headerlink" href="cmake-instrumentation.7.html#google-trace-file" title="链接到此标题">¶</a></h3>
+<p>跟踪文件遵循 <a class="reference external" href="https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview">Google 跟踪事件格式</a>。它们包括当前索引文件中列出的所有 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 中的数据。这些文件即使在 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生且所有 <a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a> 执行完毕后仍保留在构建树中，直到下一次 <a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a> 发生。</p>
+<p>跟踪文件以 <code class="docutils literal notranslate"><span class="pre">JSON</span> <span class="pre">数组格式</span></code> 存储，其中每个 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 对应于单个跟踪事件对象。每个跟踪事件包含以下数据：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>由 CMake 根据给定的片段数据生成的描述性名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cat</span></code></dt><dd><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 中的 <code class="docutils literal notranslate"><span class="pre">role</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ph</span></code></dt><dd><p>目前始终为 <code class="docutils literal notranslate"><span class="pre">"X"</span></code>，表示“完成事件”。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ts</span></code></dt><dd><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 中的 <code class="docutils literal notranslate"><span class="pre">timeStart</span></code>，从毫秒转换为微秒。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dur</span></code></dt><dd><p><a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 中的 <code class="docutils literal notranslate"><span class="pre">duration</span></code>，从毫秒转换为微秒。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pid</span></code></dt><dd><p>未使用（始终为零）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tid</span></code></dt><dd><p>一个介于零与正在索引的进程运行的并发作业数之间的整数。这是 CMake 根据正在索引的所有片段文件的 <code class="docutils literal notranslate"><span class="pre">ts</span></code> 和 <code class="docutils literal notranslate"><span class="pre">dur</span></code> 计算出的合成 ID，旨在产生更有用的进程并发可视化。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">args</span></code></dt><dd><p>包含来自与此跟踪事件对应的 <a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a> 的所有数据。</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#">cmake-instrumentation(7)</a><ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#introduction">简介</a><ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#data-collection">数据收集</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#indexing">索引</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#callbacks">回调</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation">启用 Instrumentation</a><ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-project-level">在项目级别启用 Instrumentation</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-at-the-user-level">在用户级别启用 Instrumentation</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#enabling-instrumentation-for-cdash-submissions">为 CDash 提交启用 Instrumentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#api-v1">API v1</a><ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#v1-query-files">v1 查询文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#data-version">数据版本</a><ul>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#v1-snippet-file">v1 片段文件</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#v1-index-file">v1 索引文件</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#v1-cmake-content-file">v1 CMake 内容文件</a></li>
+<li><a class="reference internal" href="cmake-instrumentation.7.html#google-trace-file">Google Trace 文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="../generator/Sublime&#32;Text&#32;2.html" title="上一章">Sublime Text 2</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake-language.7.html" title="下一章">cmake-language(7)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-instrumentation.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake-language.7.html" title="cmake-language(7)">下一页</a> |</li>
+        <li class="right">
+          <a href="../generator/Sublime&#32;Text&#32;2.html" title="Sublime Text 2">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-instrumentation.7.html">cmake-instrumentation(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

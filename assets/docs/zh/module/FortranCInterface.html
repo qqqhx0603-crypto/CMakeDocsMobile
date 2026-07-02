@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FortranCInterface — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FortranCInterface.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="GenerateExportHeader" href="GenerateExportHeader.html" />
+    <link rel="prev" title="FindPackageMessage" href="FindPackageMessage.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="GenerateExportHeader.html" title="GenerateExportHeader" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPackageMessage.html" title="FindPackageMessage" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FortranCInterface.html">FortranCInterface</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fortrancinterface">
+<span id="module:FortranCInterface"></span><h1>FortranCInterface<a class="headerlink" href="FortranCInterface.html#fortrancinterface" title="链接到此标题">¶</a></h1>
+<p>该模块提供用于检测 Fortran/C 接口的变量和命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FortranCInterface</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>该模块会自动检测 C 和 Fortran 语言交互所使用的 API。</p>
+<section id="variables">
+<h2>变量<a class="headerlink" href="FortranCInterface.html#variables" title="此标题的链接">¶</a></h2>
+<section id="result-variables">
+<h3>结果变量<a class="headerlink" href="FortranCInterface.html#result-variables" title="此标题的链接">¶</a></h3>
+<p>包含此模块将定义以下变量，用以指示是否找到名称修饰（manglings）：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL_FOUND</span></code></dt><dd><p>布尔值，指示全局子程序和函数是否可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_FOUND</span></code></dt><dd><p>布尔值，指示模块子程序和函数（由 <code class="docutils literal notranslate"><span class="pre">MODULE</span> <span class="pre">PROCEDURE</span></code> 声明）是否可用。</p>
+</dd>
+</dl>
+</section>
+<section id="input-variables">
+<h3>输入变量<a class="headerlink" href="FortranCInterface.html#input-variables" title="此标题的链接">¶</a></h3>
+<p>该模块还提供了以下变量来指定检测到的修饰规则，尽管典型的用例不需要引用它们，可以直接使用下方的<a class="reference internal" href="FortranCInterface.html#commands">命令</a>。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL_PREFIX</span></code></dt><dd><p>不带下划线的全局符号的前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL_SUFFIX</span></code></dt><dd><p>不带下划线的全局符号的后缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL_CASE</span></code></dt><dd><p>不带下划线的全局符号的大小写格式，为 <code class="docutils literal notranslate"><span class="pre">UPPER</span></code>（大写）或 <code class="docutils literal notranslate"><span class="pre">LOWER</span></code>（小写）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL__PREFIX</span></code></dt><dd><p>带下划线的全局符号的前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL__SUFFIX</span></code></dt><dd><p>带下划线的全局符号的后缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL__CASE</span></code></dt><dd><p>带下划线的全局符号的大小写格式，为 <code class="docutils literal notranslate"><span class="pre">UPPER</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LOWER</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_PREFIX</span></code></dt><dd><p>不带下划线的模块符号的前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_MIDDLE</span></code></dt><dd><p>不带下划线的模块符号中间部分，出现在模块名称和符号名称之间。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_SUFFIX</span></code></dt><dd><p>不带下划线的模块符号的后缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_CASE</span></code></dt><dd><p>不带下划线的模块符号的大小写格式，为 <code class="docutils literal notranslate"><span class="pre">UPPER</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LOWER</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_ORDER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>不带下划线的模块符号的组件顺序</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">MODULE_THEN_SYMBOL</span></code></dt><dd><p>模块名出现在符号名<em>之前</em>，即 <code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;&lt;module&gt;&lt;MIDDLE&gt;&lt;symbol&gt;&lt;SUFFIX&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYMBOL_THEN_MODULE</span></code></dt><dd><p>模块名出现在符号名<em>之后</em>，即 <code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;&lt;symbol&gt;&lt;MIDDLE&gt;&lt;module&gt;&lt;SUFFIX&gt;</span></code>。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE__PREFIX</span></code></dt><dd><p>带下划线的模块符号的前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE__MIDDLE</span></code></dt><dd><p>带下划线的模块符号中间部分，出现在模块名称和符号名称之间。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE__SUFFIX</span></code></dt><dd><p>带下划线的模块符号的后缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE__CASE</span></code></dt><dd><p>带下划线的模块符号的大小写格式，为 <code class="docutils literal notranslate"><span class="pre">UPPER</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LOWER</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE__ORDER</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>带下划线的模块符号的组件顺序</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">MODULE_THEN_SYMBOL</span></code></dt><dd><p>模块名出现在符号名<em>之前</em>，即 <code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;&lt;module&gt;&lt;MIDDLE&gt;&lt;symbol&gt;&lt;SUFFIX&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYMBOL_THEN_MODULE</span></code></dt><dd><p>模块名出现在符号名<em>之后</em>，即 <code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;&lt;symbol&gt;&lt;MIDDLE&gt;&lt;module&gt;&lt;SUFFIX&gt;</span></code>。</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="variables-for-additional-manglings">
+<h3>附加修饰规则的变量<a class="headerlink" href="FortranCInterface.html#variables-for-additional-manglings" title="链接到此标题">¶</a></h3>
+<p>该模块了解许多 Fortran 编译器可能的 <code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 修饰规则，它还提供了一个接口来指定新的可能修饰规则。可以在包含此模块之前设置以下变量来指定附加的修饰规则：</p>
+<p><code class="docutils literal notranslate"><span class="pre">FortranCInterface_GLOBAL_SYMBOLS</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">FortranCInterface_MODULE_SYMBOLS</span></code></p>
+<p>在包含此模块之前，用于指定符号 <code class="docutils literal notranslate"><span class="pre">MySub</span></code>, <code class="docutils literal notranslate"><span class="pre">My_Sub</span></code>, <code class="docutils literal notranslate"><span class="pre">MyModule:MySub</span></code> 和 <code class="docutils literal notranslate"><span class="pre">My_Module:My_Sub</span></code> 的修饰规则。</p>
+</section>
+</section>
+<section id="commands">
+<h2>命令<a class="headerlink" href="FortranCInterface.html#commands" title="链接到此标题">¶</a></h2>
+<p>本模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fortrancinterface_header">
+<span class="sig-name descname"><span class="pre">FortranCInterface_HEADER</span></span><a class="headerlink" href="FortranCInterface.html#command:fortrancinterface_header" title="Link to this definition">¶</a></dt>
+<dd><p>生成一个包含宏的 C 头文件，用于修饰符号名称</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FortranCInterface_HEADER(</span>
+<span class="w">  </span><span class="nv">&lt;file&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">MACRO_NAMESPACE</span><span class="w"> </span><span class="nv">&lt;macro-ns&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SYMBOL_NAMESPACE</span><span class="w"> </span><span class="nv">&lt;ns&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SYMBOLS</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;module&gt;</span><span class="o">:</span><span class="p">]</span><span class="nv">&lt;function&gt;</span><span class="w"> </span><span class="p">...]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令生成一个包含以下宏定义的 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define FortranCInterface_GLOBAL (name,NAME) ...</span>
+<span class="cp">#define FortranCInterface_GLOBAL_(name,NAME) ...</span>
+<span class="cp">#define FortranCInterface_MODULE (mod,name, MOD,NAME) ...</span>
+<span class="cp">#define FortranCInterface_MODULE_(mod,name, MOD,NAME) ...</span>
+</pre></div>
+</div>
+<p>这些宏分别修饰四类 Fortran 符号：</p>
+<ul class="simple">
+<li><p>不带 '_' 的全局符号：<code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">mysub()</span></code></p></li>
+<li><p>带 '_' 的全局符号：<code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">my_sub()</span></code></p></li>
+<li><p>不带 '_' 的模块符号：<code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">mymod;</span> <span class="pre">call</span> <span class="pre">mysub()</span></code></p></li>
+<li><p>带 '_' 的模块符号：<code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">mymod;</span> <span class="pre">call</span> <span class="pre">my_sub()</span></code></p></li>
+</ul>
+<p>如果某类别的修饰规则未知，其宏将保持未定义状态。所有宏都需要原始名称的小写和大写形式。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">MACRO_NAMESPACE</span></code></dt><dd><p>将默认的 <code class="docutils literal notranslate"><span class="pre">FortranCInterface_</span></code> 前缀替换为给定的命名空间 <code class="docutils literal notranslate"><span class="pre">&lt;macro-ns&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYMBOL_NAMESPACE</span></code></dt><dd><p>为 <code class="docutils literal notranslate"><span class="pre">SYMBOLS</span></code> 选项生成的所有预处理器定义添加给定的命名空间 <code class="docutils literal notranslate"><span class="pre">&lt;ns&gt;</span></code> 前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYMBOLS</span></code></dt><dd><p>列出要通过 C 预处理器定义自动修饰的符号</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;function&gt;          ==&gt; #define &lt;ns&gt;&lt;function&gt; ...
+&lt;module&gt;:&lt;function&gt; ==&gt; #define &lt;ns&gt;&lt;module&gt;_&lt;function&gt; ...
+</pre></div>
+</div>
+<p>如果某些符号的修饰规则未知，则不会创建预处理器定义，并会显示一条警告。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fortrancinterface_verify">
+<span class="sig-name descname"><span class="pre">FortranCInterface_VERIFY</span></span><a class="headerlink" href="FortranCInterface.html#command:fortrancinterface_verify" title="Link to this definition">¶</a></dt>
+<dd><p>验证 Fortran 和 C/C++ 编译器是否能协同工作</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FortranCInterface_VERIFY(</span><span class="p">[</span><span class="no">CXX</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令测试一个同时使用 Fortran 和 C（如果给定了 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 选项则包含 C++）的简单测试可执行文件是否能成功编译和链接。结果将以布尔值形式存储在缓存条目 <code class="docutils literal notranslate"><span class="pre">FortranCInterface_VERIFIED_C</span></code>（如果给定 <code class="docutils literal notranslate"><span class="pre">CXX</span></code> 则为 <code class="docutils literal notranslate"><span class="pre">FortranCInterface_VERIFIED_CXX</span></code>）中。如果检查失败且未指定 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code>，命令将以描述问题的致命错误消息终止。此检查的目的是在编译器组合不兼容时尽早停止构建。测试在 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 配置下构建。</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FortranCInterface.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-basic-usage">
+<h3>示例：基本用法<a class="headerlink" href="FortranCInterface.html#examples-basic-usage" title="链接到此标题">¶</a></h3>
+<p>以下示例创建了一个 <code class="docutils literal notranslate"><span class="pre">FC.h</span></code> 头文件，其中定义了修饰宏 <code class="docutils literal notranslate"><span class="pre">FC_GLOBAL()</span></code>, <code class="docutils literal notranslate"><span class="pre">FC_GLOBAL_()</span></code>, <code class="docutils literal notranslate"><span class="pre">FC_MODULE()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">FC_MODULE_()</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FortranCInterface</span><span class="nf">)</span>
+<span class="nf">FortranCInterface_HEADER(</span><span class="nb">FC.h</span><span class="w"> </span><span class="no">MACRO_NAMESPACE</span><span class="w"> </span><span class="s">"FC_"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>下一个示例创建了一个 <code class="docutils literal notranslate"><span class="pre">FCMangle.h</span></code> 头文件，它定义了与上一个示例相同的 <code class="docutils literal notranslate"><span class="pre">FC_*()</span></code> 修饰宏，以及预处理器符号 <code class="docutils literal notranslate"><span class="pre">FC_mysub</span></code> 和 <code class="docutils literal notranslate"><span class="pre">FC_mymod_my_sub</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FortranCInterface</span><span class="nf">)</span>
+<span class="nf">FortranCInterface_HEADER(</span>
+<span class="w">  </span><span class="nb">FCMangle.h</span>
+<span class="w">  </span><span class="no">MACRO_NAMESPACE</span><span class="w"> </span><span class="s">"FC_"</span>
+<span class="w">  </span><span class="no">SYMBOL_NAMESPACE</span><span class="w"> </span><span class="s">"FC_"</span>
+<span class="w">  </span><span class="no">SYMBOLS</span><span class="w"> </span><span class="nb">mysub</span><span class="w"> </span><span class="nb">mymod</span><span class="o">:</span><span class="nb">my_sub</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-additional-manglings">
+<h3>示例：附加修饰规则<a class="headerlink" href="FortranCInterface.html#example-additional-manglings" title="链接到此标题">¶</a></h3>
+<p>以下示例展示了如何指定符号 <code class="docutils literal notranslate"><span class="pre">MySub</span></code>, <code class="docutils literal notranslate"><span class="pre">My_Sub</span></code>, <code class="docutils literal notranslate"><span class="pre">MyModule:MySub</span></code> 和 <code class="docutils literal notranslate"><span class="pre">My_Module:My_Sub</span></code> 的修饰规则。以下代码告诉该模块尝试给定的 <code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MODULE</span></code> 修饰规则。（在此示例中，插入符号用于指明原始符号名称以方便阅读，但并非必需。）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">FortranCInterface_GLOBAL_SYMBOLS</span><span class="w"> </span><span class="nb">mysub_</span><span class="w"> </span><span class="nb">my_sub__</span><span class="w"> </span><span class="no">MYSUB_</span><span class="nf">)</span>
+<span class="w">  </span><span class="c">#                                  ^^^^^  ^^^^^^   ^^^^^</span>
+<span class="nf">set(</span><span class="nb">FortranCInterface_MODULE_SYMBOLS</span>
+<span class="w">    </span><span class="nb">__mymodule_MOD_mysub</span><span class="w"> </span><span class="nb">__my_module_MOD_my_sub</span><span class="nf">)</span>
+<span class="w">  </span><span class="c">#   ^^^^^^^^     ^^^^^   ^^^^^^^^^     ^^^^^^</span>
+
+<span class="nf">include(</span><span class="nb">FortranCInterface</span><span class="nf">)</span>
+
+<span class="c"># ...</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FortranCInterface.html#">FortranCInterface</a><ul>
+<li><a class="reference internal" href="FortranCInterface.html#variables">变量</a><ul>
+<li><a class="reference internal" href="FortranCInterface.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FortranCInterface.html#input-variables">输入变量</a></li>
+<li><a class="reference internal" href="FortranCInterface.html#variables-for-additional-manglings">附加修饰规则的变量</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FortranCInterface.html#commands">命令</a></li>
+<li><a class="reference internal" href="FortranCInterface.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FortranCInterface.html#examples-basic-usage">示例：基本用法</a></li>
+<li><a class="reference internal" href="FortranCInterface.html#example-additional-manglings">示例：附加修饰规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindPackageMessage.html" title="上一章">FindPackageMessage</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="GenerateExportHeader.html" title="下一章">GenerateExportHeader</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FortranCInterface.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="GenerateExportHeader.html" title="GenerateExportHeader">下一页</a> |</li>
+        <li class="right">
+          <a href="FindPackageMessage.html" title="FindPackageMessage">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FortranCInterface.html">FortranCInterface</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

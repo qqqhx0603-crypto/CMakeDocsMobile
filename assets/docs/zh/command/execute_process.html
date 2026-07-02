@@ -1,0 +1,271 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>execute_process — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="execute_process.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="file" href="file.html" />
+    <link rel="prev" title="endwhile" href="endwhile.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="file.html" title="file" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="endwhile.html" title="endwhile" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="execute_process.html">execute_process</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="execute-process">
+<span id="command:execute_process"></span><h1>execute_process<a class="headerlink" href="execute_process.html#execute-process" title="链接到此标题">¶</a></h1>
+<p>执行一个或多个子进程。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">execute_process(</span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;cmd1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;arguments&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">COMMAND</span><span class="w"> </span><span class="nv">&lt;cmd2&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;arguments&gt;</span><span class="p">]]...</span>
+<span class="w">                </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;directory&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TIMEOUT</span><span class="w"> </span><span class="nv">&lt;seconds&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">RESULT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">RESULTS_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ERROR_VARIABLE</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">INPUT_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">OUTPUT_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ERROR_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">OUTPUT_QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ERROR_QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">COMMAND_ECHO</span><span class="w"> </span><span class="nv">&lt;where&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">OUTPUT_STRIP_TRAILING_WHITESPACE</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ERROR_STRIP_TRAILING_WHITESPACE</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ENCODING</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ECHO_OUTPUT_VARIABLE</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ECHO_ERROR_VARIABLE</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">COMMAND_ERROR_IS_FATAL</span><span class="w"> </span><span class="p">&lt;</span><span class="no">ANY</span><span class="p">|</span><span class="no">LAST</span><span class="p">|</span><span class="no">NONE</span><span class="p">&gt;]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>运行给定的一个或多个命令序列。</p>
+<p>命令以管道形式并发执行，每个进程的标准输出通过管道传输到下一个进程的标准输入。所有进程共用一个标准错误管道。</p>
+<p><code class="docutils literal notranslate"><span class="pre">execute_process</span></code> 在 CMake 配置项目时（即在构建系统生成之前）运行命令。若要创建在构建时运行的自定义命令，请使用 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 和 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 命令。</p>
+<p>选项</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND</span></code></dt><dd><p>子进程命令行。</p>
+<p>CMake 直接使用操作系统 API 执行子进程。</p>
+<ul>
+<li><p>在 POSIX 平台上，命令行以 <code class="docutils literal notranslate"><span class="pre">argv[]</span></code> 样式的数组传递给子进程。不会执行中间 shell，因此 shell 操作符（如 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>）会被视为普通参数。</p></li>
+<li><p>在 Windows 平台上，命令行被编码为一个字符串，使得使用 <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-commandlinetoargvw">CommandLineToArgvW</a> 的子进程能够解码出原始参数。</p>
+<p>如果命令运行的是 <code class="docutils literal notranslate"><span class="pre">.exe</span></code>、<code class="docutils literal notranslate"><span class="pre">.com</span></code> 或其他可执行文件，则不会执行中间命令解释器，因此 shell 操作符（如 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>）会被视为普通参数。</p>
+<p>如果命令运行的是 <code class="docutils literal notranslate"><span class="pre">.bat</span></code> 或 <code class="docutils literal notranslate"><span class="pre">.cmd</span></code> 脚本，它将通过 <code class="docutils literal notranslate"><span class="pre">cmd</span></code> 命令解释器执行。由于命令解释器不使用 <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-commandlinetoargvw">CommandLineToArgvW</a>，因此脚本接收到的某些参数可能会带有额外的引号。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 4.0 中变更：</span> <code class="docutils literal notranslate"><span class="pre">.bat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">.cmd</span></code> 脚本现在通过在命令行前添加 <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">/c</span> <span class="pre">call</span></code> 来显式地通过命令解释器执行。在此之前，它们是通过 <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw">CreateProcessW</a> 的未定义行为隐式地通过 <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">/c</span></code> 执行的（不包含 <code class="docutils literal notranslate"><span class="pre">call</span></code>）。</p>
+</div>
+</li>
+</ul>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">INPUT_*</span></code>、<code class="docutils literal notranslate"><span class="pre">OUTPUT_*</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ERROR_*</span></code> 选项来重定向标准输入 (stdin)、标准输出 (stdout) 和标准错误 (stderr)。</p>
+<p>若要<strong>顺序执行</strong>多个命令，请多次调用 <code class="docutils literal notranslate"><span class="pre">execute_process</span></code>，每次调用带有一个 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 参数。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code></dt><dd><p>指定的目录将被设为子进程的当前工作目录。如果未提供，子进程的工作目录是不确定的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code></dt><dd><p>经过指定的秒数（允许小数）后，所有未完成的子进程将被终止，<code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 将被设置为一个包含 "timeout" 的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code></dt><dd><p>该变量将被设置为包含最后一个子进程的执行结果。这通常是最后一个子进程返回的整数代码，或描述错误条件的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULTS_VARIABLE</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>该变量将被设置为包含所有进程结果的 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a>，顺序与给定的 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 参数一致。每一项都是对应子进程返回的整数代码，或描述错误条件的字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INPUT_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 被连接到<em>第一个</em> <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 进程的标准输入管道。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 被连接到<em>最后一个</em> <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 进程的标准输出管道。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ERROR_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 被连接到<em>所有</em> <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 进程的标准错误管道。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.3 中新增：</span> 如果为 <code class="docutils literal notranslate"><span class="pre">OUTPUT_FILE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ERROR_FILE</span></code> 指定了同一个 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，它将被同时用于标准输出和标准错误管道。</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_QUIET</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR_QUIET</span></code></dt><dd><p>标准输出（对应的 <code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span></code>）或标准错误（对应的 <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code>）将不会被连接（即变量无内容）。<code class="docutils literal notranslate"><span class="pre">*_FILE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ECHO_*_VARIABLE</span></code> 选项不受此影响。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code></dt><dd><p>指定的变量将被设置为标准输出和标准错误管道的内容。如果两个管道指定了同一个变量，它们的输出将按产生的顺序合并。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_STRIP_TRAILING_WHITESPACE</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR_STRIP_TRAILING_WHITESPACE</span></code></dt><dd><p>从存储在对应的 <code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ERROR_VARIABLE</span></code> 变量中的值末尾移除空白字符。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ECHO_OUTPUT_VARIABLE</span></code>, <code class="docutils literal notranslate"><span class="pre">ECHO_ERROR_VARIABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>标准输出或标准错误不会被排他性地重定向到指定的变量。</p>
+<p>输出将被复制到指定的变量中，并同时输出到标准输出或标准错误，类似于 Unix 的 <code class="docutils literal notranslate"><span class="pre">tee</span></code> 命令。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果同一个管道给出了多个 <code class="docutils literal notranslate"><span class="pre">OUTPUT_*</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ERROR_*</span></code> 选项，其优先级<em>未定义</em>。如果未给出任何 <code class="docutils literal notranslate"><span class="pre">OUTPUT_*</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ERROR_*</span></code> 选项，输出将与 CMake 进程本身的相应管道共享。</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND_ECHO</span> <span class="pre">&lt;where&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.15 新增。</span></p>
+</div>
+<p>正在运行的命令将被回显到 <code class="docutils literal notranslate"><span class="pre">&lt;where&gt;</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;where&gt;</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">STDERR</span></code>、<code class="docutils literal notranslate"><span class="pre">STDOUT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NONE</span></code> 之一。关于当此选项不存在时的默认行为控制，请参阅 <span class="target" id="index-0-variable:CMAKE_EXECUTE_PROCESS_COMMAND_ECHO"></span><a class="reference internal" href="../variable/CMAKE_EXECUTE_PROCESS_COMMAND_ECHO.html#variable:CMAKE_EXECUTE_PROCESS_COMMAND_ECHO" title="CMAKE_EXECUTE_PROCESS_COMMAND_ECHO"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTE_PROCESS_COMMAND_ECHO</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENCODING</span> <span class="pre">&lt;name&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>在 Windows 上，用于解码进程输出的编码方式。在其他平台上被忽略。有效的编码名称如下：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">NONE</span></code></dt><dd><p>不执行任何解码。假定进程输出的编码方式与 CMake 内部编码（UTF-8）相同。</p>
+<p>这是 CMake 3.14 及更早版本的默认设置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AUTO</span></code></dt><dd><p>使用当前活动控制台的代码页；如果不可用，则使用 ANSI。</p>
+<p>这是 CMake 3.15 到 3.30 的默认设置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ANSI</span></code></dt><dd><p>使用 ANSI 代码页。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OEM</span></code></dt><dd><p>使用原始设备制造商 (OEM) 代码页。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UTF-8</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>使用 UTF-8 代码页。</p>
+<p>这是自 CMake 3.31 以来的默认设置。请参阅策略 <span class="target" id="index-0-policy:CMP0176"></span><a class="reference internal" href="../policy/CMP0176.html#policy:CMP0176" title="CMP0176"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0176</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UTF8</span></code></dt><dd><p>使用 UTF-8 代码页。建议优先使用 <code class="docutils literal notranslate"><span class="pre">UTF-8</span></code>，以符合 <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc3629">UTF-8 RFC</a> 的命名规范。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND_ERROR_IS_FATAL</span> <span class="pre">&lt;ANY|LAST|NONE&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">COMMAND_ERROR_IS_FATAL</span></code> 后面的选项决定了遇到错误时的行为：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">ANY</span></code></dt><dd><p>ANY：如果命令列表中的任何命令失败，<code class="docutils literal notranslate"><span class="pre">execute_process()</span></code> 命令将停止并报错。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LAST</span></code></dt><dd><p>LAST：如果命令列表中的最后一个命令失败，<code class="docutils literal notranslate"><span class="pre">execute_process()</span></code> 命令将停止并报错。列表前部的命令失败不会导致致命错误。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NONE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>NONE：无论是否有命令失败，<code class="docutils literal notranslate"><span class="pre">execute_process()</span></code> 命令都不会停止并报错。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 4.0 中新增：</span> 如果未提供此选项，将检查 <span class="target" id="index-0-variable:CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL"></span><a class="reference internal" href="../variable/CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL.html#variable:CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL" title="CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL</span></code></a> 变量。如果该变量未设置，默认值为 <code class="docutils literal notranslate"><span class="pre">NONE</span></code>。如果提供了 <code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RESULTS_VARIABLE</span></code>，则 <span class="target" id="index-1-variable:CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL"></span><a class="reference internal" href="../variable/CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL.html#variable:CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL" title="CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTE_PROCESS_COMMAND_ERROR_IS_FATAL</span></code></a> 将被忽略。</p>
+</div>
+</dd>
+</dl>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="endwhile.html" title="上一章">endwhile</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="file.html" title="下一章">file</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/execute_process.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="file.html" title="file">下一页</a> |</li>
+        <li class="right">
+          <a href="endwhile.html" title="endwhile">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="execute_process.html">execute_process</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

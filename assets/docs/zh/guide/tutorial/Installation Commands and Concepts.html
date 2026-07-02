@@ -1,0 +1,571 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第 9 步：安装命令与概念 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Installation&#32;Commands&#32;and&#32;Concepts.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 10: Finding Dependencies" href="Finding&#32;Dependencies.html" />
+    <link rel="prev" title="Step 8: Testing and CTest" href="Testing&#32;and&#32;CTest.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Finding&#32;Dependencies.html" title="Step 10: Finding Dependencies" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="Testing&#32;and&#32;CTest.html" title="Step 8: Testing and CTest" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Installation&#32;Commands&#32;and&#32;Concepts.html">第 9 步：安装命令和概念</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-9-installation-commands-and-concepts">
+<span id="guide:tutorial/Installation Commands and Concepts"></span><h1>第 9 步：安装命令与概念<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#step-9-installation-commands-and-concepts" title="指向此标题的链接">¶</a></h1>
+<p>项目不仅需要构建和测试代码，还需要将其提供给使用者。构建目录中的文件布局不适合其他项目直接使用：二进制文件位置不符合预期、头文件位于远离源文件的树状结构中，且没有明确的方法来发现提供了哪些目标或如何使用它们。</p>
+<p>这种将构件（artifacts）从源目录和构建目录移动到适合使用的最终布局的过程，被称为安装（installation）。作为项目描述的一部分，CMake 支持一套完整的安装工作流，既控制构件在安装目录中的布局，也为想要使用这些安装目录提供库的其他 CMake 项目重建目标。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#background" title="链接到此标题">¶</a></h2>
+<p>所有 CMake 安装过程都通过单个命令 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 完成，该命令分为许多子命令，负责安装过程的各个方面。对于基于目标的 CMake 工作流，通常只需使用 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 安装目标本身，而无需手动使用 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../../command/install.html#files" title="install(files)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(FILES)</span></code></a> 或 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="../../command/install.html#directory" title="install(directory)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(DIRECTORY)</span></code></a> 来移动文件。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>这就是为什么我们需要将 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 添加到打算安装的头文件集（header sets）中。当关联的目标被安装时，CMake 需要能够定位这些文件。</p>
+</div>
+<p>CMake 将基于目标的安装分为不同的构件类型。可用的构件类型（在 CMake 3.23 中）包括：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code></dt><dd><p>静态库（<code class="docutils literal notranslate"><span class="pre">.a</span></code> / <code class="docutils literal notranslate"><span class="pre">.lib</span></code>）、DLL 导入库（<code class="docutils literal notranslate"><span class="pre">.lib</span></code>）以及少数其他“类似存档”的对象。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code></dt><dd><p>共享库（<code class="docutils literal notranslate"><span class="pre">.so</span></code>）、模块和其他可动态加载的对象。<strong>不包括</strong> Windows 的 DLL 文件（<code class="docutils literal notranslate"><span class="pre">.dll</span></code>）或 MacOS 框架。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code></dt><dd><p>除 MacOS bundle 外的所有类型可执行文件；以及 Windows 的 DLL（<code class="docutils literal notranslate"><span class="pre">.dll</span></code>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OBJECT</span></code></dt><dd><p>来自 <code class="docutils literal notranslate"><span class="pre">OBJECT</span></code> 库的对象。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></dt><dd><p>静态和共享的 MacOS 框架。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUNDLE</span></code></dt><dd><p>MacOS bundle 可执行文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code> / <code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code> / <code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code></dt><dd><p>由 <span class="target" id="index-0-prop_tgt:PUBLIC_HEADER"></span><a class="reference internal" href="../../prop_tgt/PUBLIC_HEADER.html#prop_tgt:PUBLIC_HEADER" title="PUBLIC_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></a>、<span class="target" id="index-0-prop_tgt:PRIVATE_HEADER"></span><a class="reference internal" href="../../prop_tgt/PRIVATE_HEADER.html#prop_tgt:PRIVATE_HEADER" title="PRIVATE_HEADER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></a> 和 <span class="target" id="index-0-prop_tgt:RESOURCE"></span><a class="reference internal" href="../../prop_tgt/RESOURCE.html#prop_tgt:RESOURCE" title="RESOURCE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">RESOURCE</span></code></a> 目标属性描述的文件，通常与 MacOS 框架一起使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_SET</span> <span class="pre">&lt;集合名称&gt;</span></code></dt><dd><p>与目标关联的文件集。这是头文件通常的安装方式。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>大多数重要的构件类型都有已知的默认目标位置，除非另有说明，否则 CMake 将默认使用这些位置。例如，<code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code> 将安装到 <span class="target" id="index-0-module:GNUInstallDirs"></span><a class="reference internal" href="../../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMAKE_INSTALL_BINDIR</span></code></a> 所指定的路径（如果该变量可用），否则默认指向 <code class="docutils literal notranslate"><span class="pre">bin</span></code>。</p>
+<p>构件类型默认目标路径的完整列表如下表所示。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>目标类型</p></th>
+<th class="head"><p>变量</p></th>
+<th class="head"><p>内置默认值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUNTIME</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_BINDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIBRARY</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ARCHIVE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_LIBDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lib</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_HEADER</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PUBLIC_HEADER</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> (类型 <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">${CMAKE_INSTALL_INCLUDEDIR}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">include</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>在大多数情况下，项目应该保留这些默认设置，除非它们需要安装到默认位置的特定子目录中。</p>
+<p>CMake 默认不定义 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 变量。如果项目希望指定安装到这些位置的子目录，则必须包含 <span class="target" id="index-1-module:GNUInstallDirs"></span><a class="reference internal" href="../../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 模块，该模块将为所有尚未定义的 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 变量提供值。</p>
+</section>
+<section id="exercise-1-installing-artifacts">
+<h2>练习 1 - 安装构件<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-1-installing-artifacts" title="指向此标题的链接">¶</a></h2>
+<p>对于现代的、基于目标的 CMake 项目，构件的安装非常简单，只需调用一次 <span class="target" id="index-4-command:install"></span><a class="reference internal" href="../../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(targets)</span></code></a> 即可。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">MyApp</span><span class="w"> </span><span class="nb">MyLib</span>
+
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="nb">anotherHeaderFileSet</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>大多数构件类型默认会被安装，不需要在 <span class="target" id="index-5-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令中列出。但是，必须指定 <code class="docutils literal notranslate"><span class="pre">FILE_SET</span></code> 的名称以告知 CMake 您想要安装它们。在上面的示例中，我们安装了两个文件集，一个名为 <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>，另一个名为 <code class="docutils literal notranslate"><span class="pre">anotherHeaderFileSet</span></code>。</p>
+<p>当指定名称时，构件类型可以被赋予各种选项，例如目的地（destination）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+
+<span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">MyApp</span><span class="w"> </span><span class="nb">MyLib</span>
+
+<span class="w">  </span><span class="no">RUNTIME</span>
+<span class="w">    </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_BINDIR</span><span class="o">}</span><span class="na">/Subfolder</span>
+
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>这将把 <code class="docutils literal notranslate"><span class="pre">MyApp</span></code> 目标安装到 <code class="docutils literal notranslate"><span class="pre">bin/Subfolder</span></code>（假设打包人员没有更改 <span class="target" id="index-2-module:GNUInstallDirs"></span><a class="reference internal" href="../../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMAKE_INSTALL_BINDIR</span></code></a>）。</p>
+<p>重要提示：如果 <code class="docutils literal notranslate"><span class="pre">OBJECT</span></code> 构件类型从未被指定目的地，它将表现得像一个 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库，只安装其头文件。</p>
+<section id="goal">
+<h3>目标<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>安装教程项目中描述的库和可执行文件（测试除外）的构件。</p>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-6-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step9</span></code> 目录包含了 <code class="docutils literal notranslate"><span class="pre">Step8</span></code> 的完整推荐解决方案。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">2</span></code>。</p>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>无需特殊配置，按常规进行配置和构建即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>我们可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 验证安装是否正确。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --install build --prefix install</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">install</span></code> 文件夹应当正确填充了我们的构件。</p>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们为有条件构建（因此是有条件安装）的 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件添加一个 <span class="target" id="index-7-command:install"></span><a class="reference internal" href="../../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a>。</p>
+<details><summary>TODO 1 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-tutorial">
+<div class="code-block-caption"><span class="caption-text">TODO 1: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-tutorial" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">TUTORIAL_BUILD_UTILITIES</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_subdirectory(</span><span class="nb">Tutorial</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">install(</span>
+<span class="w">    </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">Tutorial</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后我们可以安装其余的目标。</p>
+<details><summary>TODO 2 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-libs">
+<div class="code-block-caption"><span class="caption-text">TODO 2: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-libs" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">MathFunctions</span><span class="w"> </span><span class="nb">OpAdd</span><span class="w"> </span><span class="nb">OpMul</span><span class="w"> </span><span class="nb">OpSub</span><span class="w"> </span><span class="nb">MathLogger</span><span class="w"> </span><span class="nb">SqrtTable</span>
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>我们可以在定义目标的每个子文件夹中本地添加 <span class="target" id="index-8-command:install"></span><a class="reference internal" href="../../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令。这在大型项目中很常见，因为在这种情况下跟踪所有可安装目标比较困难。</p>
+</div>
+<p>安装 <code class="docutils literal notranslate"><span class="pre">SqrtTable</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MathLogger</span></code> 似乎是不必要的，在这一阶段确实如此。由于 CMake 对目标关系的建模方式，在下一次练习中重建目标模型时，我们将需要这些目标可用。</p>
+</section>
+</section>
+<section id="exercise-2-exporting-targets">
+<h2>练习 2 - 导出目标<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-2-exporting-targets" title="指向此标题的链接">¶</a></h2>
+<p>这些原始的已安装文件集合是一个好的开始，但我们丢失了 CMake 目标模型。它们实际上并不比我们在 <code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">4</span></code> 中讨论的预编译供应商库更好。我们需要一种方法让其他项目能够根据我们在安装目录中提供的内容重建我们的目标。</p>
+<p>CMake 提供解决此问题的机制是一个名为“目标导出文件”的 CMake 语言文件。它由 <span class="target" id="index-9-command:install"></span><a class="reference internal" href="../../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令创建。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">MyApp</span><span class="w"> </span><span class="nb">MyLib</span>
+<span class="w">  </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">MyProjectTargets</span>
+<span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+
+<span class="nf">install(</span>
+<span class="w">  </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">MyProjectTargets</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/MyProject</span>
+<span class="w">  </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nb">MyProject</span><span class="o">::</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>上述示例包含多个部分。首先，<span class="target" id="index-10-command:install"></span><a class="reference internal" href="../../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令接受一个导出名称，本质上是一个用于添加已安装目标的列表。</p>
+<p>稍后，<span class="target" id="index-11-command:install"></span><a class="reference internal" href="../../command/install.html#export" title="install(export)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(EXPORT)</span></code></a> 命令会消耗此目标列表来生成目标导出文件。这将是一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;ExportName&gt;.cmake</span></code> 的文件，位于提供的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 中。此示例中提供的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 是惯用位置，但任何由 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令搜索的位置都是有效的。</p>
+<p>最后，由目标导出文件创建的目标将以 <code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> 字符串作为前缀，即它们将采用 <code class="docutils literal notranslate"><span class="pre">&lt;NAMESPACE&gt;&lt;TargetName&gt;</span></code> 的形式。惯例是将项目名称后跟两个冒号作为命名空间。</p>
+<p>出于在后续步骤中会变得更加明显的原因，我们通常不会直接使用该文件。相反，我们使用名为 <code class="docutils literal notranslate"><span class="pre">&lt;ProjectName&gt;Config.cmake</span></code> 的文件，通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 来调用它。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="o">${</span><span class="nt">CMAKE_CURRENT_LIST_DIR</span><span class="o">}</span><span class="na">/MyProjectTargets.cmake</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><span class="target" id="index-0-variable:CMAKE_CURRENT_LIST_DIR"></span><a class="reference internal" href="../../variable/CMAKE_CURRENT_LIST_DIR.html#variable:CMAKE_CURRENT_LIST_DIR" title="CMAKE_CURRENT_LIST_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_LIST_DIR</span></code></a> 变量命名当前正在运行的 CMake 语言文件所在的目录，无论该文件是如何被包含或启动的。</p>
+</div>
+<p>然后，该文件通过 <span class="target" id="index-12-command:install"></span><a class="reference internal" href="../../command/install.html#files" title="install(files)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(FILES)</span></code></a> 与目标导出文件一起安装。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">FILES</span>
+<span class="w">    </span><span class="na">cmake/MyProjectConfig.cmake</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/MyProject</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>该文件的名称及其位置由 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的发现语义决定，我们将在下一步中进行详细讨论。</p>
+</div>
+<section id="id1">
+<h3>目标<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id1" title="此标题的永久链接">¶</a></h3>
+<p>导出 Tutorial 项目目标，以便其他项目可以使用它们。</p>
+</section>
+<section id="id2">
+<h3>有用资源<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id2" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-13-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a></p></li>
+<li><p><span class="target" id="index-3-module:GNUInstallDirs"></span><a class="reference internal" href="../../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a></p></li>
+<li><p><span class="target" id="index-1-variable:CMAKE_CURRENT_LIST_DIR"></span><a class="reference internal" href="../../variable/CMAKE_CURRENT_LIST_DIR.html#variable:CMAKE_CURRENT_LIST_DIR" title="CMAKE_CURRENT_LIST_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_LIST_DIR</span></code></a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>要编辑的文件<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id3" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake/TutorialConfig.cmake</span></code></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>开始<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id4" title="此标题的永久链接">¶</a></h3>
+<p>继续编辑 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step9</span></code> 目录中的文件。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">3</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">8</span></code>。</p>
+</section>
+<section id="id5">
+<h3>构建并运行<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id5" title="此标题的永久链接">¶</a></h3>
+<p>构建命令足以重新配置项目。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>我们可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-install"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code></a> 验证安装是否正确。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>与 CTest 一样，当使用多配置生成器（例如 Visual Studio）时，需要使用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span> <span class="pre">--config</span> <span class="pre">&lt;config&gt;</span> <span class="pre">&lt;remaining</span> <span class="pre">flags&gt;</span></code> 指定配置，其中 <code class="docutils literal notranslate"><span class="pre">&lt;config&gt;</span></code> 是诸如 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 的值。在使用多配置生成器时情况总是如此，在未来的命令中将不再专门说明。</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --install build --prefix install</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CMake 不会更新未更改的文件，只会从构建和源目录安装新的或已更新的文件。</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">install</span></code> 文件夹应该已经正确填充了我们的构件和导出文件。我们将在下一步演示如何使用这些文件。</p>
+</section>
+<section id="id6">
+<h3>解决方案<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id6" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们将 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 目标添加到 <code class="docutils literal notranslate"><span class="pre">TutorialTargets</span></code> 导出中。</p>
+<details><summary>TODO 3 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-tutorial-export">
+<div class="code-block-caption"><span class="caption-text">TODO 3: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-tutorial-export" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nf">install(</span>
+<span class="w">    </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">Tutorial</span>
+<span class="w">    </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">TutorialTargets</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>很快我们将需要访问 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 变量，因此接下来我们包含 <span class="target" id="index-4-module:GNUInstallDirs"></span><a class="reference internal" href="../../module/GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 模块。</p>
+<details><summary>TODO 4 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-gnuinstalldirss">
+<div class="code-block-caption"><span class="caption-text">TODO 4: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-gnuinstalldirss" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>现在我们将其余目标添加到 <code class="docutils literal notranslate"><span class="pre">TutorialTargets</span></code> 导出中。</p>
+<details><summary>TODO 5 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-libs-export">
+<div class="code-block-caption"><span class="caption-text">TODO 5: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-libs-export" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">MathFunctions</span><span class="w"> </span><span class="nb">OpAdd</span><span class="w"> </span><span class="nb">OpMul</span><span class="w"> </span><span class="nb">OpSub</span><span class="w"> </span><span class="nb">MathLogger</span><span class="w"> </span><span class="nb">SqrtTable</span>
+<span class="w">  </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">TutorialTargets</span>
+<span class="w">  </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>接下来，我们安装导出本身，以生成我们的目标导出文件。</p>
+<details><summary>TODO 6 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-export">
+<div class="code-block-caption"><span class="caption-text">TODO 6: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-export" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">TutorialTargets</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/Tutorial</span>
+<span class="w">  </span><span class="no">NAMESPACE</span><span class="w"> </span><span class="nb">Tutorial</span><span class="o">::</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后我们安装我们的“配置”文件，我们将使用它来包含我们的目标导出文件。</p>
+<details><summary>TODO 7 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-config">
+<div class="code-block-caption"><span class="caption-text">TODO 7: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-config" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">FILES</span>
+<span class="w">    </span><span class="na">cmake/TutorialConfig.cmake</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/Tutorial</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们可以在配置文件中添加必要的 <span class="target" id="index-1-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令。</p>
+<details><summary>TODO 8 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmake-tutorialconfig-cmake">
+<div class="code-block-caption"><span class="caption-text">TODO 8: cmake/TutorialConfig.cmake</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmake-tutorialconfig-cmake" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="o">${</span><span class="nt">CMAKE_CURRENT_LIST_DIR</span><span class="o">}</span><span class="na">/TutorialTargets.cmake</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-3-exporting-a-version-file">
+<h2>练习 3 - 导出版本文件<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-3-exporting-a-version-file" title="指向此标题的链接">¶</a></h2>
+<p>当从目标导出文件导入 CMake 目标时，无法“中止”或“撤消”该操作。如果发现包的版本与我们请求的版本错误或不兼容，我们将不得不承受在了解版本信息时所产生的任何副作用。</p>
+<p>CMake 为此问题提供的答案是一个轻量级的版本文件，它仅描述版本兼容性信息，可以在 CMake 提交完全导入该文件之前进行检查。</p>
+<p>CMake 提供了用于生成这些版本文件的辅助模块和脚本，即 <span class="target" id="index-0-module:CMakePackageConfigHelpers"></span><a class="reference internal" href="../../module/CMakePackageConfigHelpers.html#module:CMakePackageConfigHelpers" title="CMakePackageConfigHelpers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePackageConfigHelpers</span></code></a> 模块。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakePackageConfigHelpers</span><span class="nf">)</span>
+
+<span class="nf">write_basic_package_version_file(</span>
+<span class="w">  </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/MyProjectConfigVersion.cmake</span>
+<span class="w">  </span><span class="no">COMPATIBILITY</span><span class="w"> </span><span class="nb">ExactVersion</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>可用的版本检查模式包括：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AnyNewerVersion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SameMajorVersion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SameMinorVersion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExactVersion</span></code></p></li>
+</ul>
+<p>此外，包可以将自己标记为 <code class="docutils literal notranslate"><span class="pre">ARCH_INDEPENDENT</span></code>，适用于不发布与特定机器架构绑定的二进制文件的包。</p>
+<p>默认情况下，<code class="docutils literal notranslate"><span class="pre">write_basic_package_version_file()</span></code> 使用的 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> 是传递给 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> 数。</p>
+<section id="id7">
+<h3>目标<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id7" title="链接到此标题">¶</a></h3>
+<p>为 Tutorial 项目导出版本文件。</p>
+</section>
+<section id="id8">
+<h3>有用资源<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id8" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-1-command:project"></span><a class="reference internal" href="../../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a></p></li>
+<li><p><span class="target" id="index-14-command:install"></span><a class="reference internal" href="../../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-module:CMakePackageConfigHelpers"></span><a class="reference internal" href="../../module/CMakePackageConfigHelpers.html#module:CMakePackageConfigHelpers" title="CMakePackageConfigHelpers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePackageConfigHelpers</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:PROJECT_VERSION"></span><a class="reference internal" href="../../variable/PROJECT_VERSION.html#variable:PROJECT_VERSION" title="PROJECT_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">PROJECT_VERSION</span></code></a></p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>要编辑的文件<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id9" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>入门<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id10" title="链接到此标题">¶</a></h3>
+<p>继续编辑 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step9</span></code> 目录中的文件。完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">9</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">12</span></code>。</p>
+</section>
+<section id="id11">
+<h3>构建和运行<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id11" title="链接到此标题">¶</a></h3>
+<p>像之前一样重新构建并安装。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+<span class="go">cmake --install build --prefix install</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">install</span></code> 文件夹应当正确填充了我们新生成和安装的版本文件。</p>
+</section>
+<section id="id12">
+<h3>解决方案<a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id12" title="链接到此标题">¶</a></h3>
+<p>首先，我们为 <span class="target" id="index-2-command:project"></span><a class="reference internal" href="../../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令添加一个 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> 参数。</p>
+<details><summary>TODO 9 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-project-version">
+<div class="code-block-caption"><span class="caption-text">TODO 9: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-project-version" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">project(</span><span class="nb">Tutorial</span>
+<span class="w">  </span><span class="no">VERSION</span><span class="w"> </span><span class="m">1.0.0</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>接下来，我们包含 <span class="target" id="index-2-module:CMakePackageConfigHelpers"></span><a class="reference internal" href="../../module/CMakePackageConfigHelpers.html#module:CMakePackageConfigHelpers" title="CMakePackageConfigHelpers"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePackageConfigHelpers</span></code></a> 模块，并使用它生成配置版本文件。</p>
+<details><summary>TODO 10-11 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-write-basic-package-version-file">
+<div class="code-block-caption"><span class="caption-text">TODO 10-11: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-write-basic-package-version-file" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakePackageConfigHelpers</span><span class="nf">)</span>
+
+<span class="nf">write_basic_package_version_file(</span>
+<span class="w">  </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/TutorialConfigVersion.cmake</span>
+<span class="w">  </span><span class="no">COMPATIBILITY</span><span class="w"> </span><span class="nb">ExactVersion</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们将配置版本文件添加到待安装文件列表中。</p>
+<details><summary>TODO 12 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-install-version-config">
+<div class="code-block-caption"><span class="caption-text">TODO 12: CMakeLists.txt</span><a class="headerlink" href="Installation&#32;Commands&#32;and&#32;Concepts.html#cmakelists-txt-install-version-config" title="指向此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">install(</span>
+<span class="w">  </span><span class="no">FILES</span>
+<span class="w">    </span><span class="na">cmake/TutorialConfig.cmake</span>
+<span class="w">    </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/TutorialConfigVersion.cmake</span>
+<span class="w">  </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="na">/cmake/Tutorial</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#">第 9 步：安装命令和概念</a><ul>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#background">背景</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-1-installing-artifacts">练习 1 - 安装构件</a><ul>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#goal">目标</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#solution">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-2-exporting-targets">练习 2 - 导出目标</a><ul>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id1">目标</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id2">有用资源</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id3">要编辑的文件</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id4">入门</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id5">构建并运行</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id6">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#exercise-3-exporting-a-version-file">练习 3 - 导出版本文件</a><ul>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id7">目标</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id8">有用资源</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id9">要编辑的文件</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id10">入门</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id11">构建并运行</a></li>
+<li><a class="reference internal" href="Installation&#32;Commands&#32;and&#32;Concepts.html#id12">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="Testing&#32;and&#32;CTest.html" title="上一章">第 8 步：测试和 CTest</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Finding&#32;Dependencies.html" title="下一章">第 10 步：查找依赖项</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/Installation&#32;Commands&#32;and&#32;Concepts.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Finding&#32;Dependencies.html" title="Step 10: Finding Dependencies">下一页</a> |</li>
+        <li class="right">
+          <a href="Testing&#32;and&#32;CTest.html" title="Step 8: Testing and CTest">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Installation&#32;Commands&#32;and&#32;Concepts.html">第 9 步：安装命令和概念</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

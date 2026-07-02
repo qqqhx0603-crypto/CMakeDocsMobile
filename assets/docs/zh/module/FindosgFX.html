@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindosgFX — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindosgFX.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindosgGA" href="FindosgGA.html" />
+    <link rel="prev" title="FindosgDB" href="FindosgDB.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindosgGA.html" title="FindosgGA" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindosgDB.html" title="FindosgDB" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindosgFX.html">FindosgFX</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findosgfx">
+<span id="module:FindosgFX"></span><h1>FindosgFX<a class="headerlink" href="FindosgFX.html#findosgfx" title="链接到此标题">¶</a></h1>
+<p>查找 OpenSceneGraph 工具包中的 osgFX NodeKit。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在大多数情况下，建议使用 <span class="target" id="index-0-module:FindOpenSceneGraph"></span><a class="reference internal" href="FindOpenSceneGraph.html#module:FindOpenSceneGraph" title="FindOpenSceneGraph"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindOpenSceneGraph</span></code></a> 模块，并将 osgFX 列为组件。这将自动处理依赖项，例如 OpenThreads 和核心 osg 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSceneGraph</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">osgFX</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>此模块由 <span class="target" id="index-1-module:FindOpenSceneGraph"></span><a class="reference internal" href="FindOpenSceneGraph.html#module:FindOpenSceneGraph" title="FindOpenSceneGraph"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindOpenSceneGraph</span></code></a> 内部使用来查找 osgFX NodeKit。它不打算在通常使用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令时直接包含。但是，它作为一个独立的模块提供，用于高级用例，在这些用例中需要对检测进行更精细的控制。例如，显式查找 osgFX 或绕过自动组件检测</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">osgFX</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>OpenSceneGraph 和 osgFX 头文件旨在包含在 C++ 项目源代码中，如下所示：</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="FindosgFX.html#id1" title="此代码的链接">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osg/PositionAttitudeTransform&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osgFX/BumpMapping&gt;</span>
+<span class="c1">// ...</span>
+</pre></div>
+</div>
+</div>
+<p>使用 OpenSceneGraph 工具包时，可能还需要其他库，例如 OpenGL。</p>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindosgFX.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">osgFX_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>布尔值，指示是否找到了 OpenSceneGraph 工具包的 osgFX NodeKit。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSGFX_LIBRARIES</span></code></dt><dd><p>使用 osgFX 需要链接的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSGFX_LIBRARY</span></code></dt><dd><p>一个结果变量，其值与 <code class="docutils literal notranslate"><span class="pre">OSGFX_LIBRARIES</span></code> 变量相同。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindosgFX.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">OSGFX_INCLUDE_DIR</span></code></dt><dd><p>包含使用 osgFX 所需头文件的包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OSGFX_LIBRARY_DEBUG</span></code></dt><dd><p>osgFX 调试库的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindosgFX.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">OSGDIR</span></code></dt><dd><p>环境变量，可用于帮助定位 OpenSceneGraph 工具包，包括其 osgFX NodeKit，当安装在自定义位置时。它应指向 OpenSceneGraph 安装前缀，该前缀在配置、构建和安装时使用：<code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--prefix=$OSGDIR</span></code>。</p>
+</dd>
+</dl>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindosgFX.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">OSGFX_FOUND</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">自版本 4.2 起已弃用：</span>使用 <code class="docutils literal notranslate"><span class="pre">osgFX_FOUND</span></code>，其值相同。</p>
+</div>
+<p>布尔值，指示是否找到了 OpenSceneGraph 工具包的 osgFX NodeKit。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindosgFX.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>使用此模块显式查找 osgFX 并创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，该目标封装了将其链接到项目目标的使用要求</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">osgFX</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">osgFX_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">osgFX</span><span class="o">::</span><span class="nb">osgFX</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_library(</span><span class="nb">osgFX</span><span class="o">::</span><span class="nb">osgFX</span><span class="w"> </span><span class="no">INTERFACE</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set_target_properties(</span>
+<span class="w">    </span><span class="nb">osgFX</span><span class="o">::</span><span class="nb">osgFX</span>
+<span class="w">    </span><span class="no">PROPERTIES</span>
+<span class="w">      </span><span class="no">INTERFACE_INCLUDE_DIRECTORIES</span><span class="w"> </span><span class="s">"${OSGFX_INCLUDE_DIR}"</span>
+<span class="w">      </span><span class="no">INTERFACE_LINK_LIBRARIES</span><span class="w"> </span><span class="s">"${OSGFX_LIBRARIES}"</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">osgFX</span><span class="o">::</span><span class="nb">osgFX</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="FindosgFX.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p>用于查找 OpenSceneGraph 工具包的 <span class="target" id="index-2-module:FindOpenSceneGraph"></span><a class="reference internal" href="FindOpenSceneGraph.html#module:FindOpenSceneGraph" title="FindOpenSceneGraph"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindOpenSceneGraph</span></code></a> 模块。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindosgFX.html#">FindosgFX</a><ul>
+<li><a class="reference internal" href="FindosgFX.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindosgFX.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindosgFX.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindosgFX.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindosgFX.html#examples">示例</a></li>
+<li><a class="reference internal" href="FindosgFX.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindosgDB.html" title="上一章">FindosgDB</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindosgGA.html" title="下一章">FindosgGA</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindosgFX.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindosgGA.html" title="FindosgGA">下一页</a> |</li>
+        <li class="right">
+          <a href="FindosgDB.html" title="FindosgDB">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindosgFX.html">FindosgFX</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>AUTOMOC — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="AUTOMOC.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="AUTOMOC_COMPILER_PREDEFINES" href="AUTOMOC_COMPILER_PREDEFINES.html" />
+    <link rel="prev" title="AUTOGEN_USE_SYSTEM_INCLUDE" href="AUTOGEN_USE_SYSTEM_INCLUDE.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="AUTOMOC_COMPILER_PREDEFINES.html" title="AUTOMOC_COMPILER_PREDEFINES" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="AUTOGEN_USE_SYSTEM_INCLUDE.html" title="AUTOGEN_USE_SYSTEM_INCLUDE" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="AUTOMOC.html">AUTOMOC</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="automoc">
+<span id="prop_tgt:AUTOMOC"></span><h1>AUTOMOC<a class="headerlink" href="AUTOMOC.html#automoc" title="链接到此标题">¶</a></h1>
+<p>是否应使用自动 moc 处理目标（针对 Qt 项目）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 是一个布尔值，指定 CMake 是否会自动处理 Qt <code class="docutils literal notranslate"><span class="pre">moc</span></code> 预处理器，即无需使用诸如 <span class="target" id="index-0-module:FindQt4"></span><a class="reference internal" href="../module/FindQt4.html#module:FindQt4" title="FindQt4"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">qt4_wrap_cpp()</span></code></a>、<a class="reference external" href="https://doc.qt.ac.cn/archives/qt-5.15/qtcore-cmake-qt5-wrap-cpp.html">qt5_wrap_cpp()</a> 等命令。目前支持 Qt 4 到 6 版本。</p>
+<p>如果创建目标时设置了 <span class="target" id="index-0-variable:CMAKE_AUTOMOC"></span><a class="reference internal" href="../variable/CMAKE_AUTOMOC.html#variable:CMAKE_AUTOMOC" title="CMAKE_AUTOMOC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_AUTOMOC</span></code></a> 变量，则此属性将由该变量的值进行初始化。</p>
+<p>当此属性设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 时，CMake 会在构建时扫描头文件和源文件，并相应地调用 <code class="docutils literal notranslate"><span class="pre">moc</span></code>。</p>
+<section id="header-file-processing">
+<h2>头文件处理<a class="headerlink" href="AUTOMOC.html#header-file-processing" title="链接到此标题">¶</a></h2>
+<p>在配置时，根据目标的源文件计算应由 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 扫描的头文件列表。</p>
+<ul>
+<li><p>目标源文件中的所有头文件都会添加到扫描列表中。</p></li>
+<li><p>对于目标源文件中的所有 C++ 源文件 <code class="docutils literal notranslate"><span class="pre">&lt;source_base&gt;.&lt;source_extension&gt;</span></code>，CMake 会搜索：</p>
+<ul class="simple">
+<li><p>具有相同基本名称的常规头文件（<code class="docutils literal notranslate"><span class="pre">&lt;source_base&gt;.&lt;header_extension&gt;</span></code>），以及</p></li>
+<li><p>具有相同基本名称且带有 <code class="docutils literal notranslate"><span class="pre">_p</span></code> 后缀的私有头文件（<code class="docutils literal notranslate"><span class="pre">&lt;source_base&gt;_p.&lt;header_extension&gt;</span></code>），</p></li>
+</ul>
+<p>并将它们添加到扫描列表中。</p>
+</li>
+<li><p><span class="target" id="index-0-prop_tgt:AUTOMOC_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="AUTOMOC_INCLUDE_DIRECTORIES.html#prop_tgt:AUTOMOC_INCLUDE_DIRECTORIES" title="AUTOMOC_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_INCLUDE_DIRECTORIES</span></code></a> 目标属性可以显式告知 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 要搜索哪些包含目录。如果未设置，默认使用目标及其依赖项传递闭包中的包含目录。</p></li>
+</ul>
+<p>在构建时，CMake 会扫描列表中每个未知或修改过的头文件，并搜索：</p>
+<ul class="simple">
+<li><p>来自 <span class="target" id="index-0-prop_tgt:AUTOMOC_MACRO_NAMES"></span><a class="reference internal" href="AUTOMOC_MACRO_NAMES.html#prop_tgt:AUTOMOC_MACRO_NAMES" title="AUTOMOC_MACRO_NAMES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_MACRO_NAMES</span></code></a> 的 Qt 宏，</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Q_PLUGIN_METADATA</span></code> 宏的 <code class="docutils literal notranslate"><span class="pre">FILE</span></code> 参数产生的附加文件依赖项，以及</p></li>
+<li><p>由 <span class="target" id="index-0-prop_tgt:AUTOMOC_DEPEND_FILTERS"></span><a class="reference internal" href="AUTOMOC_DEPEND_FILTERS.html#prop_tgt:AUTOMOC_DEPEND_FILTERS" title="AUTOMOC_DEPEND_FILTERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_DEPEND_FILTERS</span></code></a> 中定义的过滤器检测到的附加文件依赖项。</p></li>
+</ul>
+<p>如果找到了 Qt 宏，则头文件将通过 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 编译为输出文件 <code class="docutils literal notranslate"><span class="pre">moc_&lt;base_name&gt;.cpp</span></code>。完整的输出文件路径在 <a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a> 一节中描述。</p>
+<p>如果附加文件依赖项中的文件发生更改，该头文件将被 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 重新编译。</p>
+<p>头文件的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件 <code class="docutils literal notranslate"><span class="pre">moc_&lt;base_name&gt;.cpp</span></code> 可以包含在源文件中。在 <a class="reference internal" href="AUTOMOC.html#including-header-moc-files-in-sources">在源文件中包含头文件的 moc 文件</a> 一节中有关于该主题的更多信息。</p>
+</section>
+<section id="source-file-processing">
+<h2>源文件处理<a class="headerlink" href="AUTOMOC.html#source-file-processing" title="链接到此标题">¶</a></h2>
+<p>在构建时，CMake 会扫描目标源文件中每个未知或已修改的 C++ 源文件，以寻找：</p>
+<ul class="simple">
+<li><p>来自 <span class="target" id="index-1-prop_tgt:AUTOMOC_MACRO_NAMES"></span><a class="reference internal" href="AUTOMOC_MACRO_NAMES.html#prop_tgt:AUTOMOC_MACRO_NAMES" title="AUTOMOC_MACRO_NAMES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_MACRO_NAMES</span></code></a> 的 Qt 宏，</p></li>
+<li><p>对头文件 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 文件的包含（参见 <a class="reference internal" href="AUTOMOC.html#including-header-moc-files-in-sources">在源文件中包含头文件的 moc 文件</a>），</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Q_PLUGIN_METADATA</span></code> 宏的 <code class="docutils literal notranslate"><span class="pre">FILE</span></code> 参数产生的附加文件依赖项，以及</p></li>
+<li><p>由 <span class="target" id="index-1-prop_tgt:AUTOMOC_DEPEND_FILTERS"></span><a class="reference internal" href="AUTOMOC_DEPEND_FILTERS.html#prop_tgt:AUTOMOC_DEPEND_FILTERS" title="AUTOMOC_DEPEND_FILTERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_DEPEND_FILTERS</span></code></a> 中定义的过滤器检测到的附加文件依赖项。</p></li>
+</ul>
+<p>如果找到了 Qt 宏，则期望 C++ 源文件 <code class="docutils literal notranslate"><span class="pre">&lt;base&gt;.&lt;source_extension&gt;</span></code> 也包含一条 include 语句</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;&lt;base&gt;</span><span class="c1">.moc&gt; // or</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"&lt;base&gt;.moc"</span>
+</pre></div>
+</div>
+<p>然后该源文件将通过 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 编译为输出文件 <code class="docutils literal notranslate"><span class="pre">&lt;base&gt;.moc</span></code>。关于完整输出文件路径的描述请见 <a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a> 一节。</p>
+<p>如果附加文件依赖项中的文件发生更改，该源文件将被 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 重新编译。</p>
+<section id="including-header-moc-files-in-sources">
+<h3>在源文件中包含头文件的 moc 文件<a class="headerlink" href="AUTOMOC.html#including-header-moc-files-in-sources" title="链接到此标题">¶</a></h3>
+<p>源文件可以通过使用以下形式的 include 语句来包含头文件 <code class="docutils literal notranslate"><span class="pre">&lt;header_base&gt;.&lt;header_extension&gt;</span></code> 的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;moc_&lt;header_base&gt;</span><span class="c1">.cpp&gt; // or</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"moc_&lt;header_base&gt;.cpp"</span>
+</pre></div>
+</div>
+<p>如果源文件包含了头文件的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件，它将生成在与不包含时不同的位置。这在 <a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a> 一节中有所描述。</p>
+</section>
+</section>
+<section id="output-file-location">
+<h2>输出文件位置<a class="headerlink" href="AUTOMOC.html#output-file-location" title="链接到此标题">¶</a></h2>
+<section id="included-moc-output-files">
+<h3>被包含的 moc 输出文件<a class="headerlink" href="AUTOMOC.html#included-moc-output-files" title="链接到此标题">¶</a></h3>
+<p>由源文件包含的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件将生成在</p>
+<ul class="simple">
+<li><p>单配置生成器的 <code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/include</span></code> 目录下，或者</p></li>
+<li><p><span class="target" id="index-0-prop_gbl:GENERATOR_IS_MULTI_CONFIG"></span><a class="reference internal" href="../prop_gbl/GENERATOR_IS_MULTI_CONFIG.html#prop_gbl:GENERATOR_IS_MULTI_CONFIG" title="GENERATOR_IS_MULTI_CONFIG"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">多配置</span></code></a> 生成器的 <code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/include_&lt;CONFIG&gt;</span></code> 目录下。</p></li>
+</ul>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;</span></code> 是目标属性 <span class="target" id="index-0-prop_tgt:AUTOGEN_BUILD_DIR"></span><a class="reference internal" href="AUTOGEN_BUILD_DIR.html#prop_tgt:AUTOGEN_BUILD_DIR" title="AUTOGEN_BUILD_DIR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_BUILD_DIR</span></code></a> 的值。</p>
+<p>该包含目录会自动添加到目标的 <span class="target" id="index-0-prop_tgt:INCLUDE_DIRECTORIES"></span><a class="reference internal" href="INCLUDE_DIRECTORIES.html#prop_tgt:INCLUDE_DIRECTORIES" title="INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code></a> 中。</p>
+</section>
+<section id="not-included-moc-output-files">
+<h3>未被包含的 moc 输出文件<a class="headerlink" href="AUTOMOC.html#not-included-moc-output-files" title="链接到此标题">¶</a></h3>
+<p>未在源文件中包含的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件将生成在</p>
+<ul class="simple">
+<li><p>单配置生成器的 <code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/&lt;SOURCE_DIR_CHECKSUM&gt;</span></code> 目录下，或者</p></li>
+<li><p><span class="target" id="index-1-prop_gbl:GENERATOR_IS_MULTI_CONFIG"></span><a class="reference internal" href="../prop_gbl/GENERATOR_IS_MULTI_CONFIG.html#prop_gbl:GENERATOR_IS_MULTI_CONFIG" title="GENERATOR_IS_MULTI_CONFIG"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">多配置</span></code></a> 生成器的 <code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/include_&lt;CONFIG&gt;/&lt;SOURCE_DIR_CHECKSUM&gt;</span></code> 目录下。</p></li>
+</ul>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;SOURCE_DIR_CHECKSUM&gt;</span></code> 是从 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输入文件的相对父目录路径计算出的校验和。此方案允许在不同目录中存在同名的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输入文件。</p>
+<p>所有未被包含的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件将自动由 CMake 生成的文件包含：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/mocs_compilation.cpp</span></code>，或</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre"><code class="docutils literal notranslate"><span class="pre">&lt;AUTOGEN_BUILD_DIR&gt;/mocs_compilation_$&lt;CONFIG&gt;.cpp</span></code></span></code>,</p></li>
+</ul>
+<p>该文件会被添加到目标的源文件中。</p>
+</section>
+</section>
+<section id="qt-version-detection">
+<h2>Qt 版本检测<a class="headerlink" href="AUTOMOC.html#qt-version-detection" title="链接到此标题">¶</a></h2>
+<p>启用 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 的目标需要知道它们正在使用的 Qt 主版本号和次版本号。主版本号通常由目标链接的 <code class="docutils literal notranslate"><span class="pre">Qt[456]Core</span></code> 库的 <code class="docutils literal notranslate"><span class="pre">INTERFACE_QT_MAJOR_VERSION</span></code> 属性提供。为了查找次版本号，CMake 会从以下位置构建可用 Qt 版本列表：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Qt6Core_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Qt6Core_VERSION_MINOR</span></code> 变量（通常由 <code class="docutils literal notranslate"><span class="pre">find_package(Qt6...)</span></code> 设置）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Qt6Core_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Qt6Core_VERSION_MINOR</span></code> 目录属性</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Qt5Core_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Qt5Core_VERSION_MINOR</span></code> 变量（通常由 <code class="docutils literal notranslate"><span class="pre">find_package(Qt5...)</span></code> 设置）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Qt5Core_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Qt5Core_VERSION_MINOR</span></code> 目录属性</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QT_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">QT_VERSION_MINOR</span></code> 变量（通常由 <code class="docutils literal notranslate"><span class="pre">find_package(Qt4...)</span></code> 设置）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QT_VERSION_MAJOR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">QT_VERSION_MINOR</span></code> 目录属性</p></li>
+</ul>
+<p>在 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 调用的上下文中。</p>
+<p>假设 <code class="docutils literal notranslate"><span class="pre">INTERFACE_QT_MAJOR_VERSION</span></code> 是一个有效数字，则取列表中第一个匹配主版本号的条目。如果没有找到匹配的主版本号，则会产生错误。如果 <code class="docutils literal notranslate"><span class="pre">INTERFACE_QT_MAJOR_VERSION</span></code> 不是有效数字，则取列表中的第一个条目。</p>
+<p><code class="docutils literal notranslate"><span class="pre">find_package(Qt[456]...)</span></code> 调用会设置 <code class="docutils literal notranslate"><span class="pre">QT/Qt[56]Core_VERSION_MAJOR/MINOR</span></code> 变量。如果该调用位于与 <span class="target" id="index-1-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-1-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 调用不同的上下文中（例如在函数内），则版本变量可能对启用了 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 的目标不可用。在这种情况下，版本变量可以作为目录属性从 <code class="docutils literal notranslate"><span class="pre">find_package(Qt[456]...)</span></code> 的调用上下文转发到 <span class="target" id="index-2-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 或 <span class="target" id="index-2-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 的调用上下文中。以下 Qt5 示例展示了该过程。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function</span> <span class="nf">(</span><span class="nb">add_qt5_client</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">find_package(</span><span class="nb">Qt5</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Core</span><span class="w"> </span><span class="nb">Widgets</span><span class="nf">)</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="w">  </span><span class="nf">set_property(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_SOURCE_DIR}"</span>
+<span class="w">    </span><span class="no">PROPERTY</span><span class="w"> </span><span class="nb">Qt5Core_VERSION_MAJOR</span><span class="w"> </span><span class="s">"${Qt5Core_VERSION_MAJOR}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set_property(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_SOURCE_DIR}"</span>
+<span class="w">    </span><span class="no">PROPERTY</span><span class="w"> </span><span class="nb">Qt5Core_VERSION_MINOR</span><span class="w"> </span><span class="s">"${Qt5Core_VERSION_MAJOR}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="nf">endfunction</span> <span class="nf">()</span>
+<span class="p">...</span>
+<span class="nf">add_qt5_client()</span>
+<span class="nf">add_executable(</span><span class="nb">myTarget</span><span class="w"> </span><span class="nb">main.cpp</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">myTarget</span><span class="w"> </span><span class="nb">Qt5</span><span class="o">::</span><span class="nb">QtWidgets</span><span class="nf">)</span>
+<span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">myTarget</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">AUTOMOC</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="modifiers">
+<h2>修饰符<a class="headerlink" href="AUTOMOC.html#modifiers" title="此标题的链接">¶</a></h2>
+<p><span class="target" id="index-0-prop_tgt:AUTOMOC_EXECUTABLE"></span><a class="reference internal" href="AUTOMOC_EXECUTABLE.html#prop_tgt:AUTOMOC_EXECUTABLE" title="AUTOMOC_EXECUTABLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_EXECUTABLE</span></code></a>: <code class="docutils literal notranslate"><span class="pre">moc</span></code> 可执行文件将自动检测，但可以使用此目标属性强制指定为特定的二进制文件。</p>
+<p><span class="target" id="index-0-prop_tgt:AUTOMOC_MOC_OPTIONS"></span><a class="reference internal" href="AUTOMOC_MOC_OPTIONS.html#prop_tgt:AUTOMOC_MOC_OPTIONS" title="AUTOMOC_MOC_OPTIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_MOC_OPTIONS</span></code></a>: 可在此目标属性中设置 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 的其他命令行选项。</p>
+<p><span class="target" id="index-2-prop_tgt:AUTOMOC_MACRO_NAMES"></span><a class="reference internal" href="AUTOMOC_MACRO_NAMES.html#prop_tgt:AUTOMOC_MACRO_NAMES" title="AUTOMOC_MACRO_NAMES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_MACRO_NAMES</span></code></a>: 此 Qt 宏名称列表可以扩展，以便在头文件和源文件中搜索其他宏。</p>
+<p><span class="target" id="index-2-prop_tgt:AUTOMOC_DEPEND_FILTERS"></span><a class="reference internal" href="AUTOMOC_DEPEND_FILTERS.html#prop_tgt:AUTOMOC_DEPEND_FILTERS" title="AUTOMOC_DEPEND_FILTERS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_DEPEND_FILTERS</span></code></a>: 通过在此目标属性中定义文件名过滤器，可以从头文件或源文件中提取 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 依赖文件名。</p>
+<p><span class="target" id="index-0-prop_tgt:AUTOMOC_COMPILER_PREDEFINES"></span><a class="reference internal" href="AUTOMOC_COMPILER_PREDEFINES.html#prop_tgt:AUTOMOC_COMPILER_PREDEFINES" title="AUTOMOC_COMPILER_PREDEFINES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_COMPILER_PREDEFINES</span></code></a>: <code class="docutils literal notranslate"><span class="pre">moc</span></code> 的编译器预定义会被写入 <code class="docutils literal notranslate"><span class="pre">moc_predefs.h</span></code> 文件。此文件的生成可以在此目标属性中启用或禁用。</p>
+<p><span class="target" id="index-1-prop_tgt:AUTOMOC_INCLUDE_DIRECTORIES"></span><a class="reference internal" href="AUTOMOC_INCLUDE_DIRECTORIES.html#prop_tgt:AUTOMOC_INCLUDE_DIRECTORIES" title="AUTOMOC_INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOMOC_INCLUDE_DIRECTORIES</span></code></a>: 指定一个或多个包含目录，供 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 显式传递给 <code class="docutils literal notranslate"><span class="pre">moc</span></code>，而不是自动发现目标的包含目录。</p>
+<p><span class="target" id="index-0-prop_sf:SKIP_AUTOMOC"></span><a class="reference internal" href="../prop_sf/SKIP_AUTOMOC.html#prop_sf:SKIP_AUTOMOC" title="SKIP_AUTOMOC"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SKIP_AUTOMOC</span></code></a>: 通过设置此源文件属性，可以从 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 处理中排除源文件和头文件。</p>
+<p><span class="target" id="index-0-prop_sf:SKIP_AUTOGEN"></span><a class="reference internal" href="../prop_sf/SKIP_AUTOGEN.html#prop_sf:SKIP_AUTOGEN" title="SKIP_AUTOGEN"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SKIP_AUTOGEN</span></code></a>: 通过设置此源文件属性，可以从 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code>、<span class="target" id="index-0-prop_tgt:AUTOUIC"></span><a class="reference internal" href="AUTOUIC.html#prop_tgt:AUTOUIC" title="AUTOUIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOUIC</span></code></a> 和 <span class="target" id="index-0-prop_tgt:AUTORCC"></span><a class="reference internal" href="AUTORCC.html#prop_tgt:AUTORCC" title="AUTORCC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTORCC</span></code></a> 处理中排除源文件。</p>
+<p><span class="target" id="index-0-prop_gbl:AUTOGEN_SOURCE_GROUP"></span><a class="reference internal" href="../prop_gbl/AUTOGEN_SOURCE_GROUP.html#prop_gbl:AUTOGEN_SOURCE_GROUP" title="AUTOGEN_SOURCE_GROUP"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">AUTOGEN_SOURCE_GROUP</span></code></a>: 此全局属性可用于在 IDE（如 MSVS）中将由 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 或 <span class="target" id="index-1-prop_tgt:AUTORCC"></span><a class="reference internal" href="AUTORCC.html#prop_tgt:AUTORCC" title="AUTORCC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTORCC</span></code></a> 生成的文件归为一组。</p>
+<p><span class="target" id="index-0-prop_gbl:AUTOGEN_TARGETS_FOLDER"></span><a class="reference internal" href="../prop_gbl/AUTOGEN_TARGETS_FOLDER.html#prop_gbl:AUTOGEN_TARGETS_FOLDER" title="AUTOGEN_TARGETS_FOLDER"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">AUTOGEN_TARGETS_FOLDER</span></code></a>: 此全局属性可用于在 IDE（如 MSVS）中将 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code>、<span class="target" id="index-1-prop_tgt:AUTOUIC"></span><a class="reference internal" href="AUTOUIC.html#prop_tgt:AUTOUIC" title="AUTOUIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOUIC</span></code></a> 和 <span class="target" id="index-2-prop_tgt:AUTORCC"></span><a class="reference internal" href="AUTORCC.html#prop_tgt:AUTORCC" title="AUTORCC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTORCC</span></code></a> 目标归为一组。</p>
+<p><span class="target" id="index-0-variable:CMAKE_GLOBAL_AUTOGEN_TARGET"></span><a class="reference internal" href="../variable/CMAKE_GLOBAL_AUTOGEN_TARGET.html#variable:CMAKE_GLOBAL_AUTOGEN_TARGET" title="CMAKE_GLOBAL_AUTOGEN_TARGET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GLOBAL_AUTOGEN_TARGET</span></code></a>: 当此变量为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 时，将生成一个全局 <code class="docutils literal notranslate"><span class="pre">autogen</span></code> 目标，该目标依赖于项目中所有 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 或 <span class="target" id="index-2-prop_tgt:AUTOUIC"></span><a class="reference internal" href="AUTOUIC.html#prop_tgt:AUTOUIC" title="AUTOUIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOUIC</span></code></a> 生成的 <a class="reference internal" href="../manual/cmake-qt.7.html#origin-autogen"><span class="std std-ref">&lt;ORIGIN&gt;_autogen</span></a> 目标。</p>
+<p><span class="target" id="index-0-prop_tgt:AUTOGEN_PARALLEL"></span><a class="reference internal" href="AUTOGEN_PARALLEL.html#prop_tgt:AUTOGEN_PARALLEL" title="AUTOGEN_PARALLEL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_PARALLEL</span></code></a>: 此目标属性控制构建期间并行启动的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 进程的数量。</p>
+<p><span class="target" id="index-0-prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX"></span><a class="reference internal" href="AUTOGEN_COMMAND_LINE_LENGTH_MAX.html#prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX" title="AUTOGEN_COMMAND_LINE_LENGTH_MAX"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_COMMAND_LINE_LENGTH_MAX</span></code></a>: 此目标属性控制在 Windows 上何时对 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 进程使用响应文件的限制。</p>
+<p>有关将 CMake 与 Qt 结合使用的更多信息，请参阅 <span class="target" id="index-0-manual:cmake-qt(7)"></span><a class="reference internal" href="../manual/cmake-qt.7.html#manual:cmake-qt(7)" title="cmake-qt(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-qt(7)</span></code></a> 手册。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="AUTOMOC.html#">AUTOMOC</a><ul>
+<li><a class="reference internal" href="AUTOMOC.html#header-file-processing">头文件处理</a></li>
+<li><a class="reference internal" href="AUTOMOC.html#source-file-processing">源文件处理</a><ul>
+<li><a class="reference internal" href="AUTOMOC.html#including-header-moc-files-in-sources">在源文件中包含头文件的 moc 文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a><ul>
+<li><a class="reference internal" href="AUTOMOC.html#included-moc-output-files">被包含的 moc 输出文件</a></li>
+<li><a class="reference internal" href="AUTOMOC.html#not-included-moc-output-files">未被包含的 moc 输出文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="AUTOMOC.html#qt-version-detection">Qt 版本检测</a></li>
+<li><a class="reference internal" href="AUTOMOC.html#modifiers">修饰符</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="AUTOGEN_USE_SYSTEM_INCLUDE.html" title="上一章">AUTOGEN_USE_SYSTEM_INCLUDE</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="AUTOMOC_COMPILER_PREDEFINES.html" title="下一章">AUTOMOC_COMPILER_PREDEFINES</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/AUTOMOC.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="AUTOMOC_COMPILER_PREDEFINES.html" title="AUTOMOC_COMPILER_PREDEFINES">下一页</a> |</li>
+        <li class="right">
+          <a href="AUTOGEN_USE_SYSTEM_INCLUDE.html" title="AUTOGEN_USE_SYSTEM_INCLUDE">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="AUTOMOC.html">AUTOMOC</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CPack Bundle 生成器 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="bundle.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPack Cygwin Generator" href="cygwin.html" />
+    <link rel="prev" title="CPack Archive Generator" href="archive.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cygwin.html" title="CPack Cygwin Generator" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="archive.html" title="CPack Archive Generator" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html" accesskey="U">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="bundle.html">CPack Bundle 生成器</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cpack-bundle-generator">
+<span id="cpack_gen:CPack Bundle Generator"></span><h1>CPack Bundle 生成器<a class="headerlink" href="bundle.html#cpack-bundle-generator" title="链接到此标题">¶</a></h1>
+<p>CPack Bundle 生成器（macOS）特定选项</p>
+<section id="variables-specific-to-cpack-bundle-generator">
+<h2>CPack Bundle 生成器特定变量<a class="headerlink" href="bundle.html#variables-specific-to-cpack-bundle-generator" title="链接到此标题">¶</a></h2>
+<p>在 macOS 上使用 Bundle 生成器构建的安装程序会使用前述的 DragNDrop (<code class="docutils literal notranslate"><span class="pre">CPACK_DMG_xxx</span></code>) 变量，以及以下 Bundle 特定的参数 (<code class="docutils literal notranslate"><span class="pre">CPACK_BUNDLE_xxx</span></code>)。</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_NAME</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>生成的 Bundle 名称。它在 macOS Finder 中显示为 Bundle 名称。必填。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_PLIST">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_PLIST</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_PLIST" title="Link to this definition">¶</a></dt>
+<dd><p>用于生成 Bundle 的 macOS 属性列表 (<code class="docutils literal notranslate"><span class="pre">.plist</span></code>) 文件路径。这假设调用者已经生成或指定了自己的 <code class="docutils literal notranslate"><span class="pre">Info.plist</span></code> 文件。必填。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_ICON">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_ICON</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_ICON" title="Link to this definition">¶</a></dt>
+<dd><p>用于生成 Bundle 图标的 macOS 图标文件路径。该图标会在 macOS Finder 中显示为 Bundle 的图标，并在打开该 Bundle 时显示在 macOS Dock 中。必填。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_STARTUP_COMMAND">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_STARTUP_COMMAND</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_STARTUP_COMMAND" title="Link to this definition">¶</a></dt>
+<dd><p>启动脚本的路径。这是一个可执行文件或脚本的路径，每当最终用户在 macOS Finder 中双击生成的 Bundle 时，该脚本就会运行。可选。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_APPLE_CERT_APP">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_APPLE_CERT_APP</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_APPLE_CERT_APP" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>您所拥有的 Apple 代码签名证书名称。该名称通常采用 <code class="docutils literal notranslate"><span class="pre">Developer</span> <span class="pre">ID</span> <span class="pre">Application:</span> <span class="pre">[Name]</span></code> 或 <code class="docutils literal notranslate"><span class="pre">3rd</span> <span class="pre">Party</span> <span class="pre">Mac</span> <span class="pre">Developer</span> <span class="pre">Application:</span> <span class="pre">[Name]</span></code> 格式。如果未设置此变量，应用程序将不会被签名。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_APPLE_ENTITLEMENTS">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_APPLE_ENTITLEMENTS</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_APPLE_ENTITLEMENTS" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>包含您的 Apple 应用沙盒（sandboxing）权限的属性列表 (<code class="docutils literal notranslate"><span class="pre">.plist</span></code>) 文件名。提交至 macOS App Store 时需要此文件。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_APPLE_CODESIGN_FILES">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_APPLE_CODESIGN_FILES</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_APPLE_CODESIGN_FILES" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>您希望进行签名的其他文件列表。您不需要列出主应用程序文件夹或主可执行文件。您应列出应用包中包含的所有框架（frameworks）和插件。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_BUNDLE_APPLE_CODESIGN_PARAMETER">
+<span class="sig-name descname"><span class="pre">CPACK_BUNDLE_APPLE_CODESIGN_PARAMETER</span></span><a class="headerlink" href="bundle.html#variable:CPACK_BUNDLE_APPLE_CODESIGN_PARAMETER" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>将传递给 <code class="docutils literal notranslate"><span class="pre">codesign</span></code> 的附加参数。默认值：<code class="docutils literal notranslate"><span class="pre">--deep</span> <span class="pre">-f</span></code></p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMMAND_CODESIGN">
+<span class="sig-name descname"><span class="pre">CPACK_COMMAND_CODESIGN</span></span><a class="headerlink" href="bundle.html#variable:CPACK_COMMAND_CODESIGN" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>用于使用 Apple 证书对应用程序进行签名的 <code class="docutils literal notranslate"><span class="pre">codesign(1)</span></code> 命令路径。此变量可用于覆盖自动检测到的命令（或者在自动检测失败时指定其位置）。</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="bundle.html#">CPack Bundle 生成器</a><ul>
+<li><a class="reference internal" href="bundle.html#variables-specific-to-cpack-bundle-generator">CPack Bundle 生成器特定变量</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="archive.html" title="上一章">CPack 存档生成器</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cygwin.html" title="下一章">CPack Cygwin 生成器</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/cpack_gen/bundle.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cygwin.html" title="CPack Cygwin Generator">下一页</a> |</li>
+        <li class="right">
+          <a href="archive.html" title="CPack Archive Generator">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="bundle.html">CPack Bundle 生成器</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

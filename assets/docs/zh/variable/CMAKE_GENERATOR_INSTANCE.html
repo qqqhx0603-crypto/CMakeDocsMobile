@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMAKE_GENERATOR_INSTANCE — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMAKE_GENERATOR_INSTANCE.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMAKE_GENERATOR_PLATFORM" href="CMAKE_GENERATOR_PLATFORM.html" />
+    <link rel="prev" title="CMAKE_GENERATOR" href="CMAKE_GENERATOR.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_GENERATOR_PLATFORM.html" title="CMAKE_GENERATOR_PLATFORM" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_GENERATOR.html" title="CMAKE_GENERATOR" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_GENERATOR_INSTANCE.html">CMAKE_GENERATOR_INSTANCE</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-generator-instance">
+<span id="variable:CMAKE_GENERATOR_INSTANCE"></span><h1>CMAKE_GENERATOR_INSTANCE<a class="headerlink" href="CMAKE_GENERATOR_INSTANCE.html#cmake-generator-instance" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>用户提供的生成器特定实例规范。</p>
+<p>当存在多个原生构建系统实例时，某些 CMake 生成器支持选择特定的实例。如果用户指定了某个实例（例如通过设置此缓存条目，或通过 <span class="target" id="index-0-envvar:CMAKE_GENERATOR_INSTANCE"></span><a class="reference internal" href="../envvar/CMAKE_GENERATOR_INSTANCE.html#envvar:CMAKE_GENERATOR_INSTANCE" title="CMAKE_GENERATOR_INSTANCE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span></code></a> 环境变量），或者在首次配置构建树时选择了默认实例后，该值将在此变量中可用。</p>
+<p>此变量的值绝不应由项目代码修改。由 <span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a> 变量指定的工具链文件可以将 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span></code> 初始化为缓存条目。一旦给定的构建树使用该变量的特定值进行了初始化，修改该值将产生未定义的行为。</p>
+<p>实例规范仅在特定生成器上受支持。</p>
+<section id="visual-studio-instance-selection">
+<h2>Visual Studio 实例选择<a class="headerlink" href="CMAKE_GENERATOR_INSTANCE.html#visual-studio-instance-selection" title="链接到此标题">¶</a></h2>
+<p><a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 支持对 Visual Studio 2017 及以上版本进行实例规范。可以将 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span></code> 变量设置为缓存条目，通过以下形式之一选择 Visual Studio 实例：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location[,key=value]*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">key=value[,key=value]*</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">location</span></code> 指定 VS 安装顶级目录的绝对路径。</p>
+<p><code class="docutils literal notranslate"><span class="pre">key=value</span></code> 对是逗号分隔的选项列表，用于指定实例选择的详细信息。支持的键值对为：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">version=&lt;major&gt;.&lt;minor&gt;.&lt;date&gt;.&lt;build&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>指定 4 分量 VS 构建版本，也称为构建编号 (Build Number)。</p>
+<p>各分量含义如下：</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;major&gt;.&lt;minor&gt;</span></code></p>
+<blockquote>
+<div><p>VS 主版本号和次版本号。这些与发布版本号相同。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;date&gt;</span></code></p>
+<blockquote>
+<div><p>格式为 <code class="docutils literal notranslate"><span class="pre">MMMDD</span></code> 的构建日期，其中 <code class="docutils literal notranslate"><span class="pre">MMM</span></code> 是自微软所用纪元以来的月份索引，<code class="docutils literal notranslate"><span class="pre">DD</span></code> 是当月的天数。</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;build&gt;</span></code></p>
+<blockquote>
+<div><p>由 <code class="docutils literal notranslate"><span class="pre">&lt;date&gt;</span></code> 表示日期当天的构建索引。</p>
+</div></blockquote>
+<p>该构建编号由 <code class="docutils literal notranslate"><span class="pre">vswhere</span></code> 以 <code class="docutils literal notranslate"><span class="pre">installationVersion</span></code> 的形式报告。例如，VS 16.11.10 的构建编号为 <code class="docutils literal notranslate"><span class="pre">16.11.32126.315</span></code>。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.23 版本新增：</span>可以通过同时提供 <code class="docutils literal notranslate"><span class="pre">location</span></code> 和 <code class="docutils literal notranslate"><span class="pre">version=</span></code> 来指定一个 Visual Studio 安装程序所未知的便携式 VS 实例。</p>
+</div>
+<p>如果用户或工具链文件未显式指定 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span></code> 的值，CMake 会查询 Visual Studio 安装程序以定位 VS 实例，选择一个，并将其设置为缓存条目以持久化保存该值。如果设置了 <code class="docutils literal notranslate"><span class="pre">VS##0COMNTOOLS</span></code> 格式的环境变量（其中 <code class="docutils literal notranslate"><span class="pre">##</span></code> 是 Visual Studio 主版本号），且该变量指向某个 VS 实例内的 <code class="docutils literal notranslate"><span class="pre">Common7/Tools</span></code> 目录，则会使用该实例。否则，如果安装了多个 VS 实例，CMake 不会定义默认选择哪一个。</p>
+<p>所选 VS 实例的 VS 版本构建号存储在 <span class="target" id="index-0-variable:CMAKE_VS_VERSION_BUILD_NUMBER"></span><a class="reference internal" href="CMAKE_VS_VERSION_BUILD_NUMBER.html#variable:CMAKE_VS_VERSION_BUILD_NUMBER" title="CMAKE_VS_VERSION_BUILD_NUMBER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VS_VERSION_BUILD_NUMBER</span></code></a> 变量中。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMAKE_GENERATOR_INSTANCE.html#">CMAKE_GENERATOR_INSTANCE</a><ul>
+<li><a class="reference internal" href="CMAKE_GENERATOR_INSTANCE.html#visual-studio-instance-selection">Visual Studio 实例选择</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMAKE_GENERATOR.html" title="上一章">CMAKE_GENERATOR</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMAKE_GENERATOR_PLATFORM.html" title="下一章">CMAKE_GENERATOR_PLATFORM</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/variable/CMAKE_GENERATOR_INSTANCE.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMAKE_GENERATOR_PLATFORM.html" title="CMAKE_GENERATOR_PLATFORM">下一页</a> |</li>
+        <li class="right">
+          <a href="CMAKE_GENERATOR.html" title="CMAKE_GENERATOR">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMAKE_GENERATOR_INSTANCE.html">CMAKE_GENERATOR_INSTANCE</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

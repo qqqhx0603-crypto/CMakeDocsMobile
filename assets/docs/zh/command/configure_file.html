@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>configure_file — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="configure_file.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="continue" href="continue.html" />
+    <link rel="prev" title="cmake_policy" href="cmake_policy.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="continue.html" title="continue" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_policy.html" title="cmake_policy" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="configure_file.html">configure_file</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="configure-file">
+<span id="command:configure_file"></span><h1><a class="toc-backref" href="configure_file.html#id1" role="doc-backlink">configure_file</a><a class="headerlink" href="configure_file.html#configure-file" title="链接到此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="configure_file.html#configure-file" id="id1">configure_file</a></p>
+<ul>
+<li><p><a class="reference internal" href="configure_file.html#options" id="id2">选项</a></p></li>
+<li><p><a class="reference internal" href="configure_file.html#transformations" id="id3">转换</a></p></li>
+<li><p><a class="reference internal" href="configure_file.html#example" id="id4">示例</a></p></li>
+<li><p><a class="reference internal" href="configure_file.html#see-also" id="id5">另请参阅</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>将文件复制到另一个位置并修改其内容。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">configure_file(</span><span class="nv">&lt;input&gt;</span><span class="w"> </span><span class="nv">&lt;output&gt;</span>
+<span class="w">               </span><span class="p">[</span><span class="no">NO_SOURCE_PERMISSIONS</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">USE_SOURCE_PERMISSIONS</span><span class="w"> </span><span class="p">|</span>
+<span class="w">                </span><span class="no">FILE_PERMISSIONS</span><span class="w"> </span><span class="nv">&lt;permissions&gt;...</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">COPYONLY</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">ESCAPE_QUOTES</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">@ONLY</span><span class="p">]</span>
+<span class="w">               </span><span class="p">[</span><span class="no">NEWLINE_STYLE</span><span class="w"> </span><span class="p">[</span><span class="no">UNIX</span><span class="p">|</span><span class="no">DOS</span><span class="p">|</span><span class="no">WIN32</span><span class="p">|</span><span class="no">LF</span><span class="p">|</span><span class="no">CRLF</span><span class="p">]]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 文件复制到 <code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code> 文件，同时对输入文件内容执行 <a class="reference internal" href="configure_file.html#transformations">转换</a>。</p>
+<p>如果输入文件被修改，构建系统将重新运行 CMake 以重新配置该文件并再次生成构建系统。生成的文件的修改时间戳仅在后续 cmake 运行且内容发生变化时才会更新。</p>
+<section id="options">
+<h2><a class="toc-backref" href="configure_file.html#id2" role="doc-backlink">选项</a><a class="headerlink" href="configure_file.html#options" title="链接到此标题">¶</a></h2>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code></dt><dd><p>输入文件的路径。相对路径是相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_SOURCE_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_SOURCE_DIR.html#variable:CMAKE_CURRENT_SOURCE_DIR" title="CMAKE_CURRENT_SOURCE_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code></a> 的值来处理的。输入路径必须是一个文件，不能是目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code></dt><dd><p>输出文件或目录的路径。相对路径是相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 的值来处理的。如果路径命名了一个已存在的目录，输出文件将被置于该目录中，并使用与输入文件相同的文件名。如果路径中包含不存在的目录，它们将被创建。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>不将输入文件的权限转移到输出文件。复制文件的权限默认为标准的 644 值 (-rw-r--r--)。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>将输入文件的权限转移到输出文件。如果没有指定这三个与权限相关的关键字（<code class="docutils literal notranslate"><span class="pre">NO_SOURCE_PERMISSIONS</span></code>、<code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span></code>），这已经是默认行为。<code class="docutils literal notranslate"><span class="pre">USE_SOURCE_PERMISSIONS</span></code> 关键字主要用于在调用处使预期行为更清晰。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILE_PERMISSIONS</span> <span class="pre">&lt;permissions&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>忽略输入文件的权限，改用指定的 <code class="docutils literal notranslate"><span class="pre">&lt;permissions&gt;</span></code> 作为输出文件的权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COPYONLY</span></code></dt><dd><p>仅复制文件，不替换任何变量引用或其他内容。此选项不能与 <code class="docutils literal notranslate"><span class="pre">NEWLINE_STYLE</span></code> 一起使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ESCAPE_QUOTES</span></code></dt><dd><p>用反斜杠转义任何被替换的引号（C 风格）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">@ONLY</span></code></dt><dd><p>将变量替换限制为 <code class="docutils literal notranslate"><span class="pre">@VAR@</span></code> 形式的引用。这对于配置使用 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 语法的脚本非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NEWLINE_STYLE</span> <span class="pre">&lt;style&gt;</span></code></dt><dd><p>指定输出文件的换行符样式。对于 <code class="docutils literal notranslate"><span class="pre">\n</span></code> 换行，指定 <code class="docutils literal notranslate"><span class="pre">UNIX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LF</span></code>；对于 <code class="docutils literal notranslate"><span class="pre">\r\n</span></code> 换行，指定 <code class="docutils literal notranslate"><span class="pre">DOS</span></code>、<code class="docutils literal notranslate"><span class="pre">WIN32</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CRLF</span></code>。此选项不能与 <code class="docutils literal notranslate"><span class="pre">COPYONLY</span></code> 一起使用。</p>
+</dd>
+</dl>
+</section>
+<section id="transformations">
+<h2><a class="toc-backref" href="configure_file.html#id3" role="doc-backlink">转换</a><a class="headerlink" href="configure_file.html#transformations" title="链接到此标题">¶</a></h2>
+<p>输入文件内容中引用为 <code class="docutils literal notranslate"><span class="pre">@VAR@</span></code>、<code class="docutils literal notranslate"><span class="pre">${VAR}</span></code>、<code class="docutils literal notranslate"><span class="pre">$CACHE{VAR}</span></code> 以及引用为 <code class="docutils literal notranslate"><span class="pre">$ENV{VAR}</span></code> 的 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-environment-variables"><span class="std std-ref">环境变量</span></a>，将分别被替换为变量的当前值；如果变量未定义，则替换为空字符串。此外，以下形式的输入行</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#cmakedefine VAR ...</span>
+</pre></div>
+</div>
+<p>将被替换为</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR ...</span>
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* #undef VAR */</span>
+</pre></div>
+</div>
+<p>具体取决于 <code class="docutils literal notranslate"><span class="pre">VAR</span></code> 在 CMake 中是否被设置为任何未被 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a> 命令视为假常数的值。变量名之后（如果有）的 "..." 内容将按上述方式处理。</p>
+<p>与 <code class="docutils literal notranslate"><span class="pre">#cmakedefine</span> <span class="pre">VAR</span> <span class="pre">...</span></code> 形式的行不同，在 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span></code> 形式的行中，<code class="docutils literal notranslate"><span class="pre">VAR</span></code> 本身将展开为 <code class="docutils literal notranslate"><span class="pre">VAR</span> <span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">VAR</span> <span class="pre">1</span></code>，而不是被赋值为 <code class="docutils literal notranslate"><span class="pre">...</span></code>。因此，以下形式的输入行</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#cmakedefine01 VAR</span>
+</pre></div>
+</div>
+<p>将被替换为</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR 0</span>
+</pre></div>
+</div>
+<p>或</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR 1</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span></code> 形式的输入行将展开为 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span> <span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span> <span class="pre">1</span></code>，这可能会导致未定义的行为。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增：</span>结果行（<code class="docutils literal notranslate"><span class="pre">#undef</span></code> 注释除外）可以在 <code class="docutils literal notranslate"><span class="pre">#</span></code> 字符与 <code class="docutils literal notranslate"><span class="pre">cmakedefine</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cmakedefine01</span></code> 单词之间使用空格和/或制表符进行缩进。这种空白缩进将保留在输出行中</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#  cmakedefine VAR</span>
+<span class="cp">#  cmakedefine01 VAR</span>
+</pre></div>
+</div>
+<p>如果定义了 <code class="docutils literal notranslate"><span class="pre">VAR</span></code>，则会被替换为</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#  define VAR</span>
+<span class="cp">#  define VAR 1</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="example">
+<h2><a class="toc-backref" href="configure_file.html#id4" role="doc-backlink">示例</a><a class="headerlink" href="configure_file.html#example" title="链接到此标题">¶</a></h2>
+<p>考虑一个包含 <code class="docutils literal notranslate"><span class="pre">foo.h.in</span></code> 文件的源树</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#cmakedefine FOO_ENABLE</span>
+<span class="cp">#cmakedefine FOO_STRING "@FOO_STRING@"</span>
+</pre></div>
+</div>
+<p>相邻的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 可以使用 <code class="docutils literal notranslate"><span class="pre">configure_file</span></code> 来配置头文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">FOO_ENABLE</span><span class="w"> </span><span class="s">"Enable Foo"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">FOO_ENABLE</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">FOO_STRING</span><span class="w"> </span><span class="s">"foo"</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+<span class="nf">configure_file(</span><span class="nb">foo.h.in</span><span class="w"> </span><span class="nb">foo.h</span><span class="w"> </span><span class="no">@ONLY</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>这将在对应此源目录的构建目录中创建一个 <code class="docutils literal notranslate"><span class="pre">foo.h</span></code>。如果 <code class="docutils literal notranslate"><span class="pre">FOO_ENABLE</span></code> 选项开启，配置后的文件将包含</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define FOO_ENABLE</span>
+<span class="cp">#define FOO_STRING "foo"</span>
+</pre></div>
+</div>
+<p>否则它将包含</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* #undef FOO_ENABLE */</span>
+<span class="cm">/* #undef FOO_STRING */</span>
+</pre></div>
+</div>
+<p>然后可以使用 <span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 命令将输出目录指定为包含目录</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">SYSTEM</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="no">INTERFACE</span><span class="p">|</span><span class="no">PUBLIC</span><span class="p">|</span><span class="no">PRIVATE</span><span class="p">}</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>以便源文件可以使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;foo.h&gt;</span></code> 来包含该头文件。</p>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="configure_file.html#id5" role="doc-backlink">另请参阅</a><a class="headerlink" href="configure_file.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:file"></span><a class="reference internal" href="file.html#generate" title="file(generate)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(GENERATE)</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="configure_file.html#">configure_file</a><ul>
+<li><a class="reference internal" href="configure_file.html#options">选项</a></li>
+<li><a class="reference internal" href="configure_file.html#transformations">转换</a></li>
+<li><a class="reference internal" href="configure_file.html#example">示例</a></li>
+<li><a class="reference internal" href="configure_file.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake_policy.html" title="上一章">cmake_policy</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="continue.html" title="下一章">continue</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/configure_file.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="continue.html" title="continue">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_policy.html" title="cmake_policy">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="configure_file.html">configure_file</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

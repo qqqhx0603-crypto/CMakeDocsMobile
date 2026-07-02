@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>EXCLUDE_FROM_ALL — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="EXCLUDE_FROM_ALL.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM" href="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM.html" />
+    <link rel="prev" title="DEFINITIONS" href="DEFINITIONS.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM.html" title="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="DEFINITIONS.html" title="DEFINITIONS" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="EXCLUDE_FROM_ALL.html">EXCLUDE_FROM_ALL</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="exclude-from-all">
+<span id="prop_dir:EXCLUDE_FROM_ALL"></span><h1>EXCLUDE_FROM_ALL<a class="headerlink" href="EXCLUDE_FROM_ALL.html#exclude-from-all" title="链接到此标题">¶</a></h1>
+<p>将此目录属性设置为子目录的真值，以将其目标从其祖先的“all”目标中排除。如果排除，例如在父目录中运行 <code class="docutils literal notranslate"><span class="pre">make</span></code> 将默认情况下不会构建子目录中的目标。这不会影响子目录本身的“all”目标。例如，在子目录中运行 <code class="docutils literal notranslate"><span class="pre">make</span></code> 仍然会构建其目标。</p>
+<p><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 适用于子目录包含项目的独立部分，该部分很有用但不是必需的，例如一组示例，或者例如集成的第三方库。通常，子目录应包含自己的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令调用，以便在子目录中生成完整的构建系统（例如 Visual Studio IDE 解决方案文件）。请注意，跨目标依赖关系优先于此排除。如果父项目构建的目标依赖于子目录中的目标，则依赖目标将包含在父项目构建系统中以满足依赖关系。</p>
+<p>如果提供了 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 参数，则具有以下效果</p>
+<ul class="simple">
+<li><p>子目录或子目录中定义的目标将不包含在父目录的 <code class="docutils literal notranslate"><span class="pre">ALL</span></code> 目标中。这些目标必须由用户显式构建，或者成为将被构建的另一个目标的依赖项。</p></li>
+<li><p>子目录或子目录中定义的目标将从 IDE 项目文件中排除。</p></li>
+<li><p>子目录或子目录中定义的任何安装规则在安装父目录时将被忽略。</p></li>
+</ul>
+<p>请注意，这些效果与 <span class="target" id="index-0-prop_tgt:EXCLUDE_FROM_ALL"></span><a class="reference internal" href="../prop_tgt/EXCLUDE_FROM_ALL.html#prop_tgt:EXCLUDE_FROM_ALL" title="EXCLUDE_FROM_ALL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></a> 目标属性的效果不同。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="DEFINITIONS.html" title="上一章">DEFINITIONS</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM.html" title="下一章">IMPLICIT_DEPENDS_INCLUDE_TRANSFORM</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_dir/EXCLUDE_FROM_ALL.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM.html" title="IMPLICIT_DEPENDS_INCLUDE_TRANSFORM">下一页</a> |</li>
+        <li class="right">
+          <a href="DEFINITIONS.html" title="DEFINITIONS">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="EXCLUDE_FROM_ALL.html">EXCLUDE_FROM_ALL</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

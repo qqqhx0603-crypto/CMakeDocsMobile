@@ -1,0 +1,380 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ctest_test — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ctest_test.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ctest_update" href="ctest_update.html" />
+    <link rel="prev" title="ctest_submit" href="ctest_submit.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ctest_update.html" title="ctest_update" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_submit.html" title="ctest_submit" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_test.html">ctest_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ctest-test">
+<span id="command:ctest_test"></span><h1>ctest_test<a class="headerlink" href="ctest_test.html#ctest-test" title="链接到此标题">¶</a></h1>
+<p>执行 <a class="reference internal" href="../manual/ctest.1.html#ctest-test-step"><span class="std std-ref">CTest 测试步骤</span></a>，作为 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">仪表板客户端</span></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_test(</span><span class="p">[</span><span class="no">BUILD</span><span class="w"> </span><span class="nv">&lt;build-dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">APPEND</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">START</span><span class="w"> </span><span class="nv">&lt;start-number&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">END</span><span class="w"> </span><span class="nv">&lt;end-number&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">STRIDE</span><span class="w"> </span><span class="nv">&lt;stride-number&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE</span><span class="w"> </span><span class="nv">&lt;exclude-regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">INCLUDE</span><span class="w"> </span><span class="nv">&lt;include-regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE_LABEL</span><span class="w"> </span><span class="nv">&lt;label-exclude-regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">INCLUDE_LABEL</span><span class="w"> </span><span class="nv">&lt;label-include-regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE_FROM_FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">INCLUDE_FROM_FILE</span><span class="w"> </span><span class="nv">&lt;filename&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE_FIXTURE</span><span class="w"> </span><span class="nv">&lt;regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE_FIXTURE_SETUP</span><span class="w"> </span><span class="nv">&lt;regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">EXCLUDE_FIXTURE_CLEANUP</span><span class="w"> </span><span class="nv">&lt;regex&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">PARALLEL_LEVEL</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;level&gt;</span><span class="p">]]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">RESOURCE_SPEC_FILE</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">TEST_LOAD</span><span class="w"> </span><span class="nv">&lt;threshold&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">SCHEDULE_RANDOM</span><span class="w"> </span><span class="p">&lt;</span><span class="no">ON</span><span class="p">|</span><span class="no">OFF</span><span class="p">&gt;]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">STOP_ON_FAILURE</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">STOP_TIME</span><span class="w"> </span><span class="nv">&lt;time-of-day&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">RETURN_VALUE</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">CAPTURE_CMAKE_ERROR</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">REPEAT</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="o">:</span><span class="nv">&lt;n&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">OUTPUT_JUNIT</span><span class="w"> </span><span class="nv">&lt;file&gt;</span><span class="p">]</span>
+<span class="w">           </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">           </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在项目构建树中运行测试，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">Test.xml</span></code> 中，以便使用 <span class="target" id="index-0-command:ctest_submit"></span><a class="reference internal" href="ctest_submit.html#command:ctest_submit" title="ctest_submit"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_submit()</span></code></a> 命令提交。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">&lt;build-dir&gt;</span></code></dt><dd><p>指定顶级构建目录。如果未给出，则使用 <span class="target" id="index-0-variable:CTEST_BINARY_DIRECTORY"></span><a class="reference internal" href="../variable/CTEST_BINARY_DIRECTORY.html#variable:CTEST_BINARY_DIRECTORY" title="CTEST_BINARY_DIRECTORY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_BINARY_DIRECTORY</span></code></a> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">APPEND</span></code></dt><dd><p>将 <code class="docutils literal notranslate"><span class="pre">Test.xml</span></code> 标记为追加到自上次 <span class="target" id="index-0-command:ctest_start"></span><a class="reference internal" href="ctest_start.html#command:ctest_start" title="ctest_start"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ctest_start()</span></code></a> 调用以来已提交到仪表板服务器的结果中。追加语义由所使用的仪表板服务器定义。这并<em>不会</em>导致结果被追加到由该命令之前调用所产生的 <code class="docutils literal notranslate"><span class="pre">.xml</span></code> 文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">START</span> <span class="pre">&lt;start-number&gt;</span></code></dt><dd><p>指定测试编号范围的起始值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">END</span> <span class="pre">&lt;end-number&gt;</span></code></dt><dd><p>指定测试编号范围的结束值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STRIDE</span> <span class="pre">&lt;stride-number&gt;</span></code></dt><dd><p>指定跨越测试编号范围的步长。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE</span> <span class="pre">&lt;exclude-regex&gt;</span></code></dt><dd><p>指定匹配要排除的测试名称的正则表达式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE</span> <span class="pre">&lt;include-regex&gt;</span></code></dt><dd><p>指定匹配要包含的测试名称的正则表达式。不匹配此表达式的测试将被排除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_LABEL</span> <span class="pre">&lt;label-exclude-regex&gt;</span></code></dt><dd><p>指定匹配要排除的测试标签的正则表达式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_LABEL</span> <span class="pre">&lt;label-include-regex&gt;</span></code></dt><dd><p>指定匹配要包含的测试标签的正则表达式。不匹配此表达式的测试将被排除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_FILE</span> <span class="pre">&lt;filename&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>不要运行给定文件中精确列出的测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDE_FROM_FILE</span> <span class="pre">&lt;filename&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.29 中添加。</span></p>
+</div>
+<p>仅运行给定文件中精确列出的测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FIXTURE</span> <span class="pre">&lt;regex&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果待执行测试集中的某个测试需要特定的测试夹具（fixture），该夹具的设置（setup）和清理（cleanup）测试通常会自动添加到测试集中。此选项可防止为匹配 <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> 的夹具添加设置或清理测试。请注意，所有其他夹具行为均会被保留，包括测试依赖关系以及跳过那些具有失败夹具设置测试的测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FIXTURE_SETUP</span> <span class="pre">&lt;regex&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>与 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FIXTURE</span></code> 相同，但仅排除匹配的设置测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FIXTURE_CLEANUP</span> <span class="pre">&lt;regex&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>与 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FIXTURE</span></code> 相同，但仅排除匹配的清理测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PARALLEL_LEVEL</span> <span class="pre">[&lt;level&gt;]</span></code></dt><dd><p>并行运行测试，并限制并行级别。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.29 版本新增：</span>可以省略 <code class="docutils literal notranslate"><span class="pre">&lt;level&gt;</span></code> 或将其设为 <code class="docutils literal notranslate"><span class="pre">0</span></code>，分别表示让 ctest 使用默认的并行级别或不限制并行度，具体如 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-j"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest --parallel</span></code></a> 选项所述。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESOURCE_SPEC_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.16 版新增。</span></p>
+</div>
+<p>指定一个 <a class="reference internal" href="../manual/ctest.1.html#ctest-resource-specification-file"><span class="std std-ref">资源规范文件</span></a>。有关更多信息，请参阅 <a class="reference internal" href="../manual/ctest.1.html#ctest-resource-allocation"><span class="std std-ref">资源分配</span></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_LOAD</span> <span class="pre">&lt;threshold&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>在并行运行测试时，尽量避免在可能导致 CPU 负载超过给定阈值时启动测试。如果未指定，将检查 <span class="target" id="index-0-variable:CTEST_TEST_LOAD"></span><a class="reference internal" href="../variable/CTEST_TEST_LOAD.html#variable:CTEST_TEST_LOAD" title="CTEST_TEST_LOAD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_TEST_LOAD</span></code></a> 变量，然后检查 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 的 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-test-load"><code class="xref std std-option docutils literal notranslate"><span class="pre">--test-load</span></code></a> 命令行参数。另请参阅 <a class="reference internal" href="../manual/ctest.1.html#ctest-test-step"><span class="std std-ref">CTest 测试步骤</span></a> 中的 <code class="docutils literal notranslate"><span class="pre">TestLoad</span></code> 设置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REPEAT</span> <span class="pre">&lt;mode&gt;:&lt;n&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>基于给定的 <code class="docutils literal notranslate"><span class="pre">&lt;mode&gt;</span></code> 重复运行测试，最多 <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> 次。模式包括：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">UNTIL_FAIL</span></code></dt><dd><p>要求每个测试运行 <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> 次且均不失败才算通过。这对于发现测试用例中的偶发性失败非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UNTIL_PASS</span></code></dt><dd><p>允许每个测试运行最多 <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> 次以使其通过。如果测试因任何原因失败则会重复运行。这对于容忍测试用例中的偶发性失败非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">AFTER_TIMEOUT</span></code></dt><dd><p>允许每个测试运行最多 <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> 次以使其通过。仅在测试超时时重复运行。这对于在高负载机器上容忍测试用例的偶发性超时非常有用。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SCHEDULE_RANDOM</span> <span class="pre">&lt;ON|OFF&gt;</span></code></dt><dd><p>以随机顺序启动测试。这对于检测隐含的测试依赖关系可能很有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STOP_ON_FAILURE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>一旦有测试失败，即停止执行测试。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STOP_TIME</span> <span class="pre">&lt;time-of-day&gt;</span></code></dt><dd><p>指定所有测试停止运行的具体时间。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RETURN_VALUE</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>如果所有测试均通过，则在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中存储 <code class="docutils literal notranslate"><span class="pre">0</span></code>。如果出现任何问题，则存储非零值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CAPTURE_CMAKE_ERROR</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果运行命令时有任何错误，则在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中存储 -1，并防止 ctest 在发生错误时返回非零值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_JUNIT</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>以 JUnit XML 格式将测试结果写入 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>。如果 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 是相对路径，它将被放置在构建目录中。如果 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code> 已存在，则会被覆盖。请注意，生成的 JUnit XML 文件<strong>不会</strong>上传到 CDash，因为它与 CTest 的 <code class="docutils literal notranslate"><span class="pre">Test.xml</span></code> 文件内容重复。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>抑制任何本应打印到控制台的 CTest 特有的非错误消息。底层测试命令的输出不受影响。详细说明测试通过百分比的摘要信息也不受 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项的影响。</p>
+</dd>
+</dl>
+<p>另请参阅 <span class="target" id="index-0-variable:CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE"></span><a class="reference internal" href="../variable/CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE.html#variable:CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE" title="CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE</span></code></a>、<span class="target" id="index-0-variable:CTEST_CUSTOM_MAXIMUM_FAILED_TEST_OUTPUT_SIZE"></span><a class="reference internal" href="../variable/CTEST_CUSTOM_MAXIMUM_FAILED_TEST_OUTPUT_SIZE.html#variable:CTEST_CUSTOM_MAXIMUM_FAILED_TEST_OUTPUT_SIZE" title="CTEST_CUSTOM_MAXIMUM_FAILED_TEST_OUTPUT_SIZE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_CUSTOM_MAXIMUM_FAILED_TEST_OUTPUT_SIZE</span></code></a> 和 <span class="target" id="index-0-variable:CTEST_CUSTOM_TEST_OUTPUT_TRUNCATION"></span><a class="reference internal" href="../variable/CTEST_CUSTOM_TEST_OUTPUT_TRUNCATION.html#variable:CTEST_CUSTOM_TEST_OUTPUT_TRUNCATION" title="CTEST_CUSTOM_TEST_OUTPUT_TRUNCATION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_CUSTOM_TEST_OUTPUT_TRUNCATION</span></code></a> 变量，以及它们对应的 <span class="target" id="index-1-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 命令行选项 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-test-output-size-passed"><code class="xref std std-option docutils literal notranslate"><span class="pre">--test-output-size-passed</span></code></a>、<a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-test-output-size-failed"><code class="xref std std-option docutils literal notranslate"><span class="pre">--test-output-size-failed</span></code></a> 和 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-test-output-truncation"><code class="xref std std-option docutils literal notranslate"><span class="pre">--test-output-truncation</span></code></a>。</p>
+<section id="additional-test-measurements">
+<span id="id1"></span><h2>附加测试度量<a class="headerlink" href="ctest_test.html#additional-test-measurements" title="链接到此标题">¶</a></h2>
+<p>CTest 可以解析您的测试输出，以获取向 CDash 报告的额外度量。</p>
+<p>当作为 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">仪表板客户端</span></a> 运行时，CTest 会将这些自定义度量包含在上传到 CDash 的 <code class="docutils literal notranslate"><span class="pre">Test.xml</span></code> 文件中。</p>
+<p>查看 <a class="reference external" href="https://github.com/Kitware/CDash/blob/master/docs/test_measurements.md">CDash 测试度量文档</a>，了解更多关于 CDash 可识别的测试度量类型的信息。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增：</span>CTest 可以从名为 <code class="docutils literal notranslate"><span class="pre">&lt;CTestMeasurement&gt;</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;CTestMeasurementFile&gt;</span></code> 的标签中解析自定义度量。旧名称 <code class="docutils literal notranslate"><span class="pre">&lt;DartMeasurement&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;DartMeasurementFile&gt;</span></code> 仍然受支持。</p>
+</div>
+<p>以下示例演示了如何输出各种自定义测试度量。</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurement type=</span><span class="se">\"</span><span class="s">numeric/double</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">score</span><span class="se">\"</span><span class="s">&gt;28.3&lt;/CTestMeasurement&gt;"</span>
+<span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurement type=</span><span class="se">\"</span><span class="s">text/string</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">color</span><span class="se">\"</span><span class="s">&gt;red&lt;/CTestMeasurement&gt;"</span>
+<span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurement type=</span><span class="se">\"</span><span class="s">text/link</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">CMake URL</span><span class="se">\"</span><span class="s">&gt;https://cmake.com.cn&lt;/CTestMeasurement&gt;"</span>
+<span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurement type=</span><span class="se">\"</span><span class="s">text/preformatted</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">Console Output</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"line 1.</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"  </span><span class="se">\033</span><span class="s">[31;1m line 2. Bold red, and indented!</span><span class="se">\033</span><span class="s">[0;0ml</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"line 3. Not bold or indented...</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;/CTestMeasurement&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<section id="image-measurements">
+<h3>图像度量<a class="headerlink" href="ctest_test.html#image-measurements" title="链接到此标题">¶</a></h3>
+<p>以下示例演示了如何将测试图像上传到 CDash。</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurementFile type=</span><span class="se">\"</span><span class="s">image/jpg</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">TestImage</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"/dir/to/test_img.jpg&lt;/CTestMeasurementFile&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurementFile type=</span><span class="se">\"</span><span class="s">image/gif</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">ValidImage</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"/dir/to/valid_img.gif&lt;/CTestMeasurementFile&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurementFile type=</span><span class="se">\"</span><span class="s">image/png</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">AlgoResult</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"/dir/to/img.png&lt;/CTestMeasurementFile&gt;"</span>
+<span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>如果图像提供了以下两个或多个名称，它们将在 CDash 的交互式比较模式中一起显示。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TestImage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ValidImage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BaselineImage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DifferenceImage2</span></code></p></li>
+</ul>
+<p>按照惯例，<code class="docutils literal notranslate"><span class="pre">TestImage</span></code> 是您的测试生成的图像，而 <code class="docutils literal notranslate"><span class="pre">ValidImage</span></code>（或 <code class="docutils literal notranslate"><span class="pre">BaselineImage</span></code>）是用于确定测试通过或失败的比较基准。</p>
+<p>如果使用了其他图像名称，它将作为静态图像显示在 CDash 上，与交互式比较 UI 分开。</p>
+</section>
+<section id="attached-files">
+<h3>附加文件<a class="headerlink" href="ctest_test.html#attached-files" title="链接到此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>以下示例演示了如何将非图像文件上传到 CDash。</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurementFile type=</span><span class="se">\"</span><span class="s">file</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">TestInputData1</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"/dir/to/data1.csv&lt;/CTestMeasurementFile&gt;</span><span class="se">\n</span><span class="s">"</span><span class="w">                   </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestMeasurementFile type=</span><span class="se">\"</span><span class="s">file</span><span class="se">\"</span><span class="s"> name=</span><span class="se">\"</span><span class="s">TestInputData2</span><span class="se">\"</span><span class="s">&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"/dir/to/data2.csv&lt;/CTestMeasurementFile&gt;"</span><span class="w">                     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>如果在配置时已知要上传的文件名，则可以使用 <span class="target" id="index-0-prop_test:ATTACHED_FILES"></span><a class="reference internal" href="../prop_test/ATTACHED_FILES.html#prop_test:ATTACHED_FILES" title="ATTACHED_FILES"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ATTACHED_FILES</span></code></a> 或 <span class="target" id="index-0-prop_test:ATTACHED_FILES_ON_FAIL"></span><a class="reference internal" href="../prop_test/ATTACHED_FILES_ON_FAIL.html#prop_test:ATTACHED_FILES_ON_FAIL" title="ATTACHED_FILES_ON_FAIL"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ATTACHED_FILES_ON_FAIL</span></code></a> 测试属性。</p>
+</section>
+<section id="custom-details">
+<h3>自定义详情<a class="headerlink" href="ctest_test.html#custom-details" title="链接到此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>以下示例演示了如何为 CDash 上显示的 <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">Details</span></code> 字段指定自定义值。</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestDetails&gt;My Custom Details Value&lt;/CTestDetails&gt;"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="additional-labels">
+<span id="id2"></span><h3>附加标签<a class="headerlink" href="ctest_test.html#additional-labels" title="链接到此标题">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>以下示例演示了如何在运行时为测试添加额外标签。</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestLabel&gt;Custom Label 1&lt;/CTestLabel&gt;</span><span class="se">\n</span><span class="s">"</span><span class="w"> </span><span class="o">&lt;&lt;</span>
+<span class="w">  </span><span class="s">"&lt;CTestLabel&gt;Custom Label 2&lt;/CTestLabel&gt;"</span><span class="w">   </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>对于可以在配置时确定的标签，请使用 <span class="target" id="index-0-prop_test:LABELS"></span><a class="reference internal" href="../prop_test/LABELS.html#prop_test:LABELS" title="LABELS"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">LABELS</span></code></a> 测试属性。</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="ctest_test.html#">ctest_test</a><ul>
+<li><a class="reference internal" href="ctest_test.html#additional-test-measurements">附加测试度量</a><ul>
+<li><a class="reference internal" href="ctest_test.html#image-measurements">图像度量</a></li>
+<li><a class="reference internal" href="ctest_test.html#attached-files">附加文件</a></li>
+<li><a class="reference internal" href="ctest_test.html#custom-details">自定义详情</a></li>
+<li><a class="reference internal" href="ctest_test.html#additional-labels">附加标签</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ctest_submit.html" title="上一章">ctest_submit</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ctest_update.html" title="下一章">ctest_update</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/ctest_test.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ctest_update.html" title="ctest_update">下一页</a> |</li>
+        <li class="right">
+          <a href="ctest_submit.html" title="ctest_submit">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ctest_test.html">ctest_test</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

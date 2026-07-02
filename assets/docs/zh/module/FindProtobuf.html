@@ -1,0 +1,643 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindProtobuf — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindProtobuf.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindPython" href="FindPython.html" />
+    <link rel="prev" title="FindProducer" href="FindProducer.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindPython.html" title="FindPython" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindProducer.html" title="FindProducer" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindProtobuf.html">FindProtobuf</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findprotobuf">
+<span id="module:FindProtobuf"></span><h1>FindProtobuf<a class="headerlink" href="FindProtobuf.html#findprotobuf" title="链接到此标题">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果 Protobuf 库是使用其基于 CMake 的构建系统构建并安装的，它会提供一个 <a class="reference internal" href="../manual/cmake-packages.7.html#config-file-packages"><span class="std std-ref">软件包配置文件</span></a>，供 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令在<em>配置模式 (config mode)</em> 下使用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="no">CONFIG</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在这种情况下，导入的目标（imported targets）和诸如 <span class="target" id="index-0-command:protobuf_generate"></span><a class="reference internal" href="FindProtobuf.html#command:protobuf_generate" title="protobuf_generate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">protobuf_generate()</span></code></a> 之类的 CMake 命令由上游软件包提供，而不是由本模块提供。此外，由于优先使用导入的目标，此处记录的某些变量在<em>配置模式</em>下不可用。有关使用详情，请参阅上游文档，这是在 CMake 中使用 Protobuf 的推荐方式。</p>
+<p>此模块仅在<em>模块模式 (module mode)</em> 下工作。</p>
+</div>
+<p>此模块在<em>模块模式</em>下查找 Protocol Buffers 库 (Protobuf)。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>Protobuf 是由 Google 开发的一种开源、与语言无关、与平台无关的结构化数据序列化机制。它通常用于程序之间或跨网络的数据交换。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增：</span>支持 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package(protobuf <version>)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(Protobuf</span> <span class="pre">&lt;version&gt;)</span></code></a> 中的 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 参数。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.6 版本变更：</span>所有输入和输出变量都使用 <code class="docutils literal notranslate"><span class="pre">Protobuf_</span></code> 前缀。为了向后兼容，支持带有 <code class="docutils literal notranslate"><span class="pre">PROTOBUF_</span></code> 前缀的变量。</p>
+</div>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindProtobuf.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">protobuf::libprotobuf</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>封装 Protobuf 库使用需求的目标，在找到 Protobuf 库时可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">protobuf::libprotobuf-lite</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>封装 <code class="docutils literal notranslate"><span class="pre">protobuf-lite</span></code> 库使用需求的目标，在找到 Protobuf 及其轻量级 (lite) 库时可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">protobuf::libprotoc</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>封装 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 库使用需求的目标，在找到 Protobuf 及其 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 库时可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">protobuf::protoc</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>封装 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 编译器使用需求的导入可执行目标，在找到 Protobuf 和 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 时可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindProtobuf.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>布尔值，表示是否找到了（指定版本的）Protobuf 库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>找到的 Protobuf 版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_INCLUDE_DIRS</span></code></dt><dd><p>使用 Protobuf 所需的头文件包含目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LIBRARIES</span></code></dt><dd><p>使用 Protobuf 时需要链接的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_PROTOC_LIBRARIES</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 库时需要链接的库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LITE_LIBRARIES</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">protobuf-lite</span></code> 库时需要链接的库。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindProtobuf.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_INCLUDE_DIR</span></code></dt><dd><p>包含 Protobuf 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LIBRARY</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protobuf</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_PROTOC_LIBRARY</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protoc</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_PROTOC_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protoc</span></code> 编译器的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LIBRARY_DEBUG</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protobuf</span></code> 调试库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_PROTOC_LIBRARY_DEBUG</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protoc</span></code> 调试库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LITE_LIBRARY</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protobuf-lite</span></code> 库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_LITE_LIBRARY_DEBUG</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">protobuf-lite</span></code> 调试库的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_SRC_ROOT_FOLDER</span></code></dt><dd><p>当使用 MSVC 编译时，如果设置了此缓存变量，将会在 Protobuf 默认的 Visual Studio 项目构建位置搜索库和二进制文件：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;Protobuf_SRC_ROOT_FOLDER&gt;/vsprojects/{Debug,Release}</span></code>，或者</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;Protobuf_SRC_ROOT_FOLDER&gt;/vsprojects/x64/{Debug,Release}</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindProtobuf.html#hints" title="链接到此标题">¶</a></h2>
+<p>在调用 <code class="docutils literal notranslate"><span class="pre">find_package(Protobuf)</span></code> 之前，此模块接受以下可选变量：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_DEBUG</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>布尔变量，启用此模块的调试消息打印功能，用于调试目的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_USE_STATIC_LIBS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>设置为 ON 可强制使用静态库。默认为 OFF。</p>
+</dd>
+</dl>
+</section>
+<section id="commands">
+<h2>命令<a class="headerlink" href="FindProtobuf.html#commands" title="链接到此标题">¶</a></h2>
+<p>如果找到 Protobuf，此模块提供以下命令：</p>
+<section id="generating-source-files">
+<h3>生成源文件<a class="headerlink" href="FindProtobuf.html#generating-source-files" title="链接到此标题">¶</a></h3>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:protobuf_generate">
+<span class="sig-name descname"><span class="pre">protobuf_generate</span></span><a class="headerlink" href="FindProtobuf.html#command:protobuf_generate" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增。</span></p>
+</div>
+<p>在构建时自动从 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 模式文件生成源文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">protobuf_generate(</span>
+<span class="w">  </span><span class="p">[</span><span class="no">TARGET</span><span class="w"> </span><span class="nv">&lt;target&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">LANGUAGE</span><span class="w"> </span><span class="nv">&lt;lang&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">OUT_VAR</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXPORT_MACRO</span><span class="w"> </span><span class="nv">&lt;macro&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PROTOC_OUT_DIR</span><span class="w"> </span><span class="nv">&lt;out-dir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PLUGIN</span><span class="w"> </span><span class="nv">&lt;plugin&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PLUGIN_OPTIONS</span><span class="w"> </span><span class="nv">&lt;plugin-options&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DEPENDENCIES</span><span class="w"> </span><span class="nv">&lt;dependencies&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PROTOS</span><span class="w"> </span><span class="nv">&lt;proto-files&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">IMPORT_DIRS</span><span class="w"> </span><span class="nv">&lt;dirs&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">APPEND_PATH</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">GENERATE_EXTENSIONS</span><span class="w"> </span><span class="nv">&lt;extensions&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PROTOC_OPTIONS</span><span class="w"> </span><span class="nv">&lt;options&gt;...</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">PROTOC_EXE</span><span class="w"> </span><span class="nv">&lt;executable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DESCRIPTORS</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">&lt;target&gt;</span></code></dt><dd><p>生成的源文件所添加到的 CMake 目标。当不使用 <code class="docutils literal notranslate"><span class="pre">OUT_VAR</span> <span class="pre">&lt;variable&gt;</span></code> 时，此选项是必需的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LANGUAGE</span> <span class="pre">&lt;lang&gt;</span></code></dt><dd><p>单一值：<code class="docutils literal notranslate"><span class="pre">cpp</span></code> 或 <code class="docutils literal notranslate"><span class="pre">python</span></code>。确定要生成的源文件类型。默认为 <code class="docutils literal notranslate"><span class="pre">cpp</span></code>。对于其他语言，请使用 <code class="docutils literal notranslate"><span class="pre">GENERATE_EXTENSIONS</span></code> 选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OUT_VAR</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><p>一个 CMake 变量的名称，该变量将填充生成的源文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_MACRO</span> <span class="pre">&lt;macro&gt;</span></code></dt><dd><p>应用于所有生成的 Protobuf 消息类和外部变量的预处理器宏名称。这可用于例如声明 DLL 导出。该宏应根据编译内容展开为 <code class="docutils literal notranslate"><span class="pre">__declspec(dllexport)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">__declspec(dllimport)</span></code>。</p>
+<p>此选项仅在 <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code> 为 <code class="docutils literal notranslate"><span class="pre">cpp</span></code> 时使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROTOC_OUT_DIR</span> <span class="pre">&lt;out-dir&gt;</span></code></dt><dd><p>生成源文件的输出目录。默认为：<span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PLUGIN</span> <span class="pre">&lt;plugin&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<p>可选的插件可执行文件。例如，这可以是 <code class="docutils literal notranslate"><span class="pre">grpc_cpp_plugin</span></code> 的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PLUGIN_OPTIONS</span> <span class="pre">&lt;plugin-options&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>传递给插件的其他选项，例如 gRPC C++ 插件的 <code class="docutils literal notranslate"><span class="pre">generate_mock_code=true</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span> <span class="pre">&lt;dependencies&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>文件生成所依赖的项。这些项将被转发到底层的 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command(depends)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command(DEPENDS)</span></code></a> 调用中。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>此参数现在接受多个值（<code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">c...</span></code>）。以前只能指定单个值（<code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span> <span class="pre">"a;b;c;..."</span></code>）。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROTOS</span> <span class="pre">&lt;proto-files&gt;...</span></code></dt><dd><p>要处理的 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 模式文件列表。如果还指定了 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code>，这些文件将与该目标中的所有 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 源文件合并。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IMPORT_DIRS</span> <span class="pre">&lt;dirs&gt;...</span></code></dt><dd><p>模式文件的一个或多个公共父目录列表。例如，如果模式文件是 <code class="docutils literal notranslate"><span class="pre">proto/helloworld/helloworld.proto</span></code> 且导入目录是 <code class="docutils literal notranslate"><span class="pre">proto/</span></code>，则生成的文件将是 <code class="docutils literal notranslate"><span class="pre">&lt;out-dir&gt;/helloworld/helloworld.pb.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;out-dir&gt;/helloworld/helloworld.pb.cc</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">APPEND_PATH</span></code></dt><dd><p>如果指定，所有 proto 模式文件的基路径将被追加到 <code class="docutils literal notranslate"><span class="pre">IMPORT_DIRS</span></code> 中（这会导致 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 在调用时对每个包含 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件的目录使用 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 参数）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GENERATE_EXTENSIONS</span> <span class="pre">&lt;extensions&gt;...</span></code></dt><dd><p>如果省略了 <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code>，则必须设置此项以指定由 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 生成的扩展名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROTOC_OPTIONS</span> <span class="pre">&lt;options&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>直接传递给 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 编译器的额外命令行选项列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROTOC_EXE</span> <span class="pre">&lt;executable&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>用于生成 Protobuf 绑定的命令行程序、路径或 CMake 可执行文件。如果省略，默认使用 <code class="docutils literal notranslate"><span class="pre">protobuf::protoc</span></code> 导入目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESCRIPTORS</span></code></dt><dd><p>如果指定，命令行选项 <code class="docutils literal notranslate"><span class="pre">--descriptor_set_out=&lt;proto-file&gt;</span></code> 将针对每个 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 源文件追加到 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 编译器，从而实现自描述消息的创建。此选项仅在 <code class="docutils literal notranslate"><span class="pre">&lt;lang&gt;</span></code> 为 <code class="docutils literal notranslate"><span class="pre">cpp</span></code> 且在<em>模块模式</em>下找到 Protobuf 时才可使用。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当在<em>配置模式</em>下找到 Protobuf 时，此选项不可用。</p>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="deprecated-commands">
+<h3>弃用的命令<a class="headerlink" href="FindProtobuf.html#deprecated-commands" title="链接到此标题">¶</a></h3>
+<p>提供以下命令是为了向后兼容。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">protobuf_generate_cpp()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">protobuf_generate_python()</span></code> 命令仅在调用 <code class="docutils literal notranslate"><span class="pre">find_package(Protobuf</span> <span class="pre">...)</span></code> 的同一目录范围内才能正确工作。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果 Protobuf 是在<em>配置模式</em>下找到的，除非在调用 <code class="docutils literal notranslate"><span class="pre">find_package(Protobuf</span> <span class="pre">...)</span></code> 之前将上游软件包配置提示变量 <code class="docutils literal notranslate"><span class="pre">protobuf_MODULE_COMPATIBLE</span></code> 设置为布尔真值，否则自 Protobuf 3.0.0 版本起，<code class="docutils literal notranslate"><span class="pre">protobuf_generate_cpp()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">protobuf_generate_python()</span></code> 命令<strong>不可用</strong>。</p>
+</div>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:protobuf_generate_cpp">
+<span class="sig-name descname"><span class="pre">protobuf_generate_cpp</span></span><a class="headerlink" href="FindProtobuf.html#command:protobuf_generate_cpp" title="Link to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用：</span>使用 <span class="target" id="index-1-command:protobuf_generate"></span><a class="reference internal" href="FindProtobuf.html#command:protobuf_generate" title="protobuf_generate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">protobuf_generate()</span></code></a>。</p>
+</div>
+<p>在构建时自动从 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 模式文件生成 C++ 源文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">protobuf_generate_cpp(</span>
+<span class="w">  </span><span class="nv">&lt;sources-variable&gt;</span>
+<span class="w">  </span><span class="nv">&lt;headers-variable&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">DESCRIPTORS</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXPORT_MACRO</span><span class="w"> </span><span class="nv">&lt;macro&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="nv">&lt;proto-files&gt;...</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;sources-variable&gt;</span></code></dt><dd><p>要定义的变量名称，其中将包含生成的 C++ 源文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;headers-variable&gt;</span></code></dt><dd><p>要定义的变量名称，其中将包含生成的头文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DESCRIPTORS</span> <span class="pre">&lt;variable&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p>要定义的变量名称，如果已请求，其中将包含生成的描述符文件列表。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当在<em>配置模式</em>下找到 Protobuf 时，此选项不可用。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXPORT_MACRO</span> <span class="pre">&lt;macro&gt;</span></code></dt><dd><p>宏名称，该宏应根据编译内容展开为 <code class="docutils literal notranslate"><span class="pre">__declspec(dllexport)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">__declspec(dllimport)</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;proto-files&gt;...</span></code></dt><dd><p>一个或多个要处理的 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:protobuf_generate_python">
+<span class="sig-name descname"><span class="pre">protobuf_generate_python</span></span><a class="headerlink" href="FindProtobuf.html#command:protobuf_generate_python" title="Link to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用：</span>使用 <span class="target" id="index-2-command:protobuf_generate"></span><a class="reference internal" href="FindProtobuf.html#command:protobuf_generate" title="protobuf_generate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">protobuf_generate()</span></code></a>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>在构建时自动从 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 模式文件生成 Python 源文件。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">protobuf_generate_python(</span><span class="nv">&lt;python-sources-variable&gt;</span><span class="w"> </span><span class="nv">&lt;proto-files&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;python-sources-variable&gt;</span></code></dt><dd><p>要定义的变量名称，其中将包含生成的 Python 源文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;proto-files&gt;...</span></code></dt><dd><p>一个或多个要处理的 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件。</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<p>在调用之前，<code class="docutils literal notranslate"><span class="pre">protobuf_generate_cpp()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">protobuf_generate_python()</span></code> 命令接受以下可选变量：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Protobuf_IMPORT_DIRS</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本起弃用。</span></p>
+</div>
+<p>用于搜索已导入 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件的其他目录列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROTOBUF_GENERATE_CPP_APPEND_PATH</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.1 版本弃用：</span>使用 <span class="target" id="index-3-command:protobuf_generate"></span><a class="reference internal" href="FindProtobuf.html#command:protobuf_generate" title="protobuf_generate(append_path)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">protobuf_generate(APPEND_PATH)</span></code></a> 命令选项。</p>
+</div>
+<p>一个布尔变量，如果设置为真值，则会导致 <code class="docutils literal notranslate"><span class="pre">protoc</span></code> 在调用时对每个包含 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件的目录使用 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 参数。默认情况下，它被设置为真值。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindProtobuf.html#examples" title="此标题的永久链接">¶</a></h2>
+<section id="examples-finding-protobuf">
+<h3>示例：查找 Protobuf<a class="headerlink" href="FindProtobuf.html#examples-finding-protobuf" title="链接到此标题">¶</a></h3>
+<p>查找 Protobuf 库</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者，查找 Protobuf 并指定最低版本要求</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="m">30</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者，查找 Protobuf 并使其成为必需（如果未找到，处理将以错误消息停止）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-finding-protobuf-in-config-mode">
+<h3>示例：在配置模式下查找 Protobuf<a class="headerlink" href="FindProtobuf.html#example-finding-protobuf-in-config-mode" title="链接到此标题">¶</a></h3>
+<p>当 Protobuf 库使用其基于 CMake 的构建系统构建并安装时，可以在<em>配置模式</em>下找到它。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="no">CONFIG</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>然而，某些 Protobuf 安装可能仍不提供软件包配置文件。以下示例显示了如何使用 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_PREFER_CONFIG"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_PREFER_CONFIG.html#variable:CMAKE_FIND_PACKAGE_PREFER_CONFIG" title="CMAKE_FIND_PACKAGE_PREFER_CONFIG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_PREFER_CONFIG</span></code></a> 变量在<em>配置模式</em>下查找 Protobuf，如果未找到配置文件，则回退到<em>模块模式</em>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CMAKE_FIND_PACKAGE_PREFER_CONFIG</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+<span class="nf">unset(</span><span class="no">CMAKE_FIND_PACKAGE_PREFER_CONFIG</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-using-protobuf">
+<h3>示例：使用 Protobuf<a class="headerlink" href="FindProtobuf.html#example-using-protobuf" title="链接到此标题">¶</a></h3>
+<p>查找 Protobuf 并将其导入的库目标链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">protobuf</span><span class="o">::</span><span class="nb">libprotobuf</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-processing-proto-schema-files">
+<h3>示例：处理 Proto 模式文件<a class="headerlink" href="FindProtobuf.html#example-processing-proto-schema-files" title="链接到此标题">¶</a></h3>
+<p>以下示例演示了如何将添加到目标的所有 <code class="docutils literal notranslate"><span class="pre">*.proto</span></code> 模式源文件处理为 C++ 源文件。</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id1" title="此代码的永久链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.24</span><span class="nf">)</span>
+<span class="nf">project(</span><span class="nb">ProtobufExample</span><span class="nf">)</span>
+
+<span class="nf">add_executable(</span><span class="nb">example</span><span class="w"> </span><span class="nb">main.cxx</span><span class="w"> </span><span class="nb">person.proto</span><span class="nf">)</span>
+
+<span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Protobuf_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">protobuf_generate(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">example</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">protobuf</span><span class="o">::</span><span class="nb">libprotobuf</span><span class="nf">)</span>
+<span class="nf">target_include_directories(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">person.proto</span></code></span><a class="headerlink" href="FindProtobuf.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-proto notranslate"><div class="highlight"><pre><span></span><span class="k">syntax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"proto3"</span><span class="p">;</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">Person</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int32</span><span class="w"> </span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">main.cxx</span></code></span><a class="headerlink" href="FindProtobuf.html#id3" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"person.pb.h"</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">Person</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">  </span><span class="n">person</span><span class="p">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">"Alice"</span><span class="p">);</span>
+<span class="w">  </span><span class="n">person</span><span class="p">.</span><span class="n">set_id</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Name: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"ID: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="n">id</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="example-using-protobuf-and-grpc">
+<h3>示例：使用 Protobuf 和 gRPC<a class="headerlink" href="FindProtobuf.html#example-using-protobuf-and-grpc" title="链接到此标题">¶</a></h3>
+<p>以下示例展示了如何使用 Protobuf 和 gRPC。</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id4" title="此代码的链接">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">gRPC</span><span class="w"> </span><span class="no">CONFIG</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+
+<span class="nf">add_library(</span><span class="nb">ProtoExample</span><span class="w"> </span><span class="nb">Example.proto</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">ProtoExample</span><span class="w"> </span><span class="no">PUBLIC</span><span class="w"> </span><span class="nb">gRPC</span><span class="o">::</span><span class="nb">grpc++</span><span class="nf">)</span>
+
+<span class="nf">protobuf_generate(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ProtoExample</span><span class="nf">)</span>
+<span class="nf">protobuf_generate(</span>
+<span class="w">  </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">ProtoExample</span>
+<span class="w">  </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="nb">grpc</span>
+<span class="w">  </span><span class="no">PLUGIN</span><span class="w"> </span><span class="nb">protoc-gen-grpc</span><span class="p">=</span><span class="o">$&lt;</span><span class="no">TARGET_FILE</span><span class="o">:</span><span class="nb">gRPC</span><span class="o">::</span><span class="nb">grpc_cpp_plugin</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="no">PLUGIN_OPTIONS</span><span class="w"> </span><span class="nb">generate_mock_code</span><span class="p">=</span><span class="nb">true</span>
+<span class="w">  </span><span class="no">GENERATE_EXTENSIONS</span><span class="w"> </span><span class="p">.</span><span class="nb">grpc.pb.h</span><span class="w"> </span><span class="p">.</span><span class="nb">grpc.pb.cc</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examples-upgrading-deprecated-commands">
+<h3>示例：升级弃用的命令<a class="headerlink" href="FindProtobuf.html#examples-upgrading-deprecated-commands" title="链接到此标题">¶</a></h3>
+<p>以下示例展示了如何使用弃用的命令及其现代替代方案，将 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件处理为 C++ 代码。</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">带有弃用命令的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id5" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Protobuf_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">protobuf_generate_cpp(</span>
+<span class="w">    </span><span class="nb">proto_sources</span>
+<span class="w">    </span><span class="nb">proto_headers</span>
+<span class="w">    </span><span class="no">EXPORT_MACRO</span><span class="w"> </span><span class="no">DLL_EXPORT</span>
+<span class="w">    </span><span class="no">DESCRIPTORS</span><span class="w"> </span><span class="nb">proto_descriptors</span>
+<span class="w">    </span><span class="na">src/protocol/Proto1.proto</span>
+<span class="w">    </span><span class="na">src/protocol/Proto2.proto</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">target_sources(</span>
+<span class="w">  </span><span class="nb">example</span>
+<span class="w">  </span><span class="no">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nt">proto_sources</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nt">proto_headers</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nt">proto_descriptors</span><span class="o">}</span>
+<span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">protobuf</span><span class="o">::</span><span class="nb">libprotobuf</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">带有升级代码的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id6" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Protobuf_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">protobuf_generate(</span>
+<span class="w">    </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">example</span>
+<span class="w">    </span><span class="no">EXPORT_MACRO</span><span class="w"> </span><span class="no">DLL_EXPORT</span>
+<span class="w">    </span><span class="no">IMPORT_DIRS</span><span class="w"> </span><span class="na">src/protocol</span>
+<span class="w">    </span><span class="no">DESCRIPTORS</span>
+<span class="w">    </span><span class="no">PROTOS</span>
+<span class="w">      </span><span class="na">src/protocol/Proto1.proto</span>
+<span class="w">      </span><span class="na">src/protocol/Proto2.proto</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">protobuf</span><span class="o">::</span><span class="nb">libprotobuf</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>以下示例展示了如何使用弃用的命令及其现代替代方案，将 <code class="docutils literal notranslate"><span class="pre">.proto</span></code> 文件处理为 Python 代码。</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">带有弃用命令的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id7" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Protobuf_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">protobuf_generate_python(</span><span class="nb">python_sources</span><span class="w"> </span><span class="nb">foo.proto</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">add_custom_target(</span><span class="nb">proto_files</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">python_sources</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">带有升级代码的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindProtobuf.html#id8" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Protobuf</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="nb">Protobuf_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">protobuf_generate(</span>
+<span class="w">    </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="nb">python</span>
+<span class="w">    </span><span class="no">PROTOS</span><span class="w"> </span><span class="nb">foo.proto</span>
+<span class="w">    </span><span class="no">OUT_VAR</span><span class="w"> </span><span class="nb">python_sources</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">add_custom_target(</span><span class="nb">proto_files</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nt">python_sources</span><span class="o">}</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindProtobuf.html#">FindProtobuf</a><ul>
+<li><a class="reference internal" href="FindProtobuf.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#commands">命令</a><ul>
+<li><a class="reference internal" href="FindProtobuf.html#generating-source-files">生成源文件</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#deprecated-commands">已废弃命令</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindProtobuf.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FindProtobuf.html#examples-finding-protobuf">示例：查找 Protobuf</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#example-finding-protobuf-in-config-mode">示例：在配置模式下查找 Protobuf</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#example-using-protobuf">示例：使用 Protobuf</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#example-processing-proto-schema-files">示例：处理 Proto 模式文件</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#example-using-protobuf-and-grpc">示例：使用 Protobuf 和 gRPC</a></li>
+<li><a class="reference internal" href="FindProtobuf.html#examples-upgrading-deprecated-commands">示例：升级弃用的命令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindProducer.html" title="上一章">FindProducer</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindPython.html" title="下一章">FindPython</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindProtobuf.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindPython.html" title="FindPython">下一页</a> |</li>
+        <li class="right">
+          <a href="FindProducer.html" title="FindProducer">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindProtobuf.html">FindProtobuf</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

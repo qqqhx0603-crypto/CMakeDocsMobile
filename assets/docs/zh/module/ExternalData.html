@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ExternalData — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ExternalData.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ExternalProject" href="ExternalProject.html" />
+    <link rel="prev" title="DeployQt4" href="DeployQt4.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="ExternalProject.html" title="ExternalProject" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="DeployQt4.html" title="DeployQt4" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ExternalData.html">ExternalData</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="externaldata">
+<span id="module:ExternalData"></span><h1><a class="toc-backref" href="ExternalData.html#id1" role="doc-backlink">ExternalData</a><a class="headerlink" href="ExternalData.html#externaldata" title="链接至此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ExternalData.html#externaldata" id="id1">ExternalData</a></p>
+<ul>
+<li><p><a class="reference internal" href="ExternalData.html#introduction" id="id2">简介</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#module-functions" id="id3">模块函数</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#module-variables" id="id4">模块变量</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#referencing-files" id="id5">引用文件</a></p>
+<ul>
+<li><p><a class="reference internal" href="ExternalData.html#referencing-single-files" id="id6">引用单个文件</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#referencing-file-series" id="id7">引用文件序列</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#referencing-associated-files" id="id8">引用关联文件</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#referencing-directories" id="id9">引用目录</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="ExternalData.html#hash-algorithms" id="id10">哈希算法</a></p></li>
+<li><p><a class="reference internal" href="ExternalData.html#custom-fetch-scripts" id="id11">自定义获取脚本</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>本模块提供了管理存储在源代码树之外的数据文件的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">ExternalData</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="introduction">
+<h2><a class="toc-backref" href="ExternalData.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="ExternalData.html#introduction" title="此标题的链接">¶</a></h2>
+<p>使用此模块可以明确地引用存储在源代码树之外的数据文件，并在构建时从任意本地或远程的内容寻址位置获取它们。该模块提供的函数会识别语法为 <code class="docutils literal notranslate"><span class="pre">DATA{&lt;name&gt;}</span></code> 的参数，将其视为对外部数据的引用，并将其替换为这些数据在本地副本的完整路径，同时创建构建规则以获取和更新这些本地副本。</p>
+<p>例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">ExternalData</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">ExternalData_URL_TEMPLATES</span><span class="w"> </span><span class="s">"file:///local/%(algo)/%(hash)"</span>
+<span class="w">                               </span><span class="s">"file:////host/share/%(algo)/%(hash)"</span>
+<span class="w">                               </span><span class="s">"http://data.org/%(algo)/%(hash)"</span><span class="nf">)</span>
+<span class="nf">ExternalData_Add_Test(</span><span class="nb">MyData</span>
+<span class="w">  </span><span class="no">NAME</span><span class="w"> </span><span class="nb">MyTest</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">MyExe</span><span class="w"> </span><span class="o">DATA{</span><span class="nt">MyInput.png</span><span class="o">}</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">ExternalData_Add_Target(</span><span class="nb">MyData</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>当测试 <code class="docutils literal notranslate"><span class="pre">MyTest</span></code> 运行时，<code class="docutils literal notranslate"><span class="pre">DATA{MyInput.png}</span></code> 参数将被替换为磁盘上数据文件 <code class="docutils literal notranslate"><span class="pre">MyInput.png</span></code> 的真实实例的完整路径。如果源代码树包含一个内容链接，如 <code class="docutils literal notranslate"><span class="pre">MyInput.png.md5</span></code>，那么 <code class="docutils literal notranslate"><span class="pre">MyData</span></code> 目标会在构建树中创建一个真实的 <code class="docutils literal notranslate"><span class="pre">MyInput.png</span></code>。</p>
+</section>
+<section id="module-functions">
+<h2><a class="toc-backref" href="ExternalData.html#id3" role="doc-backlink">模块函数</a><a class="headerlink" href="ExternalData.html#module-functions" title="链接至此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externaldata_expand_arguments">
+<span class="sig-name descname"><span class="pre">ExternalData_Expand_Arguments</span></span><a class="headerlink" href="ExternalData.html#command:externaldata_expand_arguments" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_Expand_Arguments</span></code> 函数评估其参数中的 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用，并构建一个新的参数列表。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalData_Expand_Arguments(</span>
+<span class="w">  </span><span class="nv">&lt;target&gt;</span><span class="w">   </span><span class="c"># Name of data management target</span>
+<span class="w">  </span><span class="nv">&lt;outVar&gt;</span><span class="w">   </span><span class="c"># Output variable</span>
+<span class="w">  </span><span class="p">[</span><span class="nb">args...</span><span class="p">]</span><span class="w">  </span><span class="c"># Input arguments, DATA{} allowed</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>它将每个参数中的 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用替换为在 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 构建后将存在的磁盘上真实数据文件的完整路径。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externaldata_add_test">
+<span class="sig-name descname"><span class="pre">ExternalData_Add_Test</span></span><a class="headerlink" href="ExternalData.html#command:externaldata_add_test" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_Add_Test</span></code> 函数是对 CMake <span class="target" id="index-0-command:add_test"></span><a class="reference internal" href="../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 命令的包装，但支持在参数中使用 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalData_Add_Test(</span>
+<span class="w">  </span><span class="nv">&lt;target&gt;</span><span class="w">   </span><span class="c"># Name of data management target</span>
+<span class="w">  </span><span class="p">...</span><span class="w">        </span><span class="c"># Arguments of add_test(), DATA{} allowed</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>它通过 <code class="docutils literal notranslate"><span class="pre">ExternalData_Expand_Arguments</span></code> 传递其参数，然后使用结果调用 <span class="target" id="index-1-command:add_test"></span><a class="reference internal" href="../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 命令。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更：</span>如果 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 之后的参数定义了一个带有可执行文件的测试，且该文件是一个 CMake 目标，则该目标 <span class="target" id="index-0-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 和 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 属性中的空值将被保留。参见策略 <span class="target" id="index-0-policy:CMP0178"></span><a class="reference internal" href="../policy/CMP0178.html#policy:CMP0178" title="CMP0178"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0178</span></code></a>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externaldata_add_target">
+<span class="sig-name descname"><span class="pre">ExternalData_Add_Target</span></span><a class="headerlink" href="ExternalData.html#command:externaldata_add_target" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_Add_Target</span></code> 函数创建一个自定义目标，用于管理存储在外部的数据文件的本地实例。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalData_Add_Target(</span>
+<span class="w">  </span><span class="nv">&lt;target&gt;</span><span class="w">                  </span><span class="c"># Name of data management target</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SHOW_PROGRESS</span><span class="w"> </span><span class="p">&lt;</span><span class="no">ON</span><span class="p">|</span><span class="no">OFF</span><span class="p">&gt;]</span><span class="w">  </span><span class="c"># Show progress during the download</span>
+<span class="w">  </span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>它根据需要创建自定义命令，以使数据文件可供本模块提供的其他函数先前评估的每个 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用使用。数据文件可以从 <code class="docutils literal notranslate"><span class="pre">ExternalData_URL_TEMPLATES</span></code> 变量中指定的 URL 模板之一获取，也可以在 <code class="docutils literal notranslate"><span class="pre">ExternalData_OBJECT_STORES</span></code> 变量中指定的路径之一本地找到。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.20 版本新增：</span>可以传递 <code class="docutils literal notranslate"><span class="pre">SHOW_PROGRESS</span></code> 参数以抑制下载对象期间的进度信息。如果未提供，对于 <span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 和 <span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 生成器，它默认为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>，否则为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。</p>
+</div>
+<p>通常只需要一个目标来管理项目内的所有外部数据。在配置结束时，所有数据引用都被处理后调用此函数一次。</p>
+</dd></dl>
+
+</section>
+<section id="module-variables">
+<h2><a class="toc-backref" href="ExternalData.html#id4" role="doc-backlink">模块变量</a><a class="headerlink" href="ExternalData.html#module-variables" title="链接至此标题">¶</a></h2>
+<p>以下变量用于配置行为。它们应该在调用本模块提供的任何函数之前设置。</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_BINARY_ROOT">
+<span class="sig-name descname"><span class="pre">ExternalData_BINARY_ROOT</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_BINARY_ROOT" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_BINARY_ROOT</span></code> 变量可设置为保存由扩展后的 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用命名的数据文件的目录。默认值为 <code class="docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code>。目录布局将镜像 <code class="docutils literal notranslate"><span class="pre">ExternalData_SOURCE_ROOT</span></code> 下的内容链接布局。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_CUSTOM_SCRIPT_&lt;key&gt;">
+<span class="sig-name descname"><span class="pre">ExternalData_CUSTOM_SCRIPT_&lt;key&gt;</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_CUSTOM_SCRIPT_<key>" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>指定由 <code class="docutils literal notranslate"><span class="pre">ExternalData_URL_TEMPLATES</span></code> 列表条目中 <code class="docutils literal notranslate"><span class="pre">&lt;key&gt;</span></code> 标识的 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 自定义获取脚本的完整路径。参见 <a class="reference internal" href="ExternalData.html#custom-fetch-scripts">自定义获取脚本</a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_HTTPHEADERS">
+<span class="sig-name descname"><span class="pre">ExternalData_HTTPHEADERS</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_HTTPHEADERS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ExternalData_HTTPHEADERS</span></code> 变量可用于提供 HTTP 标头列表，每个元素包含一个格式为 <code class="docutils literal notranslate"><span class="pre">Key:</span> <span class="pre">Value</span></code> 的标头。参见 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">HTTPHEADER</span></code> 选项。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_LINK_CONTENT">
+<span class="sig-name descname"><span class="pre">ExternalData_LINK_CONTENT</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_LINK_CONTENT" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_LINK_CONTENT</span></code> 变量可设置为支持的哈希算法名称，以启用将 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 语法引用的真实数据文件自动转换为内容链接。对于每个这样的 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>，都会创建一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;&lt;ext&gt;</span></code> 的内容链接。原始文件被重命名为 <code class="docutils literal notranslate"><span class="pre">.ExternalData_&lt;algo&gt;_&lt;hash&gt;</span></code> 的格式，以便为将来将其传输到 URL 模板列表中的某个位置做好准备（传输方式超出本模块范围）。为内容链接创建的数据获取规则将在无法使用任何 URL 模板找到该对象时，使用暂存的对象。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_NO_SYMLINKS">
+<span class="sig-name descname"><span class="pre">ExternalData_NO_SYMLINKS</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_NO_SYMLINKS" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>由扩展后的 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用命名的真实数据文件可以在某些平台上通过符号链接在 <code class="docutils literal notranslate"><span class="pre">ExternalData_BINARY_ROOT</span></code> 下提供。<code class="docutils literal notranslate"><span class="pre">ExternalData_NO_SYMLINKS</span></code> 变量可设置为禁用符号链接的使用，并启用副本的使用。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_OBJECT_STORES">
+<span class="sig-name descname"><span class="pre">ExternalData_OBJECT_STORES</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_OBJECT_STORES" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_OBJECT_STORES</span></code> 变量可设置为一组本地目录列表，这些目录使用 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;/%(algo)/%(hash)</span></code> 的布局来存储对象。这些目录将被优先搜索以查找所需对象。如果对象在任何存储中都不可用，它将使用 URL 模板远程获取，并添加到列出的第一个本地存储中。如果没有指定存储，默认位置是构建树内的一个位置。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_SERIES_PARSE">
+<span class="sig-name descname"><span class="pre">ExternalData_SERIES_PARSE</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SERIES_PARSE" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:ExternalData_SERIES_PARSE_PREFIX">
+<span class="sig-name descname"><span class="pre">ExternalData_SERIES_PARSE_PREFIX</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SERIES_PARSE_PREFIX" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:ExternalData_SERIES_PARSE_NUMBER">
+<span class="sig-name descname"><span class="pre">ExternalData_SERIES_PARSE_NUMBER</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SERIES_PARSE_NUMBER" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:ExternalData_SERIES_PARSE_SUFFIX">
+<span class="sig-name descname"><span class="pre">ExternalData_SERIES_PARSE_SUFFIX</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SERIES_PARSE_SUFFIX" title="链接至此定义">¶</a></dt>
+<dt class="sig sig-object cmake" id="variable:ExternalData_SERIES_MATCH">
+<span class="sig-name descname"><span class="pre">ExternalData_SERIES_MATCH</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SERIES_MATCH" title="链接至此定义">¶</a></dt>
+<dd><p>参见 <a class="reference internal" href="ExternalData.html#referencing-file-series">引用文件序列</a>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_SOURCE_ROOT">
+<span class="sig-name descname"><span class="pre">ExternalData_SOURCE_ROOT</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_SOURCE_ROOT" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SOURCE_ROOT</span></code> 变量可设置为包含任何由 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 引用命名的路径的最高级源代码目录。默认值为 <code class="docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code>。<code class="docutils literal notranslate"><span class="pre">ExternalData_SOURCE_ROOT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMAKE_SOURCE_DIR</span></code> 必须指向同一个源代码分发包内的目录（例如，它们在同一个 tarball 中）。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_TIMEOUT_ABSOLUTE">
+<span class="sig-name descname"><span class="pre">ExternalData_TIMEOUT_ABSOLUTE</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_TIMEOUT_ABSOLUTE" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_TIMEOUT_ABSOLUTE</span></code> 变量设置下载的绝对超时时间（秒），默认值为 <code class="docutils literal notranslate"><span class="pre">300</span></code> 秒。设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 以禁用强制执行。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_TIMEOUT_INACTIVITY">
+<span class="sig-name descname"><span class="pre">ExternalData_TIMEOUT_INACTIVITY</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_TIMEOUT_INACTIVITY" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_TIMEOUT_INACTIVITY</span></code> 变量设置下载的非活动超时时间（秒），默认值为 <code class="docutils literal notranslate"><span class="pre">60</span></code> 秒。设置为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 以禁用强制执行。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_URL_ALGO_&lt;algo&gt;_&lt;key&gt;">
+<span class="sig-name descname"><span class="pre">ExternalData_URL_ALGO_&lt;algo&gt;_&lt;key&gt;</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_URL_ALGO_<algo>_<key>" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.3 版本中新增。</span></p>
+</div>
+<p>当获取通过哈希算法 <code class="docutils literal notranslate"><span class="pre">&lt;algo&gt;</span></code> 引用的对象时，指定一个自定义 URL 组件，用于替换 <code class="docutils literal notranslate"><span class="pre">%(algo:&lt;key&gt;)</span></code> 形式的 URL 模板占位符，其中 <code class="docutils literal notranslate"><span class="pre">&lt;key&gt;</span></code> 是有效的 C 标识符。如果未定义，对于任何 <code class="docutils literal notranslate"><span class="pre">&lt;key&gt;</span></code>，默认的 URL 组件仅为 <code class="docutils literal notranslate"><span class="pre">&lt;algo&gt;</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_URL_TEMPLATES">
+<span class="sig-name descname"><span class="pre">ExternalData_URL_TEMPLATES</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_URL_TEMPLATES" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalData_URL_TEMPLATES</span></code> 可设置为提供 URL 模板列表，并在每个模板中使用 <code class="docutils literal notranslate"><span class="pre">%(algo)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">%(hash)</span></code> 占位符。数据获取规则通过将哈希算法名称替换为 <code class="docutils literal notranslate"><span class="pre">%(algo)</span></code>，将哈希值替换为 <code class="docutils literal notranslate"><span class="pre">%(hash)</span></code>，依次尝试每个 URL 模板。或者，可以使用 <code class="docutils literal notranslate"><span class="pre">%(algo:&lt;key&gt;)</span></code> 结合 <code class="docutils literal notranslate"><span class="pre">ExternalData_URL_ALGO_&lt;algo&gt;_&lt;key&gt;</span></code> 变量，以在远程 URL 中获得更大的灵活性。</p>
+</dd></dl>
+
+</section>
+<section id="referencing-files">
+<h2><a class="toc-backref" href="ExternalData.html#id5" role="doc-backlink">引用文件</a><a class="headerlink" href="ExternalData.html#referencing-files" title="链接至此标题">¶</a></h2>
+<section id="referencing-single-files">
+<h3><a class="toc-backref" href="ExternalData.html#id6" role="doc-backlink">引用单个文件</a><a class="headerlink" href="ExternalData.html#referencing-single-files" title="链接至此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 语法是字面意义上的，<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 是源代码树内的完整或相对路径。源代码树必须在 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 处包含一个真实的数据文件，或者在 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;&lt;ext&gt;</span></code> 处包含一个“内容链接”，该链接包含使用对应于 <code class="docutils literal notranslate"><span class="pre">&lt;ext&gt;</span></code> 的哈希算法的真实文件哈希值。例如，参数 <code class="docutils literal notranslate"><span class="pre">DATA{img.png}</span></code> 可以由当前源代码目录中的真实 <code class="docutils literal notranslate"><span class="pre">img.png</span></code> 文件，或者包含其 MD5 和的 <code class="docutils literal notranslate"><span class="pre">img.png.md5</span></code> 文件满足。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.8 版本新增：</span>支持同名但使用不同哈希算法的多个内容链接（例如 <code class="docutils literal notranslate"><span class="pre">img.png.sha256</span></code> 和 <code class="docutils literal notranslate"><span class="pre">img.png.sha1</span></code>），只要它们都对应于同一个真实文件。这允许从由不同哈希算法索引的源中获取对象。</p>
+</div>
+</section>
+<section id="referencing-file-series">
+<h3><a class="toc-backref" href="ExternalData.html#id7" role="doc-backlink">引用文件序列</a><a class="headerlink" href="ExternalData.html#referencing-file-series" title="链接至此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 语法可以通过 <code class="docutils literal notranslate"><span class="pre">DATA{&lt;name&gt;,:}</span></code> 形式告知获取文件序列，其中 <code class="docutils literal notranslate"><span class="pre">:</span></code> 是字面意义上的。如果源代码树包含一组类似序列命名的文件或内容链接，则引用其中一个成员将添加获取所有成员的规则。虽然获取了序列的所有成员，但只有 <code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 参数最初命名的文件会被替换。默认配置识别以 <code class="docutils literal notranslate"><span class="pre">#.ext</span></code>、<code class="docutils literal notranslate"><span class="pre">_#.ext</span></code>、<code class="docutils literal notranslate"><span class="pre">.#.ext</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-#.ext</span></code> 结尾的文件序列名，其中 <code class="docutils literal notranslate"><span class="pre">#</span></code> 是一串十进制数字，<code class="docutils literal notranslate"><span class="pre">.ext</span></code> 是任何单个扩展名。使用正则表达式配置它，该正则表达式解析 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 末尾的 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;suffix&gt;</span></code> 部分。</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_PARSE</span></code> - 格式为 <code class="docutils literal notranslate"><span class="pre">(&lt;number&gt;)(&lt;suffix&gt;)$</span></code> 的正则表达式。</p>
+</div></blockquote>
+<p>对于更复杂的情况，请设置：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_PARSE</span></code> - 至少包含两个 <code class="docutils literal notranslate"><span class="pre">()</span></code> 组的正则表达式。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_PARSE_PREFIX</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> 的正则表达式组号（如果有）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_PARSE_NUMBER</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 的正则表达式组号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_PARSE_SUFFIX</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;suffix&gt;</span></code> 的正则表达式组号。</p></li>
+</ul>
+<p>配置序列编号匹配，使用匹配序列成员 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;&lt;number&gt;&lt;suffix&gt;</span></code> 中 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 部分的正则表达式。</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ExternalData_SERIES_MATCH</span></code> - 匹配所有序列成员中 <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> 的正则表达式。</p>
+</div></blockquote>
+<p>请注意，序列的 <code class="docutils literal notranslate"><span class="pre">&lt;suffix&gt;</span></code> 不包括哈希算法扩展名。</p>
+</section>
+<section id="referencing-associated-files">
+<h3><a class="toc-backref" href="ExternalData.html#id8" role="doc-backlink">引用关联文件</a><a class="headerlink" href="ExternalData.html#referencing-associated-files" title="链接至此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 语法也可以匹配与命名文件相关联且包含在同一目录中的文件。关联文件可以使用语法 <code class="docutils literal notranslate"><span class="pre">DATA{&lt;name&gt;,&lt;opt1&gt;,&lt;opt2&gt;,...}</span></code> 的选项指定。每个选项可以通过名称指定一个文件，或者使用 <code class="docutils literal notranslate"><span class="pre">REGEX:&lt;regex&gt;</span></code> 语法使用正则表达式匹配文件名。例如，参数：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DATA{MyData/MyInput.mhd,MyInput.img}                   # File pair
+DATA{MyData/MyFrames00.png,REGEX:MyFrames[0-9]+\\.png} # Series
+</pre></div>
+</div>
+<p>将在命令行上传递 <code class="docutils literal notranslate"><span class="pre">MyInput.mha</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MyFrames00.png</span></code>，但确保关联文件存在于它们旁边。</p>
+</section>
+<section id="referencing-directories">
+<h3><a class="toc-backref" href="ExternalData.html#id9" role="doc-backlink">引用目录</a><a class="headerlink" href="ExternalData.html#referencing-directories" title="链接至此标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DATA{}</span></code> 语法可以使用尾部斜杠和关联文件列表来引用目录。形式 <code class="docutils literal notranslate"><span class="pre">DATA{&lt;name&gt;/,&lt;opt1&gt;,&lt;opt2&gt;,...}</span></code> 添加获取目录中匹配关联文件选项之一的任何文件的规则。例如，参数 <code class="docutils literal notranslate"><span class="pre">DATA{MyDataDir/,REGEX:.*}</span></code> 将在命令行上传递 <code class="docutils literal notranslate"><span class="pre">MyDataDir</span></code> 目录的完整路径，并确保该目录包含与 <code class="docutils literal notranslate"><span class="pre">MyDataDir</span></code> 源代码目录中每个文件或内容链接相对应的文件。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增：</span>为了匹配子目录中的关联文件，请指定 <code class="docutils literal notranslate"><span class="pre">RECURSE:</span></code> 选项，例如 <code class="docutils literal notranslate"><span class="pre">DATA{MyDataDir/,RECURSE:,REGEX:.*}</span></code>。</p>
+</div>
+</section>
+</section>
+<section id="hash-algorithms">
+<h2><a class="toc-backref" href="ExternalData.html#id10" role="doc-backlink">哈希算法</a><a class="headerlink" href="ExternalData.html#hash-algorithms" title="链接至此标题">¶</a></h2>
+<p>支持以下哈希算法：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>%(algo)</p></th>
+<th class="head"><p>&lt;ext&gt;</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MD5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.md5</span></code></p></td>
+<td><p>Message-Digest Algorithm 5, RFC 1321</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHA1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha1</span></code></p></td>
+<td><p>US Secure Hash Algorithm 1, RFC 3174</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SHA224</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha224</span></code></p></td>
+<td><p>US Secure Hash Algorithms, RFC 4634</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHA256</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha256</span></code></p></td>
+<td><p>US Secure Hash Algorithms, RFC 4634</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SHA384</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha384</span></code></p></td>
+<td><p>US Secure Hash Algorithms, RFC 4634</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHA512</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha512</span></code></p></td>
+<td><p>US Secure Hash Algorithms, RFC 4634</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SHA3_224</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha3-224</span></code></p></td>
+<td><p>Keccak SHA-3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHA3_256</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha3-256</span></code></p></td>
+<td><p>Keccak SHA-3</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SHA3_384</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha3-384</span></code></p></td>
+<td><p>Keccak SHA-3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SHA3_512</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.sha3-512</span></code></p></td>
+<td><p>Keccak SHA-3</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="versionadded">
+<p><span class="versionmodified added">3.8 版本新增：</span>添加了 <code class="docutils literal notranslate"><span class="pre">SHA3_*</span></code> 哈希算法。</p>
+</div>
+<p>请注意，哈希仅用于唯一数据识别和下载验证。</p>
+</section>
+<section id="custom-fetch-scripts">
+<span id="externaldata-custom-fetch-scripts"></span><h2><a class="toc-backref" href="ExternalData.html#id11" role="doc-backlink">自定义获取脚本</a><a class="headerlink" href="ExternalData.html#custom-fetch-scripts" title="链接至此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>当必须从 <code class="docutils literal notranslate"><span class="pre">ExternalData_URL_TEMPLATES</span></code> 变量中指定的 URL 模板之一获取数据文件时，它通常使用 <span class="target" id="index-1-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a> 命令下载。可以通过使用 <code class="docutils literal notranslate"><span class="pre">ExternalDataCustomScript://&lt;key&gt;/&lt;loc&gt;</span></code> 形式的 URL 模板来指定使用自定义获取脚本。<code class="docutils literal notranslate"><span class="pre">&lt;key&gt;</span></code> 必须是 C 标识符，<code class="docutils literal notranslate"><span class="pre">&lt;loc&gt;</span></code> 必须包含 <code class="docutils literal notranslate"><span class="pre">%(algo)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">%(hash)</span></code> 占位符。必须将与键对应的变量 <code class="docutils literal notranslate"><span class="pre">ExternalData_CUSTOM_SCRIPT_&lt;key&gt;</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">.cmake</span></code> 脚本文件的完整路径。该脚本将被包含以执行实际的获取操作，并提供以下变量：</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_CUSTOM_LOCATION">
+<span class="sig-name descname"><span class="pre">ExternalData_CUSTOM_LOCATION</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_CUSTOM_LOCATION" title="链接至此定义">¶</a></dt>
+<dd><p>加载自定义获取脚本时，此变量设置为 URL 的位置部分，其中将包含替换后的哈希算法名称和内容哈希值。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_CUSTOM_FILE">
+<span class="sig-name descname"><span class="pre">ExternalData_CUSTOM_FILE</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_CUSTOM_FILE" title="链接至此定义">¶</a></dt>
+<dd><p>加载自定义获取脚本时，此变量设置为脚本必须将获取的内容存储在其中的文件的完整路径。文件的名称未指定，不应以任何方式进行解释。</p>
+</dd></dl>
+
+<p>自定义获取脚本应将获取的内容存储在文件中，或设置变量：</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:ExternalData_CUSTOM_ERROR">
+<span class="sig-name descname"><span class="pre">ExternalData_CUSTOM_ERROR</span></span><a class="headerlink" href="ExternalData.html#variable:ExternalData_CUSTOM_ERROR" title="链接至此定义">¶</a></dt>
+<dd><p>当自定义获取脚本无法获取请求的内容时，它必须将此变量设置为简短的单行消息，描述失败原因。</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="ExternalData.html#">ExternalData</a><ul>
+<li><a class="reference internal" href="ExternalData.html#introduction">简介</a></li>
+<li><a class="reference internal" href="ExternalData.html#module-functions">模块函数</a></li>
+<li><a class="reference internal" href="ExternalData.html#module-variables">模块变量</a></li>
+<li><a class="reference internal" href="ExternalData.html#referencing-files">引用文件</a><ul>
+<li><a class="reference internal" href="ExternalData.html#referencing-single-files">引用单个文件</a></li>
+<li><a class="reference internal" href="ExternalData.html#referencing-file-series">引用文件序列</a></li>
+<li><a class="reference internal" href="ExternalData.html#referencing-associated-files">引用关联文件</a></li>
+<li><a class="reference internal" href="ExternalData.html#referencing-directories">引用目录</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ExternalData.html#hash-algorithms">哈希算法</a></li>
+<li><a class="reference internal" href="ExternalData.html#custom-fetch-scripts">自定义获取脚本</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="DeployQt4.html" title="上一章">DeployQt4</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="ExternalProject.html" title="下一章">ExternalProject</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/ExternalData.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="ExternalProject.html" title="ExternalProject">下一页</a> |</li>
+        <li class="right">
+          <a href="DeployQt4.html" title="DeployQt4">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ExternalData.html">ExternalData</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

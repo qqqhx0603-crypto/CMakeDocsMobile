@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0197 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0197.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0196" href="CMP0196.html" />
+    <link rel="prev" title="CMP0198" href="CMP0198.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0196.html" title="CMP0196" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0198.html" title="CMP0198" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0197.html">CMP0197</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0197">
+<span id="policy:CMP0197"></span><h1>CMP0197<a class="headerlink" href="CMP0197.html#cmp0197" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>MSVC 链接器的 <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志不再包含在 <code class="docutils literal notranslate"><span class="pre">CMAKE_*_LINKER_FLAGS</span></code> 中。</p>
+<p>在使用 CMake 4.0 及以下版本中的 MSVC 类编译器时，链接器的 <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志是通过与语言无关的链接器标志变量添加的：</p>
+<ul class="simple">
+<li><p><span class="target" id="index-0-variable:CMAKE_EXE_LINKER_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_EXE_LINKER_FLAGS.html#variable:CMAKE_EXE_LINKER_FLAGS" title="CMAKE_EXE_LINKER_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXE_LINKER_FLAGS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_SHARED_LINKER_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_SHARED_LINKER_FLAGS.html#variable:CMAKE_SHARED_LINKER_FLAGS" title="CMAKE_SHARED_LINKER_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SHARED_LINKER_FLAGS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_MODULE_LINKER_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_MODULE_LINKER_FLAGS.html#variable:CMAKE_MODULE_LINKER_FLAGS" title="CMAKE_MODULE_LINKER_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_LINKER_FLAGS</span></code></a></p></li>
+<li><p><span class="target" id="index-0-variable:CMAKE_STATIC_LINKER_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_STATIC_LINKER_FLAGS.html#variable:CMAKE_STATIC_LINKER_FLAGS" title="CMAKE_STATIC_LINKER_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_STATIC_LINKER_FLAGS</span></code></a></p></li>
+</ul>
+<p>当多种语言的工具链对于是否/如何通过编译器驱动程序将标志传递给链接器存在分歧时，这会产生问题。此外，将此标志保留在面向公共的变量中，允许项目或用户对其进行更改，尽管它是必需的。</p>
+<p>CMake 4.1 及以上版本倾向于将 <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志从 <code class="docutils literal notranslate"><span class="pre">CMAKE_*_LINKER_FLAGS</span></code> 变量中移除，并在需要时自动生成链接标志。</p>
+<p>此策略为尚未预期 <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志缺失的项目提供了兼容性。该策略设置在第一个初始化上述 <code class="docutils literal notranslate"><span class="pre">CMAKE_*_LINKER_FLAGS</span></code> 变量的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令时生效。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>一旦策略在项目顶层对给定语言生效，该选择就必须在整个树中对该语言使用。在具有嵌套项目的子目录中，请确保一起转换所有内容。</p>
+</div>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是将 MSVC <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志放置在 <code class="docutils literal notranslate"><span class="pre">CMAKE_*_LINKER_FLAGS</span></code> 中。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是<em>不</em>将 MSVC <code class="docutils literal notranslate"><span class="pre">-machine:</span></code> 标志放置在 <code class="docutils literal notranslate"><span class="pre">CMAKE_*_LINKER_FLAGS</span></code> 中。</p>
+<p>此策略是在 CMake 版本 4.1 中引入的。它可以由 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 命令设置。如果未设置，CMake **不会** 警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0198.html" title="上一章">CMP0198</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0196.html" title="下一章">CMP0196</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0197.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0196.html" title="CMP0196">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0198.html" title="CMP0198">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0197.html">CMP0197</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

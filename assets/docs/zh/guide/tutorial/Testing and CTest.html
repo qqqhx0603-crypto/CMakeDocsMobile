@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第 8 步：测试与 CTest — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Testing&#32;and&#32;CTest.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 9: Installation Commands and Concepts" href="Installation&#32;Commands&#32;and&#32;Concepts.html" />
+    <link rel="prev" title="Step 7: Custom Commands and Generated Files" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="Step 9: Installation Commands and Concepts" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Testing&#32;and&#32;CTest.html">第 8 步：测试和 CTest</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-8-testing-and-ctest">
+<span id="guide:tutorial/Testing and CTest"></span><h1>第 8 步：测试与 CTest<a class="headerlink" href="Testing&#32;and&#32;CTest.html#step-8-testing-and-ctest" title="链接到此标题">¶</a></h1>
+<p>从历史上看，测试并不是构建系统的职责。充其量，它可能包含一个映射到构建和运行项目测试的特定目标。</p>
+<p>在 CMake 生态系统中，情况恰恰相反。CMake 的测试生态系统被称为 CTest。这个生态系统既简单得出奇，又极其强大。事实上，它功能强大到需要一份完整的独立教程来描述我们可以用它实现的一切。</p>
+<p>本节不是那份教程。在这一步中，我们将初步了解 CTest 提供的一些功能。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="Testing&#32;and&#32;CTest.html#background" title="链接到此标题">¶</a></h2>
+<p>其核心是，CTest 是一个任务启动器，它运行命令并报告它们返回的是零值还是非零值。我们将在这个层面使用 CTest。</p>
+<p>CMake 通过 <span class="target" id="index-0-command:enable_testing"></span><a class="reference internal" href="../../command/enable_testing.html#command:enable_testing" title="enable_testing"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_testing()</span></code></a> 和 <span class="target" id="index-0-command:add_test"></span><a class="reference internal" href="../../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 命令与 CTest 直接集成。这些命令允许 CMake 在构建文件夹中设置必要的架构，以便 CTest 能够发现、运行和报告我们可能感兴趣的各种测试。</p>
+<p>设置并构建测试后，调用 CTest 最简单的方法是在构建目录中直接运行：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ctest --test-dir build</span>
+</pre></div>
+</div>
+<p>这将运行所有可用的测试。可以使用正则表达式运行特定的测试。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ctest --test-dir build -R SpecificTest</span>
+</pre></div>
+</div>
+<p>CTest 还具有用于脚本编写、测试夹具 (fixtures)、消毒剂 (sanitizers)、作业服务器 (job servers)、指标报告等的高级机制。有关更多信息，请参阅 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 手册。</p>
+</section>
+<section id="exercise-1-adding-tests">
+<h2>练习 1 - 添加测试<a class="headerlink" href="Testing&#32;and&#32;CTest.html#exercise-1-adding-tests" title="链接到此标题">¶</a></h2>
+<p>CTest 的惯例规定，构建和运行测试应基于一个名为 <span class="target" id="index-0-variable:BUILD_TESTING"></span><a class="reference internal" href="../../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a> 的默认值为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 的变量。当通过 <span class="target" id="index-0-module:CTest"></span><a class="reference internal" href="../../module/CTest.html#module:CTest" title="CTest"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CTest</span></code></a> 模块使用 CTest 的全部功能时，系统会为我们设置此 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a>。当使用更精简的测试方法时，项目需要自行设置该选项（或至少是一个名称类似的选项）。</p>
+<p>当 <span class="target" id="index-1-variable:BUILD_TESTING"></span><a class="reference internal" href="../../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a> 为真时，应在根目录的 CML（CMakeLists.txt）中调用 <span class="target" id="index-1-command:enable_testing"></span><a class="reference internal" href="../../command/enable_testing.html#command:enable_testing" title="enable_testing"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_testing()</span></code></a> 命令。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">enable_testing()</span>
+</pre></div>
+</div>
+<p>这将为构建树生成 CTest 查找和运行测试所需的所有必要元数据。</p>
+<p>完成此操作后，可以使用 <span class="target" id="index-1-command:add_test"></span><a class="reference internal" href="../../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 命令在项目中的任何位置创建测试。该命令的语义类似于 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a>；我们可以指定一个可执行目标作为“命令”。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_test(</span>
+<span class="w">  </span><span class="no">NAME</span><span class="w"> </span><span class="nb">MyAppWithTestFlag</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">MyApp</span><span class="w"> </span><span class="p">--</span><span class="nb">test</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<section id="goal">
+<h3>目标<a class="headerlink" href="Testing&#32;and&#32;CTest.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>为 MathFunctions 库添加测试，并使用 CTest 运行它们。</p>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="Testing&#32;and&#32;CTest.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-2-variable:BUILD_TESTING"></span><a class="reference internal" href="../../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a></p></li>
+<li><p><span class="target" id="index-2-command:enable_testing"></span><a class="reference internal" href="../../command/enable_testing.html#command:enable_testing" title="enable_testing"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_testing()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:function"></span><a class="reference internal" href="../../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a></p></li>
+<li><p><span class="target" id="index-2-command:add_test"></span><a class="reference internal" href="../../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="Testing&#32;and&#32;CTest.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Tests/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="Testing&#32;and&#32;CTest.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p>文件 <code class="docutils literal notranslate"><span class="pre">Tests/TestMathFunctions.cxx</span></code> 中编写了一个测试程序。该程序接受一个命令行参数，即要测试的数学函数，有效值为 <code class="docutils literal notranslate"><span class="pre">add</span></code>、<code class="docutils literal notranslate"><span class="pre">mul</span></code>、<code class="docutils literal notranslate"><span class="pre">sqrt</span></code> 和 <code class="docutils literal notranslate"><span class="pre">sub</span></code>。如果识别出操作且计算出的值有效，则返回码为零，否则为非零。</p>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">7</span></code>。</p>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="Testing&#32;and&#32;CTest.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>无需特殊配置，像往常一样配置和构建即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>使用 CTest 验证所有测试是否通过。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果使用多配置生成器（例如 Visual Studio），则需要使用 <code class="docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-C</span> <span class="pre">&lt;config&gt;</span> <span class="pre">&lt;remaining</span> <span class="pre">flags&gt;</span></code> 指定配置，其中 <code class="docutils literal notranslate"><span class="pre">&lt;config&gt;</span></code> 是诸如 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 或 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 之类的值。使用多配置生成器时始终如此，后续命令中将不再专门说明。</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ctest --test-dir build</span>
+</pre></div>
+</div>
+<p>你可以使用 <a class="reference internal" href="../../manual/ctest.1.html#cmdoption-ctest-R"><code class="xref std std-option docutils literal notranslate"><span class="pre">-R</span></code></a> 标志运行单个测试。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ctest --test-dir build -R sqrt</span>
+</pre></div>
+</div>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="Testing&#32;and&#32;CTest.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们为测试添加一个新的可执行文件。</p>
+<details><summary>TODO 1-2: 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tests-cmakelists-txt-add-executable">
+<div class="code-block-caption"><span class="caption-text">TODO 1-2: Tests/CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#tests-cmakelists-txt-add-executable" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">TestMathFunctions</span><span class="nf">)</span>
+
+<span class="nf">target_sources(</span><span class="nb">TestMathFunctions</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">TestMathFunctions.cxx</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>然后我们链接我们要测试的库。</p>
+<details><summary>TODO 3：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tests-cmakelists-txt-target-link-libraries">
+<div class="code-block-caption"><span class="caption-text">TODO 3: Tests/CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#tests-cmakelists-txt-target-link-libraries" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">TestMathFunctions</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">MathFunctions</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>我们需要为每个有效操作调用 <span class="target" id="index-3-command:add_test"></span><a class="reference internal" href="../../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a>，但这会变得重复，因此我们编写一个 <span class="target" id="index-1-command:function"></span><a class="reference internal" href="../../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 来替我们完成。</p>
+<details><summary>TODO 4：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tests-cmakelists-txt-function">
+<div class="code-block-caption"><span class="caption-text">TODO 4: Tests/CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#tests-cmakelists-txt-function" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">MathFunctionTest</span><span class="w"> </span><span class="nb">op</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">add_test(</span>
+<span class="w">    </span><span class="no">NAME</span><span class="w"> </span><span class="o">${</span><span class="nt">op</span><span class="o">}</span>
+<span class="w">    </span><span class="no">COMMAND</span><span class="w"> </span><span class="nb">TestMathFunctions</span><span class="w"> </span><span class="o">${</span><span class="nt">op</span><span class="o">}</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">endfunction()</span>
+</pre></div>
+</div>
+</div>
+</details><p>现在我们可以使用我们的 <span class="target" id="index-2-command:function"></span><a class="reference internal" href="../../command/function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 来添加所有测试。</p>
+<details><summary>TODO 5：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tests-cmakelists-txt-add-test">
+<div class="code-block-caption"><span class="caption-text">TODO 5: Tests/CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#tests-cmakelists-txt-add-test" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">MathFunctionTest(</span><span class="nb">add</span><span class="nf">)</span>
+<span class="nf">MathFunctionTest(</span><span class="nb">mul</span><span class="nf">)</span>
+<span class="nf">MathFunctionTest(</span><span class="nb">sqrt</span><span class="nf">)</span>
+<span class="nf">MathFunctionTest(</span><span class="nb">sub</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们可以在顶层 CML 中添加 <span class="target" id="index-3-variable:BUILD_TESTING"></span><a class="reference internal" href="../../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a> 选项，并有条件地启用测试的构建和运行。</p>
+<details><summary>TODO 6-7: 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-build-testing">
+<div class="code-block-caption"><span class="caption-text">TODO 6: CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#cmakelists-txt-build-testing" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">BUILD_TESTING</span><span class="w"> </span><span class="s">"Enable testing and build tests"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="cmakelists-txt-enable-testing">
+<div class="code-block-caption"><span class="caption-text">TODO 7: CMakeLists.txt</span><a class="headerlink" href="Testing&#32;and&#32;CTest.html#cmakelists-txt-enable-testing" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">BUILD_TESTING</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">enable_testing()</span>
+<span class="w">  </span><span class="nf">add_subdirectory(</span><span class="nb">Tests</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#">第 8 步：测试和 CTest</a><ul>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#background">背景</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#exercise-1-adding-tests">练习 1 - 添加测试</a><ul>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#goal">目标</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="Testing&#32;and&#32;CTest.html#solution">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="上一章">第 7 步：自定义命令和生成的文件</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="下一章">第 9 步：安装命令和概念</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/Testing&#32;and&#32;CTest.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="Step 9: Installation Commands and Concepts">下一页</a> |</li>
+        <li class="right">
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Testing&#32;and&#32;CTest.html">第 8 步：测试和 CTest</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

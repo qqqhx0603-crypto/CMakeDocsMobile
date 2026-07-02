@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>set — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="set.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="set_directory_properties" href="set_directory_properties.html" />
+    <link rel="prev" title="separate_arguments" href="separate_arguments.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="set_directory_properties.html" title="set_directory_properties" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="separate_arguments.html" title="separate_arguments" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="set.html">set</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="set">
+<span id="command:set"></span><h1>set<a class="headerlink" href="set.html#set" title="链接到此标题">¶</a></h1>
+<p>将普通变量、缓存变量或环境变量设置为指定的值。关于普通变量和缓存条目的作用域及相互作用，请参阅 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-variables"><span class="std std-ref">cmake-language(7) 变量</span></a> 文档。</p>
+<p>此命令中指定了 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;...</span></code> 占位符的签名需要零个或多个参数。多个参数将合并为以 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，以构成要设置的实际变量值。</p>
+<section id="set-normal-variable">
+<h2>设置普通变量<a class="headerlink" href="set.html#set-normal-variable" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="normal">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">set(</span></span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;...</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">PARENT_SCOPE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="set.html#normal" title="Link to this definition">¶</a></dt>
+<dd><p>在当前函数或目录作用域中设置或取消设置 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code></p>
+<ul class="simple">
+<li><p>如果提供了至少一个 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;...</span></code>，则将变量设置为该值。</p></li>
+<li><p>如果不提供值，则取消设置该变量。这等同于 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset(&lt;variable&gt;)</span></code></a>。</p></li>
+</ul>
+<p>如果提供了 <code class="docutils literal notranslate"><span class="pre">PARENT_SCOPE</span></code> 选项，变量将在当前作用域的上一级作用域中设置。每个新目录或 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 命令都会创建一个新的作用域。作用域也可以通过 <span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令创建。<code class="docutils literal notranslate"><span class="pre">set(PARENT_SCOPE)</span></code> 会将变量的值设置到父目录、调用函数或外层作用域中（以实际情况为准）。变量在当前作用域中的先前状态保持不变（例如，如果之前未定义，则依然未定义；如果之前有值，则依然保持该值）。</p>
+<p><span class="target" id="index-1-command:block"></span><a class="reference internal" href="block.html#command:block" title="block(propagate)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block(PROPAGATE)</span></code></a> 和 <span class="target" id="index-0-command:return"></span><a class="reference internal" href="return.html#command:return" title="return(propagate)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">return(PROPAGATE)</span></code></a> 命令可以用作 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set(PARENT_SCOPE)</span></code></a> 和 <span class="target" id="index-1-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset(PARENT_SCOPE)</span></code></a> 命令的替代方法，用于更新父作用域。</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当评估形式为 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 的 <a class="reference internal" href="../manual/cmake-language.7.html#variable-references"><span class="std std-ref">变量引用</span></a> 时，CMake 首先会搜索同名的普通变量。如果不存在此类普通变量，CMake 随后会搜索同名的缓存条目。因此，<strong>取消设置一个普通变量可能会暴露出之前被遮蔽的缓存变量</strong>。若要强制形式为 <code class="docutils literal notranslate"><span class="pre">${VAR}</span></code> 的变量引用返回空字符串，请使用 <code class="docutils literal notranslate"><span class="pre">set(&lt;variable&gt;</span> <span class="pre">"")</span></code>，这会清除普通变量，但使其保持定义状态。</p>
+</div>
+</section>
+<section id="set-cache-entry">
+<h2>设置缓存条目<a class="headerlink" href="set.html#set-cache-entry" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="cache">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">set(</span></span><span class="o"><span class="pre">CACHE{</span></span><span class="nt"><span class="pre">&lt;variable&gt;</span></span><span class="o"><span class="pre">}</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">TYPE</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;type&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">HELP</span></span><span class="nbsp"> </span><span class="nv"><span class="pre">&lt;helpstring&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FORCE</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="no"><span class="pre">VALUE</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;value&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="set.html#cache" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>设置给定的缓存 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code>（缓存条目）。选项如下：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TYPE</span> <span class="pre">&lt;type&gt;</span></code></dt><dd><p>指定缓存条目的类型。<code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 必须是以下类型之一：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">BOOL</span></code></dt><dd><p>布尔值 <code class="docutils literal notranslate"><span class="pre">ON/OFF</span></code>。<span class="target" id="index-0-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 提供复选框。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FILEPATH</span></code></dt><dd><p>磁盘上的文件路径。<span class="target" id="index-1-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 提供文件对话框。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PATH</span></code></dt><dd><p>磁盘上的目录路径。<span class="target" id="index-2-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 提供文件对话框。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STRING</span></code></dt><dd><p>一行文本。<span class="target" id="index-3-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 提供文本框，如果设置了 <span class="target" id="index-0-prop_cache:STRINGS"></span><a class="reference internal" href="../prop_cache/STRINGS.html#prop_cache:STRINGS" title="STRINGS"><code class="xref cmake cmake-prop_cache docutils literal notranslate"><span class="pre">STRINGS</span></code></a> 缓存条目属性，则提供下拉选择。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INTERNAL</span></code></dt><dd><p>一行文本。<span class="target" id="index-4-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 不显示内部条目。它们可用于在运行期间持久化存储变量。使用此类型意味着包含 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code>。</p>
+</dd>
+</dl>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code>，且缓存变量已存在且其类型不是 <code class="docutils literal notranslate"><span class="pre">UNINITIALIZED</span></code>，则保留之前指定的类型，否则使用 <code class="docutils literal notranslate"><span class="pre">STRING</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HELP</span> <span class="pre">&lt;helpstring&gt;...</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;helpstring&gt;</span></code> 必须指定为一行文本，为 <span class="target" id="index-5-manual:cmake-gui(1)"></span><a class="reference internal" href="../manual/cmake-gui.1.html#manual:cmake-gui(1)" title="cmake-gui(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-gui(1)</span></code></a> 用户提供选项的简要说明。如果提供了多个字符串，它们将被连接成一个字符串，中间没有分隔符。</p>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">HELP</span></code>，将使用空字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">FORCE</span></code></dt><dd><p>由于缓存条目旨在提供用户可设置的值，因此默认情况下不会覆盖现有的缓存条目。使用 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code> 选项可覆盖现有条目。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">VALUE</span> <span class="pre">&lt;value&gt;...</span></code></dt><dd><p>要设置为缓存 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 的值列表。此参数必须始终放在最后。</p>
+</dd>
+</dl>
+<p>如果缓存条目在调用之前不存在，或者给出了 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code> 选项，则该缓存条目将被设置为给定值。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果同名的普通变量已存在，则缓存变量的内容将无法直接访问（参见 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-variables"><span class="std std-ref">变量评估规则</span></a>）。如果策略 <span class="target" id="index-0-policy:CMP0126"></span><a class="reference internal" href="../policy/CMP0126.html#policy:CMP0126" title="CMP0126"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0126</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>，则当前作用域中的任何普通变量绑定都将被移除。</p>
+</div>
+<p>缓存条目在调用前可能存在但未设置类型（如果它是用户通过 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">-D&lt;var&gt;=&lt;value&gt;</span></code></a> 选项在 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行上创建且未指定类型）。在这种情况下，<code class="docutils literal notranslate"><span class="pre">set</span></code> 命令将添加类型。此外，如果 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 为 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FILEPATH</span></code>，且命令行提供的 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 是相对路径，则 <code class="docutils literal notranslate"><span class="pre">set</span></code> 命令会将该路径视为相对于当前工作目录，并将其转换为绝对路径。</p>
+</dd></dl>
+
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="cache-legacy">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">set(</span></span><span class="nv"><span class="pre">&lt;variable&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;value&gt;...</span></span><span class="w"> </span><span class="no"><span class="pre">CACHE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;type&gt;</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;docstring&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">FORCE</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="set.html#cache-legacy" title="Link to this definition">¶</a></dt>
+<dd><p>此签名仅为兼容性目的提供。建议优先使用另一个签名。</p>
+</dd></dl>
+
+</section>
+<section id="set-environment-variable">
+<h2>设置环境变量<a class="headerlink" href="set.html#set-environment-variable" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="env">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">set(</span></span><span class="o"><span class="pre">ENV{</span></span><span class="nt"><span class="pre">&lt;variable&gt;</span></span><span class="o"><span class="pre">}</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;value&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="set.html#env" title="Link to this definition">¶</a></dt>
+<dd><p>将 <span class="target" id="index-0-manual:cmake-env-variables(7)"></span><a class="reference internal" href="../manual/cmake-env-variables.7.html#manual:cmake-env-variables(7)" title="cmake-env-variables(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">环境变量</span></code></a> 设置为给定值。后续对 <code class="docutils literal notranslate"><span class="pre">$ENV{&lt;variable&gt;}</span></code> 的调用将返回此新值。</p>
+<p>此命令仅影响当前的 CMake 进程，不影响调用 CMake 的进程，不影响系统整体环境，也不影响后续构建或测试进程的环境。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">ENV{&lt;variable&gt;}</span></code> 后未提供参数，或者 <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 为空字符串，则此命令将清除该环境变量的任何现有值。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> 之后的参数将被忽略。如果发现多余参数，则会发出作者警告。</p>
+</dd></dl>
+
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="set.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="set.html#">set</a><ul>
+<li><a class="reference internal" href="set.html#set-normal-variable">设置普通变量</a></li>
+<li><a class="reference internal" href="set.html#set-cache-entry">设置缓存条目</a></li>
+<li><a class="reference internal" href="set.html#set-environment-variable">设置环境变量</a></li>
+<li><a class="reference internal" href="set.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="separate_arguments.html" title="上一章">separate_arguments</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="set_directory_properties.html" title="下一章">set_directory_properties</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/set.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="set_directory_properties.html" title="set_directory_properties">下一页</a> |</li>
+        <li class="right">
+          <a href="separate_arguments.html" title="separate_arguments">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="set.html">set</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

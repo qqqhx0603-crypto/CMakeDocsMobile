@@ -1,0 +1,763 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake-policies(7) — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake-policies.7.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0210" href="../policy/CMP0210.html" />
+    <link rel="prev" title="cmake-packages(7)" href="cmake-packages.7.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="../policy/CMP0210.html" title="CMP0210" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-packages.7.html" title="cmake-packages(7)" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-policies.7.html">cmake-policies(7)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="manual:cmake-policies(7)"></span><section id="cmake-policies-7">
+<h1><a class="toc-backref" href="cmake-policies.7.html#id1" role="doc-backlink">cmake-policies(7)</a><a class="headerlink" href="cmake-policies.7.html#cmake-policies-7" title="链接至此标题">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake-policies.7.html#cmake-policies-7" id="id1">cmake-policies(7)</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-policies.7.html#introduction" id="id2">简介</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-policies.7.html#updating-projects" id="id3">更新项目</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#transition-schedule" id="id4">过渡计划</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#supported-policies" id="id5">支持的策略</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-3" id="id6">CMake 4.3 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-2" id="id7">CMake 4.2 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-1" id="id8">CMake 4.1 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-0" id="id9">CMake 4.0 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-31" id="id10">CMake 3.31 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-30" id="id11">CMake 3.30 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-29" id="id12">CMake 3.29 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-28" id="id13">CMake 3.28 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-27" id="id14">CMake 3.27 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-26" id="id15">CMake 3.26 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-25" id="id16">CMake 3.25 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-24" id="id17">CMake 3.24 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-23" id="id18">CMake 3.23 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-22" id="id19">CMake 3.22 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-21" id="id20">CMake 3.21 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-20" id="id21">CMake 3.20 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-19" id="id22">CMake 3.19 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-18" id="id23">CMake 3.18 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-17" id="id24">CMake 3.17 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-16" id="id25">CMake 3.16 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-15" id="id26">CMake 3.15 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-14" id="id27">CMake 3.14 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-13" id="id28">CMake 3.13 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-12" id="id29">CMake 3.12 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-11" id="id30">CMake 3.11 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-10" id="id31">CMake 3.10 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-9" id="id32">CMake 3.9 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-8" id="id33">CMake 3.8 引入的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-7" id="id34">CMake 3.7 引入的策略</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#unsupported-policies" id="id35">不支持的策略</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-4-removed-by-cmake-4-0" id="id36">CMake 3.4 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-3-removed-by-cmake-4-0" id="id37">CMake 3.3 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-2-removed-by-cmake-4-0" id="id38">CMake 3.2 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-1-removed-by-cmake-4-0" id="id39">CMake 3.1 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-0-removed-by-cmake-4-0" id="id40">CMake 3.0 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-2-8-removed-by-cmake-4-0" id="id41">CMake 2.8 引入，CMake 4.0 移除的策略</a></p></li>
+<li><p><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-2-6-removed-by-cmake-4-0" id="id42">CMake 2.6 引入，CMake 4.0 移除的策略</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<span id="cmake-policies-intro"></span><h2><a class="toc-backref" href="cmake-policies.7.html#id2" role="doc-backlink">简介</a><a class="headerlink" href="cmake-policies.7.html#introduction" title="此标题的链接">¶</a></h2>
+<p>CMake 策略在引入行为变更的同时，保持对现有项目版本的兼容性。策略是一种弃用机制，而非功能开关。每个策略文档都会记录一个被弃用的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>（旧）行为和一个首选的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>（新）行为。项目必须随着时间的推移进行更新以使用 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为，但其现有版本将继续使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为正常工作。</p>
+<section id="updating-projects">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id3" role="doc-backlink">更新项目</a><a class="headerlink" href="cmake-policies.7.html#updating-projects" title="链接至此标题">¶</a></h3>
+<p>当某个版本的 CMake 引入新策略时，其 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为会立即在该版本及后续版本中被弃用。项目应尽快更新以使用策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。</p>
+<p>使用 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 命令来记录项目已更新至的最新 CMake 版本。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.10...4.2</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>这使用了 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;...&lt;policy_max&gt;</span></code> 语法，以启用 CMake 4.2 及更早版本中引入的策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为，同时仅要求 CMake 3.10 作为最低版本。该项目预计能够在这些版本之间引入的策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为下正常工作。</p>
+</section>
+<section id="transition-schedule">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id4" role="doc-backlink">过渡计划</a><a class="headerlink" href="cmake-policies.7.html#transition-schedule" title="链接至此标题">¶</a></h3>
+<p>为了帮助项目按照自己的进度迁移到策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为，CMake 提供了一个过渡期。</p>
+<ul>
+<li><p>如果项目未设置某项策略，CMake 将使用其 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为，但也可能会警告该策略尚未设置。</p>
+<ul>
+<li><p>运行 CMake 的用户可以在不修改项目的情况下，通过在 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行上设置 <span class="target" id="index-0-variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>"></span><a class="reference internal" href="../variable/CMAKE_POLICY_DEFAULT_CMPNNNN.html#variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>" title="CMAKE_POLICY_DEFAULT_CMP<NNNN>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POLICY_DEFAULT_CMP&lt;NNNN&gt;</span></code></a> 变量作为缓存条目来静默该警告。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_POLICY_DEFAULT_CMP0990<span class="o">=</span>OLD<span class="w"> </span>...
+</pre></div>
+</div>
+</li>
+<li><p>项目可以通过使用 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 命令显式地将策略设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为来消除该警告。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">POLICY</span><span class="w"> </span><span class="no">CMP0990</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="no">CMP0990</span><span class="w"> </span><span class="no">NEW</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>除非是为了在已冻结或稳定的代码库中消除警告，或者作为更大迁移路径的一部分临时使用，否则策略几乎不应被设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>。</p>
+</div>
+</li>
+</ul>
+</li>
+<li><p>如果项目将策略设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>，则在引入该策略的版本发布至少 2 年后发布的 CMake 版本，可能会发出警告，提示该策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为将在未来的 CMake 版本中被移除。</p></li>
+<li><p>如果项目未将策略设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则在引入该策略的版本发布至少 6 年后且主版本号更高的 CMake 版本，可能会报错，提示该策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为已被移除。</p></li>
+</ul>
+</section>
+</section>
+<section id="supported-policies">
+<h2><a class="toc-backref" href="cmake-policies.7.html#id5" role="doc-backlink">支持的策略</a><a class="headerlink" href="cmake-policies.7.html#supported-policies" title="链接至此标题">¶</a></h2>
+<p>以下是受支持的策略。</p>
+<section id="policies-introduced-by-cmake-4-3">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id6" role="doc-backlink">CMake 4.3 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-4-3" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0210.html">CMP0210: CMAKE_&lt;LANG&gt;_LINK_FLAGS 将链接标志添加到所有目标类型。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0209.html">CMP0209: Verify interface header sets 会检查没有导出的可执行文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0208.html">CMP0208: export(EXPORT) 不允许空参数。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0207.html">CMP0207: file(GET_RUNTIME_DEPENDENCIES) 在匹配前对路径进行规范化。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0206.html">CMP0206: CPack 归档生成器默认使用 UID 0 和 GID 0。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0205.html">CMP0205: file(CREATE_LINK) 配合 COPY_ON_ERROR 会复制目录内容。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-4-2">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id7" role="doc-backlink">CMake 4.2 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-4-2" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0204.html">CMP0204: 针对 MSVC ABI 时，字符集总是被定义。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0203.html">CMP0203: 针对 MSVC ABI 的共享库会定义 _WINDLL。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0202.html">CMP0202: PDB 文件名总是包含其目标的每配置 POSTFIX。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0201.html">CMP0201: Python::NumPy 不再依赖 Python::Development.Module。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0200.html">CMP0200: 导入目标的定位和配置选择更加一致。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0199.html">CMP0199: $&lt;CONFIG&gt; 不匹配未选中的映射配置。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0198.html">CMP0198: CMAKE_PARENT_LIST_FILE 不在 CMakeLists.txt 中定义。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-4-1">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id8" role="doc-backlink">CMake 4.1 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-4-1" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0197.html">CMP0197: MSVC 链接 -machine: 标志不在 CMAKE_*_LINKER_FLAGS 中。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0196.html">CMP0196: CMakeDetermineVSServicePack 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0195.html">CMP0195: 构建树中的 Swift 模块使用 Swift 模块目录结构。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0194.html">CMP0194: 对于语言 ASM，MSVC 不再被视为汇编器。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0193.html">CMP0193: GNUInstallDirs 缓存 CMAKE_INSTALL_* 时，若安装前缀为 '/' 则带有前导 'usr/'。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0192.html">CMP0192: GNUInstallDirs 在特殊前缀中使用绝对路径的 SYSCONFDIR, LOCALSTATEDIR 和 RUNSTATEDIR。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0191.html">CMP0191: FindCABLE 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0190.html">CMP0190: FindPython 在交叉编译模式下强制执行一致性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0189.html">CMP0189: TARGET_PROPERTY 传递性地评估 LINK_LIBRARIES 属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0188.html">CMP0188: FindGCCXML 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0187.html">CMP0187: 包含无扩展名的源文件时，忽略同名但有扩展名的文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0186.html">CMP0186: 正则表达式在重复搜索中 ^ 最多匹配一次。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-4-0">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id9" role="doc-backlink">CMake 4.0 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0185.html">CMP0185: FindRuby 不再提供大写的 RUBY_* 变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0184.html">CMP0184: MSVC 运行时检查标志由抽象层选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0183.html">CMP0183: add_feature_info() 支持完整的条件语法。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0182.html">CMP0182: AIX 上默认创建共享库归档文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0181.html">CMP0191: 链接命令行片段变量被解析并重新引用。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-31">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id10" role="doc-backlink">CMake 3.31 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-31" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0180.html">CMP0180: project() 总是将 &lt;PROJECT-NAME&gt;_* 设置为普通变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0179.html">CMP0179: 链接行上的静态库去重保留第一次出现的位置。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0178.html">CMP0178: 测试命令行保留空参数。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0177.html">CMP0177: install() DESTINATION 路径被规范化。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0176.html">CMP0176: execute_process() 的 ENCODING 默认设为 UTF-8。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0175.html">CMP0175: add_custom_command() 拒绝无效参数。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0174.html">CMP0174: cmake_parse_arguments(PARSE_ARGV) 为单值关键字后的空字符串定义一个变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0173.html">CMP0173: CMakeFindFrameworks 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0172.html">CMP0172: CPack 模块在 CPack WIX 生成器中默认启用每机安装。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0171.html">CMP0171: 'codegen' 是保留的目标名称。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-30">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id11" role="doc-backlink">CMake 3.30 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-30" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0170.html">CMP0170: 强制执行 FETCHCONTENT_FULLY_DISCONNECTED 要求。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0169.html">CMP0169: FetchContent_Populate(depName) 的单参数签名被弃用。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0168.html">CMP0168: FetchContent 直接执行步骤，而不是通过子构建。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0167.html">CMP0167: FindBoost 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0166.html">CMP0166: TARGET_PROPERTY 跨越静态库的私有依赖传递性地评估链接属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0165.html">CMP0165: enable_language() 不得在 project() 之前调用。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0164.html">CMP0164: 当平台不支持时，add_library() 拒绝 SHARED 库。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0163.html">CMP0163: GENERATED 源文件属性现在在所有目录中可见。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0162.html">CMP0162: Visual Studio 生成器默认添加 UseDebugLibraries 指标。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-29">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id12" role="doc-backlink">CMake 3.29 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-29" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0161.html">CMP0161: CPACK_PRODUCTBUILD_DOMAINS 默认为 true。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0160.html">CMP0160: 更多只读目标属性在尝试设置时会报错。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0159.html">CMP0159: 使用 REGEX 的 file(STRINGS) 会更新 CMAKE_MATCH_&lt;n&gt;。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0158.html">CMP0158: add_test() 仅在交叉编译时才遵循 CMAKE_CROSSCOMPILING_EMULATOR。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0157.html">CMP0157: Swift 编译模式由抽象层选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0156.html">CMP0156: 根据链接器功能对链接行上的库进行去重。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-28">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id13" role="doc-backlink">CMake 3.28 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-28" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0155.html">CMP0155: 在支持的情况下，具有至少 C++20 的目标中的 C++ 源文件会被扫描以查找导入。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0154.html">CMP0154: 在使用文件集的目标中，生成的文件的属性默认为私有。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0153.html">CMP0153: 不应再调用 exec_program 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0152.html">CMP0152: file(REAL_PATH) 在折叠 ../ 组件之前解析符号链接。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-27">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id14" role="doc-backlink">CMake 3.27 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-27" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0151.html">CMP0151: AUTOMOC 包含目录默认作为系统包含目录。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0150.html">CMP0150: ExternalProject_Add 和 FetchContent_Declare 将相对 git 仓库路径视为相对于父项目的远程仓库。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0149.html">CMP0149: Visual Studio 生成器默认选择最新的 Windows SDK。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0148.html">CMP0148: FindPythonInterp 和 FindPythonLibs 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0147.html">CMP0147: Visual Studio 生成器并行构建自定义命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0146.html">CMP0146: FindCUDA 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0145.html">CMP0145: Dart 和 FindDart 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0144.html">CMP0144: find_package 使用大写的 PACKAGENAME_ROOT 变量。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-26">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id15" role="doc-backlink">CMake 3.26 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-26" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0143.html">CMP0143: USE_FOLDERS 全局属性默认视为 ON。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-25">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id16" role="doc-backlink">CMake 3.25 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-25" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0142.html">CMP0142: Xcode 生成器不向库搜索路径追加每配置后缀。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0141.html">CMP0141: MSVC 调试信息格式标志由抽象层选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0140.html">CMP0140: return() 命令检查其参数。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-24">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id17" role="doc-backlink">CMake 3.24 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-24" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0139.html">CMP0139: if() 命令支持使用 PATH_EQUAL 操作符进行路径比较。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0138.html">CMP0138: CheckIPOSupported 使用调用项目的标志。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0137.html">CMP0137: try_compile() 在项目模式下传递平台变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0136.html">CMP0136: Watcom 运行时库标志由抽象层选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0135.html">CMP0135: URL 下载方式的 ExternalProject 和 FetchContent 默认忽略归档中的时间戳。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0134.html">CMP0134: 当 "TARGET" 视图不可用时，回退到 "HOST" Windows 注册表视图。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0133.html">CMP0133: CPack 模块默认在 CPack DragNDrop 生成器中禁用 SLA。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0132.html">CMP0132: 不要在第一次运行时设置编译器环境变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0131.html">CMP0131: LINK_LIBRARIES 支持 LINK_ONLY 生成器表达式。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0130.html">CMP0130: while() 会诊断条件评估错误。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-23">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id18" role="doc-backlink">CMake 3.23 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-23" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0129.html">CMP0129: MCST LCC 编译器的编译器 ID 现在是 LCC，而不是 GNU。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-22">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id19" role="doc-backlink">CMake 3.22 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-22" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0128.html">CMP0128: 改进了语言标准和扩展标志的选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0127.html">CMP0127: cmake_dependent_option() 支持完整的条件语法。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-21">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id20" role="doc-backlink">CMake 3.21 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-21" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0126.html">CMP0126: set(CACHE) 不会移除同名的普通变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0125.html">CMP0125: find_(path|file|library|program) 对缓存变量具有一致的行为。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0124.html">CMP0124: foreach() 循环变量仅在循环作用域内可用。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0123.html">CMP0123: ARMClang cpu/arch 编译和链接标志必须显式设置。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0122.html">CMP0122: UseSWIG 对 csharp 语言使用标准库命名约定。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0121.html">CMP0121: list 命令检测无效索引。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-20">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id21" role="doc-backlink">CMake 3.20 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-20" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0120.html">CMP0120: WriteCompilerDetectionHeader 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0119.html">CMP0119: LANGUAGE 源文件属性显式按语言编译。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0118.html">CMP0118: GENERATED 源文件可以在不手动标记的情况下跨目录使用。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0117.html">CMP0117: MSVC RTTI 标志 /GR 默认不添加到 CMAKE_CXX_FLAGS。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0116.html">CMP0116: Ninja 生成器转换来自 add_custom_command() 的 DEPFILE。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0115.html">CMP0115: 源文件扩展名必须显式指定。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-19">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id22" role="doc-backlink">CMake 3.19 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-19" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0114.html">CMP0114: ExternalProject 步骤目标完全采用其步骤。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0113.html">CMP0113: Makefile 生成器不会重复目标依赖中的自定义命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0112.html">CMP0112: 目标文件组件生成器表达式不会添加目标依赖。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0111.html">CMP0111: 缺少位置属性的导入目标在生成期间会失败。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0110.html">CMP0110: add_test() 支持在测试名称中使用任意字符。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0109.html">CMP0109: find_program() 需要执行权限，但不要求读取权限。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-18">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id23" role="doc-backlink">CMake 3.18 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-18" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0108.html">CMP0108: 目标不能通过别名链接到自身。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0107.html">CMP0107: ALIAS 目标不能覆盖另一个目标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0106.html">CMP0106: Documentation 模块被移除。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0105.html">CMP0105: 设备链接步骤使用链接选项。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0104.html">CMP0104: 现在检测 NVCC 的 CMAKE_CUDA_ARCHITECTURES，不允许空的 CUDA_ARCHITECTURES。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0103.html">CMP0103: 不允许在没有 APPEND 的情况下对同一个 FILE 进行多次 export()。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-17">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id24" role="doc-backlink">CMake 3.17 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-17" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0102.html">CMP0102: 如果缓存条目不存在，mark_as_advanced() 不执行任何操作。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0101.html">CMP0101: target_compile_options 在所有作用域中都遵循 BEFORE 关键字。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0100.html">CMP0100: 让 AUTOMOC 和 AUTOUIC 处理 .hh 头文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0099.html">CMP0099: 链接属性跨越静态库的私有依赖具有传递性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0098.html">CMP0098: FindFLEX 在执行时会在 CMAKE_CURRENT_BINARY_DIR 中运行 flex。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-16">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id25" role="doc-backlink">CMake 3.16 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-16" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0097.html">CMP0097: GIT_SUBMODULES 为 "" 的 ExternalProject_Add 不初始化任何子模块。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0096.html">CMP0096: project() 在版本组件中保留前导零。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0095.html">CMP0095: RPATH 条目在中间 CMake 安装脚本中得到正确转义。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-15">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id26" role="doc-backlink">CMake 3.15 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-15" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0094.html">CMP0094: FindPython3, FindPython2 和 FindPython 使用 LOCATION 作为查找策略。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0093.html">CMP0093: FindBoost 以 x.y.z 格式报告 Boost_VERSION。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0092.html">CMP0092: MSVC 警告标志默认不在 CMAKE_{C,CXX}_FLAGS 中。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0091.html">CMP0091: MSVC 运行时库标志由抽象层选择。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0090.html">CMP0090: export(PACKAGE) 默认不填充包注册表。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0089.html">CMP0089: 基于 IBM Clang 的 XL 编译器的编译器 ID 现在是 XLClang。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-14">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id27" role="doc-backlink">CMake 3.14 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-14" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0088.html">CMP0088: FindBISON 在执行时会在 CMAKE_CURRENT_BINARY_DIR 中运行 bison。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0087.html">CMP0087: install(SCRIPT | CODE) 支持生成器表达式。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0086.html">CMP0086: UseSWIG 通过 -module 标志遵循 SWIG_MODULE_NAME。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0085.html">CMP0085: IN_LIST 生成器表达式处理空列表项。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0084.html">CMP0084: FindQt 模块不存在于 find_package() 中。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0083.html">CMP0083: 链接可执行文件时添加 PIE 选项。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0082.html">CMP0082: 来自 add_subdirectory() 的安装规则与调用者中的规则交错。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-13">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id28" role="doc-backlink">CMake 3.13 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-13" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0081.html">CMP0081: LINK_DIRECTORIES 目标属性中不允许相对路径。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0080.html">CMP0080: BundleUtilities 不能在配置时包含。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0079.html">CMP0079: target_link_libraries 允许与其他目录中的目标一起使用。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0078.html">CMP0078: UseSWIG 生成标准目标名称。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0077.html">CMP0077: option() 遵循普通变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0076.html">CMP0076: target_sources() 命令将相对路径转换为绝对路径。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-12">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id29" role="doc-backlink">CMake 3.12 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-12" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0075.html">CMP0075: 包含文件检查宏遵循 CMAKE_REQUIRED_LIBRARIES。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0074.html">CMP0074: find_package 使用 PackageName_ROOT 变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0073.html">CMP0073: 不产生遗留的 _LIB_DEPENDS 缓存条目。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-11">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id30" role="doc-backlink">CMake 3.11 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-11" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0072.html">CMP0072: FindOpenGL 在可用时默认更倾向于 GLVND。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-10">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id31" role="doc-backlink">CMake 3.10 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-10" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0071.html">CMP0071: 让 AUTOMOC 和 AUTOUIC 处理 GENERATED 文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0070.html">CMP0070: 定义 file(GENERATE) 对相对路径的行为。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-9">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id32" role="doc-backlink">CMake 3.9 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-9" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0069.html">CMP0069: 启用 INTERPROCEDURAL_OPTIMIZATION 时强制执行。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0068.html">CMP0068: macOS 上的 RPATH 设置不影响 install_name。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-8">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id33" role="doc-backlink">CMake 3.8 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-8" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0067.html">CMP0067: 在 try_compile() 源文件签名中遵循语言标准。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-7">
+<h3><a class="toc-backref" href="cmake-policies.7.html#id34" role="doc-backlink">CMake 3.7 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-7" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0066.html">CMP0066: 在 try_compile() 源文件签名中遵循每配置标志。</a></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="unsupported-policies">
+<h2><a class="toc-backref" href="cmake-policies.7.html#id35" role="doc-backlink">不支持的策略</a><a class="headerlink" href="cmake-policies.7.html#unsupported-policies" title="链接至此标题">¶</a></h2>
+<p>以下策略不再受支持。项目中调用 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION)</span></code></a> 或 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#version" title="cmake_policy(version)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy(VERSION)</span></code></a> 时必须将它们设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>。它们的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为已从 CMake 中移除。</p>
+<section id="policies-introduced-by-cmake-3-4-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-3-4"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id36" role="doc-backlink">CMake 3.4 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-4-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0065.html">CMP0065: 没有 ENABLE_EXPORTS 目标属性时，不要向从可执行文件导出的符号添加标志。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0064.html">CMP0064: 支持新的 TEST if() 操作符。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-3-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-3-3"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id37" role="doc-backlink">CMake 3.3 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-3-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0063.html">CMP0063: 遵循所有目标类型的可见性属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0062.html">CMP0062: 不允许 install() export() 的结果。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0061.html">CMP0061: CTest 默认不告诉 make 忽略错误 (-i)。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0060.html">CMP0060: 即使在隐式目录中也按完整路径链接库。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0059.html">CMP0059: 不要将 DEFINITIONS 视为内置目录属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0058.html">CMP0058: Ninja 要求自定义命令的副产品必须是显式的。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0057.html">CMP0057: 支持新的 IN_LIST if() 操作符。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-2-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-3-2"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id38" role="doc-backlink">CMake 3.2 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-2-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0056.html">CMP0056: 在 try_compile() 源文件签名中遵循链接标志。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0055.html">CMP0055: 对 break() 命令进行严格检查。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-1-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-3-1"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id39" role="doc-backlink">CMake 3.1 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-1-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0054.html">CMP0054: 仅在未加引号时将 if() 参数解释为变量或关键字。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0053.html">CMP0053: 简化变量引用和转义序列评估。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0052.html">CMP0052: 在已安装的 INTERFACE_INCLUDE_DIRECTORIES 中拒绝源目录和构建目录。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0051.html">CMP0051: 在 SOURCES 目标属性中列出 TARGET_OBJECTS。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-3-0-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-3-0"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id40" role="doc-backlink">CMake 3.0 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-0-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0050.html">CMP0050: 不允许 add_custom_command SOURCE 签名。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0049.html">CMP0049: 不要在目标源条目中展开变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0048.html">CMP0048: project() 命令管理 VERSION 变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0047.html">CMP0047: 在 QNX 上对 qcc 驱动程序使用 QCC 编译器 ID。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0046.html">CMP0046: add_dependencies 中不存在的依赖项报错。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0045.html">CMP0045: get_target_property 中不存在的目标报错。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0044.html">CMP0044: 区分大小写的 Lang_COMPILER_ID 生成器表达式。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0043.html">CMP0043: 忽略 COMPILE_DEFINITIONS_Config 属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0042.html">CMP0042: 默认启用 MACOSX_RPATH。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0041.html">CMP0041: 生成器表达式中的相对包含路径报错。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0040.html">CMP0040: add_custom_command() 的 TARGET 签名中的目标必须存在。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0039.html">CMP0039: 实用程序目标可能没有链接依赖项。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0038.html">CMP0038: 目标可能不直接链接到自身。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0037.html">CMP0037: 目标名称不应是保留字，且应符合有效性模式。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0036.html">CMP0036: 不应再调用 build_name 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0035.html">CMP0035: 不应再调用 variable_requires 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0034.html">CMP0034: 不应再调用 utility_source 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0033.html">CMP0033: 不应再调用 export_library_dependencies 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0032.html">CMP0032: 不应再调用 output_required_files 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0031.html">CMP0031: 不应再调用 load_command 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0030.html">CMP0030: 不应再调用 use_mangled_mesa 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0029.html">CMP0029: 不应再调用 subdir_depends 命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0028.html">CMP0028: 目标名称中的双冒号表示 ALIAS 或 IMPORTED 目标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0027.html">CMP0027: 包含缺失包含目录的条件链接导入目标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0026.html">CMP0026: 不允许使用 LOCATION 目标属性。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0025.html">CMP0025: Apple Clang 的编译器 ID 现在是 AppleClang。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0024.html">CMP0024: 不允许包含 export 结果。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-2-8-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-2-8"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id41" role="doc-backlink">CMake 2.8 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-2-8-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0023.html">CMP0023: 不能混合使用普通和关键字 target_link_libraries 签名。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0022.html">CMP0022: INTERFACE_LINK_LIBRARIES 定义链接接口。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0021.html">CMP0021: INCLUDE_DIRECTORIES 目标属性中的相对路径会导致致命错误。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0020.html">CMP0020: 在 Windows 上自动将 Qt 可执行文件链接到 qtmain 目标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0019.html">CMP0019: 不要重新展开包含和链接信息中的变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0018.html">CMP0018: 忽略 CMAKE_SHARED_LIBRARY_Lang_FLAGS 变量。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0017.html">CMP0017: 从 CMake 模块目录包含文件时，优先使用该目录下的文件。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0016.html">CMP0016: 如果 target_link_libraries() 的唯一参数不是目标，则报告错误。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0015.html">CMP0015: link_directories() 将路径视为相对于源目录。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0014.html">CMP0014: 输入目录必须有 CMakeLists.txt。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0013.html">CMP0013: 不允许重复的二进制目录。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0012.html">CMP0012: if() 识别数字和布尔常量。</a></li>
+</ul>
+</div>
+</section>
+<section id="policies-introduced-by-cmake-2-6-removed-by-cmake-4-0">
+<span id="policies-introduced-by-cmake-2-6"></span><h3><a class="toc-backref" href="cmake-policies.7.html#id42" role="doc-backlink">CMake 2.6 引入，CMake 4.0 移除的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-2-6-removed-by-cmake-4-0" title="链接至此标题">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0011.html">CMP0011: 包含的脚本自动执行 cmake_policy PUSH 和 POP。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0010.html">CMP0010: 错误的变量引用语法会导致错误。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0009.html">CMP0009: FILE GLOB_RECURSE 调用默认不应跟随符号链接。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0008.html">CMP0008: 按完整路径链接的库必须具有有效的库文件名。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0007.html">CMP0007: list 命令不再忽略空元素。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0006.html">CMP0006: 安装 MACOSX_BUNDLE 目标需要 BUNDLE DESTINATION。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0005.html">CMP0005: 预处理器定义值现在自动转义。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0004.html">CMP0004: 链接的库不能有前导或尾随空格。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0003.html">CMP0003: 通过完整路径链接的库不再产生链接器搜索路径。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0002.html">CMP0002: 逻辑目标名称必须全局唯一。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0001.html">CMP0001: 不应再使用 CMAKE_BACKWARDS_COMPATIBILITY。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0000.html">CMP0000: 必须指定 CMake 的最低要求版本。</a></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake-policies.7.html#">cmake-policies(7)</a><ul>
+<li><a class="reference internal" href="cmake-policies.7.html#introduction">简介</a><ul>
+<li><a class="reference internal" href="cmake-policies.7.html#updating-projects">更新项目</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#transition-schedule">过渡计划</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-policies.7.html#supported-policies">支持的策略</a><ul>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-3">CMake 4.3 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-2">CMake 4.2 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-1">CMake 4.1 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-4-0">CMake 4.0 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-31">CMake 3.31 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-30">CMake 3.30 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-29">CMake 3.29 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-28">CMake 3.28 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-27">CMake 3.27 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-26">CMake 3.26 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-25">CMake 3.25 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-24">CMake 3.24 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-23">CMake 3.23 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-22">CMake 3.22 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-21">CMake 3.21 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-20">CMake 3.20 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-19">CMake 3.19 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-18">CMake 3.18 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-17">CMake 3.17 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-16">CMake 3.16 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-15">CMake 3.15 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-14">CMake 3.14 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-13">CMake 3.13 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-12">CMake 3.12 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-11">CMake 3.11 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-10">CMake 3.10 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-9">CMake 3.9 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-8">CMake 3.8 引入的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-7">CMake 3.7 引入的策略</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="cmake-policies.7.html#unsupported-policies">不支持的策略</a><ul>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-4-removed-by-cmake-4-0">CMake 3.4 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-3-removed-by-cmake-4-0">CMake 3.3 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-2-removed-by-cmake-4-0">CMake 3.2 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-1-removed-by-cmake-4-0">CMake 3.1 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-3-0-removed-by-cmake-4-0">CMake 3.0 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-2-8-removed-by-cmake-4-0">CMake 2.8 引入，CMake 4.0 移除的策略</a></li>
+<li><a class="reference internal" href="cmake-policies.7.html#policies-introduced-by-cmake-2-6-removed-by-cmake-4-0">CMake 2.6 引入，CMake 4.0 移除的策略</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake-packages.7.html" title="上一章">cmake-packages(7)</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="../policy/CMP0210.html" title="下一章">CMP0210</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/manual/cmake-policies.7.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="../policy/CMP0210.html" title="CMP0210">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake-packages.7.html" title="cmake-packages(7)">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+        <li class="nav-item nav-item-this"><a href="cmake-policies.7.html">cmake-policies(7)</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

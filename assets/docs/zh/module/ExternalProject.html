@@ -1,0 +1,999 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ExternalProject — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="ExternalProject.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FeatureSummary" href="FeatureSummary.html" />
+    <link rel="prev" title="ExternalData" href="ExternalData.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FeatureSummary.html" title="FeatureSummary" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="ExternalData.html" title="ExternalData" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ExternalProject.html">ExternalProject</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="externalproject">
+<span id="module:ExternalProject"></span><h1><a class="toc-backref" href="ExternalProject.html#id1" role="doc-backlink">ExternalProject</a><a class="headerlink" href="ExternalProject.html#externalproject" title="指向此标题的链接">¶</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ExternalProject.html#externalproject" id="id1">ExternalProject</a></p>
+<ul>
+<li><p><a class="reference internal" href="ExternalProject.html#external-project-definition" id="id2">外部项目定义</a></p>
+<ul>
+<li><p><a class="reference internal" href="ExternalProject.html#directory-options" id="id3">目录选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#download-step-options" id="id4">下载步骤选项</a></p>
+<ul>
+<li><p><a class="reference internal" href="ExternalProject.html#url" id="id5">URL</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#git" id="id6">Git</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#subversion" id="id7">Subversion</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#mercurial" id="id8">Mercurial</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#cvs" id="id9">CVS</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="ExternalProject.html#update-step-options" id="id10">更新步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#patch-step-options" id="id11">补丁步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#configure-step-options" id="id12">配置步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#build-step-options" id="id13">构建步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#install-step-options" id="id14">安装步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#test-step-options" id="id15">测试步骤选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#output-logging-options" id="id16">输出日志选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#terminal-access-options" id="id17">终端访问选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#target-options" id="id18">目标选项</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#miscellaneous-options" id="id19">杂项选项</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="ExternalProject.html#obtaining-project-properties" id="id20">获取项目属性</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#explicit-step-management" id="id21">显式步骤管理</a></p></li>
+<li><p><a class="reference internal" href="ExternalProject.html#examples" id="id22">示例</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>该模块提供了在 CMake 构建阶段下载和构建外部项目的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">ExternalProject</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="external-project-definition">
+<h2><a class="toc-backref" href="ExternalProject.html#id2" role="doc-backlink">外部项目定义</a><a class="headerlink" href="ExternalProject.html#external-project-definition" title="指向此标题的链接">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externalproject_add">
+<span class="sig-name descname"><span class="pre">ExternalProject_Add</span></span><a class="headerlink" href="ExternalProject.html#command:externalproject_add" title="指向此定义的链接">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code> 函数创建一个自定义目标，用于驱动外部项目的下载、更新/打补丁、配置、构建、安装和测试步骤。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;option&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果需要（例如为了提交到 CDash），流程中的各个步骤可以独立驱动，也可以定义额外的自定义步骤，并能控制步骤间的依赖关系。用于管理外部项目的目录结构也可以自定义。该函数支持大量选项，可用于定制外部项目的行为。</p>
+</dd></dl>
+
+<section id="directory-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id3" role="doc-backlink">目录选项</a><a class="headerlink" href="ExternalProject.html#directory-options" title="指向此标题的链接">¶</a></h3>
+<p>大多数情况下，默认的目录布局已足够。通常主项目不需要更改这些实现细节。但在某些情况下，控制目录布局是有用或必要的。目录选项从主构建可以使用 <span class="target" id="index-0-command:externalproject_get_property"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_get_property" title="externalproject_get_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Get_Property()</span></code></a> 命令检索其值这一角度来看可能更有用，从而允许主项目引用外部项目的构建产物。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">PREFIX</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>外部项目的根目录。除非下方另有说明，否则与外部项目相关的所有其他目录都将在此处创建。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TMP_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>存储临时文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STAMP_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>存储每个步骤时间戳的目录。除非被 LOG_DIR 覆盖（参见下方的<em>日志选项</em>），否则各步骤的日志文件也会在此处创建。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>存储每个步骤日志的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>解压前存储下载文件的目录。此目录仅由 URL 下载方法使用，所有其他下载方法会直接使用 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>源目录，下载的内容将被解压至此；或者对于非 URL 下载方法，此处为应检出（checkout）、克隆（clone）等操作的目录。如果未指定下载方法，此项必须指向一个已解压或已克隆/检出外部项目的现有目录。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果指定了下载方法，源目录中的任何现有内容都可能被删除。只有 URL 下载方法会在发起下载前检查该目录是否缺失或为空，若非空则会报错停止。所有其他下载方法会静默丢弃源目录中的任何先前内容。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>指定构建目录位置。如果启用了 <code class="docutils literal notranslate"><span class="pre">BUILD_IN_SOURCE</span></code>，此选项将被忽略。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_DIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>要放置在 <code class="docutils literal notranslate"><span class="pre">&lt;INSTALL_DIR&gt;</span></code> 占位符中的安装前缀。这并不会实际配置外部项目安装到给定的前缀。这必须通过向外部项目配置步骤传递适当的参数来完成，例如使用 <code class="docutils literal notranslate"><span class="pre">&lt;INSTALL_DIR&gt;</span></code>。</p>
+</dd>
+</dl>
+<p>如果未指定上述任何 <code class="docutils literal notranslate"><span class="pre">..._DIR</span></code> 选项，它们的默认值将计算如下。如果给定了 <code class="docutils literal notranslate"><span class="pre">PREFIX</span></code> 选项或设置了 <code class="docutils literal notranslate"><span class="pre">EP_PREFIX</span></code> 目录属性，则外部项目将在指定的前缀下进行构建和安装。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TMP_DIR      = &lt;prefix&gt;/tmp
+STAMP_DIR    = &lt;prefix&gt;/src/&lt;name&gt;-stamp
+DOWNLOAD_DIR = &lt;prefix&gt;/src
+SOURCE_DIR   = &lt;prefix&gt;/src/&lt;name&gt;
+BINARY_DIR   = &lt;prefix&gt;/src/&lt;name&gt;-build
+INSTALL_DIR  = &lt;prefix&gt;
+LOG_DIR      = &lt;STAMP_DIR&gt;
+</pre></div>
+</div>
+<p>否则，如果设置了 <code class="docutils literal notranslate"><span class="pre">EP_BASE</span></code> 目录属性，则外部项目的组件将存储在指定的基目录下。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TMP_DIR      = &lt;base&gt;/tmp/&lt;name&gt;
+STAMP_DIR    = &lt;base&gt;/Stamp/&lt;name&gt;
+DOWNLOAD_DIR = &lt;base&gt;/Download/&lt;name&gt;
+SOURCE_DIR   = &lt;base&gt;/Source/&lt;name&gt;
+BINARY_DIR   = &lt;base&gt;/Build/&lt;name&gt;
+INSTALL_DIR  = &lt;base&gt;/Install/&lt;name&gt;
+LOG_DIR      = &lt;STAMP_DIR&gt;
+</pre></div>
+</div>
+<p>如果未指定 <code class="docutils literal notranslate"><span class="pre">PREFIX</span></code>、<code class="docutils literal notranslate"><span class="pre">EP_PREFIX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">EP_BASE</span></code>，则默认将 <code class="docutils literal notranslate"><span class="pre">PREFIX</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;-prefix</span></code>。相对路径根据调用 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code> 时的 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 进行解析。</p>
+</section>
+<section id="download-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id4" role="doc-backlink">下载步骤选项</a><a class="headerlink" href="ExternalProject.html#download-step-options" title="指向此标题的链接">¶</a></h3>
+<p>如果使用 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 选项指向一个现有的非空目录，则可以省略下载方法。否则，必须指定以下下载方法之一（不应提供多种下载方法），或提供一个自定义的 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_COMMAND</span></code>。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>覆盖用于下载步骤的命令（支持 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。如果指定了此选项，所有其他下载选项将被忽略。为 <code class="docutils literal notranslate"><span class="pre">&lt;cmd&gt;</span></code> 提供空字符串将有效地禁用下载步骤。</p>
+</dd>
+</dl>
+<section id="url">
+<h4><a class="toc-backref" href="ExternalProject.html#id5" role="doc-backlink">URL</a><a class="headerlink" href="ExternalProject.html#url" title="指向此标题的链接">¶</a></h4>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">URL</span> <span class="pre">&lt;url1&gt;</span> <span class="pre">[&lt;url2&gt;...]</span></code></dt><dd><p>外部项目源代码的路径和/或 URL 列表。当给定多个 URL 时，它们会依次尝试，直到有一个成功为止。URL 可以是本地文件系统中的普通路径（在这种情况下，它必须是提供的唯一 URL）或 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a> 命令支持的任何可下载 URL。本地文件系统路径可以指向现有目录或归档文件，而 URL 则预期指向可视为归档的文件。使用归档文件时，除非设置了 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_NO_EXTRACT</span></code> 选项以阻止它，否则它会自动解压。归档类型通过检查实际内容来确定，而不是基于文件扩展名的逻辑。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.7 版本变更: </span>允许使用多个 URL。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">URL_HASH</span> <span class="pre">&lt;algo&gt;=&lt;hashValue&gt;</span></code></dt><dd><p>要下载的归档文件的哈希值。参数应采用 <code class="docutils literal notranslate"><span class="pre">&lt;algo&gt;=&lt;hashValue&gt;</span></code> 的形式，其中 <code class="docutils literal notranslate"><span class="pre">algo</span></code> 可以是 <span class="target" id="index-1-command:file"></span><a class="reference internal" href="../command/file.html#command:file" title="file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file()</span></code></a> 命令支持的任何哈希算法。强烈建议为 URL 下载指定此选项，因为它确保了下载内容的完整性。它还用于检查先前下载的文件，如果本地目录中已经存在来自早期下载且匹配指定哈希的文件，则可以完全避免连接远程位置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">URL_MD5</span> <span class="pre">&lt;md5&gt;</span></code></dt><dd><p>等同于 <code class="docutils literal notranslate"><span class="pre">URL_HASH</span> <span class="pre">MD5=&lt;md5&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_NAME</span> <span class="pre">&lt;fname&gt;</span></code></dt><dd><p>用于下载文件的文件名。如果未给定，则使用 URL 的末尾来确定文件名。此选项很少需要，默认名称通常是合适的，且通常不会在 <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> 模块内部代码之外使用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_EXTRACT_TIMESTAMP</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>当指定为 true 值时，解压文件的修改时间戳将与归档文件中的一致。当为 false 时，解压文件的修改时间戳将反映执行解压时的时间。如果下载 URL 发生变化，基于归档中时间戳的设置可能导致依赖目标在可能需要重新构建时没有被重新构建。因此，除非文件时间戳对项目有某种特殊意义，否则请为此选项使用 false 值。如果未给出 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_EXTRACT_TIMESTAMP</span></code>，默认值为 false。参见策略 <span class="target" id="index-0-policy:CMP0135"></span><a class="reference internal" href="../policy/CMP0135.html#policy:CMP0135" title="CMP0135"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0135</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_NO_EXTRACT</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>通过为该选项传递布尔真值，允许禁用下载步骤的解压部分。如果未给定该选项，下载的内容将在需要时自动解压。如果禁用了提取，下载文件的完整路径将作为后续步骤中的 <code class="docutils literal notranslate"><span class="pre">&lt;DOWNLOADED_FILE&gt;</span></code> 可用，或通过 <span class="target" id="index-1-command:externalproject_get_property"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_get_property" title="externalproject_get_property"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Get_Property()</span></code></a> 命令作为属性 <code class="docutils literal notranslate"><span class="pre">DOWNLOADED_FILE</span></code> 可用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOWNLOAD_NO_PROGRESS</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>可用于禁用下载进度的日志记录。如果未给出该选项，则会记录下载进度消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TIMEOUT</span> <span class="pre">&lt;seconds&gt;</span></code></dt><dd><p>文件下载操作允许的最长时间。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INACTIVITY_TIMEOUT</span> <span class="pre">&lt;seconds&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>在一段不活动时间后终止操作。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HTTP_USERNAME</span> <span class="pre">&lt;username&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果需要身份验证，则为下载操作提供用户名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HTTP_PASSWORD</span> <span class="pre">&lt;password&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>如果需要身份验证，则为下载操作提供密码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HTTP_HEADER</span> <span class="pre">&lt;header1&gt;</span> <span class="pre">[&lt;header2&gt;...]</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>为下载操作提供任意的 HTTP 标头列表。这对于访问 AWS 等系统中的内容非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_VERSION</span> <span class="pre">&lt;min&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p>为 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL 指定最低 TLS 版本。如果未提供此选项，则将改用 <span class="target" id="index-0-variable:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERSION.html#variable:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 变量或 <span class="target" id="index-0-envvar:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERSION.html#envvar:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 环境变量的值（参见 <span class="target" id="index-2-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a>）。</p>
+<p>此选项也适用于 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 调用，尽管默认行为不同。如果未指定 <code class="docutils literal notranslate"><span class="pre">TLS_VERSION</span></code> 选项、<span class="target" id="index-1-variable:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERSION.html#variable:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 变量或 <span class="target" id="index-1-envvar:CMAKE_TLS_VERSION"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERSION.html#envvar:CMAKE_TLS_VERSION" title="CMAKE_TLS_VERSION"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERSION</span></code></a> 环境变量，行为将由 git 的默认设置或用户可能在全局级别设置的 <code class="docutils literal notranslate"><span class="pre">http.sslVersion</span></code> git 配置选项决定。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_VERIFY</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>指定是否应对 <code class="docutils literal notranslate"><span class="pre">https://</span></code> URL 执行证书验证。如果未提供此选项，则改用 <span class="target" id="index-0-variable:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERIFY.html#variable:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 变量或 <span class="target" id="index-0-envvar:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERIFY.html#envvar:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 环境变量的值（参见 <span class="target" id="index-3-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a>）。如果两者均未设置，则不执行证书验证。在无法提供 <code class="docutils literal notranslate"><span class="pre">URL_HASH</span></code> 的情况下，此选项可以作为替代验证措施。</p>
+<p>此选项也适用于 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 调用，尽管默认行为不同。如果未指定 <code class="docutils literal notranslate"><span class="pre">TLS_VERIFY</span></code> 选项、<span class="target" id="index-1-variable:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERIFY.html#variable:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 变量或 <span class="target" id="index-1-envvar:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERIFY.html#envvar:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 环境变量，行为将由 git 的默认设置（true）或用户可能在全局级别设置的 <code class="docutils literal notranslate"><span class="pre">http.sslVerify</span></code> git 配置选项决定。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.6 版本变更: </span>以前此选项不适用于 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 调用。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.30 版本变更: </span>以前不检查 <span class="target" id="index-2-envvar:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../envvar/CMAKE_TLS_VERIFY.html#envvar:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a> 环境变量。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TLS_CAINFO</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><p>如果启用了 <code class="docutils literal notranslate"><span class="pre">TLS_VERIFY</span></code>，则指定自定义证书颁发机构文件。如果未指定此选项，则将改用 <span class="target" id="index-0-variable:CMAKE_TLS_CAINFO"></span><a class="reference internal" href="../variable/CMAKE_TLS_CAINFO.html#variable:CMAKE_TLS_CAINFO" title="CMAKE_TLS_CAINFO"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_CAINFO</span></code></a> 变量的值（参见 <span class="target" id="index-4-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a>）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NETRC</span> <span class="pre">&lt;level&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>指定是否在操作中使用 <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> 文件。如果未指定此选项，则改用 <span class="target" id="index-0-variable:CMAKE_NETRC"></span><a class="reference internal" href="../variable/CMAKE_NETRC.html#variable:CMAKE_NETRC" title="CMAKE_NETRC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC</span></code></a> 变量的值（参见 <span class="target" id="index-5-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a>）。有效级别为：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">IGNORED</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">.netrc</span></code> 文件被忽略。这是默认值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">.netrc</span></code> 文件是可选的，URL 中的信息优先。将扫描文件以查找 URL 中未指定的任何信息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">.netrc</span></code> 文件是必须的，URL 中的信息将被忽略。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NETRC_FILE</span> <span class="pre">&lt;file&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">NETRC</span></code> 级别为 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 或 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，则指定除主目录中默认文件外的替代 <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> 文件。如果未指定此选项，则改用 <span class="target" id="index-0-variable:CMAKE_NETRC_FILE"></span><a class="reference internal" href="../variable/CMAKE_NETRC_FILE.html#variable:CMAKE_NETRC_FILE" title="CMAKE_NETRC_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC_FILE</span></code></a> 变量的值（参见 <span class="target" id="index-6-command:file"></span><a class="reference internal" href="../command/file.html#download" title="file(download)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file(DOWNLOAD)</span></code></a>）。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.1 版本新增: </span>增加了对 <cite>.tbz2</cite>、<cite>.tar.xz</cite>、<cite>.txz</cite> 和 <cite>.7z</cite> 扩展名的支持。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">4.1 版本新增: </span>无论文件扩展名如何，均支持 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-E-arg-tar"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">tar</span></code></a> 可以解压的所有归档类型。</p>
+</div>
+</section>
+<section id="git">
+<h4><a class="toc-backref" href="ExternalProject.html#id6" role="doc-backlink">Git</a><a class="headerlink" href="ExternalProject.html#git" title="指向此标题的链接">¶</a></h4>
+<p>注意：如果使用此下载方法，需要 1.6.5 或更高版本的 git。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_REPOSITORY</span> <span class="pre">&lt;url&gt;</span></code></dt><dd><p>Git 仓库的 URL。可以使用 <code class="docutils literal notranslate"><span class="pre">git</span></code> 命令能够理解的任何 URL。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更: </span>相对 URL 将根据父项目的远程地址进行解析，受 <span class="target" id="index-0-policy:CMP0150"></span><a class="reference internal" href="../policy/CMP0150.html#policy:CMP0150" title="CMP0150"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0150</span></code></a> 约束。有关如何选择远程地址（包括远程选择可能失败的情况），请参阅策略文档。本地文件系统远程应始终使用绝对路径。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_TAG</span> <span class="pre">&lt;tag&gt;</span></code></dt><dd><p>Git 分支名、标签或提交哈希。请注意，分支名和标签通常应指定为远程名称（即 <code class="docutils literal notranslate"><span class="pre">origin/myBranch</span></code> 而不是简单的 <code class="docutils literal notranslate"><span class="pre">myBranch</span></code>）。这可以确保如果远程端的标签移动、分支变基（rebase）或历史被重写，本地克隆仍能正确更新。然而，通常出于多种原因，应优先指定提交哈希。</p>
+<ul class="simple">
+<li><p>如果本地克隆已经拥有哈希对应的提交，则每次重新运行 CMake 时无需执行 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code> 来检查更改。如果使用了许多外部项目，这可以显著提高速度。</p></li>
+<li><p>使用特定的 git 哈希可以确保主项目自身的历史完全可追溯到外部项目演进的特定点。如果改为使用分支或标签名称，那么检出主项目的特定提交并不一定将整个构建锁定在外部项目的生命周期中的特定点。这种确定性行为的缺失会使主项目失去可追溯性和可重复性。</p></li>
+</ul>
+<p>如果启用了 <code class="docutils literal notranslate"><span class="pre">GIT_SHALLOW</span></code>，则 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 仅适用于分支名和标签。不允许使用提交哈希。</p>
+<p>请注意，如果未提供，<code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 默认为 <code class="docutils literal notranslate"><span class="pre">master</span></code>，而不是默认的 Git 分支名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_REMOTE_NAME</span> <span class="pre">&lt;name&gt;</span></code></dt><dd><p>远程名称（可选）。如果未指定此选项，则默认为 <code class="docutils literal notranslate"><span class="pre">origin</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_SUBMODULES</span> <span class="pre">&lt;module&gt;...</span></code></dt><dd><p>也应更新的特定 git 子模块。如果未提供此选项，则将更新所有 git 子模块。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.16 版本变更: </span>当 <span class="target" id="index-0-policy:CMP0097"></span><a class="reference internal" href="../policy/CMP0097.html#policy:CMP0097" title="CMP0097"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0097</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，如果此值设置为空字符串，则不会初始化或更新任何子模块。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_SUBMODULES_RECURSE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>指定是否通过将 <code class="docutils literal notranslate"><span class="pre">--recursive</span></code> 标志传递给 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span></code> 来递归更新 git 子模块（如果有）。如果未指定，默认值为开启。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_SHALLOW</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>启用此选项后，<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 操作将获得 <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> 选项。这将执行浅克隆，避免下载整个历史记录，而是仅检索 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 选项指定的提交。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_PROGRESS</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>启用后，此选项指示 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 操作通过传递 <code class="docutils literal notranslate"><span class="pre">--progress</span></code> 选项来报告其进度。如果没有此选项，大型项目的克隆步骤可能会看起来使构建停滞，因为在克隆操作完成之前不会记录任何内容。虽然此选项可用于提供进度以防止构建看起来停滞，但如果使用了大量外部项目，它也可能使构建输出变得过于冗余。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_CONFIG</span> <span class="pre">&lt;option1&gt;</span> <span class="pre">[&lt;option2&gt;...]</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.8 新增。</span></p>
+</div>
+<p>指定要传递给 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 的配置选项列表。列出的每个选项都将被转换为 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> 命令行上的自身 <code class="docutils literal notranslate"><span class="pre">--config</span> <span class="pre">&lt;option&gt;</span></code>，每个选项都要求采用 <code class="docutils literal notranslate"><span class="pre">key=value</span></code> 的形式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GIT_REMOTE_UPDATE_STRATEGY</span> <span class="pre">&lt;strategy&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>当 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 引用远程分支时，此选项可用于指定更新步骤的行为。 <code class="docutils literal notranslate"><span class="pre">&lt;strategy&gt;</span></code> 必须是以下之一：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CHECKOUT</span></code></dt><dd><p>忽略本地分支，始终检出 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 指定的分支。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REBASE</span></code></dt><dd><p>尝试将当前分支变基到 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 指定的分支。如果有未提交的本地更改，它们将先被贮藏（stash），变基后再弹出（pop）。如果变基或弹出贮藏的更改失败，则中止变基并报错停止。当不存在 <code class="docutils literal notranslate"><span class="pre">GIT_REMOTE_UPDATE_STRATEGY</span></code> 时，除非默认值已被 <code class="docutils literal notranslate"><span class="pre">CMAKE_EP_GIT_REMOTE_UPDATE_STRATEGY</span></code> 覆盖（见下文），否则这是默认策略。注意，如果 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 中指定的分支与当前正在跟踪的上游分支不同，则执行变基是不安全的。在这种情况下，<code class="docutils literal notranslate"><span class="pre">REBASE</span></code> 将静默地被视为 <code class="docutils literal notranslate"><span class="pre">CHECKOUT</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">REBASE_CHECKOUT</span></code></dt><dd><p>与 <code class="docutils literal notranslate"><span class="pre">REBASE</span></code> 相同，不同之处在于如果变基失败，会在变基前的原始 <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> 位置创建一个带注释的标签，然后像 <code class="docutils literal notranslate"><span class="pre">CHECKOUT</span></code> 策略一样检出 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code>。存储在带注释标签上的信息将给出尝试内容，并且标签名称将包含时间戳，以便每次失败的运行都会添加一个新标签。此策略确保不会丢失任何更改，但只要 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 指向有效的引用，更新就应该总是成功，除非存在无法成功弹出的未提交更改。</p>
+</dd>
+</dl>
+<p>可以设置变量 <code class="docutils literal notranslate"><span class="pre">CMAKE_EP_GIT_REMOTE_UPDATE_STRATEGY</span></code> 以覆盖默认策略。此变量不应由项目设置，旨在由用户设置。它主要用于持续集成脚本，以确保当远程分支上的历史被重写时，构建不会因变基操作期间的冲突而导致意外的更改或构建失败。</p>
+</dd>
+</dl>
+</section>
+<section id="subversion">
+<h4><a class="toc-backref" href="ExternalProject.html#id7" role="doc-backlink">Subversion</a><a class="headerlink" href="ExternalProject.html#subversion" title="指向此标题的链接">¶</a></h4>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SVN_REPOSITORY</span> <span class="pre">&lt;url&gt;</span></code></dt><dd><p>Subversion 仓库的 URL。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SVN_REVISION</span> <span class="pre">-r&lt;rev&gt;</span></code></dt><dd><p>从 Subversion 仓库检出的修订版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SVN_USERNAME</span> <span class="pre">&lt;username&gt;</span></code></dt><dd><p>Subversion 检出和更新的用户名。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SVN_PASSWORD</span> <span class="pre">&lt;password&gt;</span></code></dt><dd><p>Subversion 检出和更新的密码。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SVN_TRUST_CERT</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>指定是否信任 Subversion 服务器站点证书。如果启用，<code class="docutils literal notranslate"><span class="pre">--trust-server-cert</span></code> 选项将被传递给 <code class="docutils literal notranslate"><span class="pre">svn</span></code> 检出和更新命令。</p>
+</dd>
+</dl>
+</section>
+<section id="mercurial">
+<h4><a class="toc-backref" href="ExternalProject.html#id8" role="doc-backlink">Mercurial</a><a class="headerlink" href="ExternalProject.html#mercurial" title="指向此标题的链接">¶</a></h4>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">HG_REPOSITORY</span> <span class="pre">&lt;url&gt;</span></code></dt><dd><p>Mercurial 仓库的 URL。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HG_TAG</span> <span class="pre">&lt;tag&gt;</span></code></dt><dd><p>Mercurial 分支名、标签或提交 ID。</p>
+</dd>
+</dl>
+</section>
+<section id="cvs">
+<h4><a class="toc-backref" href="ExternalProject.html#id9" role="doc-backlink">CVS</a><a class="headerlink" href="ExternalProject.html#cvs" title="指向此标题的链接">¶</a></h4>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CVS_REPOSITORY</span> <span class="pre">&lt;cvsroot&gt;</span></code></dt><dd><p>CVS 仓库的 CVSROOT。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CVS_MODULE</span> <span class="pre">&lt;mod&gt;</span></code></dt><dd><p>从 CVS 仓库检出的模块。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CVS_TAG</span> <span class="pre">&lt;tag&gt;</span></code></dt><dd><p>从 CVS 仓库检出的标签。</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="update-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id10" role="doc-backlink">更新步骤选项</a><a class="headerlink" href="ExternalProject.html#update-step-options" title="指向此标题的链接">¶</a></h3>
+<p>每当重新运行 CMake 时，默认情况下如果下载方法支持更新，外部项目的源代码将会更新（例如，如果 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 没有引用特定的提交，则会检查 git 仓库）。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">UPDATE_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>使用自定义命令覆盖下载方法的更新步骤。该命令可以使用 <span class="target" id="index-1-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">UPDATE_DISCONNECTED</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>启用此选项后，更新步骤将被跳过（但请参见下文关于更改行为的情况）。它不会阻止下载步骤。更新步骤仍可以作为步骤目标添加（参见 <span class="target" id="index-0-command:externalproject_add_steptargets"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a>）并手动调用。如果您希望允许开发人员在断开网络的情况下构建项目（尽管下载步骤可能仍需要网络），这将非常有用。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.27 版本变更: </span>当 <code class="docutils literal notranslate"><span class="pre">UPDATE_DISCONNECTED</span></code> 为 true 时，如果有关更新或下载步骤的任何详细信息发生更改，更新步骤将会执行。此外，如果使用 git 下载/更新方法，更新逻辑将被修改为跳过连接远程的尝试。如果 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 提到的引用在本地未知，更新步骤将以致命错误停止。</p>
+</div>
+<p>当存在此选项时，通常建议将该值作为开发人员可控制的缓存变量，而不是硬编码。如果不存在此选项，默认值取自 <code class="docutils literal notranslate"><span class="pre">EP_UPDATE_DISCONNECTED</span></code> 目录属性。如果该属性也未定义，则按正常情况执行更新。<code class="docutils literal notranslate"><span class="pre">EP_UPDATE_DISCONNECTED</span></code> 目录属性旨在作为控制项目目录层次结构中整个部分的 <code class="docutils literal notranslate"><span class="pre">UPDATE_DISCONNECTED</span></code> 行为的一种便利方法，并且可能是给予开发人员是否执行更新控制权的更便捷方法（假设项目还提供了一个缓存变量或某种其他方便的方法来设置目录属性）。</p>
+<p>这可能会导致 <code class="docutils literal notranslate"><span class="pre">download</span></code> 步骤自动创建一个步骤目标。参见策略 <span class="target" id="index-0-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a>。</p>
+</dd>
+</dl>
+</section>
+<section id="patch-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id11" role="doc-backlink">补丁步骤选项</a><a class="headerlink" href="ExternalProject.html#patch-step-options" title="指向此标题的链接">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PATCH_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>指定在更新后修补源代码的自定义命令。默认情况下，不定义补丁命令。请注意，定义一个稳健执行的适当补丁命令可能非常困难，特别是对于 git 等下载方法，其中更改 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 不会丢弃来自先前补丁的更改，但补丁命令会在更新到新标签后再次被调用。</p>
+</dd>
+</dl>
+</section>
+<section id="configure-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id12" role="doc-backlink">配置步骤选项</a><a class="headerlink" href="ExternalProject.html#configure-step-options" title="指向此标题的链接">¶</a></h3>
+<p>配置步骤在下载和更新步骤之后运行。默认情况下，假定外部项目是一个 CMake 项目，但如果需要可以覆盖此假设。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>默认的配置命令根据主项目运行带有少量选项的 CMake。添加的选项通常仅是使用与主项目相同的生成器所必需的选项，但可以给定 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code> 选项来覆盖此设置。项目负责添加其希望从主项目重用或以其他方式指定的任何工具链详细信息、标志或其他设置（参见下文的 <code class="docutils literal notranslate"><span class="pre">CMAKE_ARGS</span></code>、<code class="docutils literal notranslate"><span class="pre">CMAKE_CACHE_ARGS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CMAKE_CACHE_DEFAULT_ARGS</span></code>）。</p>
+<p>对于非 CMake 外部项目，必须使用 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span></code> 选项覆盖默认配置命令（支持 <span class="target" id="index-2-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。对于不需要配置步骤的项目，请将此选项指定为空字符串作为要执行的命令。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_COMMAND</span> <span class="pre">/.../cmake</span></code></dt><dd><p>为配置步骤指定替代的 cmake 可执行文件（使用绝对路径）。通常不建议这样做，因为通常希望在整个构建过程中使用相同的 CMake 版本。如果已使用 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span></code> 指定了自定义配置命令，则忽略此选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span> <span class="pre">&lt;gen&gt;</span></code></dt><dd><p>覆盖配置步骤使用的 CMake 生成器。没有此选项，将使用与主构建相同的生成器。如果已使用 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span></code> 选项指定了自定义配置命令，则忽略此选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span> <span class="pre">&lt;platform&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>将生成器特定的平台名称传递给 CMake 命令（参见 <span class="target" id="index-0-variable:CMAKE_GENERATOR_PLATFORM"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_PLATFORM.html#variable:CMAKE_GENERATOR_PLATFORM" title="CMAKE_GENERATOR_PLATFORM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_PLATFORM</span></code></a>）。在没有 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code> 选项的情况下提供此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_TOOLSET</span> <span class="pre">&lt;toolset&gt;</span></code></dt><dd><p>将生成器特定的工具集名称传递给 CMake 命令（参见 <span class="target" id="index-0-variable:CMAKE_GENERATOR_TOOLSET"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_TOOLSET.html#variable:CMAKE_GENERATOR_TOOLSET" title="CMAKE_GENERATOR_TOOLSET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_TOOLSET</span></code></a>）。在没有 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code> 选项的情况下提供此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span> <span class="pre">&lt;instance&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<p>将生成器特定的实例选择传递给 CMake 命令（参见 <span class="target" id="index-0-variable:CMAKE_GENERATOR_INSTANCE"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR_INSTANCE.html#variable:CMAKE_GENERATOR_INSTANCE" title="CMAKE_GENERATOR_INSTANCE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR_INSTANCE</span></code></a>）。在没有 <code class="docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code> 选项的情况下提供此选项是错误的。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_ARGS</span> <span class="pre">&lt;arg&gt;...</span></code></dt><dd><p>指定的参数传递给 <strong class="program">cmake</strong> 命令行。它们可以是 <strong class="program">cmake</strong> 命令理解的任何参数，不仅仅是 <code class="docutils literal notranslate"><span class="pre">-D...</span></code> 定义的缓存值（另请参见 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">选项</span></code></a>）。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>参数可以使用 <span class="target" id="index-3-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_CACHE_ARGS</span> <span class="pre">&lt;arg&gt;...</span></code></dt><dd><p>这是指定缓存变量的另一种方式，可解决命令行长度问题。参数预期采用 <code class="docutils literal notranslate"><span class="pre">-Dvar:STRING=value</span></code> 的形式，然后被转换为使用 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code> 选项的 CMake <span class="target" id="index-0-command:set"></span><a class="reference internal" href="../command/set.html#command:set" title="set"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set()</span></code></a> 命令。这些 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令被写入一个预加载脚本，然后使用 <span class="target" id="index-1-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-C</span></code></a> 命令行选项应用。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增: </span>参数可以使用 <span class="target" id="index-4-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_CACHE_DEFAULT_ARGS</span> <span class="pre">&lt;arg&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>这与 <code class="docutils literal notranslate"><span class="pre">CMAKE_CACHE_ARGS</span></code> 选项相同，只是 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令不包含 <code class="docutils literal notranslate"><span class="pre">FORCE</span></code> 关键字。这意味着这些值仅作为初始默认值，不会覆盖先前运行中已经设置的任何变量。请谨慎使用此选项，因为它可能导致不同的行为，具体取决于构建是从全新的构建目录开始还是重用了先前的构建内容。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.15 版本新增: </span>如果 CMake 生成器是 <code class="docutils literal notranslate"><span class="pre">Green</span> <span class="pre">Hills</span> <span class="pre">MULTI</span></code> 且未被覆盖，则原始项目关于 GHS 工具集和目标系统定制缓存变量的设置将传播到外部项目中。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>当未指定 <code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span></code> 选项时，配置步骤假定外部项目在其源树顶部（即在 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 中）具有 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件。<code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项可用于指向源树内的替代目录，以作为 CMake 源树的顶部使用。这必须是相对路径，并将被解释为相对于 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code>。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版本新增: </span>当启用 <code class="docutils literal notranslate"><span class="pre">BUILD_IN_SOURCE</span></code> 选项时，<code class="docutils literal notranslate"><span class="pre">BUILD_COMMAND</span></code> 用于指向源树内的替代目录。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIGURE_HANDLED_BY_BUILD</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>启用此选项会将配置步骤对其他外部项目的依赖关系放宽为仅顺序依赖（order-only）。这意味着配置步骤将在其外部项目依赖项构建后执行，但当其外部项目依赖项之一被重新构建时，它不会被标记为脏。当构建步骤足够智能，能够确定是否需要重新运行配置步骤时，可以启用此选项。CMake 和 Meson 是构建系统示例，其构建步骤足够智能，知道是否需要重新运行配置步骤。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIGURE_ENVIRONMENT_MODIFICATION</span> <span class="pre">&lt;modification&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>指定应为配置步骤修改的环境变量。</p>
+<p>设置一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，环境的变量和值形式为 <code class="docutils literal notranslate"><span class="pre">MYVAR=OP:VALUE</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 是要修改的环境变量的区分大小写的名称。条目按属性值中指定的顺序考虑。 <code class="docutils literal notranslate"><span class="pre">OP</span></code> 可以是以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code>：重置为未修改的值，忽略在此条目之前对 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的所有修改。请注意，这将把变量重置为 <span class="target" id="index-0-prop_test:ENVIRONMENT"></span><a class="reference internal" href="../prop_test/ENVIRONMENT.html#prop_test:ENVIRONMENT" title="ENVIRONMENT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code></a> 设置的值（如果已设置），否则重置为其在其余 CTest 执行中的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set</span></code>：用 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset</span></code>：取消设置 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_append</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_prepend</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_append</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_prepend</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_append</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_prepend</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nb">example</span>
+<span class="w">  </span><span class="p">...</span><span class="w"> </span><span class="c"># Download options, etc...</span>
+<span class="w">  </span><span class="no">CONFIGURE_ENVIRONMENT_MODIFICATION</span>
+<span class="w">    </span><span class="no">SDKROOT</span><span class="p">=</span><span class="nb">set</span><span class="o">:</span><span class="nb">macosx</span>
+<span class="w">    </span><span class="no">PKG_CONFIG_PATH</span><span class="p">=</span><span class="nb">set</span><span class="o">:$ENV{</span><span class="nt">PKG_CONFIG_PATH</span><span class="o">}</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此代码片段在配置示例项目时定义了两个环境变量。 <code class="docutils literal notranslate"><span class="pre">SDKROOT</span></code> 环境变量设置为 <code class="docutils literal notranslate"><span class="pre">macosx</span></code>，而 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code> 的值被转发到外部项目。</p>
+<p>环境修改与 <code class="docutils literal notranslate"><span class="pre">LIST_SEPARATOR</span></code> 配合使用，将环境变量中的分隔符替换为 <code class="docutils literal notranslate"><span class="pre">;</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nb">example</span>
+<span class="w">  </span><span class="p">...</span><span class="w"> </span><span class="c"># Download options, etc...</span>
+<span class="w">  </span><span class="no">LIST_SEPARATOR</span><span class="w"> </span><span class="p">,</span>
+<span class="w">  </span><span class="no">CONFIGURE_ENVIRONMENT_MODIFICATION</span>
+<span class="w">    </span><span class="no">LIST_VAR</span><span class="p">=</span><span class="nb">set</span><span class="o">:</span><span class="nb">a</span><span class="p">,</span><span class="nb">b</span><span class="p">,</span><span class="nb">c</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>此代码片段和环境变量 <code class="docutils literal notranslate"><span class="pre">LIST_VAR</span></code> 以值 <code class="docutils literal notranslate"><span class="pre">a;b;c</span></code> 传递给配置命令调用。</p>
+</dd>
+</dl>
+</section>
+<section id="build-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id13" role="doc-backlink">构建步骤选项</a><a class="headerlink" href="ExternalProject.html#build-step-options" title="指向此标题的链接">¶</a></h3>
+<p>如果配置步骤假定外部项目使用 CMake 作为其构建系统，则构建步骤也将如此。否则，构建步骤将假定基于 Makefile 的构建，并简单地运行 <code class="docutils literal notranslate"><span class="pre">make</span></code>，且不带参数作为默认构建步骤。如果需要，这可以用自定义构建命令覆盖。</p>
+<p>如果主项目和外部项目都使用 make 作为它们的构建工具，则外部项目的构建步骤将作为递归 make 使用 <code class="docutils literal notranslate"><span class="pre">$(MAKE)</span></code> 调用。这将把一些构建工具设置从主项目传达给外部项目。如果主项目或外部项目未使用 make，则不会将除配置步骤建立的之外的构建工具设置传递给外部项目（即在主项目中运行 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">-v</span></code> 不会向外部项目的构建步骤传递 <code class="docutils literal notranslate"><span class="pre">-v</span></code>，即使它也使用 <code class="docutils literal notranslate"><span class="pre">ninja</span></code> 作为其构建工具）。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>覆盖默认构建命令（支持 <span class="target" id="index-5-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。如果未给定此选项，将选择默认构建命令以最合适的方式与主构建集成（例如，Makefile 生成器使用递归 <code class="docutils literal notranslate"><span class="pre">make</span></code>，如果项目使用 CMake 构建，则使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span></code></a>）。此选项可以指定为空字符串作为命令，以使构建步骤不执行任何操作。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_IN_SOURCE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项后，构建将直接在外部项目的源树内完成。通常应避免这种情况，使用单独的构建目录通常更可取，但当外部项目假定源内构建时，这可能很有用。如果在源内构建，则不应指定 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_ALWAYS</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项会强制始终运行构建步骤。这可能是确保外部项目自身的构建依赖项被评估，而不是依赖于基于默认成功时间戳方法的稳健方法，这是最简单的方法。除非预期开发人员会以无法通过步骤目标依赖项检测到的方式修改外部项目构建所依赖的内容（例如，使用没有下载方法的 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code>，且开发人员可能会修改 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 中的源），否则通常不需要此选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_BYPRODUCTS</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>指定将由构建命令生成的文件，但其修改时间可能更新也可能不更新后续构建。使用 <span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器时，这也可能是显式声明依赖项所必需的。这些最终作为 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 传递给构建步骤自身对 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 的底层调用，该调用具有附加文档。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_JOB_SERVER_AWARE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>指定构建步骤知晓 GNU Make 作业服务器。有关详细信息，请参阅 <span class="target" id="index-1-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 文档中关于其 <code class="docutils literal notranslate"><span class="pre">JOB_SERVER_AWARE</span></code> 选项的内容。此选项仅在指定了显式 <code class="docutils literal notranslate"><span class="pre">BUILD_COMMAND</span></code> 时才相关。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILD_ENVIRONMENT_MODIFICATION</span> <span class="pre">&lt;modification&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>指定应为构建步骤修改的环境变量。</p>
+<p>设置一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，环境的变量和值形式为 <code class="docutils literal notranslate"><span class="pre">MYVAR=OP:VALUE</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 是要修改的环境变量的区分大小写的名称。条目按属性值中指定的顺序考虑。 <code class="docutils literal notranslate"><span class="pre">OP</span></code> 可以是以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code>：重置为未修改的值，忽略在此条目之前对 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的所有修改。请注意，这将把变量重置为 <span class="target" id="index-1-prop_test:ENVIRONMENT"></span><a class="reference internal" href="../prop_test/ENVIRONMENT.html#prop_test:ENVIRONMENT" title="ENVIRONMENT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code></a> 设置的值（如果已设置），否则重置为其在其余 CTest 执行中的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set</span></code>：用 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset</span></code>：取消设置 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_append</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_prepend</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_append</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_prepend</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_append</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_prepend</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="install-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id14" role="doc-backlink">安装步骤选项</a><a class="headerlink" href="ExternalProject.html#install-step-options" title="指向此标题的链接">¶</a></h3>
+<p>如果配置步骤假定外部项目使用 CMake 作为其构建系统，则安装步骤也将如此。否则，安装步骤将假定基于 Makefile 的构建，并简单地运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 作为默认构建步骤。如果需要，这可以用自定义安装命令覆盖。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>外部项目自身的安装步骤作为主项目<em>构建</em>的一部分被调用。它在外部项目的构建步骤之后执行，并且可能在外部项目的测试步骤之前或之后（参见下文的 <code class="docutils literal notranslate"><span class="pre">TEST_BEFORE_INSTALL</span></code> 选项）。外部项目的安装规则不属于主项目的安装规则，因此如果外部项目的任何内容应作为主构建的一部分进行安装，则需要将这些内容在主构建中指定为额外的 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令。默认安装步骤构建外部项目的 <code class="docutils literal notranslate"><span class="pre">install</span></code> 目标，但可以使用此选项通过自定义命令覆盖它（支持 <span class="target" id="index-6-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。将空字符串作为 <code class="docutils literal notranslate"><span class="pre">&lt;cmd&gt;</span></code> 传递使安装步骤不执行任何操作。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_BYPRODUCTS</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增。</span></p>
+</div>
+<p>指定将由安装命令生成的文件，但其修改时间可能更新也可能不更新后续安装。使用 <span class="target" id="index-1-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器时，这也可能是显式声明依赖项所必需的。这些最终作为 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 传递给安装步骤自身对 <span class="target" id="index-2-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 的底层调用，该调用具有附加文档。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_JOB_SERVER_AWARE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>指定安装步骤知晓 GNU Make 作业服务器。有关详细信息，请参阅 <span class="target" id="index-3-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 文档中关于其 <code class="docutils literal notranslate"><span class="pre">JOB_SERVER_AWARE</span></code> 选项的内容。此选项仅在指定了显式 <code class="docutils literal notranslate"><span class="pre">INSTALL_COMMAND</span></code> 时才相关。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果构建主项目时设置了 <span class="target" id="index-0-envvar:CMAKE_INSTALL_MODE"></span><a class="reference internal" href="../envvar/CMAKE_INSTALL_MODE.html#envvar:CMAKE_INSTALL_MODE" title="CMAKE_INSTALL_MODE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MODE</span></code></a> 环境变量，则仅在满足以下条件时才会产生影响：</p>
+<ul class="simple">
+<li><p>主项目的配置步骤假定外部项目使用 CMake 作为其构建系统。</p></li>
+<li><p>外部项目的安装命令实际运行。请注意，由于 <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> 可能在内部使用时间戳，如果安装步骤依赖的任何内容都不需要重新执行，则安装命令可能也不需要运行。</p></li>
+</ul>
+<p>还要注意，<code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> 不会检查 <span class="target" id="index-1-envvar:CMAKE_INSTALL_MODE"></span><a class="reference internal" href="../envvar/CMAKE_INSTALL_MODE.html#envvar:CMAKE_INSTALL_MODE" title="CMAKE_INSTALL_MODE"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_INSTALL_MODE</span></code></a> 环境变量是否在运行之间发生变化。</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">INSTALL_ENVIRONMENT_MODIFICATION</span> <span class="pre">&lt;modification&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>指定应为安装步骤修改的环境变量。</p>
+<p>设置一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，环境的变量和值形式为 <code class="docutils literal notranslate"><span class="pre">MYVAR=OP:VALUE</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 是要修改的环境变量的区分大小写的名称。条目按属性值中指定的顺序考虑。 <code class="docutils literal notranslate"><span class="pre">OP</span></code> 可以是以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code>：重置为未修改的值，忽略在此条目之前对 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的所有修改。请注意，这将把变量重置为 <span class="target" id="index-2-prop_test:ENVIRONMENT"></span><a class="reference internal" href="../prop_test/ENVIRONMENT.html#prop_test:ENVIRONMENT" title="ENVIRONMENT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code></a> 设置的值（如果已设置），否则重置为其在其余 CTest 执行中的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set</span></code>：用 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset</span></code>：取消设置 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_append</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_prepend</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_append</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_prepend</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_append</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_prepend</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="test-step-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id15" role="doc-backlink">测试步骤选项</a><a class="headerlink" href="ExternalProject.html#test-step-options" title="指向此标题的链接">¶</a></h3>
+<p>仅当提供了以下至少一个 <code class="docutils literal notranslate"><span class="pre">TEST_...</span></code> 选项时，才会定义测试步骤。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>覆盖默认测试命令（支持 <span class="target" id="index-7-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。如果未给定此选项，测试步骤的默认行为是构建外部项目自身的 <code class="docutils literal notranslate"><span class="pre">test</span></code> 目标。此选项可以将 <code class="docutils literal notranslate"><span class="pre">&lt;cmd&gt;</span></code> 指定为空字符串，这允许仍定义测试步骤，但它不会执行任何操作。如果将空字符串作为测试命令，请勿指定任何其他 <code class="docutils literal notranslate"><span class="pre">TEST_...</span></code> 选项，但如果不需要测试步骤目标，则最好完全省略所有 <code class="docutils literal notranslate"><span class="pre">TEST_...</span></code> 选项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_BEFORE_INSTALL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项后，测试步骤将在安装步骤之前执行。默认行为是测试步骤在安装步骤之后运行。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_AFTER_INSTALL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>此选项主要作为指示需要测试步骤但所有默认行为已足够的一种方式非常有用。将此选项指定为布尔真值可确保定义测试步骤，并且它在安装步骤之后。如果同时启用了 <code class="docutils literal notranslate"><span class="pre">TEST_BEFORE_INSTALL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TEST_AFTER_INSTALL</span></code>，则后者将被静默忽略。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_EXCLUDE_FROM_MAIN</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>如果启用，主构建的默认 ALL 目标将不依赖于测试步骤。这可以作为一种确保定义了测试步骤但仅在手动请求时才被调用的有效方式。这可能会导致 <code class="docutils literal notranslate"><span class="pre">install</span></code> 或 <code class="docutils literal notranslate"><span class="pre">build</span></code> 步骤自动创建步骤目标。参见策略 <span class="target" id="index-1-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_ENVIRONMENT_MODIFICATION</span> <span class="pre">&lt;modification&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>指定应为测试步骤修改的环境变量。</p>
+<p>设置一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，环境的变量和值形式为 <code class="docutils literal notranslate"><span class="pre">MYVAR=OP:VALUE</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 是要修改的环境变量的区分大小写的名称。条目按属性值中指定的顺序考虑。 <code class="docutils literal notranslate"><span class="pre">OP</span></code> 可以是以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code>：重置为未修改的值，忽略在此条目之前对 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的所有修改。请注意，这将把变量重置为 <span class="target" id="index-3-prop_test:ENVIRONMENT"></span><a class="reference internal" href="../prop_test/ENVIRONMENT.html#prop_test:ENVIRONMENT" title="ENVIRONMENT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code></a> 设置的值（如果已设置），否则重置为其在其余 CTest 执行中的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set</span></code>：用 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset</span></code>：取消设置 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_append</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_prepend</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_append</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_prepend</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_append</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_prepend</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="output-logging-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id16" role="doc-backlink">输出日志选项</a><a class="headerlink" href="ExternalProject.html#output-logging-options" title="指向此标题的链接">¶</a></h3>
+<p>以下每个 <code class="docutils literal notranslate"><span class="pre">LOG_...</span></code> 选项都可用于在脚本中包装相关步骤，以将其输出捕获到文件中。日志文件将在 <code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code>（如果已提供）中创建，否则在具有特定步骤文件名的 <code class="docutils literal notranslate"><span class="pre">STAMP_DIR</span></code> 目录中创建。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_DOWNLOAD</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，下载步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_UPDATE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，更新步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_PATCH</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>启用后，补丁步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_CONFIGURE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，配置步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_BUILD</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，构建步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_INSTALL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，安装步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_TEST</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用后，测试步骤的输出将被记录到文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_MERGED_STDOUTERR</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>启用后，对于任何输出被记录到文件的步骤，stdout 和 stderr 将被合并。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG_OUTPUT_ON_FAILURE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>此选项仅在启用了至少一个其他 <code class="docutils literal notranslate"><span class="pre">LOG_&lt;step&gt;</span></code> 选项时才有效。如果启用了文件日志记录的步骤发生错误，并且 <code class="docutils literal notranslate"><span class="pre">LOG_OUTPUT_ON_FAILURE</span></code> 设置为 true，则该步骤的输出将打印到控制台。对于记录了大量输出的情况，可能只会将输出的末尾部分打印到控制台。</p>
+</dd>
+</dl>
+</section>
+<section id="terminal-access-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id17" role="doc-backlink">终端访问选项</a><a class="headerlink" href="ExternalProject.html#terminal-access-options" title="指向此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>在某些情况下，可以授予步骤直接访问终端的权限。授予步骤对终端的访问权限可能允许它在需要时接收终端输入，例如其他选项未提供的身份验证详细信息。使用 <span class="target" id="index-2-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器，这些选项将步骤置于 <code class="docutils literal notranslate"><span class="pre">console</span></code> <span class="target" id="index-0-prop_gbl:JOB_POOLS"></span><a class="reference internal" href="../prop_gbl/JOB_POOLS.html#prop_gbl:JOB_POOLS" title="JOB_POOLS"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">作业池</span></code></a> 中。每个步骤可以通过以下选项单独授予对终端的访问权限：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_DOWNLOAD</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予下载步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_UPDATE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予更新步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_PATCH</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<p>授予补丁步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_CONFIGURE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予配置步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_BUILD</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予构建步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_INSTALL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予安装步骤对终端的访问权限。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL_TEST</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>授予测试步骤对终端的访问权限。</p>
+</dd>
+</dl>
+</section>
+<section id="target-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id18" role="doc-backlink">目标选项</a><a class="headerlink" href="ExternalProject.html#target-options" title="指向此标题的链接">¶</a></h3>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDS</span> <span class="pre">&lt;targets&gt;...</span></code></dt><dd><p>指定外部项目所依赖的其他目标。其他目标将在执行外部项目的任何步骤之前更新。因为外部项目在内部为每个步骤使用额外的自定义目标，所以 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项是确保所有这些步骤都依赖于其他目标的最便捷方式。仅仅执行 <span class="target" id="index-0-command:add_dependencies"></span><a class="reference internal" href="../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies(&lt;name&gt;</span> <span class="pre">&lt;targets&gt;)</span></code></a> 不会使任何步骤依赖于 <code class="docutils literal notranslate"><span class="pre">&lt;targets&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项后，该选项将外部项目从主构建的默认 ALL 目标中排除。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span> <span class="pre">&lt;step-target&gt;...</span></code></dt><dd><p>为指定步骤生成自定义目标。如果需要手动触发步骤或者如果它们需要用作其他目标的依赖项，则需要这样做。如果未指定此选项，则默认值取自 <code class="docutils literal notranslate"><span class="pre">EP_STEP_TARGETS</span></code> 目录属性。有关此选项效果的进一步讨论，请参阅下方的 <span class="target" id="index-1-command:externalproject_add_steptargets"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INDEPENDENT_STEP_TARGETS</span> <span class="pre">&lt;step-target&gt;...</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">3.19 版本弃用： </span>仅当策略 <span class="target" id="index-2-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，才允许这样做。</p>
+</div>
+<p>为指定的步骤生成自定义目标，并防止这些目标应用通常的依赖项。如果未指定此选项，则默认值取自 <code class="docutils literal notranslate"><span class="pre">EP_INDEPENDENT_STEP_TARGETS</span></code> 目录属性。此选项主要用于允许独立驱动各个步骤，例如在 CDash 设置中，每个步骤应单独启动和报告，而不是作为一个整体构建。有关此选项效果的进一步讨论，请参阅下文的 <span class="target" id="index-2-command:externalproject_add_steptargets"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a>。</p>
+</dd>
+</dl>
+</section>
+<section id="miscellaneous-options">
+<h3><a class="toc-backref" href="ExternalProject.html#id19" role="doc-backlink">杂项选项</a><a class="headerlink" href="ExternalProject.html#miscellaneous-options" title="链接到此标题">¶</a></h3>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">LIST_SEPARATOR</span> <span class="pre">&lt;sep&gt;</span></code></dt><dd><p>对于各种 <code class="docutils literal notranslate"><span class="pre">..._COMMAND</span></code> 选项、<code class="docutils literal notranslate"><span class="pre">CMAKE_ARGS</span></code> 以及 <cite>..._ENVIRONMENT_MODIFICATION`</cite> 操作，<code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> 将把指定命令行中的 <code class="docutils literal notranslate"><span class="pre">&lt;sep&gt;</span></code> 替换为 <code class="docutils literal notranslate"><span class="pre">;</span></code>。这可用于确保命令中包含字面的 <code class="docutils literal notranslate"><span class="pre">;</span></code>，否则直接使用会被 CMake API 解释为参数分隔符。请注意，应选择一个不会与非列表分隔符用法相混淆的分隔符。例如，使用 <code class="docutils literal notranslate"><span class="pre">LIST_SEPARATOR</span></code> 允许在命令行上传递列表值给 CMake 缓存变量。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nb">example</span>
+<span class="w">  </span><span class="p">...</span><span class="w"> </span><span class="c"># Download options, etc.</span>
+<span class="w">  </span><span class="no">LIST_SEPARATOR</span><span class="w"> </span><span class="s">","</span>
+<span class="w">  </span><span class="no">CMAKE_ARGS</span><span class="w"> </span><span class="s">"-DCMAKE_PREFIX_PATH:STRING=${first_prefix},${second_prefix}"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>任何其他 <code class="docutils literal notranslate"><span class="pre">..._COMMAND</span></code> 选项可以通过在其后附加所需数量的 <code class="docutils literal notranslate"><span class="pre">COMMAND</span> <span class="pre">...</span></code> 选项来追加额外的命令（支持 <span class="target" id="index-8-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。例如：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nb">example</span>
+<span class="w">  </span><span class="p">...</span><span class="w"> </span><span class="c"># Download options, etc.</span>
+<span class="w">  </span><span class="no">BUILD_COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s">"Starting $&lt;CONFIG&gt; build"</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w">       </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">--</span><span class="nb">build</span><span class="w"> </span><span class="nv">&lt;BINARY_DIR&gt;</span><span class="w"> </span><span class="p">--</span><span class="nb">config</span><span class="w"> </span><span class="o">$&lt;</span><span class="no">CONFIG</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w">       </span><span class="o">${</span><span class="nt">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="p">-</span><span class="no">E</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s">"$&lt;CONFIG&gt; build complete"</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>还应注意，每个构建步骤都是通过调用 <span class="target" id="index-0-command:externalproject_add_step"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 创建的。有关某些选项支持的自动替换，请参阅该命令的文档。</p>
+</section>
+</section>
+<section id="obtaining-project-properties">
+<h2><a class="toc-backref" href="ExternalProject.html#id20" role="doc-backlink">获取项目属性</a><a class="headerlink" href="ExternalProject.html#obtaining-project-properties" title="链接到此标题">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externalproject_get_property">
+<span class="sig-name descname"><span class="pre">ExternalProject_Get_Property</span></span><a class="headerlink" href="ExternalProject.html#command:externalproject_get_property" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Get_Property()</span></code> 函数检索外部项目目标属性。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Get_Property(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;prop1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;prop2&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>该函数将属性值存储在同名的变量中。属性名称对应于 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code> 的关键字参数名称。例如，可以按如下方式检索源目录：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Get_property(</span><span class="nb">myExtProj</span><span class="w"> </span><span class="no">SOURCE_DIR</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"Source dir of myExtProj = ${SOURCE_DIR}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="explicit-step-management">
+<h2><a class="toc-backref" href="ExternalProject.html#id21" role="doc-backlink">显式步骤管理</a><a class="headerlink" href="ExternalProject.html#explicit-step-management" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code> 函数本身通常足以将外部项目集成到主构建中。某些场景需要额外的工作来实现所需行为，例如添加自定义步骤或将步骤作为可手动触发的目标。 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code>、<code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepDependencies</span></code> 函数提供了实现此类步骤级功能所需的底层控制。</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externalproject_add_step">
+<span class="sig-name descname"><span class="pre">ExternalProject_Add_Step</span></span><a class="headerlink" href="ExternalProject.html#command:externalproject_add_step" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code> 函数为通过先前调用 <span class="target" id="index-0-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 定义的外部项目指定一个额外的自定义步骤。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_Step(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;step&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;option&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 与传递给原始 <span class="target" id="index-1-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 调用的名称相同。指定的 <code class="docutils literal notranslate"><span class="pre">&lt;step&gt;</span></code> 不得是预定义步骤之一（<code class="docutils literal notranslate"><span class="pre">mkdir</span></code>、<code class="docutils literal notranslate"><span class="pre">download</span></code>、<code class="docutils literal notranslate"><span class="pre">update</span></code>、<code class="docutils literal notranslate"><span class="pre">patch</span></code>、<code class="docutils literal notranslate"><span class="pre">configure</span></code>、<code class="docutils literal notranslate"><span class="pre">build</span></code>、<code class="docutils literal notranslate"><span class="pre">install</span></code> 或 <code class="docutils literal notranslate"><span class="pre">test</span></code>）。支持的选项如下：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMAND</span> <span class="pre">&lt;cmd&gt;...</span></code></dt><dd><p>由该自定义步骤执行的命令行（支持 <span class="target" id="index-9-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>）。此选项可以重复多次，以指定按顺序执行的多个命令。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">COMMENT</span> <span class="pre">"&lt;text&gt;..."</span></code></dt><dd><p>自定义步骤执行时要打印的文本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDEES</span> <span class="pre">&lt;step&gt;...</span></code></dt><dd><p>此步骤所依赖的其他步骤（自定义或预定义）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDERS</span> <span class="pre">&lt;step&gt;...</span></code></dt><dd><p>依赖于此新自定义步骤的其他步骤（自定义或预定义）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DEPENDS</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><p>此自定义步骤所依赖的文件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENVIRONMENT_MODIFICATION</span> <span class="pre">&lt;modification&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>指定在运行外部项目步骤中的命令时应修改的环境变量。</p>
+<p>设置一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，环境的变量和值形式为 <code class="docutils literal notranslate"><span class="pre">MYVAR=OP:VALUE</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 是要修改的环境变量的区分大小写的名称。条目按属性值中指定的顺序考虑。 <code class="docutils literal notranslate"><span class="pre">OP</span></code> 可以是以下之一：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code>：重置为未修改的值，忽略该条目之前对 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的所有修改。请注意，如果设置了 <span class="target" id="index-4-prop_test:ENVIRONMENT"></span><a class="reference internal" href="../prop_test/ENVIRONMENT.html#prop_test:ENVIRONMENT" title="ENVIRONMENT"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code></a>，这将把变量重置为由该属性设置的值，否则重置为 CTest 执行其余部分中的状态。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set</span></code>：用 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 替换 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset</span></code>：取消设置 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_append</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string_prepend</span></code>：将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_append</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path_list_prepend</span></code>：使用宿主平台的路径列表分隔符（Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>，其他地方为 <code class="docutils literal notranslate"><span class="pre">:</span></code>）将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_append</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 追加到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake_list_prepend</span></code>：使用 <code class="docutils literal notranslate"><span class="pre">;</span></code> 作为分隔符将单个 <code class="docutils literal notranslate"><span class="pre">VALUE</span></code> 前置到 <code class="docutils literal notranslate"><span class="pre">MYVAR</span></code> 的当前值。</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INDEPENDENT</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增。</span></p>
+</div>
+<p>指定此步骤是否独立于 <span class="target" id="index-2-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项指定的外部依赖项。默认值为 <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>。标记为独立的步骤只能依赖于其他标记为独立的步骤。请参阅策略 <span class="target" id="index-3-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a>。</p>
+<p>请注意，此处使用的“独立”一词仅指独立于 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项指定的外部目标，并且与步骤对其他步骤的依赖关系正交。</p>
+<p>如果通过 <span class="target" id="index-3-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code> 选项或 <span class="target" id="index-3-command:externalproject_add_steptargets"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a> 函数为独立步骤创建了步骤目标，它将不会依赖于外部目标，但可能依赖于其他步骤的目标。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span> <span class="pre">&lt;file&gt;...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p>此自定义步骤将生成的文件，但其修改时间可能不会被后续构建更新。在使用 <span class="target" id="index-3-generator:Ninja"></span><a class="reference internal" href="../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器时，这对于显式声明依赖项可能是必需的。此文件列表最终将作为 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 选项传递给内部用于实现自定义步骤的 <span class="target" id="index-4-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a>，该命令有额外的文档。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ALWAYS</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项时，指定应始终运行此自定义步骤（即始终将其视为过期）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">JOB_SERVER_AWARE</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>指定自定义步骤是否感知 GNU Make 作业服务器。有关详细信息，请参阅 <span class="target" id="index-5-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 文档中关于其 <code class="docutils literal notranslate"><span class="pre">JOB_SERVER_AWARE</span></code> 选项的内容。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_MAIN</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>启用此选项时，指定外部项目的主目标不依赖于此自定义步骤。这可能会导致为该步骤所依赖的步骤自动创建步骤目标。请参阅策略 <span class="target" id="index-4-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span> <span class="pre">&lt;dir&gt;</span></code></dt><dd><p>指定在运行自定义步骤命令之前要设置的工作目录。如果未指定此选项，则目录将为调用 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code> 时 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a> 的值。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOG</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>如果设置，这将导致自定义步骤的输出被捕获到外部项目的 <code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code>（如果已提供）或 <code class="docutils literal notranslate"><span class="pre">STAMP_DIR</span></code> 中的文件中。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">USES_TERMINAL</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>如果启用，此选项会在可能的情况下给予自定义步骤对终端的直接访问权限。</p>
+</dd>
+</dl>
+<p>每个标准和自定义步骤的命令行、注释、工作目录和副产品都会被处理，以将标记 <code class="docutils literal notranslate"><span class="pre">&lt;SOURCE_DIR&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;SOURCE_SUBDIR&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;BINARY_DIR&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;INSTALL_DIR&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;TMP_DIR&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;DOWNLOAD_DIR&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;DOWNLOADED_FILE&gt;</span></code> 替换为在原始调用 <span class="target" id="index-4-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 中定义的相应属性值。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.3 版本新增： </span>标记替换扩展到副产品。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增： </span><code class="docutils literal notranslate"><span class="pre">&lt;DOWNLOAD_DIR&gt;</span></code> 替换标记。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externalproject_add_steptargets">
+<span class="sig-name descname"><span class="pre">ExternalProject_Add_StepTargets</span></span><a class="headerlink" href="ExternalProject.html#command:externalproject_add_steptargets" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code> 函数为所列步骤生成目标。每个创建的目标名称格式为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;-&lt;step&gt;</span></code>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_StepTargets(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;step1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;step2&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为步骤创建目标允许将其用作另一个目标的依赖项或手动触发。拥有特定步骤的目标还可以通过在构建命令行上指定目标来独立驱动它们。例如，您可能正在提交到一个基于子项目的仪表板，您希望驱动构建的配置部分，然后提交到仪表板，接着是构建部分，最后是测试。如果您调用一个依赖于步骤链中间某步骤的自定义目标，则之前的所有步骤也将运行，以确保一切都是最新的。</p>
+<p>在内部，<span class="target" id="index-5-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 调用 <span class="target" id="index-1-command:externalproject_add_step"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 来创建每个步骤。如果指定了任何 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code>，则在 <span class="target" id="index-2-command:externalproject_add_step"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 之后也会调用 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code>。即使 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code> 选项中未提及某步骤，稍后仍可调用 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code> 来手动定义该步骤的目标。</p>
+<p><span class="target" id="index-6-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">STEP_TARGETS</span></code> 选项通常是确保为感兴趣的特定步骤创建目标的最简单方法。对于自定义步骤，如果也应为该自定义步骤创建目标，则必须显式调用 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code>。这两个选项的替代方法是填充 <code class="docutils literal notranslate"><span class="pre">EP_STEP_TARGETS</span></code> 目录属性。它作为步骤目标选项的默认值，可以在定义多个外部项目时省去重复指定相同步骤目标集的麻烦。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增： </span>如果 <span class="target" id="index-5-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，步骤目标将完全负责持有实现其步骤的自定义命令。由 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add</span></code> 创建的主要目标依赖于步骤目标，步骤目标彼此依赖。目标级依赖关系与自定义命令为每个步骤使用的文件级依赖关系匹配。使用 <span class="target" id="index-3-command:externalproject_add_step"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_step" title="externalproject_add_step"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_Step()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">INDEPENDENT</span></code> 选项创建的步骤目标，不依赖于 <span class="target" id="index-7-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 选项指定的外部目标。预定义步骤 <code class="docutils literal notranslate"><span class="pre">mkdir</span></code>、<code class="docutils literal notranslate"><span class="pre">download</span></code>、<code class="docutils literal notranslate"><span class="pre">update</span></code> 和 <code class="docutils literal notranslate"><span class="pre">patch</span></code> 是独立的。</p>
+</div>
+<p>如果 <span class="target" id="index-6-policy:CMP0114"></span><a class="reference internal" href="../policy/CMP0114.html#policy:CMP0114" title="CMP0114"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0114</span></code></a> 不是 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则可以使用以下已弃用的行为：</p>
+<ul class="simple">
+<li><p>可以在 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 之后、第一个步骤之前立即指定已弃用的 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 选项。如果指定了 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 选项，步骤目标将不依赖于外部项目的依赖项（即不依赖于由 <span class="target" id="index-8-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 创建的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 自定义目标的任何依赖项）。这对于 <code class="docutils literal notranslate"><span class="pre">download</span></code>、<code class="docutils literal notranslate"><span class="pre">update</span></code> 和 <code class="docutils literal notranslate"><span class="pre">patch</span></code> 步骤通常是安全的，因为它们通常不需要更新和构建依赖项。但是，对任何其他预定义步骤使用 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 可能会破坏并行构建。仅在确定命名步骤确实没有依赖项时才使用 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code>。对于自定义步骤，请考虑自定义命令是否需要配置、构建和安装依赖项。</p></li>
+<li><p><span class="target" id="index-9-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">INDEPENDENT_STEP_TARGETS</span></code> 选项，或 <code class="docutils literal notranslate"><span class="pre">EP_INDEPENDENT_STEP_TARGETS</span></code> 目录属性，指示该函数在内部为指定步骤调用使用 <code class="docutils literal notranslate"><span class="pre">NO_DEPENDS</span></code> 选项的 <code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code>。</p></li>
+</ul>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:externalproject_add_stepdependencies">
+<span class="sig-name descname"><span class="pre">ExternalProject_Add_StepDependencies</span></span><a class="headerlink" href="ExternalProject.html#command:externalproject_add_stepdependencies" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.2 中新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ExternalProject_Add_StepDependencies()</span></code> 函数可用于向步骤添加依赖项。添加的依赖项必须是 CMake 已知的目标（可以是普通的可执行文件或库目标、自定义目标，甚至是另一个外部项目的步骤目标）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_StepDependencies(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="nv">&lt;step&gt;</span><span class="w"> </span><span class="nv">&lt;target1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;target2&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此函数负责设置目标级和文件级依赖关系，并将确保并行构建不会被破坏。每当为 <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> 模块生成的某些步骤目标添加依赖项时，都应使用它，而不是 <span class="target" id="index-1-command:add_dependencies"></span><a class="reference internal" href="../command/add_dependencies.html#command:add_dependencies" title="add_dependencies"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_dependencies()</span></code></a>。</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="ExternalProject.html#id22" role="doc-backlink">示例</a><a class="headerlink" href="ExternalProject.html#examples" title="链接到此标题">¶</a></h2>
+<p>以下示例展示了如何从 GitHub 下载并构建一个名为 <em>FooBar</em> 的假设项目。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">ExternalProject</span><span class="nf">)</span>
+<span class="nf">ExternalProject_Add(</span><span class="nb">foobar</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w">    </span><span class="na">git@github.com:FooCo/FooBar.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">           </span><span class="na">origin/release/1.2.3</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>为了示例起见，定义第二个名为 <em>SecretSauce</em> 的假设外部项目，它从 Web 服务器下载。为了利用更快的内部网络（如果可用），提供了两个 URL，并回退到较慢的外部服务器。该项目是一个没有配置步骤的典型 <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> 项目，因此重写了一些默认命令。构建仅要求构建 <em>sauce</em> 目标。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_program(</span><span class="no">MAKE_EXE</span><span class="w"> </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">gmake</span><span class="w"> </span><span class="nb">nmake</span><span class="w"> </span><span class="nb">make</span><span class="nf">)</span>
+<span class="nf">ExternalProject_Add(</span><span class="nb">secretsauce</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">               </span><span class="na">http://intranet.somecompany.com/artifacts/sauce-2.7.tgz</span>
+<span class="w">                    </span><span class="na">https://www.somecompany.com/downloads/sauce-2.7.zip</span>
+<span class="w">  </span><span class="no">URL_HASH</span><span class="w">          </span><span class="no">MD5</span><span class="p">=</span><span class="nb">d41d8cd98f00b204e9800998ecf8427e</span>
+<span class="w">  </span><span class="no">CONFIGURE_COMMAND</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="no">BUILD_COMMAND</span><span class="w">     </span><span class="o">${</span><span class="nt">MAKE_EXE</span><span class="o">}</span><span class="w"> </span><span class="nb">sauce</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>假设 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 的构建步骤要求必须已经构建好 <code class="docutils literal notranslate"><span class="pre">foobar</span></code>。这可以强制执行如下：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_StepDependencies(</span><span class="nb">secretsauce</span><span class="w"> </span><span class="nb">build</span><span class="w"> </span><span class="nb">foobar</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>另一种选择是为 <code class="docutils literal notranslate"><span class="pre">foobar</span></code> 的构建步骤创建一个自定义目标，并让 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 依赖于该目标，而不是整个 <code class="docutils literal notranslate"><span class="pre">foobar</span></code> 项目。这意味着 <code class="docutils literal notranslate"><span class="pre">foobar</span></code> 只需要构建，在 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 可以构建之前，它不需要运行其安装或测试步骤。依赖关系也可以与 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 项目一起定义。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_StepTargets(</span><span class="nb">foobar</span><span class="w"> </span><span class="nb">build</span><span class="nf">)</span>
+<span class="nf">ExternalProject_Add(</span><span class="nb">secretsauce</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">               </span><span class="na">http://intranet.somecompany.com/artifacts/sauce-2.7.tgz</span>
+<span class="w">                    </span><span class="na">https://www.somecompany.com/downloads/sauce-2.7.zip</span>
+<span class="w">  </span><span class="no">URL_HASH</span><span class="w">          </span><span class="no">MD5</span><span class="p">=</span><span class="nb">d41d8cd98f00b204e9800998ecf8427e</span>
+<span class="w">  </span><span class="no">CONFIGURE_COMMAND</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="no">BUILD_COMMAND</span><span class="w">     </span><span class="o">${</span><span class="nt">MAKE_EXE</span><span class="o">}</span><span class="w"> </span><span class="nb">sauce</span>
+<span class="w">  </span><span class="no">DEPENDS</span><span class="w">           </span><span class="nb">foobar-build</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>与其调用 <span class="target" id="index-4-command:externalproject_add_steptargets"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add_steptargets" title="externalproject_add_steptargets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add_StepTargets()</span></code></a>，不如与 <code class="docutils literal notranslate"><span class="pre">foobar</span></code> 项目本身一起定义目标。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add(</span><span class="nb">foobar</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@github.com:FooCo/FooBar.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="na">origin/release/1.2.3</span>
+<span class="w">  </span><span class="no">STEP_TARGETS</span><span class="w">   </span><span class="nb">build</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果许多外部项目应具有相同的步骤目标集，则设置目录属性可能更方便。通过在用 <span class="target" id="index-10-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 创建外部项目之前设置 <code class="docutils literal notranslate"><span class="pre">EP_STEP_TARGETS</span></code> 目录属性，可以自动创建 <code class="docutils literal notranslate"><span class="pre">build</span></code> 步骤目标。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_property(</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">EP_STEP_TARGETS</span><span class="w"> </span><span class="nb">build</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>最后，假设 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 提供了一个名为 <code class="docutils literal notranslate"><span class="pre">makedoc</span></code> 的脚本，可用于生成其文档。进一步假设该脚本期望输出目录作为唯一参数提供，并且应该从 <code class="docutils literal notranslate"><span class="pre">secretsauce</span></code> 源目录运行。可以定义自定义步骤和触发该脚本的自定义目标，如下所示：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ExternalProject_Add_Step(</span><span class="nb">secretsauce</span><span class="w"> </span><span class="nb">docs</span>
+<span class="w">  </span><span class="no">COMMAND</span><span class="w">           </span><span class="nv">&lt;SOURCE_DIR&gt;</span><span class="na">/makedoc</span><span class="w"> </span><span class="nv">&lt;BINARY_DIR&gt;</span>
+<span class="w">  </span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nv">&lt;SOURCE_DIR&gt;</span>
+<span class="w">  </span><span class="no">COMMENT</span><span class="w">           </span><span class="s">"Building secretsauce docs"</span>
+<span class="w">  </span><span class="no">ALWAYS</span><span class="w">            </span><span class="no">TRUE</span>
+<span class="w">  </span><span class="no">EXCLUDE_FROM_MAIN</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="nf">)</span>
+<span class="nf">ExternalProject_Add_StepTargets(</span><span class="nb">secretsauce</span><span class="w"> </span><span class="nb">docs</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>然后可以从主构建中触发该自定义步骤，如下所示：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cmake --build . --target secretsauce-docs
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="ExternalProject.html#">ExternalProject</a><ul>
+<li><a class="reference internal" href="ExternalProject.html#external-project-definition">外部项目定义</a><ul>
+<li><a class="reference internal" href="ExternalProject.html#directory-options">目录选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#download-step-options">下载步骤选项</a><ul>
+<li><a class="reference internal" href="ExternalProject.html#url">URL</a></li>
+<li><a class="reference internal" href="ExternalProject.html#git">Git</a></li>
+<li><a class="reference internal" href="ExternalProject.html#subversion">Subversion</a></li>
+<li><a class="reference internal" href="ExternalProject.html#mercurial">Mercurial</a></li>
+<li><a class="reference internal" href="ExternalProject.html#cvs">CVS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ExternalProject.html#update-step-options">更新步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#patch-step-options">补丁步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#configure-step-options">配置步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#build-step-options">构建步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#install-step-options">安装步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#test-step-options">测试步骤选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#output-logging-options">输出日志选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#terminal-access-options">终端访问选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#target-options">目标选项</a></li>
+<li><a class="reference internal" href="ExternalProject.html#miscellaneous-options">杂项选项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ExternalProject.html#obtaining-project-properties">获取项目属性</a></li>
+<li><a class="reference internal" href="ExternalProject.html#explicit-step-management">显式步骤管理</a></li>
+<li><a class="reference internal" href="ExternalProject.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="ExternalData.html" title="上一章">ExternalData</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FeatureSummary.html" title="下一章">FeatureSummary</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/ExternalProject.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FeatureSummary.html" title="FeatureSummary">下一页</a> |</li>
+        <li class="right">
+          <a href="ExternalData.html" title="ExternalData">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="ExternalProject.html">ExternalProject</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

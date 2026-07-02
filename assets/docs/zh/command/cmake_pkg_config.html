@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>cmake_pkg_config — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="cmake_pkg_config.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="cmake_policy" href="cmake_policy.html" />
+    <link rel="prev" title="cmake_path" href="cmake_path.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="cmake_policy.html" title="cmake_policy" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_path.html" title="cmake_path" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_pkg_config.html">cmake_pkg_config</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmake-pkg-config">
+<span id="command:cmake_pkg_config"></span><h1><a class="toc-backref" href="cmake_pkg_config.html#id1" role="doc-backlink">cmake_pkg_config</a><a class="headerlink" href="cmake_pkg_config.html#cmake-pkg-config" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cmake_pkg_config.html#cmake-pkg-config" id="id1">cmake_pkg_config</a></p>
+<ul>
+<li><p><a class="reference internal" href="cmake_pkg_config.html#synopsis" id="id2">概要</a></p></li>
+<li><p><a class="reference internal" href="cmake_pkg_config.html#introduction" id="id3">简介</a></p></li>
+<li><p><a class="reference internal" href="cmake_pkg_config.html#pkgconfig-targets" id="id4">PkgConfig 目标</a></p></li>
+<li><p><a class="reference internal" href="cmake_pkg_config.html#common-options" id="id5">通用选项</a></p></li>
+<li><p><a class="reference internal" href="cmake_pkg_config.html#signatures" id="id6">签名</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>处理 pkg-config 格式的包文件。</p>
+<section id="synopsis">
+<h2><a class="toc-backref" href="cmake_pkg_config.html#id2" role="doc-backlink">概要</a><a class="headerlink" href="cmake_pkg_config.html#synopsis" title="链接到此标题">¶</a></h2>
+<pre class="literal-block">cmake_pkg_config(<a class="reference internal" href="cmake_pkg_config.html#extract">EXTRACT</a> &lt;package&gt; [&lt;version&gt;] [...])
+cmake_pkg_config(<a class="reference internal" href="cmake_pkg_config.html#populate">POPULATE</a> &lt;package&gt; [&lt;version&gt;] [...])
+cmake_pkg_config(<a class="reference internal" href="cmake_pkg_config.html#import">IMPORT</a> &lt;package&gt; [&lt;version&gt;] [...])</pre>
+</section>
+<section id="introduction">
+<h2><a class="toc-backref" href="cmake_pkg_config.html#id3" role="doc-backlink">简介</a><a class="headerlink" href="cmake_pkg_config.html#introduction" title="此标题的链接">¶</a></h2>
+<p>此命令用于原生生成 pkg-config 格式包文件对应的 CMake 变量和目标，无需调用甚至无需安装 pkg-config 实现。<code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code> 可以是包文件的绝对路径，也可以是使用典型 pkg-config 搜索模式查找的包名称。可选的 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 字符串具有与 pkg-config 风格版本指定符相同的格式和语义，唯一的区别是如果未指定比较运算符，则默认为 <code class="docutils literal notranslate"><span class="pre">=</span></code>。</p>
+</section>
+<section id="pkgconfig-targets">
+<h2><a class="toc-backref" href="cmake_pkg_config.html#id4" role="doc-backlink">PkgConfig 目标</a><a class="headerlink" href="cmake_pkg_config.html#pkgconfig-targets" title="链接到此标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cmake_pkg_config</span></code> 可能会在全局作用域中递归生成目标名称，以解析包的 <code class="docutils literal notranslate"><span class="pre">IMPORT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">POPULATE</span></code> 命令。这些名称的形式为 <code class="docutils literal notranslate"><span class="pre">@foreign_pkgcfg::[&lt;prefix&gt;_]&lt;package&gt;</span></code>，并通过 <code class="docutils literal notranslate"><span class="pre">IMPORT</span></code> 生成的目标的 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 目标属性公开。</p>
+<p>无法通过常规的基于目标的命令来修改或定位这些 pkg-config 原生目标。可以通过 <code class="docutils literal notranslate"><span class="pre">POPULATE</span></code> 命令对它们的生成进行有限的控制，但通常应在相应的包文件内部进行修改，而不是在 CMake 的下游进行。</p>
+<p>Pkg-config 目标在各个命令之间复用。一旦给定的包名称通过 <code class="docutils literal notranslate"><span class="pre">POPULATE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">IMPORT</span></code>（不包括 <code class="docutils literal notranslate"><span class="pre">EXTRACT</span></code>）解析，后续所有通过这些命令对该包名称的请求都将解析为之前生成的 pkg-config 目标。</p>
+<p><code class="docutils literal notranslate"><span class="pre">EXTRACT</span></code> 始终执行完整的包名称查找，以允许在自定义依赖管理方案中搜索同一包的多个安装。</p>
+</section>
+<section id="common-options">
+<h2><a class="toc-backref" href="cmake_pkg_config.html#id5" role="doc-backlink">通用选项</a><a class="headerlink" href="cmake_pkg_config.html#common-options" title="链接到此标题">¶</a></h2>
+<p>此命令有多种签名，其中一些选项在它们之间是通用的。它们是：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">EXACT</span></code> / <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> / <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">EXACT</span></code> 选项要求版本字符串精确匹配（如果未提供版本，则包括空字符串），覆盖典型的 pkg-config 版本比较算法。这将忽略附加到版本字符串的任何比较运算符。</p>
+<p><code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项禁用信息性消息，包括如果包未被设置为 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 且无法找到时发出的提示。<code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 选项在无法找到包时会停止处理并显示错误消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">STRICTNESS</span> <span class="pre">&lt;mode&gt;</span></code></dt><dd><p>指定在解析和解析过程中校验包文件内容的严格程度。在给定的严格模式下，如果文件无效，命令将失败。可能的模式包括：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STRICT</span></code>：严格遵循原始 FDO pkg-config 的行为。变量和关键字必须唯一。变量必须先定义后使用。必须存在 Name、Description 和 Version 关键字。文件的整体结构必须有效且可解析。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PERMISSIVE</span></code>：严格遵循 pkgconf 实现的行为。重复的变量会被覆盖。重复的关键字会被追加。未定义的变量解析为空字符串。必须存在 Name、Description 和 Version 关键字。文件的整体结构必须有效且可解析。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BEST_EFFORT</span></code>：在处理重复或未初始化的变量和关键字方面与 <code class="docutils literal notranslate"><span class="pre">PERMISSIVE</span></code> 行为相同，但在任何情况下都不会失败。需要 BEST_EFFORT 的包文件在所有其他主要实现下都会校验失败，应该进行修复。</p></li>
+</ul>
+<p>默认的严格模式是 <code class="docutils literal notranslate"><span class="pre">PERMISSIVE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ENV_MODE</span></code></dt><dd><p>指定运行给定命令时将查询哪些环境变量。可能的模式包括：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">FDO</span></code>：仅查询 freedesktop.org <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> 实现使用的原始 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_*</span></code> 环境变量集。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKGCONF</span></code>：查询 <code class="docutils literal notranslate"><span class="pre">pkgconf</span></code> 实现使用的更广泛的环境变量集。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IGNORE</span></code>：完全忽略环境变量的存在、缺失和值。在所有本应查询环境变量的情况下，它会被视为已定义，但对于操作而言其值为空字符串。这不会修改当前环境。对于布尔环境变量（例如 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ALLOW_*</span></code>），这意味着它们被评估为真（truthy）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_SYSROOT_PATH</span></code> 是一个微小的例外。当使用 <code class="docutils literal notranslate"><span class="pre">ENV_MODE</span> <span class="pre">IGNORE</span></code> 时，默认情况下不会预置根路径，且 <code class="docutils literal notranslate"><span class="pre">pc_sysrootdir</span></code> 保持默认为 <code class="docutils literal notranslate"><span class="pre">/</span></code>。</p>
+</li>
+</ul>
+<p>目标生成子命令总是忽略标志过滤环境变量。默认环境模式为 <code class="docutils literal notranslate"><span class="pre">PKGCONF</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PC_LIBDIR</span> <span class="pre">&lt;path&gt;...</span></code></dt><dd><p>覆盖包文件的默认搜索位置；也用于推导 <code class="docutils literal notranslate"><span class="pre">pc_path</span></code> 包变量。</p>
+<p>当未提供此选项时，默认库目录是以下值的第一个可用项：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_PC_LIB_DIRS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_LIBDIR</span></code> 环境变量</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkg-config</span> <span class="pre">--variable</span> <span class="pre">pc_path</span> <span class="pre">pkg-config</span></code> 的输出</p></li>
+<li><p>平台相关的默认值</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PC_PATH</span> <span class="pre">&lt;path&gt;...</span></code></dt><dd><p>覆盖将预置到搜索路径中的补充包文件目录；也用于推导 <code class="docutils literal notranslate"><span class="pre">pc_path</span></code> 包变量。</p>
+<p>当未提供此选项时，默认路径是以下值的第一个可用项：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_PC_PATH</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code> 环境变量</p></li>
+<li><p>空列表</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DISABLE_UNINSTALLED</span> <span class="pre">&lt;bool&gt;</span></code></dt><dd><p>覆盖对“未安装”（uninstalled）包文件的搜索行为。这些是带有 “-uninstalled” 后缀的包文件，描述了直接从构建树集成的包。</p>
+<p>通常此类包文件的优先级高于“已安装”的包。当 <code class="docutils literal notranslate"><span class="pre">DISABLE_UNINSTALLED</span></code> 为真时，将禁用对“未安装”包的搜索。</p>
+<p>当未提供此选项时，默认搜索行为由以下值的第一个可用项决定：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_DISABLE_UNINSTALLED</span></code></p></li>
+<li><p>如果定义了 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_DISABLE_UNINSTALLED</span></code> 环境变量，则搜索被禁用，否则被启用。</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PC_SYSROOT_DIR</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>覆盖将预置到 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 编译标志和 <code class="docutils literal notranslate"><span class="pre">-L</span></code> 库搜索位置指定路径的根路径；也用于推导 <code class="docutils literal notranslate"><span class="pre">pc_sysrootdir</span></code> 包变量。</p>
+<p>当未提供此选项时，默认根路径由以下值的第一个可用项提供：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_SYSROOT_DIR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_SYSROOT_DIR</span></code> 环境变量</p></li>
+<li><p>如果没有可用的根路径，则不会向包含目录或库目录路径预置任何内容，且 <code class="docutils literal notranslate"><span class="pre">pc_sysrootdir</span></code> 将被设置为 <code class="docutils literal notranslate"><span class="pre">/</span></code>。</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TOP_BUILD_DIR</span> <span class="pre">&lt;path&gt;</span></code></dt><dd><p>覆盖用于推导 <code class="docutils literal notranslate"><span class="pre">pc_top_builddir</span></code> 包变量的顶级构建目录路径。</p>
+<p>当未提供此选项时，默认顶级构建目录路径是以下值的第一个可用项：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_TOP_BUILD_DIR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_TOP_BUILD_DIR</span></code> 环境变量</p></li>
+<li><p>如果没有可用的顶级构建目录路径，则不会设置 <code class="docutils literal notranslate"><span class="pre">pc_top_builddir</span></code> 包变量。</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PREFIX</span> <span class="pre">&lt;name&gt;</span></code></dt><dd><p>指定前缀会创建一个独立于先前填充目标的 pkg-config 目标集合。这使得给定包的多个版本能够共存，例如来自不同 sysroot 的包。</p>
+<p>默认前缀为空字符串。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BIND_PC_REQUIRES</span> <span class="pre">&lt;&lt;name&gt;=&lt;target&gt;&gt;...</span></code></dt><dd><p>一系列 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;=&lt;target&gt;</span></code> 对，其中 <code class="docutils literal notranslate"><span class="pre">name</span></code> 是 pkg-config 文件 <code class="docutils literal notranslate"><span class="pre">Requires</span></code> 列表中出现的包名，<code class="docutils literal notranslate"><span class="pre">target</span></code> 是 CMake 原生目标名称（而非 pkg-config 目标）。</p>
+<p>当给定包名出现在包的 <code class="docutils literal notranslate"><span class="pre">Requires</span></code> 列表中时，它将由关联的 CMake 目标来满足。此行为适用于 pkg-config 图中尚未被填充的所有依赖项。</p>
+</dd>
+</dl>
+</section>
+<section id="signatures">
+<h2><a class="toc-backref" href="cmake_pkg_config.html#id6" role="doc-backlink">签名</a><a class="headerlink" href="cmake_pkg_config.html#signatures" title="链接到此标题">¶</a></h2>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="extract">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_pkg_config(</span></span><span class="no"><span class="pre">EXTRACT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;package&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;version&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_pkg_config.html#extract" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>将包的内容提取到变量中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_pkg_config(</span><span class="no">EXTRACT</span><span class="w"> </span><span class="nv">&lt;package&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">SYSTEM_INCLUDE_DIRS</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">SYSTEM_LIBRARY_DIRS</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ALLOW_SYSTEM_INCLUDES</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ALLOW_SYSTEM_LIBS</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">STRICTNESS</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ENV_MODE</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_LIBDIR</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_PATH</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">DISABLE_UNINSTALLED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_SYSROOT_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TOP_BUILD_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>以下变量将根据包文件的内容进行填充：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>变量</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>定义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_NAME</span></code></p></td>
+<td><p>字符串</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Name</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_DESCRIPTION</span></code></p></td>
+<td><p>字符串</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Description</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_VERSION</span></code></p></td>
+<td><p>字符串</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Version</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_PROVIDES</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Provides</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_REQUIRES</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Requires</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CONFLICTS</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Conflicts</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CFLAGS</span></code></p></td>
+<td><p>字符串</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CFlags</span></code> / <code class="docutils literal notranslate"><span class="pre">Cflags</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_INCLUDES</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CFLAGS</span></code> 中所有以 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 为前缀的标志</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_COMPILE_OPTIONS</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CFLAGS</span></code> 中所有不以 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 为前缀的标志</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code></p></td>
+<td><p>字符串</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Libs</span></code> 关键字的值</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBDIRS</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code> 中所有以 <code class="docutils literal notranslate"><span class="pre">-L</span></code> 为前缀的标志</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBNAMES</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code> 中所有以 <code class="docutils literal notranslate"><span class="pre">-l</span></code> 为前缀的标志</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LINK_OPTIONS</span></code></p></td>
+<td><p>列表</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code> 中所有不以 <code class="docutils literal notranslate"><span class="pre">-L</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-l</span></code> 为前缀的标志</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_*_PRIVATE</span></code></p></td>
+<td><p>*</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CFLAGS</span></code> / <code class="docutils literal notranslate"><span class="pre">LIBS</span></code> / <code class="docutils literal notranslate"><span class="pre">REQUIRES</span></code> 及其衍生变量，但采用其 <code class="docutils literal notranslate"><span class="pre">.private</span></code> 后缀形式</p></td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">SYSTEM_INCLUDE_DIRS</span></code></dt><dd><p>覆盖用于 <code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CFLAGS</span></code> 及其衍生变量中包含目录标志处理的“系统”目录。</p>
+<p>当未提供此选项时，默认目录由以下值的第一个可用项提供：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_SYS_INCLUDE_DIRS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_SYSTEM_INCLUDE_PATH</span></code> 环境变量</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkgconf</span> <span class="pre">--variable</span> <span class="pre">pc_system_includedirs</span> <span class="pre">pkg-config</span></code> 的输出</p></li>
+<li><p>平台相关的默认值</p></li>
+</ol>
+<p>此外，当 <code class="docutils literal notranslate"><span class="pre">ENV_MODE</span></code> 为 <code class="docutils literal notranslate"><span class="pre">PKGCONF</span></code> 时，如果可用，<code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_PKGCONF_INCLUDES</span></code> 变量将被连接到列表中。如果不可用，将查询并连接以下环境变量：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CPATH</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C_INCLUDE_PATH</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CPLUS_INCLUDE_PATH</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OBJC_INCLUDE_PATH</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INCLUDE</span></code> (仅限 Windows)</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYSTEM_LIBRARY_DIRS</span></code></dt><dd><p>覆盖用于 <code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code> 及其衍生变量中库目录标志处理的“系统”目录。</p>
+<p>当未提供此选项时，默认目录由以下值的第一个可用项提供：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_SYS_LIB_DIRS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_SYSTEM_LIBRARY_PATH</span></code> 环境变量</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkgconf</span> <span class="pre">--variable</span> <span class="pre">pc_system_libdirs</span> <span class="pre">pkg-config</span></code> 的输出</p></li>
+<li><p>平台相关的默认值</p></li>
+</ol>
+<p>此外，当 <code class="docutils literal notranslate"><span class="pre">ENV_MODE</span></code> 为 <code class="docutils literal notranslate"><span class="pre">PKGCONF</span></code> 时，如果可用，<code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_PKGCONF_LIB_DIRS</span></code> 变量将被连接到列表中。如果不可用，将查询并连接 <code class="docutils literal notranslate"><span class="pre">LIBRARY_PATH</span></code> 环境变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ALLOW_SYSTEM_INCLUDES</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_CFLAGS</span></code> 及其衍生变量的包含目录标志处理过程中保留“系统”目录。</p>
+<p>当未提供此选项时，默认值由以下值的第一个可用项决定：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_ALLOW_SYS_INCLUDES</span></code></p></li>
+<li><p>如果定义了 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ALLOW_SYSTEM_CFLAGS</span></code> 环境变量，则标志被保留，否则在标志处理过程中它们会被过滤。</p></li>
+</ol>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ALLOW_SYSTEM_LIBS</span></code></dt><dd><p>在 <code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_LIBS</span></code> 及其衍生变量的库目录标志处理过程中保留“系统”目录。</p>
+<p>当未提供此选项时，默认值由以下值的第一个可用项决定：</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PKG_CONFIG_ALLOW_SYS_LIBS</span></code></p></li>
+<li><p>如果定义了 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_ALLOW_SYSTEM_LIBS</span></code> 环境变量，则标志被保留，否则在标志处理过程中它们会被过滤。</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="populate">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_pkg_config(</span></span><span class="no"><span class="pre">POPULATE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;package&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;version&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_pkg_config.html#populate" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>填充 pkg-config 目标命名空间中的包</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_pkg_config(</span><span class="no">POPULATE</span><span class="w"> </span><span class="nv">&lt;package&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PREFIX</span><span class="w"> </span><span class="nv">&lt;prefix&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">BIND_PC_REQUIRES</span><span class="w"> </span><span class="p">&lt;</span><span class="nv">&lt;name&gt;</span><span class="p">=</span><span class="nv">&lt;target&gt;</span><span class="p">&gt;...]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">STRICTNESS</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ENV_MODE</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_LIBDIR</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_PATH</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">DISABLE_UNINSTALLED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_SYSROOT_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TOP_BUILD_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">POPULATE</span></code> 允许在不导入原生 CMake 目标的情况下，手动控制给定包的 <code class="docutils literal notranslate"><span class="pre">Requires</span></code> 列表的解析。一旦填充，包及其依赖项将用于解析所有未来的 <code class="docutils literal notranslate"><span class="pre">POPULATE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IMPORT</span></code> 命令。</p>
+<p><code class="docutils literal notranslate"><span class="pre">PKGCONFIG_&lt;package&gt;_FOUND</span></code> 变量将被设置，以指示是否找到了该包。</p>
+<dl class="cmake signature">
+<dt class="sig sig-object cmake" id="import">
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_pkg_config(</span></span><span class="no"><span class="pre">IMPORT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;package&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;version&gt;</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">[...]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_pkg_config.html#import" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>将 pkg-config 目标导入为 CMake <span class="target" id="index-0-prop_tgt:IMPORTED"></span><a class="reference internal" href="../prop_tgt/IMPORTED.html#prop_tgt:IMPORTED" title="IMPORTED"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED</span></code></a> 目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_pkg_config(</span><span class="no">IMPORT</span><span class="w"> </span><span class="nv">&lt;package&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">NAME</span><span class="w"> </span><span class="nv">&lt;name&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PREFIX</span><span class="w"> </span><span class="nv">&lt;prefix&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">BIND_PC_REQUIRES</span><span class="w"> </span><span class="p">&lt;</span><span class="nv">&lt;name&gt;</span><span class="p">=</span><span class="nv">&lt;target&gt;</span><span class="p">&gt;...]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">STRICTNESS</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">ENV_MODE</span><span class="w"> </span><span class="nv">&lt;mode&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_LIBDIR</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_PATH</span><span class="w"> </span><span class="nv">&lt;path&gt;...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">DISABLE_UNINSTALLED</span><span class="w"> </span><span class="nv">&lt;bool&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">PC_SYSROOT_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TOP_BUILD_DIR</span><span class="w"> </span><span class="nv">&lt;path&gt;</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>创建一个原生的 CMake <code class="docutils literal notranslate"><span class="pre">IMPORTED</span></code> 目标，可以通过 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 链接到该目标。默认情况下，这个新目标被命名为 <code class="docutils literal notranslate"><span class="pre">PkgConfig::&lt;package&gt;</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">PKGCONFIG_&lt;package&gt;_FOUND</span></code> 变量将被设置，以指示是否找到了该包。</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">名称</span></code></dt><dd><p>覆盖创建的 CMake 目标的名称为 <code class="docutils literal notranslate"><span class="pre">PkgConfig::&lt;name&gt;</span></code>。这<em>不会</em>影响 <code class="docutils literal notranslate"><span class="pre">PKGCONFIG_&lt;package&gt;_FOUND</span></code> 变量。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="cmake_pkg_config.html#">cmake_pkg_config</a><ul>
+<li><a class="reference internal" href="cmake_pkg_config.html#synopsis">概要</a></li>
+<li><a class="reference internal" href="cmake_pkg_config.html#introduction">简介</a></li>
+<li><a class="reference internal" href="cmake_pkg_config.html#pkgconfig-targets">PkgConfig 目标</a></li>
+<li><a class="reference internal" href="cmake_pkg_config.html#common-options">通用选项</a></li>
+<li><a class="reference internal" href="cmake_pkg_config.html#signatures">签名</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="cmake_path.html" title="上一章">cmake_path</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="cmake_policy.html" title="下一章">cmake_policy</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/cmake_pkg_config.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="cmake_policy.html" title="cmake_policy">下一页</a> |</li>
+        <li class="right">
+          <a href="cmake_path.html" title="cmake_path">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="cmake_pkg_config.html">cmake_pkg_config</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

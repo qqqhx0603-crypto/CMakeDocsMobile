@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CheckTypeSize — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CheckTypeSize.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CheckVariableExists" href="CheckVariableExists.html" />
+    <link rel="prev" title="CheckSymbolExists" href="CheckSymbolExists.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CheckVariableExists.html" title="CheckVariableExists" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckSymbolExists.html" title="CheckSymbolExists" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckTypeSize.html">CheckTypeSize</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="checktypesize">
+<span id="module:CheckTypeSize"></span><h1>CheckTypeSize<a class="headerlink" href="CheckTypeSize.html#checktypesize" title="链接到此标题">¶</a></h1>
+<p>此模块提供了一个用于检查 C/C++ 类型或表达式大小的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CheckTypeSize.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:check_type_size">
+<span class="sig-name descname"><span class="pre">check_type_size</span></span><a class="headerlink" href="CheckTypeSize.html#command:check_type_size" title="Link to this definition">¶</a></dt>
+<dd><p>检查 C/C++ 类型或表达式是否已存在，并确定其大小。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_type_size(</span>
+<span class="w">  </span><span class="nv">&lt;type&gt;</span>
+<span class="w">  </span><span class="nv">&lt;size-var&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">RESULT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BUILTIN_TYPES_ONLY</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">LANGUAGE</span><span class="w"> </span><span class="nv">&lt;language&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code></dt><dd><p>要检查的类型或表达式。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;</span></code></dt><dd><p>用于存储类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 大小的内部缓存变量名。该名称也用作下述变量的前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span> <span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>用于存储布尔值的内部缓存变量名，该布尔值指示类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 是否存在。如果<em>未</em>给出此参数，则命令默认定义一个名为 <code class="docutils literal notranslate"><span class="pre">HAVE_&lt;size-var&gt;</span></code> 的内部缓存变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">BUILTIN_TYPES_ONLY</span></code></dt><dd><p>如果给出此项，则检查中仅支持编译器内置类型。如果<em>未</em>给出，命令会检查常见的头文件 <code class="docutils literal notranslate"><span class="pre">&lt;sys/types.h&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;stdint.h&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;stddef.h&gt;</span></code>，并将结果保存在内部缓存变量 <code class="docutils literal notranslate"><span class="pre">HAVE_SYS_TYPES_H</span></code>、<code class="docutils literal notranslate"><span class="pre">HAVE_STDINT_H</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HAVE_STDDEF_H</span></code> 中。对于 C++ 的 <code class="docutils literal notranslate"><span class="pre">std::</span></code> 类型，也会分别检查 <code class="docutils literal notranslate"><span class="pre">&lt;cstdint&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;cstddef&gt;</span></code>，并定义 <code class="docutils literal notranslate"><span class="pre">HAVE_CSTDINT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HAVE_CSTDDEF</span></code>。该命令会自动将可用的头文件包含在类型大小检查中，从而支持对头文件中定义的类型进行检查。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LANGUAGE</span> <span class="pre">&lt;language&gt;</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;</span></code> 编译器执行检查。可选值为 <code class="docutils literal notranslate"><span class="pre">C</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CXX</span></code>。如果未指定，默认为 <code class="docutils literal notranslate"><span class="pre">C</span></code>。</p>
+</dd>
+</dl>
+<p class="rubric">结果变量</p>
+<p>结果在以下变量中报告</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;</span></code></dt><dd><p>内部缓存变量，包含以下值之一</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;size&gt;</span></code></dt><dd><p>如果类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 存在，它将具有一个非零的字节大小 <code class="docutils literal notranslate"><span class="pre">&lt;size&gt;</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">0</span></code></dt><dd><p>当类型的大小取决于架构时（例如当 <span class="target" id="index-0-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 包含多个架构时），该值为 <code class="docutils literal notranslate"><span class="pre">0</span></code>。在这种情况下，还会定义 <code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;_KEYS</span></code> 变量，且 <code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;_CODE</span></code> 变量包含如下所述的预处理器测试映射。</p>
+</dd>
+<dt>"" (空字符串)</dt><dd><p>当类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 不存在时。</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HAVE_&lt;size-var&gt;</span></code></dt><dd><p>内部缓存变量，保存一个布尔值，指示类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 是否存在。当未使用 <code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 参数时，定义此变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 4.2 中添加。</span></p>
+</div>
+<p>当使用 <code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 参数时定义的内部缓存变量。它保存一个布尔值，指示类型或表达式 <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> 是否存在（与 <code class="docutils literal notranslate"><span class="pre">HAVE_&lt;size-var&gt;</span></code> 的值相同）。在这种情况下，不会定义 <code class="docutils literal notranslate"><span class="pre">HAVE_&lt;size-var&gt;</span></code> 变量。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;_CODE</span></code></dt><dd><p>CMake 变量，保存用于定义宏 <code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;</span></code> 为类型大小的预处理器代码；如果类型不存在，则宏保持未定义状态。</p>
+<p>当类型具有架构相关大小时（<code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;</span></code> 值为 <code class="docutils literal notranslate"><span class="pre">0</span></code>），此变量包含从每个架构宏到相应类型大小的预处理器测试映射。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;_KEYS</span></code></dt><dd><p>仅当类型具有架构相关大小（<code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;</span></code> 值为 <code class="docutils literal notranslate"><span class="pre">0</span></code>）时定义的 CMake 变量，包含架构宏的列表。每个键的值存储在 <code class="docutils literal notranslate"><span class="pre">&lt;size-var&gt;-&lt;key&gt;</span></code> 变量中。</p>
+</dd>
+</dl>
+<p class="rubric">影响检查的变量</p>
+<p>在调用此命令之前，可以设置以下变量来修改检查的运行方式</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_FLAGS</span></code></dt><dd><p>以空格分隔的字符串，用于传递给编译器的额外标志。<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>在此处无效。<span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS</span></code></a> 及其关联的配置特定变量 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_LANG_FLAGS_CONFIG" title="CMAKE_LANG_FLAGS_CONFIG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_FLAGS_&lt;CONFIG&gt;</span></code></a> 的内容会自动在这些变量之前添加到编译器命令中。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_DEFINITIONS</span></code></dt><dd><p>分号分隔的编译器定义列表，每个定义的形式为 <code class="docutils literal notranslate"><span class="pre">-DFOO</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-DFOO=bar</span></code>。还将自动添加对检查命令的 result variable 参数指定的名称的定义。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_INCLUDES</span></code></dt><dd><p>要传递给编译器的头文件搜索路径的分号分隔列表。这些将是唯一使用的头文件搜索路径；将忽略 <span class="target" id="index-0-prop_dir:INCLUDE_DIRECTORIES"></span><a class="reference internal" href="../prop_dir/INCLUDE_DIRECTORIES.html#prop_dir:INCLUDE_DIRECTORIES" title="INCLUDE_DIRECTORIES"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">INCLUDE_DIRECTORIES</span></code></a> 目录属性的内容。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_OPTIONS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>要添加到链接命令的选项的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LINK_DIRECTORIES</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>要传递给链接器的库搜索路径的分号分隔列表（有关更多详细信息，请参阅 <span class="target" id="index-2-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+</dd>
+</dl>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_QUIET</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>如果此变量评估为布尔真值，则与检查关联的所有状态消息都将被抑制。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_EXTRA_INCLUDE_FILES</span></code></dt><dd><p>执行检查时要包含的额外头文件的<a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a>。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CheckTypeSize.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>考虑以下代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+
+<span class="c"># Check for size of long.</span>
+<span class="nf">check_type_size(</span><span class="nb">long</span><span class="w"> </span><span class="no">SIZEOF_LONG</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="s">"HAVE_SIZEOF_LONG: ${HAVE_SIZEOF_LONG}"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"SIZEOF_LONG: ${SIZEOF_LONG}"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"SIZEOF_LONG_CODE: ${SIZEOF_LONG_CODE}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>在 64 位架构上，输出可能如下所示</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HAVE_SIZEOF_LONG: TRUE
+SIZEOF_LONG: 8
+SIZEOF_LONG_CODE: #define SIZEOF_LONG 8
+</pre></div>
+</div>
+<p>在 Apple 平台上，当 <span class="target" id="index-1-variable:CMAKE_OSX_ARCHITECTURES"></span><a class="reference internal" href="../variable/CMAKE_OSX_ARCHITECTURES.html#variable:CMAKE_OSX_ARCHITECTURES" title="CMAKE_OSX_ARCHITECTURES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_OSX_ARCHITECTURES</span></code></a> 包含多个架构时，类型可能具有架构相关的大小。例如，使用以下代码</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+
+<span class="nf">check_type_size(</span><span class="nb">long</span><span class="w"> </span><span class="no">SIZEOF_LONG</span><span class="nf">)</span>
+
+<span class="nf">message(</span><span class="s">"HAVE_SIZEOF_LONG: ${HAVE_SIZEOF_LONG}"</span><span class="nf">)</span>
+<span class="nf">message(</span><span class="s">"SIZEOF_LONG: ${SIZEOF_LONG}"</span><span class="nf">)</span>
+<span class="nf">foreach(</span><span class="nb">key</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="no">SIZEOF_LONG_KEYS</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="s">"key: ${key}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">message(</span><span class="s">"value: ${SIZEOF_LONG-${key}}"</span><span class="nf">)</span>
+<span class="nf">endforeach()</span>
+<span class="nf">message(</span><span class="s">"SIZEOF_LONG_CODE:\n${SIZEOF_LONG_CODE}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>结果可能是</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HAVE_SIZEOF_LONG: TRUE
+SIZEOF_LONG: 0
+key: __i386
+value: 4
+key: __x86_64
+value: 8
+SIZEOF_LONG_CODE:
+#if defined(__i386)
+# define SIZEOF_LONG 4
+#elif defined(__x86_64)
+# define SIZEOF_LONG 8
+#else
+# error SIZEOF_LONG unknown
+#endif
+</pre></div>
+</div>
+<section id="example-configuration-header">
+<h3>示例：配置头文件<a class="headerlink" href="CheckTypeSize.html#example-configuration-header" title="链接到此标题">¶</a></h3>
+<p>下一个示例演示了如何在配置头文件中使用结果变量</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+<span class="nf">check_type_size(</span><span class="nb">long</span><span class="w"> </span><span class="no">SIZEOF_LONG</span><span class="nf">)</span>
+
+<span class="nf">configure_file(</span><span class="nb">config.h.in</span><span class="w"> </span><span class="nb">config.h</span><span class="w"> </span><span class="no">@ONLY</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">config.h.in</span></code></span><a class="headerlink" href="CheckTypeSize.html#id1" title="Link to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Define whether the type 'long' exists. */</span>
+<span class="cp">#cmakedefine HAVE_SIZEOF_LONG</span>
+
+<span class="cm">/* The size of 'long', as computed by sizeof. */</span>
+<span class="err">@</span><span class="n">SIZEOF_LONG_CODE</span><span class="err">@</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="example-checking-complex-expressions">
+<h3>示例：检查复杂表达式<a class="headerlink" href="CheckTypeSize.html#example-checking-complex-expressions" title="链接到此标题">¶</a></h3>
+<p>尽管该模块名称如此，但它也可以用于确定更复杂表达式的大小。例如，要检查结构体成员的大小</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+<span class="nf">check_type_size(</span><span class="s">"((struct something*)0)-&gt;member"</span><span class="w"> </span><span class="no">SIZEOF_MEMBER</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-isolated-check">
+<h3>示例：独立检查<a class="headerlink" href="CheckTypeSize.html#example-isolated-check" title="此标题的链接">¶</a></h3>
+<p>在以下示例中，检查是使用 <code class="docutils literal notranslate"><span class="pre">CMAKE_EXTRA_INCLUDE_FILES</span></code> 变量和 <span class="target" id="index-0-module:CMakePushCheckState"></span><a class="reference internal" href="CMakePushCheckState.html#module:CMakePushCheckState" title="CMakePushCheckState"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePushCheckState</span></code></a> 模块临时修改额外头文件后执行的。检查结果存储在 <code class="docutils literal notranslate"><span class="pre">HAVE_SIZEOF_UNION_SEMUN</span></code> 中，大小存储在 <code class="docutils literal notranslate"><span class="pre">SIZEOF_UNION_SEMUN</span></code> 内部缓存变量中。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">CMakePushCheckState</span><span class="nf">)</span>
+
+<span class="nf">cmake_push_check_state(</span><span class="no">RESET</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">CMAKE_EXTRA_INCLUDE_FILES</span><span class="w"> </span><span class="na">sys/types.h</span><span class="w"> </span><span class="na">sys/ipc.h</span><span class="w"> </span><span class="na">sys/sem.h</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">check_type_size(</span><span class="s">"union semun"</span><span class="w"> </span><span class="no">SIZEOF_UNION_SEMUN</span><span class="nf">)</span>
+<span class="nf">cmake_pop_check_state()</span>
+</pre></div>
+</div>
+</section>
+<section id="example-customizing-result-variable">
+<h3>示例：自定义结果变量<a class="headerlink" href="CheckTypeSize.html#example-customizing-result-variable" title="链接到此标题">¶</a></h3>
+<p>自 CMake 4.2 起，可以使用 <code class="docutils literal notranslate"><span class="pre">RESULT_VARIABLE</span></code> 参数自定义 <code class="docutils literal notranslate"><span class="pre">HAVE_&lt;size-var&gt;</span></code> 变量名称。在以下示例中，此模块用于检查 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">flock</span></code> 是否存在，并将结果存储在 <code class="docutils literal notranslate"><span class="pre">MyProj_HAVE_STRUCT_FLOCK</span></code> 内部缓存变量中</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">4.2</span><span class="nf">)</span>
+
+<span class="c"># ...</span>
+
+<span class="nf">include(</span><span class="nb">CheckTypeSize</span><span class="nf">)</span>
+<span class="nf">include(</span><span class="nb">CMakePushCheckState</span><span class="nf">)</span>
+
+<span class="nf">cmake_push_check_state(</span><span class="no">RESET</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">set(</span><span class="no">CMAKE_EXTRA_INCLUDE_FILES</span><span class="w"> </span><span class="s">"fcntl.h"</span><span class="nf">)</span>
+
+<span class="w">  </span><span class="nf">check_type_size(</span>
+<span class="w">    </span><span class="s">"struct flock"</span>
+<span class="w">    </span><span class="nb">MyProj_SIZEOF_STRUCT_FLOCK</span>
+<span class="w">    </span><span class="no">RESULT_VARIABLE</span><span class="w"> </span><span class="nb">MyProj_HAVE_STRUCT_FLOCK</span>
+<span class="w">  </span><span class="nf">)</span>
+<span class="nf">cmake_pop_check_state()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CheckTypeSize.html#">CheckTypeSize</a><ul>
+<li><a class="reference internal" href="CheckTypeSize.html#commands">命令</a></li>
+<li><a class="reference internal" href="CheckTypeSize.html#examples">示例</a><ul>
+<li><a class="reference internal" href="CheckTypeSize.html#example-configuration-header">示例：配置头文件</a></li>
+<li><a class="reference internal" href="CheckTypeSize.html#example-checking-complex-expressions">示例：检查复杂表达式</a></li>
+<li><a class="reference internal" href="CheckTypeSize.html#example-isolated-check">示例：独立检查</a></li>
+<li><a class="reference internal" href="CheckTypeSize.html#example-customizing-result-variable">示例：自定义结果变量</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CheckSymbolExists.html" title="上一章">CheckSymbolExists</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CheckVariableExists.html" title="下一章">CheckVariableExists</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CheckTypeSize.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CheckVariableExists.html" title="CheckVariableExists">下一页</a> |</li>
+        <li class="right">
+          <a href="CheckSymbolExists.html" title="CheckSymbolExists">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CheckTypeSize.html">CheckTypeSize</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CPack DragNDrop 生成器 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="dmg.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CPack External Generator" href="external.html" />
+    <link rel="prev" title="CPack DEB Generator" href="deb.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="external.html" title="CPack External Generator" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="deb.html" title="CPack DEB Generator" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html" accesskey="U">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="dmg.html">CPack DragNDrop 生成器</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cpack-dragndrop-generator">
+<span id="cpack_gen:CPack DragNDrop Generator"></span><h1>CPack DragNDrop 生成器<a class="headerlink" href="dmg.html#cpack-dragndrop-generator" title="链接到此标题">¶</a></h1>
+<p>DragNDrop CPack 生成器（macOS）用于创建 DMG 镜像。</p>
+<section id="variables-specific-to-cpack-dragndrop-generator">
+<h2>CPack DragNDrop 生成器的特定变量<a class="headerlink" href="dmg.html#variables-specific-to-cpack-dragndrop-generator" title="链接到此标题">¶</a></h2>
+<p>以下变量是 macOS 上构建的 DragNDrop 安装程序所特有的</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_VOLUME_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_VOLUME_NAME</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_VOLUME_NAME" title="Link to this definition">¶</a></dt>
+<dd><p>生成的磁盘镜像的卷名称。</p>
+<dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p><span class="target" id="index-0-variable:CPACK_PACKAGE_FILE_NAME"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_FILE_NAME" title="CPACK_PACKAGE_FILE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_FILE_NAME</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_FORMAT">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_FORMAT</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_FORMAT" title="Link to this definition">¶</a></dt>
+<dd><p>磁盘镜像格式。</p>
+<dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">UDZO</span></code></p>
+</dd>
+</dl>
+<p>常用值包括 <code class="docutils literal notranslate"><span class="pre">UDRO</span></code>（UDIF 只读）、<code class="docutils literal notranslate"><span class="pre">UDZO</span></code>（UDIF zlib 压缩）或 <code class="docutils literal notranslate"><span class="pre">UDBZ</span></code>（UDIF bzip2 压缩）。有关其他可用格式的更多信息，请参考 <code class="docutils literal notranslate"><span class="pre">hdiutil(1)</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_DS_STORE">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_DS_STORE</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_DS_STORE" title="Link to this definition">¶</a></dt>
+<dd><p>自定义 <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> 文件的路径。此 <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> 文件可用于指定 Finder 窗口的位置/几何形状和布局（例如隐藏工具栏、图标摆放位置等）。此文件必须由 Finder（手动或通过 AppleScript）使用普通文件夹生成，然后从中提取出 <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> 文件。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_DS_STORE_SETUP_SCRIPT">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_DS_STORE_SETUP_SCRIPT</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_DS_STORE_SETUP_SCRIPT" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增。</span></p>
+</div>
+<p>自定义 AppleScript 文件的路径。该 AppleScript 用于生成一个 <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> 文件，该文件指定了 Finder 窗口的位置/几何形状和布局（例如隐藏工具栏、图标摆放位置等）。通过指定自定义 AppleScript，无需使用 <code class="docutils literal notranslate"><span class="pre">CPACK_DMG_DS_STORE</span></code>，因为 AppleScript 生成的 <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> 将被打包。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_BACKGROUND_IMAGE">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_BACKGROUND_IMAGE</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_BACKGROUND_IMAGE" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>用作背景的图像文件的路径。此文件将被复制到 <code class="docutils literal notranslate"><span class="pre">.background</span></code>/<code class="docutils literal notranslate"><span class="pre">background.&lt;ext&gt;</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;ext&gt;</span></code> 是原始图像文件的扩展名。背景图像会在执行 <code class="docutils literal notranslate"><span class="pre">CPACK_DMG_DS_STORE_SETUP_SCRIPT</span></code> 或安装 <code class="docutils literal notranslate"><span class="pre">CPACK_DMG_DS_STORE</span></code> 之前被安装到镜像中。默认情况下不设置背景图像。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.6 版本新增。</span></p>
+</div>
+<p>默认行为是在 DMG 中包含一个指向 <code class="docutils literal notranslate"><span class="pre">/Applications</span></code> 的符号链接。将此选项设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 可避免添加该符号链接。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_SLA_USE_RESOURCE_FILE_LICENSE">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_SLA_USE_RESOURCE_FILE_LICENSE</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_SLA_USE_RESOURCE_FILE_LICENSE" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.23 中添加。</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">关闭</span></code></p>
+</dd>
+</dl>
+<p>控制当 <span class="target" id="index-0-variable:CPACK_RESOURCE_FILE_LICENSE"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_RESOURCE_FILE_LICENSE" title="CPACK_RESOURCE_FILE_LICENSE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RESOURCE_FILE_LICENSE</span></code></a> 被设置为非默认值时，是否将其用作挂载 DMG 时提供的许可协议。如果未设置 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_DMG_SLA_USE_RESOURCE_FILE_LICENSE</span></code>，<span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack(1)</span></code></a> 默认为关闭。</p>
+<p>在通过 <span class="target" id="index-0-module:CPack"></span><a class="reference internal" href="../module/CPack.html#module:CPack" title="CPack"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPack</span></code></a> 模块生成 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 的 CMake 项目中，必须由项目显式启用 <code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_DMG_SLA_USE_RESOURCE_FILE_LICENSE</span></code> 才能激活 SLA。参见策略 <span class="target" id="index-0-policy:CMP0133"></span><a class="reference internal" href="../policy/CMP0133.html#policy:CMP0133" title="CMP0133"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0133</span></code></a>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此选项的添加是为了响应 macOS 12.0 弃用 <code class="docutils literal notranslate"><span class="pre">hdiutil</span> <span class="pre">udifrez</span></code> 命令，使其使用变为可选。CPack 3.22 及以下版本如果设置了非默认值，总是会使用 <span class="target" id="index-1-variable:CPACK_RESOURCE_FILE_LICENSE"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_RESOURCE_FILE_LICENSE" title="CPACK_RESOURCE_FILE_LICENSE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RESOURCE_FILE_LICENSE</span></code></a> 作为 DMG 许可。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_SLA_DIR">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_SLA_DIR</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_SLA_DIR" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增。</span></p>
+</div>
+<p>存储不同语言的许可协议和菜单文件的目录。设置此变量会使 CPack 为 <span class="target" id="index-0-variable:CPACK_DMG_SLA_LANGUAGES"></span><a class="reference internal" href="dmg.html#variable:CPACK_DMG_SLA_LANGUAGES" title="CPACK_DMG_SLA_LANGUAGES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_DMG_SLA_LANGUAGES</span></code></a> 中定义的每种语言查找 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.menu.txt</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.license.txt</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.license.rtf</span></code> 文件。如果同时设置了此变量和 <span class="target" id="index-2-variable:CPACK_RESOURCE_FILE_LICENSE"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_RESOURCE_FILE_LICENSE" title="CPACK_RESOURCE_FILE_LICENSE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_RESOURCE_FILE_LICENSE</span></code></a>，CPack 将仅查找菜单文件，并对所有语言使用相同的许可文件。如果 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.license.txt</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.license.rtf</span></code> 同时存在，将使用 <code class="docutils literal notranslate"><span class="pre">.txt</span></code> 文件。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.17 新增: </span>RTF 支持。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_SLA_LANGUAGES">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_SLA_LANGUAGES</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_SLA_LANGUAGES" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.5 版本新增。</span></p>
+</div>
+<p>挂载生成的 DMG 时提供许可协议的语言。菜单文件由 9 行文本组成。第一行是语言本身的名称，大写，英文（例如 German）。其他行是以下字符串的翻译：</p>
+<ul class="simple">
+<li><p>Agree（同意）</p></li>
+<li><p>Disagree（不同意）</p></li>
+<li><p>Print（打印）</p></li>
+<li><p>Save...（保存...）</p></li>
+<li><p>You agree to the terms of the License Agreement when you click the "Agree" button.（点击“同意”按钮即表示您同意许可协议条款。）</p></li>
+<li><p>Software License Agreement（软件许可协议）</p></li>
+<li><p>This text cannot be saved. The disk may be full or locked, or the file may be locked.（无法保存此文本。磁盘可能已满或被锁定，或者文件被锁定。）</p></li>
+<li><p>Unable to print. Make sure you have selected a printer.（无法打印。请确保已选择打印机。）</p></li>
+</ul>
+<p>对于此列表中的每种语言，CPack 将尝试在 <span class="target" id="index-0-variable:CPACK_DMG_SLA_DIR"></span><a class="reference internal" href="dmg.html#variable:CPACK_DMG_SLA_DIR" title="CPACK_DMG_SLA_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_DMG_SLA_DIR</span></code></a> 变量指定的目录中查找 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.menu.txt</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.license.txt</span></code> 文件。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_&lt;component&gt;_FILE_NAME">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_&lt;component&gt;_FILE_NAME</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_<component>_FILE_NAME" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 打包为单独的 DMG 文件时（<span class="target" id="index-0-variable:CPACK_COMPONENTS_GROUPING"></span><a class="reference internal" href="../module/CPackComponent.html#variable:CPACK_COMPONENTS_GROUPING" title="CPACK_COMPONENTS_GROUPING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_COMPONENTS_GROUPING</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">IGNORE</span></code>）的文件名。</p>
+<dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_FILE_NAME-&lt;component&gt;</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_DMG_FILESYSTEM">
+<span class="sig-name descname"><span class="pre">CPACK_DMG_FILESYSTEM</span></span><a class="headerlink" href="dmg.html#variable:CPACK_DMG_FILESYSTEM" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.21 版本新增。</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">默认值<span class="colon">：</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">HFS+</span></code></p>
+</dd>
+</dl>
+<p>文件系统格式。常用值包括 <code class="docutils literal notranslate"><span class="pre">APFS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">HFS+</span></code>。有关受支持格式的完整列表，请参见 <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">hdiutil</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMMAND_HDIUTIL">
+<span class="sig-name descname"><span class="pre">CPACK_COMMAND_HDIUTIL</span></span><a class="headerlink" href="dmg.html#variable:CPACK_COMMAND_HDIUTIL" title="Link to this definition">¶</a></dt>
+<dd><p>用于在 macOS 上操作磁盘镜像文件的 <code class="docutils literal notranslate"><span class="pre">hdiutil(1)</span></code> 命令的路径。此变量可用于覆盖自动检测到的命令（或者在自动检测失败时指定其位置）。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMMAND_SETFILE">
+<span class="sig-name descname"><span class="pre">CPACK_COMMAND_SETFILE</span></span><a class="headerlink" href="dmg.html#variable:CPACK_COMMAND_SETFILE" title="Link to this definition">¶</a></dt>
+<dd><p>用于在 macOS 上设置文件和目录扩展属性的 <code class="docutils literal notranslate"><span class="pre">SetFile(1)</span></code> 命令的路径。此变量可用于覆盖自动检测到的命令（或者在自动检测失败时指定其位置）。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMMAND_REZ">
+<span class="sig-name descname"><span class="pre">CPACK_COMMAND_REZ</span></span><a class="headerlink" href="dmg.html#variable:CPACK_COMMAND_REZ" title="Link to this definition">¶</a></dt>
+<dd><p>用于在 macOS 上编译资源的 <code class="docutils literal notranslate"><span class="pre">Rez(1)</span></code> 命令的路径。此变量可用于覆盖自动检测到的命令（或者在自动检测失败时指定其位置）。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:CPACK_COMMAND_SYNC">
+<span class="sig-name descname"><span class="pre">CPACK_COMMAND_SYNC</span></span><a class="headerlink" href="dmg.html#variable:CPACK_COMMAND_SYNC" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">4.2 版本新增。</span></p>
+</div>
+<p>用于在 macOS 上强制完成待处理磁盘写入的 <code class="docutils literal notranslate"><span class="pre">sync(8)</span></code> 命令路径。此变量可用于覆盖自动检测到的命令，或者在自动检测失败时指定其位置。</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="dmg.html#">CPack DragNDrop 生成器</a><ul>
+<li><a class="reference internal" href="dmg.html#variables-specific-to-cpack-dragndrop-generator">CPack DragNDrop 生成器的特定变量</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="deb.html" title="上一章">CPack DEB 生成器</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="external.html" title="下一章">CPack 外部生成器</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/cpack_gen/dmg.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="external.html" title="CPack External Generator">下一页</a> |</li>
+        <li class="right">
+          <a href="deb.html" title="CPack DEB Generator">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cpack-generators.7.html">cpack-generators(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="dmg.html">CPack DragNDrop 生成器</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

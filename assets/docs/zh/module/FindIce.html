@@ -1,0 +1,517 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindIce — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindIce.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindIconv" href="FindIconv.html" />
+    <link rel="prev" title="FindHTMLHelp" href="FindHTMLHelp.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindIconv.html" title="FindIconv" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindHTMLHelp.html" title="FindHTMLHelp" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindIce.html">FindIce</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findice">
+<span id="module:FindIce"></span><h1>FindIce<a class="headerlink" href="FindIce.html#findice" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.1 中新增。</span></p>
+</div>
+<p>查找 Internet Communication Engine (Ice) 程序、库和数据文件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Ice</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>Ice 是由 ZeroC 开发的开源远程过程调用 (RPC) 框架，为开发网络应用程序的各种语言提供了 SDK。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.4 新增: </span>组件的导入目标以及许多新的 <code class="docutils literal notranslate"><span class="pre">*_EXECUTABLE</span></code> 变量。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.7 版本新增：</span> 调试和发布库变体分别查找。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.10 新增: </span>Ice 3.7 支持，包括新组件、程序和 Nuget 包。</p>
+</div>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindIce.html#components" title="此标题的链接">¶</a></h2>
+<p>Ice 由多个库和程序（可执行文件）组成。此查找模块支持组件（可使用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令指定），以便在 CMake 项目中选择特定的 Ice 库进行使用。无论指定了哪些组件，Ice 安装提供的可执行文件总是会自动搜索。</p>
+<p>可用组件列表取决于所使用的 Ice 版本。要成功找到 Ice，必须至少指定一个组件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Ice</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>支持的组件包括</p>
+<table class="hlist"><tbody><tr><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Freeze</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Glacier2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ice</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceBox</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceDB</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceDiscovery</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceGrid</span></code></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IceLocatorDiscovery</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IcePatch</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceSSL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceStorm</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceUtil</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceXML</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Slice</span></code></p></li>
+</ul>
+</td></tr></tbody></table>
+<p>Ice 3.7 及更高版本还包括 C++11 特有的组件</p>
+<table class="hlist"><tbody><tr><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Glacier2++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ice++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceBox++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceDiscovery++11</span></code></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IceGrid++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceLocatorDiscovery++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceSSL++11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IceStorm++11</span></code></p></li>
+</ul>
+</td></tr></tbody></table>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindIce.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice::&lt;component&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p>封装指定 Ice 组件（库）使用需求的目标，如果找到该组件则可用。<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 的大小写应与上述列表一致。例如，使用 <code class="docutils literal notranslate"><span class="pre">Ice::Glacier2</span></code> 表示 Ice Glacier2 库，使用 <code class="docutils literal notranslate"><span class="pre">Ice::Ice++11</span></code> 表示 Ice++11 库，等等。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindIce.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）Ice 主要程序、库以及所有请求的组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_VERSION</span></code></dt><dd><p>所找到的 Ice 发行版本。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_INCLUDE_DIRS</span></code></dt><dd><p>使用 Ice 所需的包含头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_LIBRARIES</span></code></dt><dd><p>使用 Ice 时需要链接的组件库。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE_DIRS</span></code></dt><dd><p>包含 Slice（Ice 规范语言）接口定义（<code class="docutils literal notranslate"><span class="pre">*.ice</span></code> 文件）的数据目录。</p>
+</dd>
+</dl>
+<p>Ice 组件库存储在</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_&lt;COMPONENT&gt;_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了指定的 Ice 组件。<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式书写。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_&lt;COMPONENT&gt;_LIBRARIES</span></code></dt><dd><p>由指定 Ice 组件提供的库。<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式书写。</p>
+</dd>
+</dl>
+<p>Slice 程序存储在</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2CONFLUENCE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">slice2confluence</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2CPP_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2cpp</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2CS_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2cs</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2FREEZEJ_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2freezej</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2FREEZE_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2freeze</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2HTML_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2html</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2JAVA_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2java</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2JS_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">slice2js</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2MATLAB_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">slice2matlab</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2OBJC_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">slice2objc</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2PHP_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2php</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2PY_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2py</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE2RB_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">slice2rb</span></code> 可执行文件的路径。</p>
+</dd>
+</dl>
+<p>Ice 程序存储在</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_GLACIER2ROUTER_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">glacier2router</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBOX_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icebox</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBOX++11_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icebox++11</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBOXADMIN_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">iceboxadmin</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBOXD_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">iceboxd</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBOXNET_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">iceboxnet</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEBRIDGE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icebridge</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDADMIN_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegridadmin</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDDB_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegriddb</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDNODE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegridnode</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDNODED_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegridnoded</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDREGISTRY_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegridregistry</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEGRIDREGISTRYD_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icegridregistryd</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEPATCH2CALC_EXECUTABLE</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">icepatch2calc</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEPATCH2CLIENT_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icepatch2client</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICEPATCH2SERVER_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icepatch2server</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICESERVICEINSTALL_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">iceserviceinstall</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICESTORMADMIN_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icestormadmin</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICESTORMDB_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icestormdb</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_ICESTORMMIGRATE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">icestormmigrate</span></code> 可执行文件的路径。</p>
+</dd>
+</dl>
+<p>Ice 数据库程序存储在以下变量中（在 Windows 上，它们包含在 Ice 安装中；在其他平台上，它们通常可通过标准的 Berkeley DB 包获得）</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_ARCHIVE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_archive</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_CHECKPOINT_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_checkpoint</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_DEADLOCK_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_deadlock</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_DUMP_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_dump</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_HOTBACKUP_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_hotbackup</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_LOAD_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_load</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_LOG_VERIFY_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_log_verify</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_PRINTLOG_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_printlog</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_RECOVER_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_recover</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_STAT_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_stat</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_TUNER_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_tuner</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_UPGRADE_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_upgrade</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DB_VERIFY_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">db_verify</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DUMPDB_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">dumpdb</span></code> 可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_TRANSFORMDB_EXECUTABLE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">transformdb</span></code> 可执行文件的路径。</p>
+</dd>
+</dl>
+</section>
+<section id="cache-variables">
+<h2>缓存变量<a class="headerlink" href="FindIce.html#cache-variables" title="此标题的链接">¶</a></h2>
+<p>以下缓存变量也可以设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_&lt;PROGRAM&gt;_EXECUTABLE</span></code></dt><dd><p>指定 <code class="docutils literal notranslate"><span class="pre">&lt;PROGRAM&gt;</span></code> 可执行文件的路径；<code class="docutils literal notranslate"><span class="pre">&lt;PROGRAM&gt;</span></code> 是上述可执行文件结果变量中列出的 Ice 程序的大写名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_INCLUDE_DIR</span></code></dt><dd><p>包含 Ice 头文件的目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_SLICE_DIR</span></code></dt><dd><p>包含 Slice 接口定义的数据目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_&lt;COMPONENT&gt;_LIBRARY</span></code></dt><dd><p>指定组件的库路径。<code class="docutils literal notranslate"><span class="pre">&lt;COMPONENT&gt;</span></code> 应以大写形式书写。</p>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindIce.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_HOME</span></code></dt><dd><p>将此 CMake 变量设置为 Ice 安装的根目录，以便在自定义位置搜索 Ice。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在 Windows 上，Ice 3.7.0 及更高版本通过 NuGet 包管理器提供库。将使用 <span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 搜索合适的 NuGet 包，或者可以将 <code class="docutils literal notranslate"><span class="pre">Ice_HOME</span></code> 设置为特定 NuGet 包的位置以限制搜索。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ICE_HOME</span></code></dt><dd><p>环境变量（大写）也可以设置为 Ice 安装的根目录；<code class="docutils literal notranslate"><span class="pre">Ice_HOME</span></code> CMake 变量具有优先权。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ice_DEBUG</span></code></dt><dd><p>将此变量设置为布尔值 true 以启用此模块的调试输出。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在大多数情况下，无需设置上述任何变量，除非安装了多个 Ice 版本且需要特定版本。在 Windows 上，通常使用注册表找到最新版本。在类 Unix 系统上，程序、头文件和库通常在标准位置找到，尽管 <code class="docutils literal notranslate"><span class="pre">Ice_SLICE_DIRS</span></code> 可能无法自动检测到（会搜索通常已知的位置）。所有其他变量均基于 <code class="docutils literal notranslate"><span class="pre">Ice_HOME</span></code>（如果已设置）的值作为默认值。</p>
+<p>也可以设置 <code class="docutils literal notranslate"><span class="pre">Ice_HOME</span></code> 同时有选择地覆盖单个组件的特定位置；例如，在较新版本的 Visual Studio 中，如果启发式方法不足以识别特定 Visual Studio 版本所需的正确程序和库，则可能需要这样做。</p>
+</div>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindIce.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 Ice 核心库并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Ice</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Ice</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Ice</span><span class="o">::</span><span class="nb">Ice</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 Ice 核心库和 IceSSL 库，并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Ice</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Ice</span><span class="w"> </span><span class="nb">IceSSL</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Ice</span><span class="o">::</span><span class="nb">Ice</span><span class="w"> </span><span class="nb">Ice</span><span class="o">::</span><span class="nb">IceSSL</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将 Ice 核心库作为必需组件查找，将 Ice Freeze 库作为可选组件查找</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Ice</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Ice</span><span class="w"> </span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nb">Freeze</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindIce.html#">FindIce</a><ul>
+<li><a class="reference internal" href="FindIce.html#components">组件</a></li>
+<li><a class="reference internal" href="FindIce.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindIce.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindIce.html#cache-variables">缓存变量</a></li>
+<li><a class="reference internal" href="FindIce.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindIce.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindHTMLHelp.html" title="上一章">FindHTMLHelp</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindIconv.html" title="下一章">FindIconv</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindIce.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindIconv.html" title="FindIconv">下一页</a> |</li>
+        <li class="right">
+          <a href="FindHTMLHelp.html" title="FindHTMLHelp">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindIce.html">FindIce</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

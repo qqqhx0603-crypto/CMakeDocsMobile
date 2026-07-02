@@ -1,0 +1,478 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>第 10 步：查找依赖项 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="Finding&#32;Dependencies.html" />
+    <link rel="icon" href="../../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Step 11: Miscellaneous Features" href="Miscellaneous&#32;Features.html" />
+    <link rel="prev" title="Step 9: Installation Commands and Concepts" href="Installation&#32;Commands&#32;and&#32;Concepts.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="Miscellaneous&#32;Features.html" title="Step 11: Miscellaneous Features" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="Step 9: Installation Commands and Concepts" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Finding&#32;Dependencies.html">第 10 步：查找依赖项</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="step-10-finding-dependencies">
+<span id="guide:tutorial/Finding Dependencies"></span><h1>第 10 步：查找依赖项<a class="headerlink" href="Finding&#32;Dependencies.html#step-10-finding-dependencies" title="链接到此标题">¶</a></h1>
+<p>在 C/C++ 软件开发中，管理构建依赖项始终是现代开发者面临的最高难度挑战之一。CMake 提供了一套广泛的工具集，用于发现和验证各种类型的依赖项。</p>
+<p>然而，对于打包正确的项目，无需使用这些高级工具。如今许多流行的库和工具项目都能生成正确的安装树（类似我们在 <code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">9</span></code> 中设置的那样），这些安装树很容易集成到 CMake 中。</p>
+<p>在这种理想情况下，我们只需要使用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 即可将依赖项导入到我们的项目中。</p>
+<section id="background">
+<h2>背景<a class="headerlink" href="Finding&#32;Dependencies.html#background" title="链接到此标题">¶</a></h2>
+<p>CMake 中有五个用于发现依赖项的主要命令，前四个是：</p>
+<blockquote>
+<div><dl class="simple">
+<dt><span class="target" id="index-0-command:find_file"></span><a class="reference internal" href="../../command/find_file.html#command:find_file" title="find_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_file()</span></code></a></dt><dd><p>查找并报告指定文件的完整路径，这是 <code class="docutils literal notranslate"><span class="pre">find</span></code> 命令中最灵活的一个。</p>
+</dd>
+<dt><span class="target" id="index-0-command:find_library"></span><a class="reference internal" href="../../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a></dt><dd><p>查找并报告静态库或共享对象的完整路径，适用于 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>。</p>
+</dd>
+<dt><span class="target" id="index-0-command:find_path"></span><a class="reference internal" href="../../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a></dt><dd><p>查找并报告<em>包含</em>某个文件的目录的完整路径。通常与 <span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="../../command/target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 结合使用来查找头文件。</p>
+</dd>
+<dt><span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a></dt><dd><p>查找并报告程序的可调用名称或路径。通常与 <span class="target" id="index-0-command:execute_process"></span><a class="reference internal" href="../../command/execute_process.html#command:execute_process" title="execute_process"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">execute_process()</span></code></a> 或 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 结合使用。</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>这些命令应被视为“备用”命令，仅当主要的查找命令不适用时才使用。主要的查找命令是 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。它利用全面的内置启发式算法和上游提供的打包文件，为所需的依赖项提供最佳接口。</p>
+</section>
+<section id="exercise-1-using-find-package">
+<h2>练习 1 - 使用 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code><a class="headerlink" href="Finding&#32;Dependencies.html#exercise-1-using-find-package" title="链接到此标题">¶</a></h2>
+<p><span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 使用的搜索路径和行为在文档中有完整描述，但过于详细，此处不赘述。简而言之，它会在众所周知的、鲜为人知的、模糊的和用户提供的位置进行搜索，试图找到满足其给定要求的软件包。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">ForeignLibrary</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>使用 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的最佳方式是在构建前确保所有依赖项都已安装到一个单一的安装树中，然后通过 <span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 变量让 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 获知该安装树的位置。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>构建和安装依赖项本身可能是一项巨大的工作。虽然本教程将通过示例来演示，但<strong>强烈</strong>建议使用包管理器来进行项目本地的依赖项管理。</p>
+</div>
+<p><span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 除了要查找的包之外，还接受多个参数。最值得注意的是：</p>
+<ul>
+<li><p>位置参数 <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code>，用于描述要根据包的配置文件进行检查的版本。应谨慎使用此参数，最好通过包管理器来控制正在安装的依赖项版本，而不是因无关紧要的版本更新而导致构建失败。</p>
+<p>如果已知包依赖于旧版本的依赖项，则可能适合使用版本要求。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 用于非可选的依赖项，如果找不到，应该中止构建。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 用于可选的依赖项，找不到时无需向用户报告任何信息。</p></li>
+</ul>
+<p><span class="target" id="index-6-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 通过 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_FOUND</span></code> 变量报告其结果，该变量会被设置为 true 或 false，分别表示找到和未找到包。</p>
+<section id="goal">
+<h3>目标<a class="headerlink" href="Finding&#32;Dependencies.html#goal" title="此标题的永久链接">¶</a></h3>
+<p>将外部安装的测试框架集成到 Tutorial 项目中。</p>
+</section>
+<section id="helpful-resources">
+<h3>有用资源<a class="headerlink" href="Finding&#32;Dependencies.html#helpful-resources" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-7-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a></p></li>
+</ul>
+</section>
+<section id="files-to-edit">
+<h3>要编辑的文件<a class="headerlink" href="Finding&#32;Dependencies.html#files-to-edit" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TutorialProject/CMakePresets.json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TutorialProject/Tests/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TutorialProject/Tests/TestMathFunctions.cxx</span></code></p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h3>开始<a class="headerlink" href="Finding&#32;Dependencies.html#getting-started" title="此标题的永久链接">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Step10</span></code> 文件夹的组织方式与之前的步骤不同。我们需要编辑的教程项目位于 <code class="docutils literal notranslate"><span class="pre">Step10/TutorialProject</span></code> 下。现在还存在另一个项目 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code>，以及一个部分填充的安装树，我们将在此后的练习中使用它。本练习中无需编辑这些目录中的任何内容，所有的 <code class="docutils literal notranslate"><span class="pre">TODO</span></code> 和解决方案步骤都是针对 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 的。</p>
+<p><code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 包提供了两个有用的构造：要链接到测试二进制文件中的 <code class="docutils literal notranslate"><span class="pre">SimpleTest::SimpleTest</span></code> 目标，以及用于向 CTest 自动添加测试的 <code class="docutils literal notranslate"><span class="pre">simpletest_discover_tests</span></code> 函数。</p>
+<p>与其他测试框架类似，<code class="docutils literal notranslate"><span class="pre">simpletest_discover_tests</span></code> 只需要传入包含测试的可执行目标名称即可。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">simpletest_discover_tests(</span><span class="nb">MyTestExe</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">TestMathFunctions.cxx</span></code> 文件已更新，采用了类似 GoogleTest 或 Catch2 的 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 框架。请按顺序执行 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">1</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">5</span></code> 以使用新的测试框架。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>毋庸置疑，<code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 是一个非常糟糕的测试框架，它只是表面上看起来像一个功能性的测试库。虽然本教程中的许多 CMake 代码可以在其他项目中原样使用，但你不应该在教程之外使用 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code>，也不要试图学习它提供的 CMake 代码。</p>
+</div>
+</section>
+<section id="build-and-run">
+<h3>构建并运行<a class="headerlink" href="Finding&#32;Dependencies.html#build-and-run" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们必须安装 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 框架。导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/Step10/SimpleTest</span></code> 目录并运行以下命令：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --install build</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 预设设置了为教程安装 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 所需的一切。出于本教程范围之外的原因，无需为 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 构建或提供任何其他配置。</p>
+</div>
+<p>我们可以观察到 <code class="docutils literal notranslate"><span class="pre">Step10/install</span></code> 目录现已填充了 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 头文件和包文件。</p>
+<p>现在我们可以像往常一样配置和构建 Tutorial 项目，导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/Step10/TutorialProject</span></code> 并运行：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>通过使用 CTest 运行测试，验证 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 框架是否已被正确使用。</p>
+</section>
+<section id="solution">
+<h3>解决方案<a class="headerlink" href="Finding&#32;Dependencies.html#solution" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们调用 <span class="target" id="index-8-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 来发现 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 包。我们使用 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，因为如果没有 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code>，测试将无法构建。</p>
+<details><summary>TODO 1 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tests-cmakelists-txt-find-package">
+<div class="code-block-caption"><span class="caption-text">TODO 1: TutorialProject/Tests/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tests-cmakelists-txt-find-package" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SimpleTest</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>接下来，将 <code class="docutils literal notranslate"><span class="pre">SimpleTest::SimpleTest</span></code> 目标添加到 <code class="docutils literal notranslate"><span class="pre">TestMathFunctions</span></code>：</p>
+<details><summary>TODO 2 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tests-cmakelists-txt-link-simple-test">
+<div class="code-block-caption"><span class="caption-text">TODO 2: TutorialProject/Tests/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tests-cmakelists-txt-link-simple-test" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">TestMathFunctions</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="nb">MathFunctions</span>
+<span class="w">    </span><span class="nb">SimpleTest</span><span class="o">::</span><span class="nb">SimpleTest</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>现在，我们可以用调用 <code class="docutils literal notranslate"><span class="pre">simpletest_discover_tests</span></code> 来替换我们的测试描述代码。</p>
+<details><summary>TODO 3 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tests-cmakelists-txt-simpletest-discover-tests">
+<div class="code-block-caption"><span class="caption-text">TODO 3: TutorialProject/Tests/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tests-cmakelists-txt-simpletest-discover-tests" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">simpletest_discover_tests(</span><span class="nb">TestMathFunctions</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>我们通过将安装树添加到 <span class="target" id="index-1-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 来确保 <span class="target" id="index-9-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 能够发现 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code>。</p>
+<details><summary>TODO 4 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-cmakepresets-json-cmake-prefix-path">
+<div class="code-block-caption"><span class="caption-text">TODO 4: TutorialProject/CMakePresets.json</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-cmakepresets-json-cmake-prefix-path" title="Link to this code">¶</a></div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"CMAKE_PREFIX_PATH"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceParentDir}/install"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"TUTORIAL_USE_STD_SQRT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OFF"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"TUTORIAL_ENABLE_IPO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OFF"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们通过移除占位符并包含适当的头文件，更新测试以使用 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 提供的宏。</p>
+<details><summary>TODO 5 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tests-testmathfunctions-cxx-simpletest">
+<div class="code-block-caption"><span class="caption-text">TODO 5: TutorialProject/Tests/TestMathFunctions.cxx</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tests-testmathfunctions-cxx-simpletest" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MathFunctions.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;SimpleTest.h&gt;</span>
+
+<span class="n">TEST</span><span class="p">(</span><span class="s">"add"</span><span class="p">)</span>
+<span class="p">{</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="exercise-2-transitive-dependencies">
+<h2>练习 2 - 传递依赖项<a class="headerlink" href="Finding&#32;Dependencies.html#exercise-2-transitive-dependencies" title="链接到此标题">¶</a></h2>
+<p>库通常构建在彼此之上。多媒体应用程序可能依赖于提供各种容器格式支持的库，而该库可能又依赖于一个或多个用于压缩算法的其他库。</p>
+<p>我们需要在安装树的包配置文件中表达这些传递需求。我们使用 <span class="target" id="index-0-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeFindDependencyMacro</span></code></a> 模块来完成此操作，它为已安装的包递归发现彼此提供了安全机制。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeFindDependencyMacro</span><span class="nf">)</span>
+<span class="nf">find_dependency(</span><span class="nb">zlib</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><span class="target" id="index-1-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 还会转发来自顶层 <span class="target" id="index-10-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用的参数。如果 <span class="target" id="index-11-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用时带有 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 或 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，<span class="target" id="index-2-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 也会使用 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>。</p>
+<section id="id1">
+<h3>目标<a class="headerlink" href="Finding&#32;Dependencies.html#id1" title="此标题的永久链接">¶</a></h3>
+<p>向 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 添加一个依赖项，并确保依赖于 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 的包也能发现这个传递依赖项。</p>
+</section>
+<section id="id2">
+<h3>有用资源<a class="headerlink" href="Finding&#32;Dependencies.html#id2" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-3-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeFindDependencyMacro</span></code></a></p></li>
+<li><p><span class="target" id="index-12-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a></p></li>
+<li><p><span class="target" id="index-2-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>要编辑的文件<a class="headerlink" href="Finding&#32;Dependencies.html#id3" title="此标题的永久链接">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SimpleTest/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SimpleTest/cmake/SimpleTestConfig.cmake</span></code></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>开始<a class="headerlink" href="Finding&#32;Dependencies.html#id4" title="此标题的永久链接">¶</a></h3>
+<p>在本步骤中，我们仅编辑 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 项目。传递依赖项 <code class="docutils literal notranslate"><span class="pre">TransitiveDep</span></code> 是一个不提供任何功能的虚拟依赖项。但是 CMake 不知道这一点，如果 CMake 找不到所有必需的依赖项，<code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 测试将无法配置和构建。</p>
+<p><code class="docutils literal notranslate"><span class="pre">TransitiveDep</span></code> 包已安装到 <code class="docutils literal notranslate"><span class="pre">Step10/install</span></code> 树中。我们不需要像对待 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 那样安装它。</p>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">6</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">8</span></code>。</p>
+</section>
+<section id="id5">
+<h3>构建并运行<a class="headerlink" href="Finding&#32;Dependencies.html#id5" title="此标题的永久链接">¶</a></h3>
+<p>我们需要重新安装 SimpleTest 框架。导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/Step10/SimpleTest</span></code> 目录并运行与之前相同的命令。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --install build</span>
+</pre></div>
+</div>
+<p>现在我们可以重新配置并重新构建 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code>，导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/Step10/TutorialProject</span></code> 并执行通常的操作即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --preset tutorial</span>
+<span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>如果构建通过，说明我们很可能已经成功传播了传递依赖项。通过在 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 的 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 中搜索名为 <code class="docutils literal notranslate"><span class="pre">TransitiveDep_DIR</span></code> 的条目来验证这一点。这表明 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 搜索并找到了 <code class="docutils literal notranslate"><span class="pre">TransitiveDep</span></code>，即使它并没有直接对其有要求。</p>
+</section>
+<section id="id6">
+<h3>解决方案<a class="headerlink" href="Finding&#32;Dependencies.html#id6" title="此标题的永久链接">¶</a></h3>
+<p>首先，我们调用 <span class="target" id="index-13-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 来发现 <code class="docutils literal notranslate"><span class="pre">TransitiveDep</span></code> 包。我们使用 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 来验证我们已经找到了 <code class="docutils literal notranslate"><span class="pre">TransitiveDep</span></code>。</p>
+<details><summary>TODO 6 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="simpletest-cmakelists-txt-find-package">
+<div class="code-block-caption"><span class="caption-text">TODO 6: SimpleTest/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#simpletest-cmakelists-txt-find-package" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">TransitiveDep</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>接下来，将 <code class="docutils literal notranslate"><span class="pre">TransitiveDep::TransitiveDep</span></code> 目标添加到 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code>。</p>
+<details><summary>TODO 7 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="simpletest-cmakelists-txt-link-transitive-dep">
+<div class="code-block-caption"><span class="caption-text">TODO 7: SimpleTest/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#simpletest-cmakelists-txt-link-transitive-dep" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">SimpleTest</span>
+<span class="w">  </span><span class="no">INTERFACE</span>
+<span class="w">    </span><span class="nb">TransitiveDep</span><span class="o">::</span><span class="nb">TransitiveDep</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>如果我们此时构建 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code>，预计会因为 <code class="docutils literal notranslate"><span class="pre">TransitiveDep::TransitiveDep</span></code> 目标在该项目中不可用而导致配置失败。</p>
+</div>
+<p>最后，我们包含 <span class="target" id="index-4-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeFindDependencyMacro</span></code></a> 并在 <code class="docutils literal notranslate"><span class="pre">SimpleTest</span></code> 包配置文件中调用 <span class="target" id="index-5-module:CMakeFindDependencyMacro"></span><a class="reference internal" href="../../module/CMakeFindDependencyMacro.html#module:CMakeFindDependencyMacro" title="CMakeFindDependencyMacro"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">find_dependency()</span></code></a> 以传播该传递依赖项。</p>
+<details><summary>TODO 8 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="simpletest-cmake-simpletestconfig-cmake-find-dependency">
+<div class="code-block-caption"><span class="caption-text">TODO 8: SimpleTest/cmake/SimpleTestConfig.cmake</span><a class="headerlink" href="Finding&#32;Dependencies.html#simpletest-cmake-simpletestconfig-cmake-find-dependency" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeFindDependencyMacro</span><span class="nf">)</span>
+<span class="nf">find_dependency(</span><span class="nb">TransitiveDep</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+
+</section>
+</section>
+<section id="exercise-3-finding-other-kinds-of-files">
+<h2>练习 3 - 查找其他类型的文件<a class="headerlink" href="Finding&#32;Dependencies.html#exercise-3-finding-other-kinds-of-files" title="链接到此标题">¶</a></h2>
+<p>在完美的世界中，我们关心的每个依赖项都会被正确打包，或者至少会有其他开发者为我们编写一个发现它的模块。但我们并不生活在完美的世界中，有时我们必须亲自动手手动发现构建需求。</p>
+<p>为此，我们有本步骤前面列出的其他查找命令，例如 <span class="target" id="index-1-command:find_path"></span><a class="reference internal" href="../../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a>。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_path(</span><span class="nb">PackageIncludeFolder</span><span class="w"> </span><span class="nb">Package.h</span><span class="w"> </span><span class="no">REQUIRED</span>
+<span class="w">  </span><span class="no">PATH_SUFFIXES</span>
+<span class="w">    </span><span class="nb">Package</span>
+<span class="nf">)</span>
+<span class="nf">target_include_directories(</span><span class="nb">MyApp</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="o">${</span><span class="nt">PackageIncludeFolder</span><span class="o">}</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<section id="id7">
+<h3>目标<a class="headerlink" href="Finding&#32;Dependencies.html#id7" title="链接到此标题">¶</a></h3>
+<p>为 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 可执行文件添加一个未打包的头文件。</p>
+</section>
+<section id="id8">
+<h3>有用资源<a class="headerlink" href="Finding&#32;Dependencies.html#id8" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:find_path"></span><a class="reference internal" href="../../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:target_include_directories"></span><a class="reference internal" href="../../command/target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a></p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>要编辑的文件<a class="headerlink" href="Finding&#32;Dependencies.html#id9" title="链接到此标题">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TutorialProject/Tutorial/CMakeLists.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TutorialProject/Tutorial/Tutorial.cxx</span></code></p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>入门<a class="headerlink" href="Finding&#32;Dependencies.html#id10" title="链接到此标题">¶</a></h3>
+<p>在本步骤中，我们仅编辑 <code class="docutils literal notranslate"><span class="pre">TutorialProject</span></code> 项目。未打包的头文件 <code class="docutils literal notranslate"><span class="pre">Unpackaged/Unpackaged.h</span></code> 已安装到 <code class="docutils literal notranslate"><span class="pre">Step10/install</span></code> 树中。</p>
+<p>完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">9</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">11</span></code>。</p>
+</section>
+<section id="id11">
+<h3>构建和运行<a class="headerlink" href="Finding&#32;Dependencies.html#id11" title="链接到此标题">¶</a></h3>
+<p>此练习没有特殊的构建步骤，导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/Step10/TutorialProject</span></code> 并执行常规构建即可。</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
+</pre></div>
+</div>
+<p>如果构建通过，说明我们已成功将 <code class="docutils literal notranslate"><span class="pre">Unpackaged</span></code> 包含目录添加到项目中。</p>
+</section>
+<section id="id12">
+<h3>解决方案<a class="headerlink" href="Finding&#32;Dependencies.html#id12" title="链接到此标题">¶</a></h3>
+<p>首先，我们调用 <span class="target" id="index-3-command:find_path"></span><a class="reference internal" href="../../command/find_path.html#command:find_path" title="find_path"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_path()</span></code></a> 来发现 <code class="docutils literal notranslate"><span class="pre">Unpackaged</span></code> 包含目录。我们使用 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>，因为如果找不到 <code class="docutils literal notranslate"><span class="pre">Unpackaged.h</span></code> 头文件，构建 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 将失败。</p>
+<details><summary>TODO 9 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tutorial-cmakelists-txt-find-path">
+<div class="code-block-caption"><span class="caption-text">TODO 9: TutorialProject/Tutorial/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tutorial-cmakelists-txt-find-path" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_path(</span><span class="nb">UnpackagedIncludeFolder</span><span class="w"> </span><span class="nb">Unpackaged.h</span><span class="w"> </span><span class="no">REQUIRED</span>
+<span class="w">  </span><span class="no">PATH_SUFFIXES</span>
+<span class="w">    </span><span class="nb">Unpackaged</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>接下来，使用 <span class="target" id="index-2-command:target_include_directories"></span><a class="reference internal" href="../../command/target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 将找到的路径添加到 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 中。</p>
+<details><summary>TODO 10 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tutorial-cmakelists-txt-target-include-directories">
+<div class="code-block-caption"><span class="caption-text">TODO 10: TutorialProject/Tutorial/CMakeLists.txt</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tutorial-cmakelists-txt-target-include-directories" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nb">Tutorial</span>
+<span class="w">  </span><span class="no">PRIVATE</span>
+<span class="w">    </span><span class="o">${</span><span class="nt">UnpackagedIncludeFolder</span><span class="o">}</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</details><p>最后，我们编辑 <code class="docutils literal notranslate"><span class="pre">Tutorial.cxx</span></code> 以包含所发现的头文件。</p>
+<details><summary>TODO 11 点击以显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorialproject-tutorial-tutorial-cxx-include-unpackaged">
+<div class="code-block-caption"><span class="caption-text">TODO 11: TutorialProject/Tutorial/Tutorial.cxx</span><a class="headerlink" href="Finding&#32;Dependencies.html#tutorialproject-tutorial-tutorial-cxx-include-unpackaged" title="Link to this code">¶</a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MathFunctions.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Unpackaged.h&gt;</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#">第 10 步：查找依赖项</a><ul>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#background">背景</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#exercise-1-using-find-package">练习 1 - 使用 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code></a><ul>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#goal">目标</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#helpful-resources">有用资源</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#files-to-edit">要编辑的文件</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#getting-started">入门</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#build-and-run">构建并运行</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#solution">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#exercise-2-transitive-dependencies">练习 2 - 传递依赖项</a><ul>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id1">目标</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id2">有用资源</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id3">要编辑的文件</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id4">入门</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id5">构建并运行</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id6">解决方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#exercise-3-finding-other-kinds-of-files">练习 3 - 查找其他类型的文件</a><ul>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id7">目标</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id8">有用资源</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id9">要编辑的文件</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id10">入门</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id11">构建并运行</a></li>
+<li><a class="reference internal" href="Finding&#32;Dependencies.html#id12">解决方案</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="上一章">第 9 步：安装命令和概念</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="Miscellaneous&#32;Features.html" title="下一章">第 11 步：杂项功能</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/guide/tutorial/Finding&#32;Dependencies.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="Miscellaneous&#32;Features.html" title="Step 11: Miscellaneous Features">下一页</a> |</li>
+        <li class="right">
+          <a href="Installation&#32;Commands&#32;and&#32;Concepts.html" title="Step 9: Installation Commands and Concepts">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
+        <li class="nav-item nav-item-this"><a href="Finding&#32;Dependencies.html">第 10 步：查找依赖项</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

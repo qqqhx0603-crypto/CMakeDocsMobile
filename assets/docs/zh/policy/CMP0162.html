@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0162 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0162.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0161" href="CMP0161.html" />
+    <link rel="prev" title="CMP0163" href="CMP0163.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0161.html" title="CMP0161" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0163.html" title="CMP0163" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0162.html">CMP0162</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0162">
+<span id="policy:CMP0162"></span><h1>CMP0162<a class="headerlink" href="CMP0162.html#cmp0162" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p><a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 默认添加 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 指示符。</p>
+<p>Visual Studio 项目中的“使用调试库 (Use Debug Libraries)”设置用于指示哪些配置被视为调试配置。在独立项目中，这可能会影响 MSBuild 对 MSVC 运行时库、优化标志、运行时检查及类似设置的默认选择。CMake 通常会根据项目规范显式生成所有这些设置，因此 CMake 3.29 及以下版本不会向 <code class="docutils literal notranslate"><span class="pre">.vcxproj</span></code> 文件写入任何 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 指示符。</p>
+<p>CMake 3.30 及以上版本倾向于写入 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 指示符，因为它们不仅方便人类和工具查阅，还可能影响特定平台 SDK 的行为。目标的每个配置的指示符确定方式如下：</p>
+<ul class="simple">
+<li><p>如果目标针对已知的 MSVC 运行时库编译源文件（例如通过 <span class="target" id="index-0-prop_tgt:MSVC_RUNTIME_LIBRARY"></span><a class="reference internal" href="../prop_tgt/MSVC_RUNTIME_LIBRARY.html#prop_tgt:MSVC_RUNTIME_LIBRARY" title="MSVC_RUNTIME_LIBRARY"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MSVC_RUNTIME_LIBRARY</span></code></a> 指定的库），则对于编译为“调试 (Debug)”运行时库的配置，<code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，对于其他配置则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p></li>
+<li><p>否则（例如由 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 创建的目标），<code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 对于 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 配置为 <code class="docutils literal notranslate"><span class="pre">true</span></code>，对于其他配置则为 <code class="docutils literal notranslate"><span class="pre">false</span></code>。</p></li>
+</ul>
+<p>此策略为尚未更新以支持这些指示符的项目提供了兼容性。策略设置会在每个目标创建时记录，并用于确定该目标 <code class="docutils literal notranslate"><span class="pre">.vcxproj</span></code> 文件的默认行为。</p>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是默认不生成 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 指示符。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是默认生成 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 指示符。</p>
+<p>如果设置了 <span class="target" id="index-0-variable:CMAKE_VS_USE_DEBUG_LIBRARIES"></span><a class="reference internal" href="../variable/CMAKE_VS_USE_DEBUG_LIBRARIES.html#variable:CMAKE_VS_USE_DEBUG_LIBRARIES" title="CMAKE_VS_USE_DEBUG_LIBRARIES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VS_USE_DEBUG_LIBRARIES</span></code></a> 变量和/或 <span class="target" id="index-0-prop_tgt:VS_USE_DEBUG_LIBRARIES"></span><a class="reference internal" href="../prop_tgt/VS_USE_DEBUG_LIBRARIES.html#prop_tgt:VS_USE_DEBUG_LIBRARIES" title="VS_USE_DEBUG_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VS_USE_DEBUG_LIBRARIES</span></code></a> 目标属性，它将明确控制 <code class="docutils literal notranslate"><span class="pre">UseDebugLibraries</span></code> 的生成，而无需考虑此策略。</p>
+<p>此策略引入于 CMake 版本 3.30。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake *不会* 警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0163.html" title="上一章">CMP0163</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0161.html" title="下一章">CMP0161</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0162.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0161.html" title="CMP0161">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0163.html" title="CMP0163">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0162.html">CMP0162</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMake确定VSServicePack — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMakeDetermineVSServicePack.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMakeExpandImportedTargets" href="CMakeExpandImportedTargets.html" />
+    <link rel="prev" title="AddFileDependencies" href="AddFileDependencies.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMakeExpandImportedTargets.html" title="CMakeExpandImportedTargets" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="AddFileDependencies.html" title="AddFileDependencies" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakeDetermineVSServicePack.html">CMakeDetermineVSServicePack</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmakedeterminevsservicepack">
+<span id="module:CMakeDetermineVSServicePack"></span><h1>CMake确定VSServicePack<a class="headerlink" href="CMakeDetermineVSServicePack.html#cmakedeterminevsservicepack" title="链接到此标题">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 4.1 中更改：</span>只有当策略 <span class="target" id="index-0-policy:CMP0196"></span><a class="reference internal" href="../policy/CMP0196.html#policy:CMP0196" title="CMP0196"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0196</span></code></a> 未设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此模块才可用。</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">版本 3.0 起已弃用：</span>不应再使用此模块。此模块的功能已被 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_VERSION"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER_VERSION.html#variable:CMAKE_<LANG>_COMPILER_VERSION" title="CMAKE_<LANG>_COMPILER_VERSION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER_VERSION</span></code></a> 变量取代，该变量包含编译器版本号。</p>
+</div>
+<p>此模块提供了一个命令，用于确定 Visual Studio 2012 及更早版本中安装的 Visual Studio 服务包版本。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CMakeDetermineVSServicePack</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="commands">
+<h2>命令<a class="headerlink" href="CMakeDetermineVSServicePack.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:determinevsservicepack">
+<span class="sig-name descname"><span class="pre">DetermineVSServicePack</span></span><a class="headerlink" href="CMakeDetermineVSServicePack.html#command:determinevsservicepack" title="链接到此定义">¶</a></dt>
+<dd><p>确定正在使用的 <code class="docutils literal notranslate"><span class="pre">cl</span></code> 编译器的 Visual Studio 服务包版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">DetermineVSServicePack(</span><span class="nv">&lt;variable&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>结果存储在指定的内部缓存变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中，该变量设置为以下值之一，或者如果无法确定服务包，则设置为一个空字符串</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vc80</span></code>, <code class="docutils literal notranslate"><span class="pre">vc80sp1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vc90</span></code>, <code class="docutils literal notranslate"><span class="pre">vc90sp1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vc100</span></code>, <code class="docutils literal notranslate"><span class="pre">vc100sp1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vc110</span></code>, <code class="docutils literal notranslate"><span class="pre">vc110sp1</span></code>, <code class="docutils literal notranslate"><span class="pre">vc110sp2</span></code>, <code class="docutils literal notranslate"><span class="pre">vc110sp3</span></code>, <code class="docutils literal notranslate"><span class="pre">vc110sp4</span></code></p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="CMakeDetermineVSServicePack.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>在项目中确定 Visual Studio 服务包版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">MSVC</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">include(</span><span class="nb">CMakeDetermineVSServicePack</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">DetermineVSServicePack(</span><span class="nb">my_service_pack</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">if(</span><span class="nb">my_service_pack</span><span class="nf">)</span>
+<span class="w">    </span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"Detected: ${my_service_pack}"</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">endif()</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="CMakeDetermineVSServicePack.html#">CMakeDetermineVSServicePack</a><ul>
+<li><a class="reference internal" href="CMakeDetermineVSServicePack.html#commands">命令</a></li>
+<li><a class="reference internal" href="CMakeDetermineVSServicePack.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="AddFileDependencies.html" title="上一章">AddFileDependencies</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMakeExpandImportedTargets.html" title="下一章">CMakeExpandImportedTargets</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/CMakeDetermineVSServicePack.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMakeExpandImportedTargets.html" title="CMakeExpandImportedTargets">下一页</a> |</li>
+        <li class="right">
+          <a href="AddFileDependencies.html" title="AddFileDependencies">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMakeDetermineVSServicePack.html">CMakeDetermineVSServicePack</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

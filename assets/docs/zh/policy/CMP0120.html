@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>CMP0120 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="CMP0120.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="CMP0119" href="CMP0119.html" />
+    <link rel="prev" title="CMP0121" href="CMP0121.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="CMP0119.html" title="CMP0119" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0121.html" title="CMP0121" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0120.html">CMP0120</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cmp0120">
+<span id="policy:CMP0120"></span><h1>CMP0120<a class="headerlink" href="CMP0120.html#cmp0120" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p><span class="target" id="index-0-module:WriteCompilerDetectionHeader"></span><a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#module:WriteCompilerDetectionHeader" title="WriteCompilerDetectionHeader"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">WriteCompilerDetectionHeader</span></code></a> 模块已被移除。</p>
+<p>CMake 3.1 到 3.19 版本提供此模块，用于通过重用 CMake 预处理器检查表中的信息来生成 C++ 兼容层，用于 <span class="target" id="index-0-manual:cmake-compile-features(7)"></span><a class="reference internal" href="../manual/cmake-compile-features.7.html#manual:cmake-compile-features(7)" title="cmake-compile-features(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-compile-features(7)</span></code></a>。但是</p>
+<ul class="simple">
+<li><p>这些细粒度的特性已被用于 <a class="reference internal" href="../manual/cmake-compile-features.7.html#requiring-language-standards"><span class="std std-ref">要求语言标准</span></a> 的元特性所取代，例如 <code class="docutils literal notranslate"><span class="pre">cxx_std_11</span></code>。因此，将不会添加新的细粒度特性检查，项目需要使用其他方式来有条件地使用新的 C++ 特性。</p></li>
+<li><p>该模块将 CMake 的一些实现细节直接暴露给 C++ 翻译单元。</p></li>
+<li><p>该模块的方法有效地提供了一个与 CMake 捆绑的头文件，从而将头文件的版本与 CMake 的版本绑定。许多项目发现 <span class="target" id="index-1-module:WriteCompilerDetectionHeader"></span><a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#module:WriteCompilerDetectionHeader" title="WriteCompilerDetectionHeader"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">WriteCompilerDetectionHeader</span></code></a> 最好的使用方式是手动使用最新版本的 CMake 局部生成其头文件，然后将其与项目源代码捆绑在一起，以便可以使用较旧的 CMake 版本。</p></li>
+</ul>
+<p>出于包括上述原因，CMake 3.20 及更高版本更倾向于不提供 <span class="target" id="index-2-module:WriteCompilerDetectionHeader"></span><a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#module:WriteCompilerDetectionHeader" title="WriteCompilerDetectionHeader"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">WriteCompilerDetectionHeader</span></code></a> 模块。此策略为尚未移植到其他方案的项目提供兼容性。使用该模块的项目应更新以停止使用它。替代方案包括：</p>
+<ul class="simple">
+<li><p>将生成的头文件的副本捆绑在项目的源代码中。</p></li>
+<li><p>使用第三方替代方案，例如 CC0 许可的 <a class="reference external" href="https://nemequ.github.io/hedley/">Hedley</a>。</p></li>
+<li><p>放弃对功能原生提供的编译器太旧的支持。</p></li>
+</ul>
+<p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是允许包含已弃用的 <span class="target" id="index-3-module:WriteCompilerDetectionHeader"></span><a class="reference internal" href="../module/WriteCompilerDetectionHeader.html#module:WriteCompilerDetectionHeader" title="WriteCompilerDetectionHeader"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">WriteCompilerDetectionHeader</span></code></a> 模块。 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是包含该模块将失败，就像该模块不存在一样。</p>
+<p>此策略是在 CMake 3.20 版本中引入的。 它可以由 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。 如果未设置，CMake 会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为<a class="reference internal" href="../manual/cmake-policies.7.html#cmake-policies-intro"><span class="std std-ref">根据定义已被弃用</span></a>，并可能在未来版本的 CMake 中被移除。</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="CMP0121.html" title="上一章">CMP0121</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="CMP0119.html" title="下一章">CMP0119</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/policy/CMP0120.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="CMP0119.html" title="CMP0119">下一页</a> |</li>
+        <li class="right">
+          <a href="CMP0121.html" title="CMP0121">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="CMP0120.html">CMP0120</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

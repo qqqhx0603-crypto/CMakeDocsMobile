@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>UNITY_BUILD_MODE — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="UNITY_BUILD_MODE.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="UNITY_BUILD_RELOCATABLE" href="UNITY_BUILD_RELOCATABLE.html" />
+    <link rel="prev" title="UNITY_BUILD_FILENAME_PREFIX" href="UNITY_BUILD_FILENAME_PREFIX.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="UNITY_BUILD_RELOCATABLE.html" title="UNITY_BUILD_RELOCATABLE" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="UNITY_BUILD_FILENAME_PREFIX.html" title="UNITY_BUILD_FILENAME_PREFIX" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UNITY_BUILD_MODE.html">UNITY_BUILD_MODE</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="unity-build-mode">
+<span id="prop_tgt:UNITY_BUILD_MODE"></span><h1>UNITY_BUILD_MODE<a class="headerlink" href="UNITY_BUILD_MODE.html#unity-build-mode" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>CMake 提供了不同的算法来选择哪些源文件组合在一起形成一个<em>bucket</em>。 此属性决定了选择方式，它具有以下可接受的值：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BATCH</span></code></dt><dd><p>当处于此模式时，CMake 确定哪些文件组合在一起。 <span class="target" id="index-0-prop_tgt:UNITY_BUILD_BATCH_SIZE"></span><a class="reference internal" href="UNITY_BUILD_BATCH_SIZE.html#prop_tgt:UNITY_BUILD_BATCH_SIZE" title="UNITY_BUILD_BATCH_SIZE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">UNITY_BUILD_BATCH_SIZE</span></code></a> 属性控制每个 unity 源文件可以组合的源文件的上限。</p>
+<p>用法示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example_library</span>
+<span class="w">            </span><span class="nb">source1.cxx</span>
+<span class="w">            </span><span class="nb">source2.cxx</span>
+<span class="w">            </span><span class="nb">source3.cxx</span>
+<span class="w">            </span><span class="nb">source4.cxx</span><span class="nf">)</span>
+
+<span class="nf">set_target_properties(</span><span class="nb">example_library</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">                      </span><span class="no">UNITY_BUILD_MODE</span><span class="w"> </span><span class="no">BATCH</span>
+<span class="w">                      </span><span class="no">UNITY_BUILD_BATCH_SIZE</span><span class="w"> </span><span class="m">2</span>
+<span class="w">                      </span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GROUP</span></code></dt><dd><p>当处于此模式时，每个目标都会显式指定如何分组源文件。 具有相同 <span class="target" id="index-0-prop_sf:UNITY_GROUP"></span><a class="reference internal" href="../prop_sf/UNITY_GROUP.html#prop_sf:UNITY_GROUP" title="UNITY_GROUP"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">UNITY_GROUP</span></code></a> 值的每个源文件将被组合在一起。 任何没有此属性的源文件都将单独编译。 <span class="target" id="index-1-prop_tgt:UNITY_BUILD_BATCH_SIZE"></span><a class="reference internal" href="UNITY_BUILD_BATCH_SIZE.html#prop_tgt:UNITY_BUILD_BATCH_SIZE" title="UNITY_BUILD_BATCH_SIZE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">UNITY_BUILD_BATCH_SIZE</span></code></a> 属性在使用此模式时将被忽略。</p>
+<p>用法示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example_library</span>
+<span class="w">            </span><span class="nb">source1.cxx</span>
+<span class="w">            </span><span class="nb">source2.cxx</span>
+<span class="w">            </span><span class="nb">source3.cxx</span>
+<span class="w">            </span><span class="nb">source4.cxx</span><span class="nf">)</span>
+
+<span class="nf">set_target_properties(</span><span class="nb">example_library</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">                      </span><span class="no">UNITY_BUILD_MODE</span><span class="w"> </span><span class="no">GROUP</span>
+<span class="w">                      </span><span class="nf">)</span>
+
+<span class="nf">set_source_files_properties(</span><span class="nb">source1.cxx</span><span class="w"> </span><span class="nb">source2.cxx</span><span class="w"> </span><span class="nb">source3.cxx</span>
+<span class="w">                            </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">UNITY_GROUP</span><span class="w"> </span><span class="s">"bucket1"</span>
+<span class="w">                            </span><span class="nf">)</span>
+<span class="nf">set_source_files_properties(</span><span class="nb">source4.cxx</span>
+<span class="w">                            </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">UNITY_GROUP</span><span class="w"> </span><span class="s">"bucket2"</span>
+<span class="w">                            </span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>如果没有显式指定 <code class="docutils literal notranslate"><span class="pre">UNITY_BUILD_MODE</span></code>，CMake 将默认设置为 <code class="docutils literal notranslate"><span class="pre">BATCH</span></code>。</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="UNITY_BUILD_FILENAME_PREFIX.html" title="上一章">UNITY_BUILD_FILENAME_PREFIX</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="UNITY_BUILD_RELOCATABLE.html" title="下一章">UNITY_BUILD_RELOCATABLE</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/UNITY_BUILD_MODE.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="UNITY_BUILD_RELOCATABLE.html" title="UNITY_BUILD_RELOCATABLE">下一页</a> |</li>
+        <li class="right">
+          <a href="UNITY_BUILD_FILENAME_PREFIX.html" title="UNITY_BUILD_FILENAME_PREFIX">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="UNITY_BUILD_MODE.html">UNITY_BUILD_MODE</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

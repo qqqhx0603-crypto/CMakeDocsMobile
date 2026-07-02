@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>GoogleTest — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="GoogleTest.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="InstallRequiredSystemLibraries" href="InstallRequiredSystemLibraries.html" />
+    <link rel="prev" title="GNUInstallDirs" href="GNUInstallDirs.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="InstallRequiredSystemLibraries.html" title="InstallRequiredSystemLibraries" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="GNUInstallDirs.html" title="GNUInstallDirs" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GoogleTest.html">GoogleTest</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="googletest">
+<span id="module:GoogleTest"></span><h1>GoogleTest<a class="headerlink" href="GoogleTest.html#googletest" title="链接到此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<p>此模块提供了一些命令，用于帮助使用 Google Test 基础设施。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GoogleTest</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>模块提供了两种添加测试的机制。<span class="target" id="index-0-command:gtest_add_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_add_tests" title="gtest_add_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_add_tests()</span></code></a> 已存在一段时间，最初通过 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 提供。<span class="target" id="index-0-command:gtest_discover_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_discover_tests" title="gtest_discover_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code></a> 则是在 CMake 3.10 中引入的。</p>
+<p>（较旧的）<span class="target" id="index-1-command:gtest_add_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_add_tests" title="gtest_add_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_add_tests()</span></code></a> 通过扫描源代码来识别测试。这通常很有效，但也存在一些局限性，包括在交叉编译环境中，且为测试设置额外属性较为繁琐。此外，它对参数化测试的处理不够全面，并且需要重新运行 CMake 才能检测到测试列表的变化。</p>
+<p>（较新的）<span class="target" id="index-1-command:gtest_discover_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_discover_tests" title="gtest_discover_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code></a> 通过让已编译的测试可执行文件枚举其测试来发现测试。这种方法更健壮，对参数化测试的处理更好，并且当测试更改时不需要重新运行 CMake。然而，它可能无法在交叉编译环境中工作，且设置测试属性的便利性稍逊一筹。</p>
+<p>更多详细信息可在各函数的文档中找到。</p>
+<p>这两个命令旨在取代使用 <span class="target" id="index-0-command:add_test"></span><a class="reference internal" href="../command/add_test.html#command:add_test" title="add_test"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_test()</span></code></a> 来注册测试，并会为每个 Google Test 测试用例创建一个独立的 CTest 测试。请注意，在某些情况下这样做效率较低，因为在同一实例中执行的多个测试用例无法共享通用的设置（set-up）和清理（tear-down）逻辑。不过，它为 CTest 提供了更细粒度的通过/失败信息，这通常被认为更有益处。默认情况下，CTest 测试名称与 Google Test 名称相同（即 <code class="docutils literal notranslate"><span class="pre">suite.testcase</span></code>）；另请参阅 <code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TEST_SUFFIX</span></code>。</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gtest_add_tests">
+<span class="sig-name descname"><span class="pre">gtest_add_tests</span></span><a class="headerlink" href="GoogleTest.html#command:gtest_add_tests" title="Link to this definition">¶</a></dt>
+<dd><p>通过扫描源代码中的 Google Test 宏，自动使用 CTest 添加测试</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gtest_add_tests(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">target</span>
+<span class="w">                </span><span class="p">[</span><span class="no">SOURCES</span><span class="w"> </span><span class="nb">src1...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">EXTRA_ARGS</span><span class="w"> </span><span class="nb">args...</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nb">dir</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TEST_PREFIX</span><span class="w"> </span><span class="nb">prefix</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TEST_SUFFIX</span><span class="w"> </span><span class="nb">suffix</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">SKIP_DEPENDENCY</span><span class="p">]</span>
+<span class="w">                </span><span class="p">[</span><span class="no">TEST_LIST</span><span class="w"> </span><span class="nb">outVar</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gtest_add_tests</span></code> 尝试通过扫描源文件来识别测试。尽管这通常很有效，但它仅使用基础的正则表达式匹配，非典型的测试声明可能会导致匹配失败，并且无法完全“拆分”参数化测试。此外，它要求重新运行 CMake 以发现任何新增、移除或重命名的测试（默认情况下，这意味着当任何测试源文件更改时，CMake 都会重新运行，但请参阅 <code class="docutils literal notranslate"><span class="pre">SKIP_DEPENDENCY</span></code>）。不过，它的优势在于可以在 CMake 配置时声明测试，这在一定程度上简化了设置测试的额外属性，并且始终可以在交叉编译环境中工作。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">TARGET</span> <span class="pre">target</span></code></dt><dd><p>指定 Google Test 可执行文件，必须是一个已知的 CMake 可执行目标。在运行测试时，CMake 将替换为已构建可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SOURCES</span> <span class="pre">src1...</span></code></dt><dd><p>提供此项后，仅会扫描所列的文件以查找测试用例。如果不提供此选项，将使用指定 <code class="docutils literal notranslate"><span class="pre">target</span></code> 的 <span class="target" id="index-0-prop_tgt:SOURCES"></span><a class="reference internal" href="../prop_tgt/SOURCES.html#prop_tgt:SOURCES" title="SOURCES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SOURCES</span></code></a> 属性来获取源文件列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span> <span class="pre">args...</span></code></dt><dd><p>传递给每个测试用例命令行的任何额外参数。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更: </span><code class="docutils literal notranslate"><span class="pre">args...</span></code> 中的空值会被保留，详见 <span class="target" id="index-0-policy:CMP0178"></span><a class="reference internal" href="../policy/CMP0178.html#policy:CMP0178" title="CMP0178"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0178</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span> <span class="pre">dir</span></code></dt><dd><p>指定运行所发现测试用例的目录。如果不提供此选项，则使用当前二进制目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span> <span class="pre">prefix</span></code></dt><dd><p>指定要在每个发现的测试用例名称前添加的 <code class="docutils literal notranslate"><span class="pre">prefix</span></code>。当在多次调用 <code class="docutils literal notranslate"><span class="pre">gtest_add_test()</span></code> 时使用相同的源文件但采用不同的 <code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span></code> 时，这非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_SUFFIX</span> <span class="pre">suffix</span></code></dt><dd><p>与 <code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span></code> 类似，不同之处在于 <code class="docutils literal notranslate"><span class="pre">suffix</span></code> 会附加到每个发现的测试用例名称末尾。可以同时指定 <code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TEST_SUFFIX</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SKIP_DEPENDENCY</span></code></dt><dd><p>通常，该函数会创建一个依赖项，导致如果扫描的任何源文件发生更改，CMake 就会重新运行。这是为了确保发现的测试列表得到更新。如果不希望这种行为（例如在编写测试用例时），可以使用此选项来阻止添加该依赖项。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_LIST</span> <span class="pre">outVar</span></code></dt><dd><p>由 <code class="docutils literal notranslate"><span class="pre">outVar</span></code> 命名的变量将在调用范围内填充所发现的测试用例列表。这允许调用者执行诸如操作所发现测试的属性之类的任务。</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更: </span><span class="target" id="index-0-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 和 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 目标属性中的空值会被保留，详见策略 <span class="target" id="index-1-policy:CMP0178"></span><a class="reference internal" href="../policy/CMP0178.html#policy:CMP0178" title="CMP0178"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0178</span></code></a>。</p>
+</div>
+<p>使用示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GoogleTest</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">FooTest</span><span class="w"> </span><span class="nb">FooUnitTest.cxx</span><span class="nf">)</span>
+<span class="nf">gtest_add_tests(</span><span class="no">TARGET</span><span class="w">      </span><span class="nb">FooTest</span>
+<span class="w">                </span><span class="no">TEST_SUFFIX</span><span class="w"> </span><span class="p">.</span><span class="nb">noArgs</span>
+<span class="w">                </span><span class="no">TEST_LIST</span><span class="w">   </span><span class="nb">noArgsTests</span>
+<span class="nf">)</span>
+<span class="nf">gtest_add_tests(</span><span class="no">TARGET</span><span class="w">      </span><span class="nb">FooTest</span>
+<span class="w">                </span><span class="no">EXTRA_ARGS</span><span class="w">  </span><span class="p">--</span><span class="nb">someArg</span><span class="w"> </span><span class="nb">someValue</span>
+<span class="w">                </span><span class="no">TEST_SUFFIX</span><span class="w"> </span><span class="p">.</span><span class="nb">withArgs</span>
+<span class="w">                </span><span class="no">TEST_LIST</span><span class="w">   </span><span class="nb">withArgsTests</span>
+<span class="nf">)</span>
+<span class="nf">set_tests_properties(</span><span class="o">${</span><span class="nt">noArgsTests</span><span class="o">}</span><span class="w">   </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">TIMEOUT</span><span class="w"> </span><span class="m">10</span><span class="nf">)</span>
+<span class="nf">set_tests_properties(</span><span class="o">${</span><span class="nt">withArgsTests</span><span class="o">}</span><span class="w"> </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">TIMEOUT</span><span class="w"> </span><span class="m">20</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>为了向后兼容，也支持以下形式</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gtest_add_tests(</span><span class="nb">exe</span><span class="w"> </span><span class="nb">args</span><span class="w"> </span><span class="nb">files...</span><span class="nf">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">exe</span></code></dt><dd><p>测试可执行文件的路径或 CMake 目标的名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">args</span></code></dt><dd><p>传递给可执行文件的额外参数的分号分隔列表。整个列表必须作为单个参数传递。请将其括在引号中，或者如果不需要参数则传递 <code class="docutils literal notranslate"><span class="pre">""</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">files...</span></code></dt><dd><p>要搜索测试和测试夹具的源文件列表。或者，使用 <code class="docutils literal notranslate"><span class="pre">AUTO</span></code> 来指定 <code class="docutils literal notranslate"><span class="pre">exe</span></code> 是一个 CMake 可执行目标的名称，其源文件应该被扫描。</p>
+</dd>
+</dl>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GoogleTest</span><span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">FooTestArgs</span><span class="w"> </span><span class="p">--</span><span class="nb">foo</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">--</span><span class="nb">bar</span><span class="w"> </span><span class="m">2</span><span class="nf">)</span>
+<span class="nf">add_executable(</span><span class="nb">FooTest</span><span class="w"> </span><span class="nb">FooUnitTest.cxx</span><span class="nf">)</span>
+<span class="nf">gtest_add_tests(</span><span class="nb">FooTest</span><span class="w"> </span><span class="s">"${FooTestArgs}"</span><span class="w"> </span><span class="no">AUTO</span><span class="nf">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gtest_discover_tests">
+<span class="sig-name descname"><span class="pre">gtest_discover_tests</span></span><a class="headerlink" href="GoogleTest.html#command:gtest_discover_tests" title="Link to this definition">¶</a></dt>
+<dd><p>通过查询已编译的测试可执行文件以获取可用测试，从而自动使用 CTest 添加测试</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gtest_discover_tests(</span><span class="nb">target</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">EXTRA_ARGS</span><span class="w"> </span><span class="nb">args...</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">WORKING_DIRECTORY</span><span class="w"> </span><span class="nb">dir</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">TEST_PREFIX</span><span class="w"> </span><span class="nb">prefix</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">TEST_SUFFIX</span><span class="w"> </span><span class="nb">suffix</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">TEST_FILTER</span><span class="w"> </span><span class="nb">expr</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">NO_PRETTY_TYPES</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">NO_PRETTY_VALUES</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">PROPERTIES</span><span class="w"> </span><span class="nb">name1</span><span class="w"> </span><span class="nb">value1...</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">TEST_LIST</span><span class="w"> </span><span class="nb">var</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">DISCOVERY_TIMEOUT</span><span class="w"> </span><span class="nb">seconds</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">XML_OUTPUT_DIR</span><span class="w"> </span><span class="nb">dir</span><span class="p">]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">DISCOVERY_MODE</span><span class="w"> </span><span class="p">&lt;</span><span class="no">POST_BUILD</span><span class="p">|</span><span class="no">PRE_TEST</span><span class="p">&gt;]</span>
+<span class="w">                     </span><span class="p">[</span><span class="no">DISCOVERY_EXTRA_ARGS</span><span class="w"> </span><span class="nb">args...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.10 版本新增。</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 在测试可执行文件上设置了一个构建后或测试前命令，通过解析以 <code class="docutils literal notranslate"><span class="pre">--gtest_list_tests</span></code> 参数运行测试可执行文件的输出来生成测试列表。与 <span class="target" id="index-2-command:gtest_add_tests"></span><a class="reference internal" href="GoogleTest.html#command:gtest_add_tests" title="gtest_add_tests"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gtest_add_tests()</span></code></a> 的源代码解析方法相比，这确保了能够获得完整的测试列表，包括参数化测试的实例化。由于测试发现发生在构建或测试阶段，当测试列表发生更改时，无需重新运行 CMake。但是，它要求正确设置 <span class="target" id="index-1-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 才能在交叉编译环境中工作。</p>
+<p>此外，在测试上设置属性的便利性稍逊，因为这些测试在 CMake 配置时不可用。可以使用 <code class="docutils literal notranslate"><span class="pre">PROPERTIES</span></code> 选项将额外的测试属性作为一个整体分配给这组测试。如果需要更细粒度的测试控制，可以通过使用 <span class="target" id="index-0-prop_dir:TEST_INCLUDE_FILES"></span><a class="reference internal" href="../prop_dir/TEST_INCLUDE_FILES.html#prop_dir:TEST_INCLUDE_FILES" title="TEST_INCLUDE_FILES"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">TEST_INCLUDE_FILES</span></code></a> 目录属性的外部 CTest 脚本提供自定义内容。发现的测试集通过 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;_TESTS</span></code> 变量对脚本可见（请参阅下文关于 <code class="docutils literal notranslate"><span class="pre">TEST_LIST</span></code> 选项的进一步讨论和限制）。</p>
+<p>选项包括</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">目标</span></code></dt><dd><p>指定 Google Test 可执行文件，必须是一个已知的 CMake 可执行目标。在运行测试时，CMake 将替换为已构建可执行文件的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span> <span class="pre">args...</span></code></dt><dd><p>传递给每个测试用例命令行的任何额外参数。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更: </span><code class="docutils literal notranslate"><span class="pre">args...</span></code> 中的空值会被保留，详见 <span class="target" id="index-2-policy:CMP0178"></span><a class="reference internal" href="../policy/CMP0178.html#policy:CMP0178" title="CMP0178"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0178</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span> <span class="pre">dir</span></code></dt><dd><p>指定运行所发现测试用例的目录。如果不提供此选项，则使用当前二进制目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span> <span class="pre">prefix</span></code></dt><dd><p>指定要在每个发现的测试用例名称前添加的 <code class="docutils literal notranslate"><span class="pre">prefix</span></code>。当在多次调用 <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 时使用相同的测试可执行文件但采用不同的 <code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span></code> 时，这非常有用。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_SUFFIX</span> <span class="pre">suffix</span></code></dt><dd><p>与 <code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span></code> 类似，不同之处在于 <code class="docutils literal notranslate"><span class="pre">suffix</span></code> 会附加到每个发现的测试用例名称末尾。可以同时指定 <code class="docutils literal notranslate"><span class="pre">TEST_PREFIX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TEST_SUFFIX</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_FILTER</span> <span class="pre">expr</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.22 版本新增。</span></p>
+</div>
+<p>在测试发现期间作为 <code class="docutils literal notranslate"><span class="pre">--gtest_filter</span></code> 参数传递的过滤表达式。请注意，该表达式是一种基于通配符的格式，用于匹配 gtest 使用的原始测试名称。对于类型或值参数化测试，这些名称可能与 <strong class="program">ctest</strong> 使用的可能经过美化打印的测试名称不同。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_PRETTY_TYPES</span></code></dt><dd><p>默认情况下，类型参数化测试的类型索引在 CTest 测试名称中会被实际的类型名称替换。如果不希望这种行为（例如因为类型名称太复杂），此选项将禁止该行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_PRETTY_VALUES</span></code></dt><dd><p>默认情况下，值参数化测试的值索引在 CTest 测试名称中会被实际值替换。如果不希望这种行为（例如因为值字符串太复杂），此选项将禁止该行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PROPERTIES</span> <span class="pre">name1</span> <span class="pre">value1...</span></code></dt><dd><p>指定要为本次 <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 调用所发现的所有测试设置的附加属性。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TEST_LIST</span> <span class="pre">var</span></code></dt><dd><p>使测试列表在变量 <code class="docutils literal notranslate"><span class="pre">var</span></code> 中可用，而不是默认的 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;_TESTS</span></code>。当在多次调用 <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 时使用同一个测试可执行文件时，这非常有用。注意，此变量仅在 CTest 中可用。</p>
+<p>由于 CMake 解析规则的限制，任何名称中带有方括号的测试都将从存储在此变量的测试列表中省略。不过，此类测试仍将由 <code class="docutils literal notranslate"><span class="pre">ctest</span></code> 正常定义和执行。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DISCOVERY_TIMEOUT</span> <span class="pre">num</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.10.3 版本中添加。</span></p>
+</div>
+<p>指定 CMake 等待测试枚举可用测试的时长（秒）。如果测试耗时超过此时间，发现（以及您的构建）将失败。大多数测试可执行文件会非常快地枚举其测试，但在某些特殊情况下，测试可能需要更长的超时时间。默认值为 5。另请参阅 <span class="target" id="index-0-command:execute_process"></span><a class="reference internal" href="../command/execute_process.html#command:execute_process" title="execute_process"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">execute_process()</span></code></a> 的 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 选项。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>在 CMake 3.10.1 和 3.10.2 版本中，此选项称为 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code>。这与 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 测试属性冲突，后者是通常会使用 <code class="docutils literal notranslate"><span class="pre">PROPERTIES</span></code> 关键字设置的常见属性之一，通常会导致合规但意料之外的行为。关键字在 CMake 3.10.3 中更改为 <code class="docutils literal notranslate"><span class="pre">DISCOVERY_TIMEOUT</span></code> 以解决此问题。3.10.1 和 3.10.2 版本中 <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code> 关键字的歧义行为未被保留。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">XML_OUTPUT_DIR</span> <span class="pre">dir</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>如果指定，该参数将与 <code class="docutils literal notranslate"><span class="pre">--gtest_output=xml:</span></code> 一起传递给测试可执行文件。实际的文件名与测试目标相同，包括前缀和后缀。应使用此选项代替 <code class="docutils literal notranslate"><span class="pre">EXTRA_ARGS</span> <span class="pre">--gtest_output=xml</span></code>，以避免在使用并行测试执行时写入 XML 结果输出时的竞态条件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DISCOVERY_MODE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>提供对 <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 何时执行测试发现的更好控制。默认情况下，<code class="docutils literal notranslate"><span class="pre">POST_BUILD</span></code> 设置一个构建后命令，在构建时执行测试发现。在某些场景（如交叉编译）中，这种 <code class="docutils literal notranslate"><span class="pre">POST_BUILD</span></code> 行为是不希望出现的。相比之下，<code class="docutils literal notranslate"><span class="pre">PRE_TEST</span></code> 将测试发现延迟到测试执行之前。这样，测试发现发生在目标环境中，测试更有机会找到合适的运行时依赖项。</p>
+<p>如果调用 <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests()</span></code> 时未传递此项，<code class="docutils literal notranslate"><span class="pre">DISCOVERY_MODE</span></code> 将默认为 <code class="docutils literal notranslate"><span class="pre">CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE</span></code> 变量的值。这提供了一种全局选择首选测试发现行为的机制，而无需修改每个调用点。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DISCOVERY_EXTRA_ARGS</span> <span class="pre">args...</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在版本 3.31 中添加。</span></p>
+</div>
+<p>传递给发现命令行的任何额外参数。</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">3.29 版本添加: </span><span class="target" id="index-1-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 目标属性在测试发现和测试执行期间会被采纳。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.31 版本变更: </span><span class="target" id="index-2-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 和 <span class="target" id="index-2-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 目标属性中的空值会被保留，详见策略 <span class="target" id="index-3-policy:CMP0178"></span><a class="reference internal" href="../policy/CMP0178.html#policy:CMP0178" title="CMP0178"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0178</span></code></a>。</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="GNUInstallDirs.html" title="上一章">GNUInstallDirs</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="InstallRequiredSystemLibraries.html" title="下一章">InstallRequiredSystemLibraries</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/GoogleTest.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="InstallRequiredSystemLibraries.html" title="InstallRequiredSystemLibraries">下一页</a> |</li>
+        <li class="right">
+          <a href="GNUInstallDirs.html" title="GNUInstallDirs">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GoogleTest.html">GoogleTest</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

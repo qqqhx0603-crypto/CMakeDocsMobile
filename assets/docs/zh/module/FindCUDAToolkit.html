@@ -1,0 +1,639 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindCUDAToolkit — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindCUDAToolkit.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindCups" href="FindCups.html" />
+    <link rel="prev" title="FindCoin3D" href="FindCoin3D.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindCups.html" title="FindCups" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCoin3D.html" title="FindCoin3D" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindCUDAToolkit.html">FindCUDAToolkit</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findcudatoolkit">
+<span id="module:FindCUDAToolkit"></span><h1>FindCUDAToolkit<a class="headerlink" href="FindCUDAToolkit.html#findcudatoolkit" title="此标题的链接">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>查找 NVIDIA CUDA 工具包及相关库，不需要为给定项目启用 <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> 语言</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">CUDAToolkit</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">REQUIRED</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXACT</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>本模块不会搜索 NVIDIA CUDA 示例程序。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.19 版本新增：</span>支持 QNX。</p>
+</div>
+<section id="search-behavior">
+<h2>搜索行为<a class="headerlink" href="FindCUDAToolkit.html#search-behavior" title="此标题的链接">¶</a></h2>
+<p>CUDA 工具包的搜索行为遵循以下顺序</p>
+<ol class="arabic">
+<li><p>如果已启用 <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> 语言，我们将优先使用包含编译器的目录作为 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 的搜索位置。</p></li>
+<li><p>如果定义了变量 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_COMPILER</span></code></a> 或环境变量 <span class="target" id="index-0-envvar:CUDACXX"></span><a class="reference internal" href="../envvar/CUDACXX.html#envvar:CUDACXX" title="CUDACXX"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CUDACXX</span></code></a>，它将被用作 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 可执行文件的路径。</p></li>
+<li><p>如果定义了 <code class="docutils literal notranslate"><span class="pre">CUDAToolkit_ROOT</span></code> CMake 配置变量（例如 <code class="docutils literal notranslate"><span class="pre">-DCUDAToolkit_ROOT=/some/path</span></code>）<em>或</em>环境变量，则会搜索该路径。如果同时指定了环境变量<strong>和</strong>配置变量，<em>配置</em>变量优先级更高。</p>
+<p>此处指定的目录必须能从中找到 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 可执行文件，或相应的 <code class="docutils literal notranslate"><span class="pre">version.txt</span></code> 或 <code class="docutils literal notranslate"><span class="pre">version.json</span></code> 文件。</p>
+</li>
+<li><p>如果定义了 CUDA_PATH 环境变量，则会搜索其中的 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code>。</p></li>
+<li><p>使用 <span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 在用户的路径中搜索 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code>。如果找到，则不再执行后续的搜索尝试。如果系统安装了多个 CUDA 工具包，用户有责任确保路径中出现的第一个 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 是所需的版本。</p></li>
+<li><p>在 Unix 系统上，如果存在符号链接 <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda</span></code>，则使用此路径。不再执行后续的搜索尝试。Windows 平台不存在默认的符号链接位置。</p></li>
+<li><p>搜索平台特定的默认安装位置。如果仅找到一个候选路径，则使用该路径。搜索的默认 CUDA 工具包安装位置为</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>平台</p></th>
+<th class="head"><p>搜索模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>macOS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/Developer/NVIDIA/CUDA-X.Y</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>其他 Unix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/usr/local/cuda-X.Y</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Windows</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\NVIDIA</span> <span class="pre">GPU</span> <span class="pre">Computing</span> <span class="pre">Toolkit\CUDA\vX.Y</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">X.Y</span></code> 是 CUDA 工具包的具体版本，例如 <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda-9.0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\NVIDIA</span> <span class="pre">GPU</span> <span class="pre">Computing</span> <span class="pre">Toolkit\CUDA\v9.0</span></code></p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当系统默认位置安装了多个 CUDA 工具包时（例如同时存在 <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda-9.0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda-10.0</span></code>，但不存在 <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda</span></code> 符号链接），该包将被标记为<strong>未找到</strong>。</p>
+<p>在安装了多个 CUDA 工具包的情况下，进行自动决策涉及的因素太多。在这种情况下，建议用户 (1) 设置 <code class="docutils literal notranslate"><span class="pre">CUDAToolkit_ROOT</span></code>，或者 (2) 确保正确的 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 可执行文件出现在 <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> 中以便 <span class="target" id="index-1-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 找到。</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="arguments">
+<h2>参数<a class="headerlink" href="FindCUDAToolkit.html#arguments" title="此标题的链接">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">[&lt;version&gt;]</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">[&lt;version&gt;]</span></code> 参数请求找到与该版本兼容的包。更多详细信息请参见 <a class="reference internal" href="../command/find_package.html#find-package-version-format"><span class="std std-ref">find_package 版本格式</span></a>。</p>
+</dd>
+</dl>
+</section>
+<section id="options">
+<h2>选项<a class="headerlink" href="FindCUDAToolkit.html#options" title="链接到此标题">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code></dt><dd><p>如果指定了此项，且未找到合适的 CUDA 工具包，则配置过程会报错。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><p>如果指定了此项，搜索合适的 CUDA 工具包时将不会产生任何消息。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EXACT</span></code></dt><dd><p>如果指定了此项，仅在找到的版本与指定的 <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> 完全一致时才视为找到 CUDA 工具包。</p>
+</dd>
+</dl>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindCUDAToolkit.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>提供了一个名为 <code class="docutils literal notranslate"><span class="pre">CUDA::toolkit</span></code> 的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>。</p>
+<p>本模块为作为 CUDAToolkit 一部分的以下每个库提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cuda-runtime-library">CUDA 运行时库</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cuda-driver-library">CUDA 驱动程序库</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cublas">cuBLAS</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cudla">cuDLA</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cufile">cuFile</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cufft">cuFFT</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#curand">cuRAND</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cusolver">cuSOLVER</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cusparse">cuSPARSE</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#cupti">cuPTI</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#npp">NPP</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvblas">nvBLAS</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvgraph">nvGRAPH</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvjpeg">nvJPEG</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvidia-ml">nvidia-ML</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvptx-compiler">nvPTX 编译器</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvrtc">nvRTC</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvjitlink">nvJitLink</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvfatbin">nvFatBin</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvtoolsext">nvToolsExt</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#nvtx3">nvtx3</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#opencl">OpenCL</a></p></li>
+<li><p><a class="reference internal" href="FindCUDAToolkit.html#culibos">cuLIBOS</a></p></li>
+</ul>
+<section id="cuda-runtime-library">
+<h3>CUDA 运行时库<a class="headerlink" href="FindCUDAToolkit.html#cuda-runtime-library" title="此标题的链接">¶</a></h3>
+<p>CUDA 运行时库 (cudart) 是大多数应用程序通常需要链接的库，以便进行如 <cite>cudaMalloc</cite> 和 <cite>cudaFree</cite> 等调用。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cudart</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cudart_static</span></code></p></li>
+</ul>
+</section>
+<section id="cuda-driver-library">
+<h3>CUDA 驱动程序库<a class="headerlink" href="FindCUDAToolkit.html#cuda-driver-library" title="此标题的链接">¶</a></h3>
+<p>CUDA 驱动程序库 (cuda) 供使用 <cite>cuMemAlloc</cite> 和 <cite>cuMemFree</cite> 等调用的应用程序使用。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cuda_driver</span></code></p></li>
+</ul>
+</section>
+<section id="cublas">
+<h3>cuBLAS<a class="headerlink" href="FindCUDAToolkit.html#cublas" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/cublas">CUDA 基本线性代数子程序</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cublas</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cublas_static</span></code></p></li>
+<li><p>自 CUDA 10.1 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cublasLt</span></code></p></li>
+<li><p>自 CUDA 10.1 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cublasLt_static</span></code></p></li>
+</ul>
+</section>
+<section id="cudla">
+<h3>cuDLA<a class="headerlink" href="FindCUDAToolkit.html#cudla" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.27 版本中新增。</span></p>
+</div>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/cuda-for-tegra-appnote#cudla">NVIDIA Tegra 深度学习加速器</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p>自 CUDA 11.6 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cudla</span></code></p></li>
+</ul>
+</section>
+<section id="cufile">
+<h3>cuFile<a class="headerlink" href="FindCUDAToolkit.html#cufile" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><a class="reference external" href="https://docs.nvda.net.cn/gpudirect-storage/api-reference-guide">NVIDIA GPUDirect Storage cuFile</a> 库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p>自 CUDA 11.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cuFile</span></code></p></li>
+<li><p>自 CUDA 11.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cuFile_static</span></code></p></li>
+<li><p>自 CUDA 11.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cuFile_rdma</span></code></p></li>
+<li><p>自 CUDA 11.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cuFile_rdma_static</span></code></p></li>
+</ul>
+</section>
+<section id="cufft">
+<h3>cuFFT<a class="headerlink" href="FindCUDAToolkit.html#cufft" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/cufft">CUDA 快速傅里叶变换</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cufft</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cufftw</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cufft_static</span></code></p></li>
+<li><p>自 CUDA 9.2 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::cufft_static_nocallback</span></code>，需要 CMake 3.23+</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cufftw_static</span></code></p></li>
+</ul>
+</section>
+<section id="curand">
+<h3>cuRAND<a class="headerlink" href="FindCUDAToolkit.html#curand" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/curand">CUDA 随机数生成</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::curand</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::curand_static</span></code></p></li>
+</ul>
+</section>
+<section id="cusolver">
+<h3>cuSOLVER<a class="headerlink" href="FindCUDAToolkit.html#cusolver" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/cusolver">GPU 加速线性系统求解器</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cusolver</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cusolver_static</span></code></p></li>
+</ul>
+</section>
+<section id="cusparse">
+<h3>cuSPARSE<a class="headerlink" href="FindCUDAToolkit.html#cusparse" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/cusparse">CUDA 稀疏矩阵</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cusparse</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cusparse_static</span></code></p></li>
+</ul>
+</section>
+<section id="cupti">
+<h3>cupti<a class="headerlink" href="FindCUDAToolkit.html#cupti" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://developer.nvidia.com/cupti">NVIDIA CUDA 分析工具接口</a>。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cupti</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::cupti_static</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.27 版本新增</span></p>
+<ul class="simple">
+<li><p>自 CUDA 10.2 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvperf_host</span></code></p></li>
+<li><p>自 CUDA 10.2 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvperf_host_static</span></code></p></li>
+<li><p>自 CUDA 10.2 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvperf_target</span></code></p></li>
+<li><p>自 CUDA 11.3 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::pcsamplingutil</span></code></p></li>
+</ul>
+</div>
+</section>
+<section id="npp">
+<h3>NPP<a class="headerlink" href="FindCUDAToolkit.html#npp" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/npp">NVIDIA 二维图像和信号处理性能原语</a>库。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><cite>nppc</cite>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppc_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppial</cite>：<cite>nppi_arithmetic_and_logical_operations.h</cite> 中的算术和逻辑运算函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppial</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppial_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppicc</cite>：<cite>nppi_color_conversion.h</cite> 中的色彩转换和采样函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppicc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppicc_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppicom</cite>：<cite>nppi_compression_functions.h</cite> 中的 JPEG 压缩和解压缩函数。自 CUDA 11.0 起移除，改用 <a class="reference internal" href="FindCUDAToolkit.html#nvjpeg">nvJPEG</a>。</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppicom</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppicom_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppidei</cite>：<cite>nppi_data_exchange_and_initialization.h</cite> 中的数据交换和初始化函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppidei</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppidei_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppif</cite>：<cite>nppi_filter_functions.h</cite> 中的过滤和计算机视觉函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppif</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppif_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppig</cite>：<cite>nppi_geometry_transforms.h</cite> 中的几何变换函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppig</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppig_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppim</cite>：<cite>nppi_morphological_operations.h</cite> 中的形态学运算函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppim</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppim_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppist</cite>：<cite>nppi_statistics_functions.h</cite> 和 <cite>nppi_linear_transforms.h</cite> 中的统计和线性变换函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppist</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppist_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppisu</cite>：<cite>nppi_support_functions.h</cite> 中的内存支持函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppisu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppisu_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>nppitc</cite>：<cite>nppi_threshold_and_compare_operations.h</cite> 中的阈值和比较运算函数</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppitc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nppitc_static</span></code></p></li>
+</ul>
+</li>
+<li><p><cite>npps</cite>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::npps</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::npps_static</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvblas">
+<h3>nvBLAS<a class="headerlink" href="FindCUDAToolkit.html#nvblas" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/nvblas">GPU 加速的嵌入式 BLAS</a> 库。仅作为共享库提供。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvblas</span></code></p></li>
+</ul>
+</section>
+<section id="nvgraph">
+<h3>nvGRAPH<a class="headerlink" href="FindCUDAToolkit.html#nvgraph" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/archive/10.0/nvgraph">GPU 加速的图形分析</a>库。自 CUDA 11.0 起移除。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvgraph</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvgraph_static</span></code></p></li>
+</ul>
+</section>
+<section id="nvjpeg">
+<h3>nvJPEG<a class="headerlink" href="FindCUDAToolkit.html#nvjpeg" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/nvjpeg">GPU 加速的 JPEG 编解码器</a>库。引入于 CUDA 10。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvjpeg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvjpeg_static</span></code></p></li>
+</ul>
+</section>
+<section id="nvptx-compiler">
+<h3>nvPTX 编译器<a class="headerlink" href="FindCUDAToolkit.html#nvptx-compiler" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/ptx-compiler-api">PTX 编译器 API</a>。这是一组可用于将 PTX 程序编译为 GPU 汇编代码的 API。引入于 CUDA 11.1，仅作为静态库提供。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p>自 CUDA 11.1 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvptxcompiler_static</span></code></p></li>
+</ul>
+</section>
+<section id="nvrtc">
+<h3>nvRTC<a class="headerlink" href="FindCUDAToolkit.html#nvrtc" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/nvrtc">用于 CUDA 的运行时编译库</a>。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvrtc</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.26 版新增</span></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvrtc_builtins</span></code></p></li>
+<li><p>自 CUDA 11.5 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvrtc_static</span></code></p></li>
+<li><p>自 CUDA 11.5 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvrtc_builtins_static</span></code></p></li>
+</ul>
+</div>
+</section>
+<section id="nvjitlink">
+<h3>nvJitLink<a class="headerlink" href="FindCUDAToolkit.html#nvjitlink" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/nvjitlink">JIT 链接 API</a>。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p>自 CUDA 12.0 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvJitLink</span></code></p></li>
+<li><p>自 CUDA 12.0 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvJitLink_static</span></code></p></li>
+</ul>
+</section>
+<section id="nvfatbin">
+<h3>nvFatBin<a class="headerlink" href="FindCUDAToolkit.html#nvfatbin" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">3.30 版本新增。</span></p>
+</div>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/nvfatbin">Fatbin 创建器 API</a>。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p>自 CUDA 12.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvfatbin</span></code></p></li>
+<li><p>自 CUDA 12.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvfatbin_static</span></code></p></li>
+</ul>
+</section>
+<section id="nvidia-ml">
+<h3>nvidia-ML<a class="headerlink" href="FindCUDAToolkit.html#nvidia-ml" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://developer.nvidia.com/management-library-nvml">NVIDIA 管理库</a>。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvml</span></code></p></li>
+<li><p>自 CUDA 12.4 起提供 <code class="docutils literal notranslate"><span class="pre">CUDA::nvml_static</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">3.31 版本新增：</span>添加了 <code class="docutils literal notranslate"><span class="pre">CUDA::nvml_static</span></code>。</p>
+</div>
+</section>
+<section id="nvtoolsext">
+<span id="findcudatoolkit-nvtoolsext"></span><h3>nvToolsExt<a class="headerlink" href="FindCUDAToolkit.html#nvtoolsext" title="此标题的链接">¶</a></h3>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">3.25 版本弃用：</span>对于 CUDA 10.0+，请使用 <a class="reference internal" href="FindCUDAToolkit.html#nvtx3">nvtx3</a>。自 CUDA 12.9 起，<cite>nvToolsExt</cite> 库不再存在</p>
+</div>
+<p><a class="reference external" href="https://docs.nvda.net.cn/cuda/archive/9.0/profiler-users-guide#nvtx">旧版 NVIDIA 工具扩展</a>。仅作为共享库提供。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvToolsExt</span></code></p></li>
+</ul>
+</section>
+<section id="nvtx3">
+<span id="findcudatoolkit-nvtx3"></span><h3>nvtx3<a class="headerlink" href="FindCUDAToolkit.html#nvtx3" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
+</div>
+<p><a class="reference external" href="https://nvda.org.cn/NVTX/doxygen">NVIDIA 工具扩展</a>头文件库。引入于 CUDA 10.0。</p>
+<p>创建的目标</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvtx3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::nvtx3_interop</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">在 4.1 版本中新增。</span></p>
+</div>
+<p>CUDA 12.9 及以上版本提供此功能，供无法使用 C++ 头文件库的语言（如 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>）使用。</p>
+</li>
+</ul>
+</section>
+<section id="opencl">
+<h3>OpenCL<a class="headerlink" href="FindCUDAToolkit.html#opencl" title="此标题的链接">¶</a></h3>
+<p><a class="reference external" href="https://developer.nvidia.com/opencl">NVIDIA Open Computing Language</a> 库。仅作为共享库提供。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::OpenCL</span></code></p></li>
+</ul>
+</section>
+<section id="culibos">
+<h3>cuLIBOS<a class="headerlink" href="FindCUDAToolkit.html#culibos" title="此标题的链接">¶</a></h3>
+<p>cuLIBOS 库是一个仅静态的后端线程抽象层库。<code class="docutils literal notranslate"><span class="pre">CUDA::cublas_static</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA::cusparse_static</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA::cufft_static</span></code>、<code class="docutils literal notranslate"><span class="pre">CUDA::curand_static</span></code> 以及 NPP 库（如果已实现）都自动链接此依赖项。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::culibos</span></code></p></li>
+</ul>
+<p><strong>注意</strong>：使用者通常不需要直接使用此目标。</p>
+</section>
+<section id="bin2c">
+<span id="findcudatoolkit-bin2c"></span><h3>bin2c<a class="headerlink" href="FindCUDAToolkit.html#bin2c" title="此标题的链接">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 4.3.</span></p>
+</div>
+<p>一个将二进制文件转换为包含字节数组的 C 文件的工具。</p>
+<p>创建的目标</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CUDA::bin2c</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindCUDAToolkit.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_FOUND</span></code></dt><dd><p>一个布尔值，指定是否找到了 CUDA 工具包。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_VERSION</span></code></dt><dd><p>找到的 CUDA 工具包的确切版本（由 <code class="docutils literal notranslate"><span class="pre">nvcc</span> <span class="pre">--version</span></code>, <code class="docutils literal notranslate"><span class="pre">version.txt</span></code> 或 <code class="docutils literal notranslate"><span class="pre">version.json</span></code> 报告）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_VERSION_MAJOR</span></code></dt><dd><p>CUDA 工具包的主版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_VERSION_MINOR</span></code></dt><dd><p>CUDA 工具包的次版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_VERSION_PATCH</span></code></dt><dd><p>CUDA 工具包的补丁版本号。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_BIN_DIR</span></code></dt><dd><p>包含 CUDA 可执行文件 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 的 CUDA 工具包库目录的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_INCLUDE_DIRS</span></code></dt><dd><p>编译链接 CUDA 的项目所需的所有包含头文件的 CUDA 工具包文件夹路径列表。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_LIBRARY_DIR</span></code></dt><dd><p>包含 CUDA 运行时库 <code class="docutils literal notranslate"><span class="pre">cudart</span></code> 的 CUDA 工具包库目录的路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_LIBRARY_ROOT</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
+</div>
+<p>包含 nvvm 目录以及 version.txt 或 version.json 的 CUDA 工具包目录路径。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_TARGET_DIR</span></code></dt><dd><p>交叉编译时包含目标架构的 CUDA 工具包目录路径。非交叉编译时，这等同于 <code class="docutils literal notranslate"><span class="pre">CUDAToolkit_BIN_DIR</span></code> 的父目录。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDAToolkit_NVCC_EXECUTABLE</span></code></dt><dd><p>NVIDIA CUDA 编译器 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 的路径。请注意，此路径可能与 <span class="target" id="index-1-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CUDA_COMPILER</span></code></a> 不同。必须找到 <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> 才能确定 CUDA 工具包版本以及工具包的其他功能。此变量的设置是为了方便依赖本模块的其他模块。</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindCUDAToolkit.html#">FindCUDAToolkit</a><ul>
+<li><a class="reference internal" href="FindCUDAToolkit.html#search-behavior">搜索行为</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#arguments">参数</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#options">选项</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#imported-targets">导入目标</a><ul>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cuda-runtime-library">CUDA 运行时库</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cuda-driver-library">CUDA 驱动程序库</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cublas">cuBLAS</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cudla">cuDLA</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cufile">cuFile</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cufft">cuFFT</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#curand">cuRAND</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cusolver">cuSOLVER</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cusparse">cuSPARSE</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#cupti">cupti</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#npp">NPP</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvblas">nvBLAS</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvgraph">nvGRAPH</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvjpeg">nvJPEG</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvptx-compiler">nvPTX 编译器</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvrtc">nvRTC</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvjitlink">nvJitLink</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvfatbin">nvFatBin</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvidia-ml">nvidia-ML</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvtoolsext">nvToolsExt</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#nvtx3">nvtx3</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#opencl">OpenCL</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#culibos">cuLIBOS</a></li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#bin2c">bin2c</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="FindCUDAToolkit.html#result-variables">结果变量</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindCoin3D.html" title="上一章">FindCoin3D</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindCups.html" title="下一章">FindCups</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindCUDAToolkit.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindCups.html" title="FindCups">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCoin3D.html" title="FindCoin3D">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindCUDAToolkit.html">FindCUDAToolkit</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

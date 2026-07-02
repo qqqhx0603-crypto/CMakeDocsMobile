@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>GNUInstallDirs — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="GNUInstallDirs.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="GoogleTest" href="GoogleTest.html" />
+    <link rel="prev" title="GenerateExportHeader" href="GenerateExportHeader.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="GoogleTest.html" title="GoogleTest" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="GenerateExportHeader.html" title="GenerateExportHeader" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GNUInstallDirs.html">GNUInstallDirs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="gnuinstalldirs">
+<span id="module:GNUInstallDirs"></span><h1>GNUInstallDirs<a class="headerlink" href="GNUInstallDirs.html#gnuinstalldirs" title="链接到此标题">¶</a></h1>
+<p>此模块根据 <a class="reference external" href="https://gnu.net.cn/prep/standards/html_node/Directory-Variables.html">GNU 编码标准</a> 定义安装目录变量，并提供一个用于计算与安装相关的绝对路径的命令。</p>
+<p>在 CMake 项目中加载此模块，使用</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">GNUInstallDirs</span><span class="nf">)</span>
+</pre></div>
+</div>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="GNUInstallDirs.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>引入此模块会定义以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code></dt><dd><p>给定类型文件的目标路径。此值可以传递给 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 选项以对应相应的文件类型。它应当是相对于安装前缀（installation prefix）的路径，以便以可重定位的方式转换为绝对路径。然而，如下文所述，存在一些<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>。</p>
+<p>虽然允许使用绝对路径，但不建议这样做，因为它们无法与 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> 命令的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 选项或 <span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 安装程序生成器配合使用。特别是，无需通过预置 <span class="target" id="index-0-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 来使路径绝对化；如果 DESTINATION 是相对路径，则默认会使用此安装前缀。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_FULL_&lt;dir&gt;</span></code></dt><dd><p>从相应的 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 值生成的绝对路径。如果该值本身不是绝对路径，则通常通过预置 <span class="target" id="index-1-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 变量的值来构造绝对路径，下文所述的<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>除外。</p>
+<p>这些变量不应在 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令中使用，因为它们无法与 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> 命令的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 选项或 <span class="target" id="index-1-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 安装程序生成器配合使用。</p>
+</dd>
+</dl>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 是以下之一：</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">BINDIR</span></code></dt><dd><p>用户可执行文件（<code class="docutils literal notranslate"><span class="pre">bin</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SBINDIR</span></code></dt><dd><p>系统管理可执行文件（<code class="docutils literal notranslate"><span class="pre">sbin</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIBEXECDIR</span></code></dt><dd><p>程序可执行文件（<code class="docutils literal notranslate"><span class="pre">libexec</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code></dt><dd><p>只读单机数据（<code class="docutils literal notranslate"><span class="pre">etc</span></code>）</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>如果 <span class="target" id="index-2-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 属于<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>，则默认路径为该处描述的绝对路径变体。参见策略 <span class="target" id="index-0-policy:CMP0192"></span><a class="reference internal" href="../policy/CMP0192.html#policy:CMP0192" title="CMP0192"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0192</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SHAREDSTATEDIR</span></code></dt><dd><p>可修改的架构无关数据（<code class="docutils literal notranslate"><span class="pre">com</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code></dt><dd><p>可修改的单机数据（<code class="docutils literal notranslate"><span class="pre">var</span></code>）</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>如果 <span class="target" id="index-3-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 属于<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>，则默认路径为该处描述的绝对路径变体。参见策略 <span class="target" id="index-1-policy:CMP0192"></span><a class="reference internal" href="../policy/CMP0192.html#policy:CMP0192" title="CMP0192"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0192</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code></dt><dd><p>运行时变量数据（<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR/run</span></code>）</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.9 中添加。</span></p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>如果 <span class="target" id="index-4-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 属于<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>，则默认路径为该处描述的绝对路径变体。参见策略 <span class="target" id="index-2-policy:CMP0192"></span><a class="reference internal" href="../policy/CMP0192.html#policy:CMP0192" title="CMP0192"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0192</span></code></a>。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LIBDIR</span></code></dt><dd><p>目标代码库（<code class="docutils literal notranslate"><span class="pre">lib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">lib64</span></code>）</p>
+<p>在 Debian 上，当 <span class="target" id="index-5-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 为 <code class="docutils literal notranslate"><span class="pre">/usr</span></code> 时，这可能是 <code class="docutils literal notranslate"><span class="pre">lib/&lt;multiarch-tuple&gt;</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当在安装时使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 选项指定了替代安装前缀时，多架构元组的特殊情况将基于配置时的 <span class="target" id="index-6-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 进行评估，而不是基于替代前缀的值。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INCLUDEDIR</span></code></dt><dd><p>C 头文件（<code class="docutils literal notranslate"><span class="pre">include</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OLDINCLUDEDIR</span></code></dt><dd><p>非 GCC 的 C 头文件（<code class="docutils literal notranslate"><span class="pre">/usr/include</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DATAROOTDIR</span></code></dt><dd><p>只读架构无关数据根目录（<code class="docutils literal notranslate"><span class="pre">share</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DATADIR</span></code></dt><dd><p>只读架构无关数据（<code class="docutils literal notranslate"><span class="pre">DATAROOTDIR</span></code>）</p>
+<p><code class="docutils literal notranslate"><span class="pre">DATADIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DATAROOTDIR</span></code> 是分开处理的，以便可以针对特定项目的数据文件自定义 <code class="docutils literal notranslate"><span class="pre">DATADIR</span></code>，同时 <code class="docutils literal notranslate"><span class="pre">DATAROOTDIR</span></code> 对标准架构无关位置（<code class="docutils literal notranslate"><span class="pre">INFODIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALEDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">MANDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DOCDIR</span></code>）保持不变。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">INFODIR</span></code></dt><dd><p>info 文档（<code class="docutils literal notranslate"><span class="pre">DATAROOTDIR/info</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LOCALEDIR</span></code></dt><dd><p>区域设置相关的语言数据（<code class="docutils literal notranslate"><span class="pre">DATAROOTDIR/locale</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">MANDIR</span></code></dt><dd><p>man 文档（<code class="docutils literal notranslate"><span class="pre">DATAROOTDIR/man</span></code>）</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DOCDIR</span></code></dt><dd><p>文档根目录（<code class="docutils literal notranslate"><span class="pre">DATAROOTDIR/doc/PROJECT_NAME</span></code>）</p>
+</dd>
+</dl>
+<p>如果引入者未定义值，则将使用上述默认值，并且该值将出现在缓存中供用户编辑。</p>
+<p>如果使用了 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 的默认值且 <span class="target" id="index-7-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 发生了更改，则新的默认值将根据新的 <span class="target" id="index-8-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 值进行计算。在 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> 中使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 不会改变这些值。</p>
+</section>
+<section id="special-cases">
+<span id="gnuinstalldirs-special-cases"></span><h2>特殊情况<a class="headerlink" href="GNUInstallDirs.html#special-cases" title="链接到此标题">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.4 版本新增。</span></p>
+</div>
+<p><span class="target" id="index-9-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 的以下值是特殊的：</p>
+<p><code class="docutils literal notranslate"><span class="pre">/</span></code></p>
+<blockquote>
+<div><p>对于非 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>，如果未将其指定为用户自定义的绝对路径，则 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 的值将预置 <code class="docutils literal notranslate"><span class="pre">usr/</span></code>。例如，<code class="docutils literal notranslate"><span class="pre">INCLUDEDIR</span></code> 的值 <code class="docutils literal notranslate"><span class="pre">include</span></code> 将变为 <code class="docutils literal notranslate"><span class="pre">usr/include</span></code>。这是 <a class="reference external" href="https://gnu.net.cn/prep/standards/html_node/Directory-Variables.html">GNU 编码标准</a> 所要求的，该标准规定：</p>
+<blockquote>
+<div><p>构建完整的 GNU 系统时，前缀将为空，并且 <code class="docutils literal notranslate"><span class="pre">/usr</span></code> 将是指向 <code class="docutils literal notranslate"><span class="pre">/</span></code> 的符号链接。</p>
+</div></blockquote>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span><code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 变量会缓存带有 <code class="docutils literal notranslate"><span class="pre">usr/</span></code> 前缀的值。参见策略 <span class="target" id="index-0-policy:CMP0193"></span><a class="reference internal" href="../policy/CMP0193.html#policy:CMP0193" title="CMP0193"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0193</span></code></a>。</p>
+</div>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">/usr</span></code></p>
+<blockquote>
+<div><p>对于等于 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>，如果 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 本身不是绝对路径，则通过仅在其值前加上 <code class="docutils literal notranslate"><span class="pre">/</span></code> 来计算 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_FULL_&lt;dir&gt;</span></code>。例如，<code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code> 的值 <code class="docutils literal notranslate"><span class="pre">etc</span></code> 将变为 <code class="docutils literal notranslate"><span class="pre">/etc</span></code>。这是 <a class="reference external" href="https://gnu.net.cn/prep/standards/html_node/Directory-Variables.html">GNU 编码标准</a> 所要求的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>对于等于 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>，<code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 的默认值分别为绝对路径 <code class="docutils literal notranslate"><span class="pre">/etc</span></code>、<code class="docutils literal notranslate"><span class="pre">/var</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/var/run</span></code>。参见策略 <span class="target" id="index-3-policy:CMP0192"></span><a class="reference internal" href="../policy/CMP0192.html#policy:CMP0192" title="CMP0192"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0192</span></code></a>。</p>
+</div>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">/opt/...</span></code></p>
+<blockquote>
+<div><p>对于等于 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>，如果 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 本身不是绝对路径，则通过*追加*前缀来计算 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_FULL_&lt;dir&gt;</span></code>。例如，<code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code> 的值 <code class="docutils literal notranslate"><span class="pre">etc</span></code> 将变为 <code class="docutils literal notranslate"><span class="pre">/etc/opt/...</span></code>。这是由 <a class="reference external" href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html">文件系统层次结构标准 (FHS)</a> 定义的。</p>
+<p>此行为不适用于 <code class="docutils literal notranslate"><span class="pre">/opt/homebrew/...</span></code> 下的路径。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>对于等于 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 的 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>，<code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_&lt;dir&gt;</span></code> 的默认值分别为绝对路径 <code class="docutils literal notranslate"><span class="pre">/etc/opt/...</span></code>、<code class="docutils literal notranslate"><span class="pre">/var/opt/...</span></code> 和 <code class="docutils literal notranslate"><span class="pre">/var/run/opt/...</span></code>。参见策略 <span class="target" id="index-4-policy:CMP0192"></span><a class="reference internal" href="../policy/CMP0192.html#policy:CMP0192" title="CMP0192"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0192</span></code></a>。</p>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当在安装时使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake--install-0"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> 选项指定了替代安装前缀时，这些特殊情况将基于配置时的 <span class="target" id="index-10-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a> 进行评估，而不是基于替代前缀的值。</p>
+</div>
+</section>
+<section id="commands">
+<h2>命令<a class="headerlink" href="GNUInstallDirs.html#commands" title="链接到此标题">¶</a></h2>
+<p>此模块提供以下命令</p>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:gnuinstalldirs_get_absolute_install_dir">
+<span class="sig-name descname"><span class="pre">GNUInstallDirs_get_absolute_install_dir</span></span><a class="headerlink" href="GNUInstallDirs.html#command:gnuinstalldirs_get_absolute_install_dir" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.7 版本中新增。</span></p>
+</div>
+<p>从给定的相对路径计算绝对安装路径</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">GNUInstallDirs_get_absolute_install_dir(</span><span class="nv">&lt;result-var&gt;</span><span class="w"> </span><span class="nv">&lt;input-var&gt;</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令从变量 <code class="docutils literal notranslate"><span class="pre">&lt;input-var&gt;</span></code> 中获取值，并根据 GNU 标准安装目录计算其绝对路径。如果输入路径是相对路径，则在其前面加上 <span class="target" id="index-11-variable:CMAKE_INSTALL_PREFIX"></span><a class="reference internal" href="../variable/CMAKE_INSTALL_PREFIX.html#variable:CMAKE_INSTALL_PREFIX" title="CMAKE_INSTALL_PREFIX"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code></a>，并可能根据上述<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>进行调整。</p>
+<p>参数为</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code></dt><dd><p>存储计算出的绝对路径的变量名称。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;input-var&gt;</span></code></dt><dd><p>包含将用于计算其相关绝对安装路径的路径的变量名称。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">4.1 版本变更：</span>此变量不再被修改。参见策略 <span class="target" id="index-1-policy:CMP0193"></span><a class="reference internal" href="../policy/CMP0193.html#policy:CMP0193" title="CMP0193"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0193</span></code></a>。在以前的 CMake 版本中，此命令会根据<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>修改 <code class="docutils literal notranslate"><span class="pre">&lt;input-var&gt;</span></code> 变量的值。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
+</div>
+<p>目录类型名称，例如 <code class="docutils literal notranslate"><span class="pre">SYSCONFDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">LOCALSTATEDIR</span></code>、<code class="docutils literal notranslate"><span class="pre">RUNSTATEDIR</span></code> 等。此参数决定了计算绝对路径时是否适用<a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">3.20 版本变更：</span>在引入 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 参数之前，可以通过在调用此命令之前设置 <code class="docutils literal notranslate"><span class="pre">dir</span></code> 变量来指定目录类型。从 CMake 3.20 开始，如果明确提供了 <code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code> 参数，则忽略 <code class="docutils literal notranslate"><span class="pre">dir</span></code> 变量。</p>
+</div>
+</dd>
+</dl>
+<p>虽然此命令在此模块内部被用于计算 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_FULL_&lt;dir&gt;</span></code> 变量，但它也公开给用户使用，以便用户可以使用相同的逻辑来创建额外的自定义安装路径变量并计算绝对路径。</p>
+</dd></dl>
+
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="GNUInstallDirs.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令。</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="GNUInstallDirs.html#">GNUInstallDirs</a><ul>
+<li><a class="reference internal" href="GNUInstallDirs.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="GNUInstallDirs.html#special-cases">特殊情况</a></li>
+<li><a class="reference internal" href="GNUInstallDirs.html#commands">命令</a></li>
+<li><a class="reference internal" href="GNUInstallDirs.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="GenerateExportHeader.html" title="上一章">GenerateExportHeader</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="GoogleTest.html" title="下一章">GoogleTest</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/GNUInstallDirs.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="GoogleTest.html" title="GoogleTest">下一页</a> |</li>
+        <li class="right">
+          <a href="GenerateExportHeader.html" title="GenerateExportHeader">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="GNUInstallDirs.html">GNUInstallDirs</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

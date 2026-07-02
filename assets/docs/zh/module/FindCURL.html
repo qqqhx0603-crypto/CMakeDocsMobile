@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FindCURL — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FindCURL.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindCurses" href="FindCurses.html" />
+    <link rel="prev" title="FindCups" href="FindCups.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindCurses.html" title="FindCurses" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCups.html" title="FindCups" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindCURL.html">FindCURL</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="findcurl">
+<span id="module:FindCURL"></span><h1>FindCURL<a class="headerlink" href="FindCURL.html#findcurl" title="链接到此标题">¶</a></h1>
+<p>查找用于 URL 数据传输的原生 curl 安装（包含目录和库）</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.17 版本新增: </span>如果 curl 是使用其基于 CMake 的构建系统构建的，它将提供自己的 CMake 包配置文件 (<code class="docutils literal notranslate"><span class="pre">CURLConfig.cmake</span></code>)，以便在<em>配置模式 (config mode)</em> 下通过 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令使用。默认情况下，该模块会搜索此文件，如果找到，则直接返回结果，无需进一步操作。如果未找到上游配置文件，该模块将回退到<em>模块模式 (module mode)</em> 并搜索标准位置。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">3.13 版本新增: </span>Debug 和 Release 版本的库会分开查找。</p>
+</div>
+<section id="components">
+<h2>组件<a class="headerlink" href="FindCURL.html#components" title="此标题的链接">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>该模块支持可选组件，以检测已安装的 curl 中可用的协议和特性（这些可能会根据 curl 版本而变化）</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Protocols: DICT FILE FTP FTPS GOPHER GOPHERS HTTP HTTPS IMAP IMAPS IPFS IPNS
+           LDAP LDAPS MQTT POP3 POP3S RTMP RTMPS RTSP SCP SFTP SMB SMBS SMTP
+           SMTPS TELNET TFTP WS WSS
+Features:  alt-svc asyn-rr AsynchDNS brotli CAcert Debug ECH gsasl GSS-API
+           HSTS HTTP2 HTTP3 HTTPS-proxy HTTPSRR IDN IPv6 Kerberos Largefile
+           libz MultiSSL NTLM NTLM_WB PSL SPNEGO SSL SSLS-EXPORT SSPI
+           threadsafe TLS-SRP TrackMemory Unicode UnixSockets zstd
+</pre></div>
+</div>
+<p>组件可以通过 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令指定，作为判定 curl 是否被找到的必要条件</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;protocols&gt;...</span><span class="w"> </span><span class="nv">&lt;features&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>或者用于可选地检查它们，从而在代码中进行条件处理</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="nv">&lt;protocols&gt;...</span><span class="w"> </span><span class="nv">&lt;features&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>有关支持的协议和特性的更多信息，请参考 curl 文档。组件名称区分大小写，并遵循上游 curl 的命名规范。</p>
+</section>
+<section id="imported-targets">
+<h2>导入的目标<a class="headerlink" href="FindCURL.html#imported-targets" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL::libcurl</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.12 版本新增。</span></p>
+</div>
+<p>封装 curl 使用需求的导入目标，在找到 curl 时可用。</p>
+</dd>
+</dl>
+</section>
+<section id="result-variables">
+<h2>结果变量<a class="headerlink" href="FindCURL.html#result-variables" title="此标题的链接">¶</a></h2>
+<p>此模块定义了以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_FOUND</span></code></dt><dd><p>布尔值，指示是否找到了（所请求版本的）curl 以及所有必需的组件。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_VERSION</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">4.0 版本新增。</span></p>
+</div>
+<p>找到的 curl 版本。此变量取代了 <code class="docutils literal notranslate"><span class="pre">CURL_VERSION_STRING</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_&lt;component&gt;_FOUND</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<p>布尔值，指示是否找到了指定的组件（curl 协议或特性）。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_INCLUDE_DIRS</span></code></dt><dd><p>包含 <code class="docutils literal notranslate"><span class="pre">curl/curl.h</span></code> 及使用 curl 所需的其他头文件的目录。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当通过<em>配置模式</em>找到 curl 时，此变量仅在 curl 8.9 或更高版本中可用。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_LIBRARIES</span></code></dt><dd><p>使用 curl 进行链接时所需的库列表。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>当通过<em>模块模式</em>找到 curl 时，这是一个库文件路径列表。在<em>配置模式</em>下，此变量仅在 curl 8.9 或更高版本中可用，且包含一个导入目标列表。</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="hints">
+<h2>提示<a class="headerlink" href="FindCURL.html#hints" title="链接到此标题">¶</a></h2>
+<p>此模块接受以下变量</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_NO_CURL_CMAKE</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
+</div>
+<p>将此变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 可禁用通过<em>配置模式</em>搜索 curl。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_USE_STATIC_LIBS</span></code></dt><dd><div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 新增。</span></p>
+</div>
+<p>将此变量设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 以使用静态库。这仅在 curl 未通过<em>配置模式</em>找到时有效。</p>
+</dd>
+</dl>
+</section>
+<section id="deprecated-variables">
+<h2>已弃用变量<a class="headerlink" href="FindCURL.html#deprecated-variables" title="此标题的链接">¶</a></h2>
+<p>以下变量提供用于向后兼容性</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">CURL_VERSION_STRING</span></code></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">4.0 版本弃用: </span>由 <code class="docutils literal notranslate"><span class="pre">CURL_VERSION</span></code> 取代。</p>
+</div>
+<p>找到的 curl 版本。</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>示例<a class="headerlink" href="FindCURL.html#examples" title="此标题的永久链接">¶</a></h2>
+<p>查找 curl 库并指定所需的最低版本</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="w"> </span><span class="m">7.61.0</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>查找 curl 库并将其链接到项目目标</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="nf">)</span>
+<span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">CURL</span><span class="o">::</span><span class="nb">libcurl</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>使用组件检查已找到的 curl 是否支持特定协议或特性</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">CURL</span><span class="w"> </span><span class="no">OPTIONAL_COMPONENTS</span><span class="w"> </span><span class="no">HTTPS</span><span class="w"> </span><span class="no">SSL</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">CURL_HTTPS_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># curl supports the HTTPS protocol</span>
+<span class="nf">endif()</span>
+
+<span class="nf">if(</span><span class="no">CURL_SSL_FOUND</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># curl has SSL feature enabled</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FindCURL.html#">FindCURL</a><ul>
+<li><a class="reference internal" href="FindCURL.html#components">组件</a></li>
+<li><a class="reference internal" href="FindCURL.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindCURL.html#result-variables">结果变量</a></li>
+<li><a class="reference internal" href="FindCURL.html#hints">提示</a></li>
+<li><a class="reference internal" href="FindCURL.html#deprecated-variables">已弃用变量</a></li>
+<li><a class="reference internal" href="FindCURL.html#examples">示例</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FindCups.html" title="上一章">FindCups</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindCurses.html" title="下一章">FindCurses</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FindCURL.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindCurses.html" title="FindCurses">下一页</a> |</li>
+        <li class="right">
+          <a href="FindCups.html" title="FindCups">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FindCURL.html">FindCURL</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

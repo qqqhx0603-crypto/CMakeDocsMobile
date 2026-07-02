@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>function — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="function.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="get_cmake_property" href="get_cmake_property.html" />
+    <link rel="prev" title="foreach" href="foreach.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="get_cmake_property.html" title="get_cmake_property" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="foreach.html" title="foreach" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="function.html">function</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="function">
+<span id="command:function"></span><h1>function<a class="headerlink" href="function.html#function" title="链接到此标题">¶</a></h1>
+<p>开始记录一个函数，以便稍后作为命令调用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nv">&lt;name&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;arg1&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
+<span class="w">  </span><span class="nv">&lt;commands&gt;</span>
+<span class="nf">endfunction()</span>
+</pre></div>
+</div>
+<p>定义一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的函数，它接收名为 <code class="docutils literal notranslate"><span class="pre">&lt;arg1&gt;</span></code> 等参数。函数定义中的 <code class="docutils literal notranslate"><span class="pre">&lt;commands&gt;</span></code> 会被记录下来；它们在函数被调用之前不会执行。</p>
+<p>出于兼容旧版本的考虑，<span class="target" id="index-0-command:endfunction"></span><a class="reference internal" href="endfunction.html#command:endfunction" title="endfunction"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endfunction()</span></code></a> 命令允许使用可选的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 参数。如果使用了该参数，它必须与起始 <code class="docutils literal notranslate"><span class="pre">function</span></code> 命令的参数完全一致。</p>
+<p>函数会开启一个新的作用域：详情请参阅 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set(var parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set(var</span> <span class="pre">PARENT_SCOPE)</span></code></a>。</p>
+<p>关于策略在函数内部的行为，请参阅 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 命令文档。</p>
+<p>关于 CMake 函数与宏之间的区别，请参阅 <span class="target" id="index-0-command:macro"></span><a class="reference internal" href="macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a> 命令文档。</p>
+<section id="invocation">
+<h2>调用<a class="headerlink" href="function.html#invocation" title="链接到此标题">¶</a></h2>
+<p>函数调用不区分大小写。定义为</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">foo</span><span class="nf">)</span>
+<span class="w">  </span><span class="nv">&lt;commands&gt;</span>
+<span class="nf">endfunction()</span>
+</pre></div>
+</div>
+<p>的函数可以通过以下任意方式调用：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foo()</span>
+<span class="nf">Foo()</span>
+<span class="nf">FOO()</span>
+<span class="nf">cmake_language(</span><span class="no">CALL</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>等等。然而，强烈建议保持与函数定义时一致的大小写。通常函数使用全小写名称。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">3.18 版本新增：</span><span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="cmake_language.html#command:cmake_language" title="cmake_language(call ...)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(CALL</span> <span class="pre">...)</span></code></a> 命令也可用于调用函数。</p>
+</div>
+</section>
+<section id="arguments">
+<h2>参数<a class="headerlink" href="function.html#arguments" title="此标题的链接">¶</a></h2>
+<p>当函数被调用时，记录的 <code class="docutils literal notranslate"><span class="pre">&lt;commands&gt;</span></code> 会先通过将形式参数（<code class="docutils literal notranslate"><span class="pre">${arg1}</span></code> 等）替换为传入的实际参数来进行修改，然后作为普通命令执行。</p>
+<p>除了引用形式参数外，还可以引用 <code class="docutils literal notranslate"><span class="pre">ARGC</span></code> 变量（会被设置为传入函数的参数个数），以及 <code class="docutils literal notranslate"><span class="pre">ARGV0</span></code>、<code class="docutils literal notranslate"><span class="pre">ARGV1</span></code>、<code class="docutils literal notranslate"><span class="pre">ARGV2</span></code> 等（包含传入参数的实际值）。这有助于创建带有可选参数的函数。</p>
+<p>此外，<code class="docutils literal notranslate"><span class="pre">ARGV</span></code> 包含赋予函数的所有参数列表，而 <code class="docutils literal notranslate"><span class="pre">ARGN</span></code> 包含最后一个预期参数之后的参数列表。引用超出 <code class="docutils literal notranslate"><span class="pre">ARGC</span></code> 范围的 <code class="docutils literal notranslate"><span class="pre">ARGV#</span></code> 参数行为未定义。检查 <code class="docutils literal notranslate"><span class="pre">ARGC</span></code> 是否大于 <code class="docutils literal notranslate"><span class="pre">#</span></code> 是确保 <code class="docutils literal notranslate"><span class="pre">ARGV#</span></code> 作为额外参数传递给函数的唯一方法。</p>
+</section>
+<section id="see-also">
+<h2>另请参阅<a class="headerlink" href="function.html#see-also" title="链接到此标题">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="index-0-command:cmake_parse_arguments"></span><a class="reference internal" href="cmake_parse_arguments.html#command:cmake_parse_arguments" title="cmake_parse_arguments"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_parse_arguments()</span></code></a></p></li>
+<li><p><span class="target" id="index-1-command:endfunction"></span><a class="reference internal" href="endfunction.html#command:endfunction" title="endfunction"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endfunction()</span></code></a></p></li>
+<li><p><span class="target" id="index-0-command:return"></span><a class="reference internal" href="return.html#command:return" title="return"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">return()</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="function.html#">function</a><ul>
+<li><a class="reference internal" href="function.html#invocation">调用</a></li>
+<li><a class="reference internal" href="function.html#arguments">参数</a></li>
+<li><a class="reference internal" href="function.html#see-also">另请参阅</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="foreach.html" title="上一章">foreach</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="get_cmake_property.html" title="下一章">get_cmake_property</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/command/function.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="get_cmake_property.html" title="get_cmake_property">下一页</a> |</li>
+        <li class="right">
+          <a href="foreach.html" title="foreach">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="function.html">function</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

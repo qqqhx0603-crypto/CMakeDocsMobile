@@ -1,0 +1,799 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>FetchContent — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="FetchContent.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="FindPackageHandleStandardArgs" href="FindPackageHandleStandardArgs.html" />
+    <link rel="prev" title="FeatureSummary" href="FeatureSummary.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="FindPackageHandleStandardArgs.html" title="FindPackageHandleStandardArgs" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="FeatureSummary.html" title="FeatureSummary" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FetchContent.html">FetchContent</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="fetchcontent">
+<span id="module:FetchContent"></span><h1><a class="toc-backref" href="FetchContent.html#id5" role="doc-backlink">FetchContent</a><a class="headerlink" href="FetchContent.html#fetchcontent" title="链接至此标题">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">3.11 版本新增。</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="FetchContent.html#fetchcontent" id="id5">FetchContent</a></p>
+<ul>
+<li><p><a class="reference internal" href="FetchContent.html#overview" id="id6">概述</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#commands" id="id7">命令</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#variables" id="id8">变量</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#examples" id="id9">示例</a></p>
+<ul>
+<li><p><a class="reference internal" href="FetchContent.html#typical-case" id="id10">典型用例</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#integrating-with-find-package" id="id11">与 find_package() 集成</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#overriding-where-to-find-cmakelists-txt" id="id12">覆盖查找 CMakeLists.txt 的位置</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#complex-dependency-hierarchies" id="id13">复杂的依赖层次结构</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#populating-content-without-adding-it-to-the-build" id="id14">填充内容而不将其添加到构建中</a></p></li>
+<li><p><a class="reference internal" href="FetchContent.html#populating-content-in-cmake-script-mode" id="id15">在 CMake 脚本模式下填充内容</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>该模块提供了在配置时或作为调用脚本的一部分来填充内容的命令。</p>
+<p>使用 CMake 加载此模块</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><span class="target" id="index-0-guide:Using Dependencies Guide"></span><a class="reference internal" href="../guide/using-dependencies/index.html#guide:Using Dependencies Guide" title="Using Dependencies Guide"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">使用依赖指南</span></code></a> 对此通用主题进行了高层次的介绍。它更广泛地概述了 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块在宏观架构中的定位，包括其与 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的关系。建议在阅读下方的详细信息之前先阅读该指南。</p>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="FetchContent.html#id6" role="doc-backlink">概述</a><a class="headerlink" href="FetchContent.html#overview" title="链接至此标题">¶</a></h2>
+<p>该模块支持通过 <span class="target" id="index-0-module:ExternalProject"></span><a class="reference internal" href="ExternalProject.html#module:ExternalProject" title="ExternalProject"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">ExternalProject</span></code></a> 模块支持的任何方法，在配置时填充内容。与在构建时进行下载的 <span class="target" id="index-0-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 不同，<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块使内容立即可用，从而允许配置步骤在诸如 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a>、<span class="target" id="index-0-command:include"></span><a class="reference internal" href="../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 或 <span class="target" id="index-0-command:file"></span><a class="reference internal" href="../command/file.html#command:file" title="file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">file()</span></code></a> 操作等命令中使用这些内容。</p>
+<p>内容填充的细节应与执行实际填充的命令分开定义。这种分离确保了在任何可能尝试使用它们来填充内容之前，所有的依赖细节都已经定义完成。这在复杂的项目层次结构中尤为重要，因为依赖项可能在多个项目之间共享。</p>
+<p>以下示例展示了定义某些依赖项的内容细节，然后通过单独的调用确保它们被填充的典型案例：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">googletest</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/google/googletest.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">703</span><span class="nb">bd9caab50b139428cea1aaff9974ebee5742e</span><span class="w"> </span><span class="c"># release-1.10.0</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">myCompanyIcons</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">      </span><span class="na">https://intranet.mycompany.com/assets/iconset_1.12.tar.gz</span>
+<span class="w">  </span><span class="no">URL_HASH</span><span class="w"> </span><span class="no">MD5</span><span class="p">=</span><span class="m">5588</span><span class="nb">a7b18261c20068beabfb4f530b87</span>
+<span class="nf">)</span>
+
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">myCompanyIcons</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p><span class="target" id="index-0-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 命令确保指定的依赖项已被填充（通过之前的调用，或者由它自己执行填充）。执行填充时，如果可能，它还会将它们添加到主构建中，以便主构建可以使用已填充项目的目标等。有关如何执行这些步骤的详细信息，请参阅该命令的文档。</p>
+<p>使用分层项目结构时，层次结构中更高级别的项目可以覆盖在项目层次结构中任何较低级别处指定的已声明内容细节。对于给定的依赖项，最先声明的细节具有优先权，无论该声明发生在项目层次结构中的何处。同样，第一个尝试填充依赖项的调用会“获胜”，后续的填充将复用第一次的结果，而不是再次重复填充过程。请参阅 <a class="reference internal" href="FetchContent.html#fetch-content-examples"><span class="std std-ref">示例</span></a>，其中演示了此场景。</p>
+<p><code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块还支持在单次调用中定义和填充内容，而不检查该内容是否已在其他地方被填充。这不应在项目中执行，但对于在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">CMake 脚本模式</span></a> 下填充内容可能是合适的。有关详细信息，请参阅 <span class="target" id="index-0-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a>。</p>
+</section>
+<section id="commands">
+<h2><a class="toc-backref" href="FetchContent.html#id7" role="doc-backlink">命令</a><a class="headerlink" href="FetchContent.html#commands" title="此标题的链接">¶</a></h2>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fetchcontent_declare">
+<span class="sig-name descname"><span class="pre">FetchContent_Declare</span></span><a class="headerlink" href="FetchContent.html#command:fetchcontent_declare" title="链接至此定义">¶</a></dt>
+<dd><div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nv">&lt;name&gt;</span>
+<span class="w">  </span><span class="nv">&lt;contentOptions&gt;...</span>
+<span class="w">  </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SYSTEM</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">OVERRIDE_FIND_PACKAGE</span><span class="w"> </span><span class="p">|</span>
+<span class="w">   </span><span class="no">FIND_PACKAGE_ARGS</span><span class="w"> </span><span class="nb">args...</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code> 函数记录描述如何填充指定内容的选项。如果此类细节已在本项目的较早位置记录（无论项目层次结构中的位置如何），则此调用以及后续对相同 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 内容的所有调用都将被忽略。这种“先记录者获胜”的方法允许分层项目由父项目覆盖子项目的内容细节。</p>
+<p>内容 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 可以是任何不带空格的字符串，但最佳实践是仅使用字母、数字和下划线。名称将不区分大小写，且应能直观反映其代表的内容。它通常是子项目的名称，或者是传递给其顶级 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令的值（如果是 CMake 项目）。对于知名的公共项目，名称通常应为项目的官方名称。选择一个不寻常的名称会降低其他需要相同内容的项目使用相同名称的可能性，从而导致内容被重复填充多次。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;contentOptions&gt;</span></code> 可以是 <span class="target" id="index-1-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 命令所理解的任何下载、更新或补丁选项。配置、构建、安装和测试步骤被显式禁用，因此与这些步骤相关的选项被禁止，如果提供将被丢弃。<code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项是一个例外，有关它如何影响行为的详细信息，请参阅 <span class="target" id="index-1-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>当策略 <span class="target" id="index-0-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，某些与输出和目录相关的选项将被忽略。有关详细信息，请参阅策略文档。</p>
+</div>
+<p>在大多数情况下，<code class="docutils literal notranslate"><span class="pre">&lt;contentOptions&gt;</span></code> 将只是定义下载方法以及特定方法细节（如提交标签或归档哈希）的几个选项。例如</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">googletest</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/google/googletest.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">703</span><span class="nb">bd9caab50b139428cea1aaff9974ebee5742e</span><span class="w"> </span><span class="c"># release-1.10.0</span>
+<span class="nf">)</span>
+
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">myCompanyIcons</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">      </span><span class="na">https://intranet.mycompany.com/assets/iconset_1.12.tar.gz</span>
+<span class="w">  </span><span class="no">URL_HASH</span><span class="w"> </span><span class="no">MD5</span><span class="p">=</span><span class="m">5588</span><span class="nb">a7b18261c20068beabfb4f530b87</span>
+<span class="nf">)</span>
+
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">myCompanyCertificates</span>
+<span class="w">  </span><span class="no">SVN_REPOSITORY</span><span class="w"> </span><span class="nb">svn+ssh</span><span class="o">:</span><span class="na">//svn.mycompany.com/srv/svn/trunk/certs</span>
+<span class="w">  </span><span class="no">SVN_REVISION</span><span class="w">   </span><span class="p">-</span><span class="nb">r12345</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果内容是从远程位置获取且您无法控制该服务器，建议使用 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 的哈希值，而不是分支名称或标签名称。提交哈希更安全，并有助于确认下载的内容正是您所预期的。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.14 中更改：</span>用于下载、更新或补丁步骤的命令可以访问终端。这在需要密码提示或实时显示命令进度等场景下可能是必要的。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.22 中添加：</span><span class="target" id="index-0-variable:CMAKE_TLS_VERIFY"></span><a class="reference internal" href="../variable/CMAKE_TLS_VERIFY.html#variable:CMAKE_TLS_VERIFY" title="CMAKE_TLS_VERIFY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_VERIFY</span></code></a>、<span class="target" id="index-0-variable:CMAKE_TLS_CAINFO"></span><a class="reference internal" href="../variable/CMAKE_TLS_CAINFO.html#variable:CMAKE_TLS_CAINFO" title="CMAKE_TLS_CAINFO"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TLS_CAINFO</span></code></a>、<span class="target" id="index-0-variable:CMAKE_NETRC"></span><a class="reference internal" href="../variable/CMAKE_NETRC.html#variable:CMAKE_NETRC" title="CMAKE_NETRC"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_NETRC_FILE"></span><a class="reference internal" href="../variable/CMAKE_NETRC_FILE.html#variable:CMAKE_NETRC_FILE" title="CMAKE_NETRC_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_NETRC_FILE</span></code></a> 变量现在提供其对应内容选项的默认值，就像它们对 <span class="target" id="index-2-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 所做的那样。以前，这些变量会被 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块忽略。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 中添加</span></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code></dt><dd><p>此选项用于 <span class="target" id="index-2-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 命令可能首先尝试调用 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 来满足 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 依赖项的场景。默认情况下，此类调用仅为 <code class="docutils literal notranslate"><span class="pre">find_package(&lt;name&gt;)</span></code>，但 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 可用于提供在 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 之后追加的附加参数。<code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 后面也可以不带任何内容，这表示如果 <span class="target" id="index-0-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">OPT_IN</span></code> 或者未设置，仍然可以调用 <span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。</p>
+<p>通常不适合在 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 后的附加参数中指定 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code>。这样做意味着 <span class="target" id="index-3-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用必须成功，因此 <code class="docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code> 调用中指定的任何其他细节将没有机会作为回退使用。</p>
+<p><code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字之后的所有内容都会追加到 <span class="target" id="index-4-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用中，因此所有其他 <code class="docutils literal notranslate"><span class="pre">&lt;contentOptions&gt;</span></code> 必须出现在 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字之前。如果在调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code> 时 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_TARGETS_GLOBAL.html#variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL" title="CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_TARGETS_GLOBAL</span></code></a> 变量设置为 true，则如果未指定 <code class="docutils literal notranslate"><span class="pre">GLOBAL</span></code> 关键字，它将被追加到 <span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 参数中。如果未给出 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code>，但 <span class="target" id="index-1-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">ALWAYS</span></code>，它也会被追加。</p>
+<p>当给出 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 时，不能使用 <code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code>。</p>
+<p><a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 讨论了重定向 <span class="target" id="index-3-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 调用的另一种方式。<code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 旨在用于项目控制，而依赖提供程序则允许用户覆盖项目行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code></dt><dd><p>当 <code class="docutils literal notranslate"><span class="pre">FetchContent_Declare(&lt;name&gt;</span> <span class="pre">...)</span></code> 调用包含此选项时，后续对 <code class="docutils literal notranslate"><span class="pre">find_package(&lt;name&gt;</span> <span class="pre">...)</span></code> 的调用将确保已调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(&lt;name&gt;)</span></code>，然后使用 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 目录中的配置包文件（通常由 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 创建）。这有效地使 <span class="target" id="index-4-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 覆盖了命名依赖项的 <span class="target" id="index-6-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>，从而允许前者满足后者的包要求。当给出 <code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 时，不能使用 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code>。</p>
+<p>如果已设置 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 且项目为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 依赖项调用了 <span class="target" id="index-7-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>，<code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 不会阻止提供程序看到该调用。依赖提供程序始终有机会拦截任何对 <span class="target" id="index-8-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的直接调用，除非该调用包含 <code class="docutils literal notranslate"><span class="pre">BYPASS_PROVIDER</span></code> 选项。</p>
+</dd>
+</dl>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.25 中添加</span></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code></dt><dd><p>如果提供了 <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> 参数，则由 <span class="target" id="index-5-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 添加的子目录的 <span class="target" id="index-0-prop_dir:SYSTEM"></span><a class="reference internal" href="../prop_dir/SYSTEM.html#prop_dir:SYSTEM" title="SYSTEM"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">SYSTEM</span></code></a> 目录属性将被设置为 true。这将影响作为该命令一部分创建的非导入目标。有关效果的更详细讨论，请参阅 <span class="target" id="index-0-prop_tgt:SYSTEM"></span><a class="reference internal" href="../prop_tgt/SYSTEM.html#prop_tgt:SYSTEM" title="SYSTEM"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">SYSTEM</span></code></a> 目标属性文档。</p>
+</dd>
+</dl>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 中添加</span></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></dt><dd><p>如果提供了 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 参数，则由 <span class="target" id="index-6-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 添加的子目录中的目标将默认不会包含在 <code class="docutils literal notranslate"><span class="pre">ALL</span></code> 目标中，并且可能会被排除在 IDE 项目文件之外。有关效果的详细讨论，请参阅目录属性 <span class="target" id="index-0-prop_dir:EXCLUDE_FROM_ALL"></span><a class="reference internal" href="../prop_dir/EXCLUDE_FROM_ALL.html#prop_dir:EXCLUDE_FROM_ALL" title="EXCLUDE_FROM_ALL"><code class="xref cmake cmake-prop_dir docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></a> 的文档。</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fetchcontent_makeavailable">
+<span class="sig-name descname"><span class="pre">FetchContent_MakeAvailable</span></span><a class="headerlink" href="FetchContent.html#command:fetchcontent_makeavailable" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">3.14 版新增。</span></p>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nv">&lt;name1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;name2&gt;...</span><span class="p">]</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>此命令确保每个命名的依赖项在返回时都已对项目可用。必须已为每个依赖项调用了 <span class="target" id="index-0-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a>，并且第一个此类调用将控制该依赖项如何变得可用，如下所述。</p>
+<p>如果未设置 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code></p>
+<ul>
+<li><div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 中添加：</span>如果设置了 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a>，则使用 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_MAKEAVAILABLE_SERIAL</span></code> 作为第一个参数，后跟 <span class="target" id="index-1-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 对 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的首次调用的参数来调用提供程序的命令。如果 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 或 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 不在原始声明的参数中，它们将以默认值添加。如果细节声明时 <span class="target" id="index-2-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code>，则任何 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 都将被省略。<code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 关键字也总是被省略。如果提供程序满足了请求，<code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 将认为该依赖项已处理，跳过下方的剩余步骤，并继续处理列表中的下一个依赖项。</p>
+</div>
+</li>
+<li><div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 中添加：</span>如果允许，将调用 <span class="target" id="index-9-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(&lt;name&gt;</span> <span class="pre">[&lt;args&gt;...])</span></code></a>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;args&gt;...</span></code> 可能由 <span class="target" id="index-2-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 中的 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 选项提供。调用 <span class="target" id="index-3-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 时 <span class="target" id="index-3-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 变量的值决定了 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 是否可以调用 <span class="target" id="index-10-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。如果在调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 时 <span class="target" id="index-1-variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_TARGETS_GLOBAL.html#variable:CMAKE_FIND_PACKAGE_TARGETS_GLOBAL" title="CMAKE_FIND_PACKAGE_TARGETS_GLOBAL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_TARGETS_GLOBAL</span></code></a> 变量设置为 true，它仍然会影响该调用依次调用 <span class="target" id="index-11-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 时创建的任何导入目标，即使在声明相应细节时该变量为 false。</p>
+</div>
+</li>
+</ul>
+<p>如果依赖项未由提供程序或 <span class="target" id="index-12-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用满足，<code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 然后使用以下逻辑使依赖项可用</p>
+<ul>
+<li><p>如果该依赖项已在本次运行中较早前填充，则按照 <span class="target" id="index-0-command:fetchcontent_getproperties"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_getproperties" title="fetchcontent_getproperties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code></a> 的调用方式设置 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_POPULATED</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_BINARY_DIR</span></code> 变量，然后跳过下方的剩余步骤，继续处理列表中的下一个依赖项。</p></li>
+<li><p>使用由较早的 <span class="target" id="index-4-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用记录的细节填充依赖项。如果没有记录此类细节，则以致命错误终止。<span class="target" id="index-0-variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>" title="FETCHCONTENT_SOURCE_DIR_<uppercaseName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;</span></code></a> 可用于覆盖已声明的细节，并改用指定位置提供的内容。</p></li>
+<li><div class="versionadded">
+<p><span class="versionmodified added">版本 3.24 中添加：</span>确保 <span class="target" id="index-1-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 目录包含一个 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;-config.cmake</span></code> 和一个 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;-config-version.cmake</span></code> 文件（或者等效地，<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;Config.cmake</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;ConfigVersion.cmake</span></code>）。<span class="target" id="index-2-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 变量指向的目录在每次 CMake 运行开始时都会被清除。如果在上一步填充依赖项后不存在配置文件，则会写入一个最小化的文件，该文件使用 <code class="docutils literal notranslate"><span class="pre">OPTIONAL</span></code> 标志 <span class="target" id="index-1-command:include"></span><a class="reference internal" href="../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">包含</span></code></a> 任何 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;-extra.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;Extra.cmake</span></code> 文件（因此这些文件可以缺失且不会产生警告）。类似地，如果不存在配置版本文件，则会写入一个非常简单的版本文件，将 <code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_COMPATIBLE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION_EXACT</span></code> 设置为 true。这确保了未来对该依赖项的所有 <span class="target" id="index-13-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用都将使用重定向的配置文件，而无需考虑任何版本要求。CMake 无法自动确定任意依赖项的版本，因此无法设置 <code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION</span></code>。当依赖项在下一步通过 <span class="target" id="index-1-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 引入时，它可以选择使用同时设置了 <code class="docutils literal notranslate"><span class="pre">PACKAGE_VERSION</span></code> 的文件覆盖 <span class="target" id="index-3-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 中生成的配置版本文件。依赖项还可以编写一个 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;-extra.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;Extra.cmake</span></code> 文件来执行自定义处理，或定义其正常的（已安装的）包配置文件通常会定义的任何变量（许多项目不进行任何自定义处理或设置任何变量，因此无需执行此操作）。如有需要，如果依赖项目没有这样做，主项目可以改为编写这些文件。这允许主项目添加来自尚未或无法更新以支持此功能的旧依赖项的缺失细节。有关示例，请参阅 <a class="reference internal" href="FetchContent.html#integrating-with-find-package">与 find_package() 集成</a>。</p>
+</div>
+</li>
+<li><p>如果已填充内容的顶级目录包含一个 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件，则调用 <span class="target" id="index-2-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 将其添加到主构建中。没有 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件并不是错误，这允许该命令用于那些使下载内容在已知位置可用，但不需要或不支持直接添加到构建中的依赖项。</p>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.18 中添加：</span>可以在声明的细节中提供 <code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项以在顶级目录下的某处查找（即 <span class="target" id="index-3-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 命令使用 <code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 的方式相同）。随 <code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 提供的路径必须是相对路径，它将被视为相对于顶级目录。它也可以指向一个不包含 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件的目录，甚至是一个不存在的目录。这可用于避免添加在顶级目录中包含 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件的项目。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.25 中添加：</span>如果 <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> 关键字包含在对 <span class="target" id="index-5-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 的调用中，<code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> 关键字将被添加到 <span class="target" id="index-3-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 命令中。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.28 中添加：</span>如果 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 关键字包含在对 <span class="target" id="index-6-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 的调用中，<code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 关键字将被添加到 <span class="target" id="index-4-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 命令中。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.29 中添加：</span>在调用 <span class="target" id="index-5-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a> 之前，<span class="target" id="index-0-variable:CMAKE_EXPORT_FIND_PACKAGE_NAME"></span><a class="reference internal" href="../variable/CMAKE_EXPORT_FIND_PACKAGE_NAME.html#variable:CMAKE_EXPORT_FIND_PACKAGE_NAME" title="CMAKE_EXPORT_FIND_PACKAGE_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXPORT_FIND_PACKAGE_NAME</span></code></a> 被设置为依赖项名称。</p>
+</div>
+</li>
+</ul>
+<p>项目应旨在为它们可能使用的所有依赖项声明细节，然后再为它们中的任何一个调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code>。这确保了如果任何依赖项也是其他一个或多个依赖项的子依赖项，主项目仍然可以控制将要使用的细节（因为它会在依赖项有机会声明它们之前首先声明它们）。在以下代码示例中，假设 <code class="docutils literal notranslate"><span class="pre">uses_other</span></code> 依赖项也使用 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 在内部添加 <code class="docutils literal notranslate"><span class="pre">other</span></code> 依赖项。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># WRONG: Should declare all details first</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">uses_other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">uses_other</span><span class="nf">)</span>
+
+<span class="nf">FetchContent_Declare(</span><span class="nb">other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span><span class="w">    </span><span class="c"># Will be ignored, uses_other beat us to it</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">other</span><span class="nf">)</span><span class="w">  </span><span class="c"># Would use details declared by uses_other</span>
+</pre></div>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># CORRECT: All details declared first, so they will take priority</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">uses_other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span><span class="nb">other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">uses_other</span><span class="w"> </span><span class="nb">other</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>请注意，<span class="target" id="index-0-variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_INTERFACE_HEADER_SETS.html#variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS" title="CMAKE_VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_PRIVATE_HEADER_SETS.html#variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS" title="CMAKE_VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_PRIVATE_HEADER_SETS</span></code></a> 在进入 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 时被明确设置为 false，并在命令返回前恢复为原始值。开发人员通常只想验证主项目的头文件集，而不是来自任何依赖项的头文件集。对 <span class="target" id="index-1-variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_INTERFACE_HEADER_SETS.html#variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS" title="CMAKE_VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-1-variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_PRIVATE_HEADER_SETS.html#variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS" title="CMAKE_VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_PRIVATE_HEADER_SETS</span></code></a> 变量的这种局部操作提供了直观的行为。您可以使用诸如 <span class="target" id="index-0-variable:CMAKE_PROJECT_INCLUDE"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_INCLUDE.html#variable:CMAKE_PROJECT_INCLUDE" title="CMAKE_PROJECT_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_INCLUDE</span></code></a> 或 <span class="target" id="index-0-variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_PROJECT-NAME_INCLUDE.html#variable:CMAKE_PROJECT_PROJECT-NAME_INCLUDE" title="CMAKE_PROJECT_PROJECT-NAME_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE</span></code></a> 的变量来重新打开对所有或部分依赖项的验证。您还可以设置单个目标的 <span class="target" id="index-0-prop_tgt:VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../prop_tgt/VERIFY_INTERFACE_HEADER_SETS.html#prop_tgt:VERIFY_INTERFACE_HEADER_SETS" title="VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-0-prop_tgt:VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../prop_tgt/VERIFY_PRIVATE_HEADER_SETS.html#prop_tgt:VERIFY_PRIVATE_HEADER_SETS" title="VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERIFY_PRIVATE_HEADER_SETS</span></code></a> 属性。</p>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fetchcontent_populate">
+<span class="sig-name descname"><span class="pre">FetchContent_Populate</span></span><a class="headerlink" href="FetchContent.html#command:fetchcontent_populate" title="链接至此定义">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 命令是一个自包含的调用，可用于将内容填充作为独立操作执行。它很少是正确使用的命令，项目几乎应该始终使用 <span class="target" id="index-7-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 和 <span class="target" id="index-7-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 的主要用例是在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">CMake 脚本模式</span></a> 下，作为实现其他更高级自定义功能的一部分。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Populate(</span>
+<span class="w">  </span><span class="nv">&lt;name&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SUBBUILD_DIR</span><span class="w"> </span><span class="nv">&lt;subBuildDir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SOURCE_DIR</span><span class="w"> </span><span class="nv">&lt;srcDir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BINARY_DIR</span><span class="w"> </span><span class="nv">&lt;binDir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>在 <cite>&lt;name&gt;</cite> 之后必须指定至少一个选项，否则该调用的解释方式不同（见<a class="reference internal" href="FetchContent.html#fetchcontent-populate-depname"><span class="std std-ref">下文</span></a>）。 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 支持的选项与 <span class="target" id="index-8-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 相同，但有几个例外。以下选项与使用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 填充内容无关，因此不受支持。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code></p></li>
+</ul>
+<p>上面签名中显示的少数选项要么是 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 特有的，要么其行为与 <span class="target" id="index-4-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 处理它们的方式略有不同。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><p>可以提供 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项来隐藏与填充指定内容相关的输出。如果填充失败，无论是否提供了此选项，输出都将显示，以便可以诊断失败的原因。<span class="target" id="index-0-variable:FETCHCONTENT_QUIET"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_QUIET" title="FETCHCONTENT_QUIET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_QUIET</span></code></a> 变量对这种形式的直接提供内容细节的 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 调用没有影响。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>当策略 <span class="target" id="index-1-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，<code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 选项和 <span class="target" id="index-1-variable:FETCHCONTENT_QUIET"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_QUIET" title="FETCHCONTENT_QUIET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_QUIET</span></code></a> 变量无效。在此情况下输出默认仍为静默，但冗长程度由消息记录级别控制（请参阅 <span class="target" id="index-0-variable:CMAKE_MESSAGE_LOG_LEVEL"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_LOG_LEVEL.html#variable:CMAKE_MESSAGE_LOG_LEVEL" title="CMAKE_MESSAGE_LOG_LEVEL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_LOG_LEVEL</span></code></a> 和 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-log-level"><code class="xref std std-option docutils literal notranslate"><span class="pre">--log-level</span></code></a>）。</p>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SUBBUILD_DIR</span></code></dt><dd><p>可以提供 <code class="docutils literal notranslate"><span class="pre">SUBBUILD_DIR</span></code> 参数来更改为执行填充而创建的子构建的位置。默认值为 <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_BINARY_DIR}/&lt;lowercaseName&gt;-subbuild</span></code>，覆盖此默认值是不寻常的。如果指定了相对路径，它将被解释为相对于 <span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。此选项不应与 <code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项混淆，后者仅影响 <span class="target" id="index-8-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 命令。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>当策略 <span class="target" id="index-2-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，<code class="docutils literal notranslate"><span class="pre">SUBBUILD_DIR</span></code> 被忽略，因为在这种情况下没有子构建。</p>
+</div>
+</dd>
+<dt>SOURCE_DIR, BINARY_DIR</dt><dd><p><code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 参数受 <span class="target" id="index-5-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 支持，但 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 使用不同的默认值。<code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 默认为 <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_BINARY_DIR}/&lt;lowercaseName&gt;-src</span></code>，<code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 默认为 <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_BINARY_DIR}/&lt;lowercaseName&gt;-build</span></code>。如果指定了相对路径，它将被解释为相对于 <span class="target" id="index-1-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>。</p>
+</dd>
+</dl>
+<p>除了上述显式选项外，任何其他未识别的选项都会原封不动地传递给 <span class="target" id="index-6-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 以设置下载、补丁和更新步骤。以下选项被明确禁止（它们被 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 命令禁用）</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIGURE_COMMAND</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BUILD_COMMAND</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INSTALL_COMMAND</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TEST_COMMAND</span></code></p></li>
+</ul>
+<p>使用此形式，<span class="target" id="index-0-variable:FETCHCONTENT_FULLY_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_FULLY_DISCONNECTED" title="FETCHCONTENT_FULLY_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></code></a> 和 <span class="target" id="index-0-variable:FETCHCONTENT_UPDATES_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED" title="FETCHCONTENT_UPDATES_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></code></a> 变量以及策略 <span class="target" id="index-0-policy:CMP0170"></span><a class="reference internal" href="../policy/CMP0170.html#policy:CMP0170" title="CMP0170"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0170</span></code></a> 将被忽略。</p>
+<p>当这种形式的 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 返回时，以下变量将在调用者的作用域内设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code></dt><dd><p>返回时可以找到已填充内容的位置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_BINARY_DIR</span></code></dt><dd><p>原本打算用作相应构建目录的目录，但在使用此形式的命令时不太可能相关。</p>
+</dd>
+</dl>
+<p>如果在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">CMake 脚本模式</span></a> 内使用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code>，请注意实现会设置一个子构建，因此需要可用的 CMake 生成器和构建工具。如果这些不能默认找到，则需要适当地在调用脚本的命令行上设置 <span class="target" id="index-0-variable:CMAKE_GENERATOR"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR.html#variable:CMAKE_GENERATOR" title="CMAKE_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code></a> 和潜在的 <span class="target" id="index-0-variable:CMAKE_MAKE_PROGRAM"></span><a class="reference internal" href="../variable/CMAKE_MAKE_PROGRAM.html#variable:CMAKE_MAKE_PROGRAM" title="CMAKE_MAKE_PROGRAM"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAKE_PROGRAM</span></code></a> 变量。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>如果策略 <span class="target" id="index-3-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则不使用子构建。在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">CMake 脚本模式</span></a> 下，这允许在没有任何构建工具或 CMake 生成器的情况下调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code>。</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">版本 3.18 中添加：</span>增加了对 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD_NO_EXTRACT</span></code> 选项的支持。</p>
+</div>
+</dd></dl>
+
+<blockquote id="fetchcontent-populate-depname">
+<div><p>该命令支持另一种形式，尽管不应再使用它</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Populate(</span><span class="nv">&lt;name&gt;</span><span class="nf">)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>此形式已弃用。策略 <span class="target" id="index-0-policy:CMP0169"></span><a class="reference internal" href="../policy/CMP0169.html#policy:CMP0169" title="CMP0169"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0169</span></code></a> 为仍然需要使用此形式的项目提供向后兼容性，但应更新项目以改用 <span class="target" id="index-9-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
+</div>
+<p>在这种形式中，给 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 的唯一参数是 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>。以这种方式使用时，该命令假定内容细节已由较早的 <span class="target" id="index-9-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用记录。细节存储在全局属性中，因此它们不受变量或目录作用域等的影响。因此，细节在项目中何处先前声明并不重要，只要它们在 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 调用之前已声明即可。这些保存的细节随后被用于使用基于 <span class="target" id="index-7-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 的方法填充内容（有关执行方式的重要行为方面，请参阅策略 <span class="target" id="index-4-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a>）。</p>
+<p>当这种形式的 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 返回时，以下变量将在调用者的作用域内设置</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_POPULATED</span></code></dt><dd><p>此项将始终由调用设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code></dt><dd><p>返回时可以找到已填充内容的位置。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_BINARY_DIR</span></code></dt><dd><p>旨在用作相应构建目录的目录。</p>
+</dd>
+</dl>
+<p>三个变量的值也可以使用 <span class="target" id="index-1-command:fetchcontent_getproperties"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_getproperties" title="fetchcontent_getproperties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code></a> 命令从项目层次结构中的任何位置检索。</p>
+<p>该实现确保如果内容已在之前的 CMake 运行中填充，则该内容将被重用，而不是再次填充。对于填充涉及下载内容的常见情况，下载成本只需支付一次。但请注意，在单次 CMake 运行中多次调用具有相同 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate(&lt;name&gt;)</span></code> 是错误的。有关如何确定在当前运行中是否已执行 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 填充的信息，请参阅 <span class="target" id="index-2-command:fetchcontent_getproperties"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_getproperties" title="fetchcontent_getproperties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code></a>。</p>
+</div></blockquote>
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fetchcontent_getproperties">
+<span class="sig-name descname"><span class="pre">FetchContent_GetProperties</span></span><a class="headerlink" href="FetchContent.html#command:fetchcontent_getproperties" title="链接至此定义">¶</a></dt>
+<dd><p>使用保存的内容细节时，对 <span class="target" id="index-10-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 或 <span class="target" id="index-1-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a> 的调用会将信息记录在全局属性中，这些信息可以随时查询。此信息可能包括与内容关联的源目录和二进制目录，以及内容填充是否已在当前配置运行期间处理。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_GetProperties(</span>
+<span class="w">  </span><span class="nv">&lt;name&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SOURCE_DIR</span><span class="w"> </span><span class="nv">&lt;srcDirVar&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BINARY_DIR</span><span class="w"> </span><span class="nv">&lt;binDirVar&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">POPULATED</span><span class="w"> </span><span class="nv">&lt;doneVar&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code>、<code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">POPULATED</span></code> 选项可用于指定应检索哪些属性。每个选项都接受一个值，该值是要存储该属性的变量的名称。不过，大多数时候只给出了 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>，在这种情况下，调用将设置与对 <span class="target" id="index-11-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(name)</span></code></a> 或 <span class="target" id="index-2-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate(name)</span></code></a> 的调用相同的变量。请注意，如果调用由 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 满足，则 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 的值可能为空。</p>
+<p>使用 <span class="target" id="index-12-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 时，几乎不需要此命令。它更常用于实现 <span class="target" id="index-3-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a> 的已弃用模式，这确保了无论填充是否已经在项目中其他地方执行，相关变量都将始终被定义。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># WARNING: This pattern is deprecated, don't use it!</span>
+<span class="c">#</span>
+<span class="c"># Check if population has already been performed</span>
+<span class="nf">FetchContent_GetProperties(</span><span class="nb">depname</span><span class="nf">)</span>
+<span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="nb">depname_POPULATED</span><span class="nf">)</span>
+<span class="w">  </span><span class="c"># Fetch the content using previously declared details</span>
+<span class="w">  </span><span class="nf">FetchContent_Populate(</span><span class="nb">depname</span><span class="nf">)</span>
+
+<span class="w">  </span><span class="c"># Set custom variables, policies, etc.</span>
+<span class="w">  </span><span class="c"># ...</span>
+
+<span class="w">  </span><span class="c"># Bring the populated content into the build</span>
+<span class="w">  </span><span class="nf">add_subdirectory(</span><span class="o">${</span><span class="nt">depname_SOURCE_DIR</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nt">depname_BINARY_DIR</span><span class="o">}</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cmake command">
+<dt class="sig sig-object cmake" id="command:fetchcontent_setpopulated">
+<span class="sig-name descname"><span class="pre">FetchContent_SetPopulated</span></span><a class="headerlink" href="FetchContent.html#command:fetchcontent_setpopulated" title="链接至此定义">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>此命令应仅由 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 调用。在任何其他上下文中调用它是不受支持的，未来的 CMake 版本在这些情况下可能会以致命错误终止。</p>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_SetPopulated(</span>
+<span class="w">  </span><span class="nv">&lt;name&gt;</span>
+<span class="w">  </span><span class="p">[</span><span class="no">SOURCE_DIR</span><span class="w"> </span><span class="nv">&lt;srcDir&gt;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">[</span><span class="no">BINARY_DIR</span><span class="w"> </span><span class="nv">&lt;binDir&gt;</span><span class="p">]</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+<p>如果提供程序命令满足了 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_MAKEAVAILABLE_SERIAL</span></code> 请求，它必须在返回前调用此函数。<code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 参数可用于指定 <span class="target" id="index-3-command:fetchcontent_getproperties"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_getproperties" title="fetchcontent_getproperties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code></a> 应为其相应参数返回的值。仅在它们具有与内置 <span class="target" id="index-13-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 实现填充相同含义时，才提供 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code>。</p>
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2><a class="toc-backref" href="FetchContent.html#id8" role="doc-backlink">变量</a><a class="headerlink" href="FetchContent.html#variables" title="此标题的链接">¶</a></h2>
+<p>许多缓存变量会影响使用 <span class="target" id="index-10-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用的细节来填充内容时的行为。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>所有这些变量均旨在供开发人员自定义行为。它们通常不应由项目设置。</p>
+</div>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_BASE_DIR">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_BASE_DIR</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_BASE_DIR" title="链接至此定义">¶</a></dt>
+<dd><p>在大多数情况下，保存的细节不会指定任何有关用于内部子构建、最终源和构建区域的目录的选项。最好将这些决定留给 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块来代表项目处理。<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_BASE_DIR</span></code> 缓存变量控制收集所有内容填充目录的点，但在大多数情况下，开发人员不需要更改此项。默认位置是 <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/_deps</span></code>，但如果开发人员更改此值，他们应设法保持路径较短，并位于构建树的顶级下方，以避免在 Windows 上遇到路径长度问题。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_QUIET">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_QUIET</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_QUIET" title="链接至此定义">¶</a></dt>
+<dd><p>填充期间的日志输出可能非常详细，使得配置阶段非常嘈杂。此缓存选项（默认为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>）会隐藏所有填充输出，除非遇到错误。如果遇到下载挂起的问题，暂时关闭此选项可能有助于诊断是哪种内容填充导致了问题。</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>如果策略 <span class="target" id="index-5-policy:CMP0168"></span><a class="reference internal" href="../policy/CMP0168.html#policy:CMP0168" title="CMP0168"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0168</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，则 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_QUIET</span></code> 被忽略。在此情况下输出默认仍为静默，但冗长程度由消息记录级别控制（请参阅 <span class="target" id="index-1-variable:CMAKE_MESSAGE_LOG_LEVEL"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_LOG_LEVEL.html#variable:CMAKE_MESSAGE_LOG_LEVEL" title="CMAKE_MESSAGE_LOG_LEVEL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_LOG_LEVEL</span></code></a> 和 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-log-level"><code class="xref std std-option docutils literal notranslate"><span class="pre">--log-level</span></code></a>）。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_FULLY_DISCONNECTED">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_FULLY_DISCONNECTED" title="链接至此定义">¶</a></dt>
+<dd><p>启用此选项时，不会尝试下载或更新任何内容。假定所有内容已在之前的运行中填充，或者源目录已指向开发人员手动提供的现有内容（使用下文描述的选项）。当开发人员知道内容细节未发生更改时，将此选项设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 可以加快配置阶段。默认情况下为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p><code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></code> 变量不是防止在构建目录中首次运行时进行任何网络访问的合适方式。这样做会破坏项目，导致误导性的错误消息，并隐藏隐蔽的填充失败。此变量专门旨在仅在 CMake 首次运行*之后*开启。如果您想防止网络访问，即使在首次运行时也是如此，请使用 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 并改为从本地内容填充依赖项。</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">版本 3.30 中更改：</span>当 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></code> 为 true 时，源目录必须已填充的约束现在已强制执行。请参阅策略 <span class="target" id="index-1-policy:CMP0170"></span><a class="reference internal" href="../policy/CMP0170.html#policy:CMP0170" title="CMP0170"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0170</span></code></a>。</p>
+</div>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_UPDATES_DISCONNECTED">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED" title="链接至此定义">¶</a></dt>
+<dd><p>与 <span class="target" id="index-1-variable:FETCHCONTENT_FULLY_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_FULLY_DISCONNECTED" title="FETCHCONTENT_FULLY_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></code></a> 相比，这是一种限制较轻的下载/更新控制方式。与跳过所有下载和更新逻辑不同，<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></code> 仅在使用 git 或 hg 下载方法时，防止更新步骤连接远程服务器。如果更新步骤的细节发生变化，更新仍会发生，但更新尝试只会利用本地已有的信息（因此切换到本地已获取的不同标签或提交将成功，但切换到未知的提交哈希值则会失败）。下载步骤不受影响，因此如果内容之前未下载，即使启用了此选项，它仍会被下载。这可以加快配置步骤的速度，但效果不如 <span class="target" id="index-2-variable:FETCHCONTENT_FULLY_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_FULLY_DISCONNECTED" title="FETCHCONTENT_FULLY_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_FULLY_DISCONNECTED</span></code></a>。<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></code> 默认值为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="Link to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
+</div>
+<p>该变量会修改 <span class="target" id="index-11-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 为给定依赖项记录的详细信息。虽然它最终控制 <span class="target" id="index-14-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 的行为，但在调用 <span class="target" id="index-12-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 时，该变量的值才会被使用。在调用 <span class="target" id="index-15-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 时，该变量设置为什么值并不重要。由于该变量通常仅由用户设置而不应由项目直接设置，因此它在整个过程中通常具有相同的值，所以这种区别通常不明显。</p>
+<p><code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code> 最终控制 <span class="target" id="index-16-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 是否允许调用 <span class="target" id="index-14-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 来满足依赖项。该变量可以设置为以下值之一：</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">OPT_IN</span></code></dt><dd><p><span class="target" id="index-17-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 仅在 <span class="target" id="index-13-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用中包含 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字时，才会调用 <span class="target" id="index-15-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。如果未设置 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code>，这也是默认行为。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ALWAYS</span></code></dt><dd><p><span class="target" id="index-16-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 可由 <span class="target" id="index-18-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 调用，无论 <span class="target" id="index-14-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用是否包含 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字。如果未提供 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字，其行为将等同于提供了 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 且其后没有任何附加参数的情况。</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NEVER</span></code></dt><dd><p><span class="target" id="index-19-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 不会调用 <span class="target" id="index-17-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。传递给 <span class="target" id="index-15-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 调用的任何 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 都将被忽略。</p>
+</dd>
+</dl>
+<p>作为一种特殊情况，如果 <span class="target" id="index-1-variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>" title="FETCHCONTENT_SOURCE_DIR_<uppercaseName>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;</span></code></a> 变量对于某个依赖项具有非空值，则假定用户正在覆盖所有其他使该依赖项可用的方法。<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code> 对该依赖项将不起作用，且 <span class="target" id="index-20-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 不会尝试为其调用 <span class="target" id="index-18-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>。</p>
+</dd></dl>
+
+<p>除上述内容外，每个内容名称还定义了以下变量：</p>
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>" title="Link to this definition">¶</a></dt>
+<dd><p>如果设置了此项，则不会为指定的内容执行下载或更新步骤，并且返回给调用者的 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code> 变量将指向此位置。这为开发人员提供了一种单独检出内容的方法，他们可以自由修改这些内容而不会受到构建过程的干扰。构建过程直接使用现有的源代码，但它仍然定义了 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_BINARY_DIR</span></code> 以指向其自身的构建区域。强烈建议开发人员使用此机制，而不是编辑默认位置中填充的源代码，因为当项目更改内容填充细节时，默认位置中源代码的更改可能会丢失。</p>
+</dd></dl>
+
+<dl class="cmake variable">
+<dt class="sig sig-object cmake" id="variable:FETCHCONTENT_UPDATES_DISCONNECTED_&lt;uppercaseName&gt;">
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED_<uppercaseName>" title="Link to this definition">¶</a></dt>
+<dd><p>这是 <span class="target" id="index-1-variable:FETCHCONTENT_UPDATES_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED" title="FETCHCONTENT_UPDATES_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></code></a> 的特定于内容的版本。如果全局选项或此选项为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，则 git 和 hg 方法的更新将不会为指定内容联系任何远程服务器。它们将仅使用本地已有的信息。为单个内容禁用更新对于那些细节很少更改的内容非常有用，同时仍然保持其他经常更改的内容处于启用更新的状态。</p>
+</dd></dl>
+
+</section>
+<section id="examples">
+<span id="fetch-content-examples"></span><h2><a class="toc-backref" href="FetchContent.html#id9" role="doc-backlink">示例</a><a class="headerlink" href="FetchContent.html#examples" title="链接到此标题">¶</a></h2>
+<section id="typical-case">
+<h3><a class="toc-backref" href="FetchContent.html#id10" role="doc-backlink">典型情况</a><a class="headerlink" href="FetchContent.html#typical-case" title="链接到此标题">¶</a></h3>
+<p>第一个相当直接的示例确保了一些流行的测试框架可供主构建使用：</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">googletest</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/google/googletest.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">703</span><span class="nb">bd9caab50b139428cea1aaff9974ebee5742e</span><span class="w"> </span><span class="c"># release-1.10.0</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">Catch2</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/catchorg/Catch2.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">605</span><span class="nb">a34765aa5d5ecbf476b4598a862ada971b0cc</span><span class="w"> </span><span class="c"># v3.0.1</span>
+<span class="nf">)</span>
+
+<span class="c"># After the following call, the CMake targets defined by googletest and</span>
+<span class="c"># Catch2 will be available to the rest of the build</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">Catch2</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="integrating-with-find-package">
+<span id="fetchcontent-find-package-integration-examples"></span><h3><a class="toc-backref" href="FetchContent.html#id11" role="doc-backlink">与 find_package() 集成</a><a class="headerlink" href="FetchContent.html#integrating-with-find-package" title="链接到此标题">¶</a></h3>
+<p>对于前面的示例，如果用户想在下载并从源码构建 <code class="docutils literal notranslate"><span class="pre">googletest</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Catch2</span></code> 之前先尝试通过 <span class="target" id="index-19-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 查找它们，可以将 <span class="target" id="index-4-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 变量设置为 <code class="docutils literal notranslate"><span class="pre">ALWAYS</span></code>。这也会影响整个项目中对 <span class="target" id="index-16-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 的任何其他调用，这可能无法接受。通过在声明的详细信息中添加 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 并将 <span class="target" id="index-5-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 保持未设置状态或设置为 <code class="docutils literal notranslate"><span class="pre">OPT_IN</span></code>，可以仅针对这两个依赖项启用此行为。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">googletest</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/google/googletest.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">703</span><span class="nb">bd9caab50b139428cea1aaff9974ebee5742e</span><span class="w"> </span><span class="c"># release-1.10.0</span>
+<span class="w">  </span><span class="no">FIND_PACKAGE_ARGS</span><span class="w"> </span><span class="no">NAMES</span><span class="w"> </span><span class="nb">GTest</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">Catch2</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/catchorg/Catch2.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">605</span><span class="nb">a34765aa5d5ecbf476b4598a862ada971b0cc</span><span class="w"> </span><span class="c"># v3.0.1</span>
+<span class="w">  </span><span class="no">FIND_PACKAGE_ARGS</span>
+<span class="nf">)</span>
+
+<span class="c"># This will try calling find_package() first for both dependencies</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">Catch2</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">Catch2</span></code>，不需要对 <span class="target" id="index-20-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 进行额外参数设置，因此在 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字之后不提供额外参数。对于 <code class="docutils literal notranslate"><span class="pre">googletest</span></code>，其包通常称为 <code class="docutils literal notranslate"><span class="pre">GTest</span></code>，因此添加了参数以支持按该名称查找它。</p>
+<p>如果用户想要禁止 <span class="target" id="index-21-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 为任何依赖项调用 <span class="target" id="index-21-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>（即使其在声明的详细信息中提供了 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code>），他们可以将 <span class="target" id="index-6-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code>。</p>
+<p>如果项目想要表明这两个依赖项应该从源代码下载并构建，并且 <span class="target" id="index-22-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用应该重定向以使用构建好的依赖项，则在声明内容细节时应使用 <code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 选项。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">googletest</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/google/googletest.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">703</span><span class="nb">bd9caab50b139428cea1aaff9974ebee5742e</span><span class="w"> </span><span class="c"># release-1.10.0</span>
+<span class="w">  </span><span class="no">OVERRIDE_FIND_PACKAGE</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">Catch2</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/catchorg/Catch2.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">605</span><span class="nb">a34765aa5d5ecbf476b4598a862ada971b0cc</span><span class="w"> </span><span class="c"># v3.0.1</span>
+<span class="w">  </span><span class="no">OVERRIDE_FIND_PACKAGE</span>
+<span class="nf">)</span>
+
+<span class="c"># The following will automatically forward through to FetchContent_MakeAvailable()</span>
+<span class="nf">find_package(</span><span class="nb">googletest</span><span class="nf">)</span>
+<span class="nf">find_package(</span><span class="nb">Catch2</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>CMake 提供了 FindGTest 模块，它定义了一些旧项目可能会使用的变量，而不是链接到导入的目标。为了支持这些情况，我们可以提供一个额外的文件。秉承 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>“先定义者胜”的理念，我们仅在尚未有其他机制写入该文件时才写入它。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/googletest-extra.cmake</span><span class="w"> </span><span class="no">AND</span>
+<span class="w">   </span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/googletestExtra.cmake</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">file(</span><span class="no">WRITE</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/googletest-extra.cmake</span>
+<span class="s s-Multiline">[=[</span>
+<span class="s s-Multiline">if("${GTEST_LIBRARIES}" STREQUAL "" AND TARGET GTest::gtest)</span>
+<span class="s s-Multiline">  set(GTEST_LIBRARIES GTest::gtest)</span>
+<span class="s s-Multiline">endif()</span>
+<span class="s s-Multiline">if("${GTEST_MAIN_LIBRARIES}" STREQUAL "" AND TARGET GTest::gtest_main)</span>
+<span class="s s-Multiline">  set(GTEST_MAIN_LIBRARIES GTest::gtest_main)</span>
+<span class="s s-Multiline">endif()</span>
+<span class="s s-Multiline">if("${GTEST_BOTH_LIBRARIES}" STREQUAL "")</span>
+<span class="s s-Multiline">  set(GTEST_BOTH_LIBRARIES ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})</span>
+<span class="s s-Multiline">endif()</span>
+<span class="s s-Multiline">]=]</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+<p>项目很可能也会使用 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">find_package(googletest)</span></code>，但可以利用 <span class="target" id="index-4-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 区域将后者作为前者的依赖项引入。这很可能足以满足典型的 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 调用。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="nf">)</span>
+
+<span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/gtest-config.cmake</span><span class="w"> </span><span class="no">AND</span>
+<span class="w">   </span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/GTestConfig.cmake</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">file(</span><span class="no">WRITE</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/gtest-config.cmake</span>
+<span class="s s-Multiline">[=[</span>
+<span class="s s-Multiline">include(CMakeFindDependencyMacro)</span>
+<span class="s s-Multiline">find_dependency(googletest)</span>
+<span class="s s-Multiline">]=]</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+
+<span class="nf">if(</span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/gtest-config-version.cmake</span><span class="w"> </span><span class="no">AND</span>
+<span class="w">   </span><span class="no">NOT</span><span class="w"> </span><span class="no">EXISTS</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/GTestConfigVersion.cmake</span><span class="nf">)</span>
+<span class="w">  </span><span class="nf">file(</span><span class="no">WRITE</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span><span class="o">}</span><span class="na">/gtest-config-version.cmake</span>
+<span class="s s-Multiline">[=[</span>
+<span class="s s-Multiline">include(${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletest-config-version.cmake OPTIONAL)</span>
+<span class="s s-Multiline">if(NOT PACKAGE_VERSION_COMPATIBLE)</span>
+<span class="s s-Multiline">  include(${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletestConfigVersion.cmake OPTIONAL)</span>
+<span class="s s-Multiline">endif()</span>
+<span class="s s-Multiline">]=]</span><span class="nf">)</span>
+<span class="nf">endif()</span>
+</pre></div>
+</div>
+</section>
+<section id="overriding-where-to-find-cmakelists-txt">
+<h3><a class="toc-backref" href="FetchContent.html#id12" role="doc-backlink">覆盖查找 CMakeLists.txt 的位置</a><a class="headerlink" href="FetchContent.html#overriding-where-to-find-cmakelists-txt" title="链接到此标题">¶</a></h3>
+<p>如果子项目的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件不在其源代码树的顶层，可以使用 <code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项告诉 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 到哪里去查找它。以下示例展示了如何使用该选项，并在将其拉入主构建之前设置了一个对子项目有意义的变量（设置为 <code class="docutils literal notranslate"><span class="pre">INTERNAL</span></code> 缓存变量以避免策略 <span class="target" id="index-0-policy:CMP0077"></span><a class="reference internal" href="../policy/CMP0077.html#policy:CMP0077" title="CMP0077"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0077</span></code></a> 带来的问题）。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">protobuf</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">https://github.com/protocolbuffers/protobuf.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="nb">ae50d9b9902526efd6c7a1907d09739f959c6297</span><span class="w"> </span><span class="c"># v3.15.0</span>
+<span class="w">  </span><span class="no">SOURCE_SUBDIR</span><span class="w">  </span><span class="nb">cmake</span>
+<span class="nf">)</span>
+<span class="nf">set(</span><span class="nb">protobuf_BUILD_TESTS</span><span class="w"> </span><span class="no">OFF</span><span class="w"> </span><span class="no">CACHE</span><span class="w"> </span><span class="no">INTERNAL</span><span class="w"> </span><span class="s">""</span><span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">protobuf</span><span class="nf">)</span>
+</pre></div>
+</div>
+</section>
+<section id="complex-dependency-hierarchies">
+<h3><a class="toc-backref" href="FetchContent.html#id13" role="doc-backlink">复杂的依赖层级</a><a class="headerlink" href="FetchContent.html#complex-dependency-hierarchies" title="链接到此标题">¶</a></h3>
+<p>在更复杂的项目层级中，依赖关系可能更复杂。考虑一个层级，其中 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 是顶层项目，它直接依赖于项目 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code>。 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 都可以独立构建，并且它们也都依赖于另一个项目 <code class="docutils literal notranslate"><span class="pre">projD</span></code>。<code class="docutils literal notranslate"><span class="pre">projB</span></code> 还额外依赖于 <code class="docutils literal notranslate"><span class="pre">projE</span></code>。此示例假定所有五个项目都可在公司 git 服务器上获取。每个项目的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 可能包含如下部分：</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><em>projA</em></span><a class="headerlink" href="FetchContent.html#id1" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projB</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projB.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">4</span><span class="nb">a89dc7e24ff212a7b5167bef7ab079d</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projC</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projC.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">4</span><span class="nb">ad4016bd1d8d5412d135cf8ceea1bb9</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projD</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projD.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="na">origin/integrationBranch</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projE</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projE.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="nb">v2.3-rc1</span>
+<span class="nf">)</span>
+
+<span class="c"># Order is important, see notes in the discussion further below</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="w"> </span><span class="nb">projB</span><span class="w"> </span><span class="nb">projC</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><em>projB</em></span><a class="headerlink" href="FetchContent.html#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projD</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projD.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">20</span><span class="nb">b415f9034bbd2a2e8216e9a5c9e632</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projE</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projE.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">68</span><span class="nb">e20f674a48be38d60e129f600faf7d</span>
+<span class="nf">)</span>
+
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="w"> </span><span class="nb">projE</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><em>projC</em></span><a class="headerlink" href="FetchContent.html#id3" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">projD</span>
+<span class="w">  </span><span class="no">GIT_REPOSITORY</span><span class="w"> </span><span class="na">git@mycompany.com:git/projD.git</span>
+<span class="w">  </span><span class="no">GIT_TAG</span><span class="w">        </span><span class="m">7</span><span class="nb">d9a17ad2c962aa13e2fbb8043fb6b8a</span>
+<span class="nf">)</span>
+
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+<p>上述内容中应注意以下几个关键点：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 为 <code class="docutils literal notranslate"><span class="pre">projD</span></code> 定义了不同的内容详细信息，但 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 也为 <code class="docutils literal notranslate"><span class="pre">projD</span></code> 定义了一组内容详细信息。由于 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 会首先定义它们，因此来自 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 的详细信息将不会被使用。由 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 定义的覆盖详细信息不需要与 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 或 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 中的任何一个匹配，但由较高级别的项目确保其定义的详细信息对子项目仍然有意义，是其责任。</p></li>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 对 <span class="target" id="index-22-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 的调用中，<code class="docutils literal notranslate"><span class="pre">projD</span></code> 列在 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 之前，因此它将在 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 或 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 之前被填充。<code class="docutils literal notranslate"><span class="pre">projA</span></code> 不强制要求这样做，但这样做可以确保 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 完全控制 <code class="docutils literal notranslate"><span class="pre">projD</span></code> 被引入构建的环境（目录属性特别相关）。</p></li>
+<li><p>虽然 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 定义了 <code class="docutils literal notranslate"><span class="pre">projE</span></code> 的内容详细信息，但它本身不需要显式调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(projE)</span></code> 或 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate(projD)</span></code>。相反，它将这些留给子项目 <code class="docutils literal notranslate"><span class="pre">projB</span></code>。对于较高级别的项目，通常只需定义覆盖内容详细信息并将实际填充留给子项目即可。这避免了在项目层级的每一层重复相同的事情，但只有在预期依赖项设置的目录属性不会影响共享依赖项（本例中为 <code class="docutils literal notranslate"><span class="pre">projE</span></code>）的填充时才应这样做。</p></li>
+</ul>
+</section>
+<section id="populating-content-without-adding-it-to-the-build">
+<h3><a class="toc-backref" href="FetchContent.html#id14" role="doc-backlink">填充内容而不将其添加到构建中</a><a class="headerlink" href="FetchContent.html#populating-content-without-adding-it-to-the-build" title="链接到此标题">¶</a></h3>
+<p>项目并不总是需要将填充的内容添加到构建中。有时项目只是想让下载的内容在可预测的位置可用。下一个示例确保了一组标准的公司工具链文件（甚至可能包括工具链二进制文件本身）足够早地可用，以便用于同一构建。</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.14</span><span class="nf">)</span>
+
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Declare(</span>
+<span class="w">  </span><span class="nb">mycom_toolchains</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">  </span><span class="na">https://intranet.mycompany.com//toolchains_1.3.2.tar.gz</span>
+<span class="nf">)</span>
+<span class="nf">FetchContent_MakeAvailable(</span><span class="nb">mycom_toolchains</span><span class="nf">)</span>
+
+<span class="nf">project(</span><span class="nb">CrossCompileExample</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>项目可以配置为使用下载的工具链之一，如下所示：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>_deps/mycom_toolchains-src/toolchain_arm.cmake<span class="w"> </span>/path/to/src
+</pre></div>
+</div>
+<p>当 CMake 处理 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件时，它会将 tarball 下载并解压到相对于构建目录的 <code class="docutils literal notranslate"><span class="pre">_deps/mycompany_toolchains-src</span></code>。在执行到 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令之前，不会使用 <span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="../variable/CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a> 变量，此时 CMake 会相对于构建目录查找命名的工具链文件。因为 tarball 到那时已经下载并解压完毕，即使是第一次在构建目录中运行 <strong class="program">cmake</strong>，工具链文件也已经到位。</p>
+</section>
+<section id="populating-content-in-cmake-script-mode">
+<h3><a class="toc-backref" href="FetchContent.html#id15" role="doc-backlink">在 CMake 脚本模式下填充内容</a><a class="headerlink" href="FetchContent.html#populating-content-in-cmake-script-mode" title="链接到此标题">¶</a></h3>
+<p>最后一个示例演示了如何使用 CMake 的 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">脚本模式</span></a> 下载并解压固件 tarball。对 <span class="target" id="index-4-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a> 的调用指定了所有内容详细信息，解压后的固件将放置在当前工作目录下的 <code class="docutils literal notranslate"><span class="pre">firmware</span></code> 目录中。</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="file docutils literal notranslate"><span class="pre">getFirmware.cmake</span></code></span><a class="headerlink" href="FetchContent.html#id4" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># NOTE: Intended to be run in script mode with cmake -P</span>
+<span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
+<span class="nf">FetchContent_Populate(</span>
+<span class="w">  </span><span class="nb">firmware</span>
+<span class="w">  </span><span class="no">URL</span><span class="w">        </span><span class="na">https://mycompany.com/assets/firmware-1.23-arm.tar.gz</span>
+<span class="w">  </span><span class="no">URL_HASH</span><span class="w">   </span><span class="no">MD5</span><span class="p">=</span><span class="m">68247684</span><span class="nb">da89b608d466253762b0ff11</span>
+<span class="w">  </span><span class="no">SOURCE_DIR</span><span class="w"> </span><span class="nb">firmware</span>
+<span class="nf">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3>目录</h3>
+    <ul>
+<li><a class="reference internal" href="FetchContent.html#">FetchContent</a><ul>
+<li><a class="reference internal" href="FetchContent.html#overview">概述</a></li>
+<li><a class="reference internal" href="FetchContent.html#commands">命令</a></li>
+<li><a class="reference internal" href="FetchContent.html#variables">变量</a></li>
+<li><a class="reference internal" href="FetchContent.html#examples">示例</a><ul>
+<li><a class="reference internal" href="FetchContent.html#typical-case">典型用例</a></li>
+<li><a class="reference internal" href="FetchContent.html#integrating-with-find-package">与 find_package() 集成</a></li>
+<li><a class="reference internal" href="FetchContent.html#overriding-where-to-find-cmakelists-txt">覆盖查找 CMakeLists.txt 的位置</a></li>
+<li><a class="reference internal" href="FetchContent.html#complex-dependency-hierarchies">复杂的依赖层次结构</a></li>
+<li><a class="reference internal" href="FetchContent.html#populating-content-without-adding-it-to-the-build">填充内容而不将其添加到构建中</a></li>
+<li><a class="reference internal" href="FetchContent.html#populating-content-in-cmake-script-mode">在 CMake 脚本模式下填充内容</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="FeatureSummary.html" title="上一章">FeatureSummary</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="FindPackageHandleStandardArgs.html" title="下一章">FindPackageHandleStandardArgs</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/module/FetchContent.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="FindPackageHandleStandardArgs.html" title="FindPackageHandleStandardArgs">下一页</a> |</li>
+        <li class="right">
+          <a href="FeatureSummary.html" title="FeatureSummary">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="FetchContent.html">FetchContent</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>

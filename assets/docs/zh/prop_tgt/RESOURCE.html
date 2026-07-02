@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>资源 — CMake 4.3.4 文档 - CMake 构建系统</title>
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
+    
+    <script src="../_static/documentation_options.js@v=a17b270f"></script>
+    <script src="../_static/doctools.js@v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
+    
+    <link rel="canonical" href="RESOURCE.html" />
+    <link rel="icon" href="../_static/cmake-favicon.ico" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="RULE_LAUNCH_COMPILE" href="RULE_LAUNCH_COMPILE.html" />
+    <link rel="prev" title="PUBLIC_HEADER" href="PUBLIC_HEADER.html" />
+    <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
+    <script type="text/javascript" src="../version_switch.js"></script>
+ 
+
+  </head><body>
+    <input id="sidebar-check" type="checkbox" />
+    <label id="sidebar-overlay" for="sidebar-check"></label>
+
+
+
+    <div class="related relbar1" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
+        <li class="right">
+          <a href="RULE_LAUNCH_COMPILE.html" title="RULE_LAUNCH_COMPILE" accesskey="N">下一页</a> |</li>
+        <li class="right">
+          <a href="PUBLIC_HEADER.html" title="PUBLIC_HEADER" accesskey="P">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="RESOURCE.html">RESOURCE</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="resource">
+<span id="prop_tgt:RESOURCE"></span><h1>资源<a class="headerlink" href="RESOURCE.html#resource" title="链接到此标题">¶</a></h1>
+<p>在 <span class="target" id="index-0-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 或 <span class="target" id="index-0-prop_tgt:BUNDLE"></span><a class="reference internal" href="BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 中指定资源文件。</p>
+<p>带有 <span class="target" id="index-1-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 或 <span class="target" id="index-1-prop_tgt:BUNDLE"></span><a class="reference internal" href="BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 属性的目标会生成框架或应用程序包（macOS 和 iOS 均受支持），或者在其他平台上生成普通的共享库。可以将此属性设置为要放置在相应目录（例如 macOS 的 <code class="docutils literal notranslate"><span class="pre">Resources</span></code> 目录）内的文件列表。在非 Apple 平台上，可以使用 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code> 选项来安装这些文件。</p>
+<p>应用程序包示例</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">ExecutableTarget</span>
+<span class="w">  </span><span class="nb">addDemo.c</span>
+<span class="w">  </span><span class="nb">resourcefile.txt</span>
+<span class="w">  </span><span class="na">appresourcedir/appres.txt</span><span class="nf">)</span>
+
+<span class="nf">target_link_libraries(</span><span class="nb">ExecutableTarget</span><span class="w"> </span><span class="nb">heymath</span><span class="w"> </span><span class="nb">mul</span><span class="nf">)</span>
+
+<span class="nf">set(</span><span class="no">RESOURCE_FILES</span>
+<span class="w">  </span><span class="nb">resourcefile.txt</span>
+<span class="w">  </span><span class="na">appresourcedir/appres.txt</span><span class="nf">)</span>
+
+<span class="nf">set_target_properties(</span><span class="nb">ExecutableTarget</span><span class="w"> </span><span class="no">PROPERTIES</span>
+<span class="w">  </span><span class="no">MACOSX_BUNDLE</span><span class="w"> </span><span class="no">TRUE</span>
+<span class="w">  </span><span class="no">MACOSX_FRAMEWORK_IDENTIFIER</span><span class="w"> </span><span class="nb">org.cmake.ExecutableTarget</span>
+<span class="w">  </span><span class="no">RESOURCE</span><span class="w"> </span><span class="s">"${RESOURCE_FILES}"</span><span class="nf">)</span>
+</pre></div>
+</div>
+<p>将为 iOS 系统生成扁平结构</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget.app
+  appres.txt
+  ExecutableTarget
+  Info.plist
+  resourcefile.txt
+</pre></div>
+</div>
+<p>对于 macOS 系统，它将生成以下目录结构</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget.app/
+  Contents
+    Info.plist
+    MacOS
+      ExecutableTarget
+    Resources
+      appres.txt
+      resourcefile.txt
+</pre></div>
+</div>
+<p>对于 Linux，这样的 CMake 脚本将生成以下文件</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget
+Resources
+  appres.txt
+  resourcefile.txt
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="主导航">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>上一主题</h4>
+    <p class="topless"><a href="PUBLIC_HEADER.html" title="上一章">PUBLIC_HEADER</a></p>
+  </div>
+  <div>
+    <h4>下一主题</h4>
+    <p class="topless"><a href="RULE_LAUNCH_COMPILE.html" title="下一章">RULE_LAUNCH_COMPILE</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/prop_tgt/RESOURCE.rst.txt" rel="nofollow">显示源</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input type="submit" value="搜索" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="相关导航">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总索引">索引</a></li>
+        <li class="right">
+          <a href="RULE_LAUNCH_COMPILE.html" title="RULE_LAUNCH_COMPILE">下一页</a> |</li>
+        <li class="right">
+          <a href="PUBLIC_HEADER.html" title="PUBLIC_HEADER">上一页</a> |</li>
+  <li>
+    <label class="sidebar-toggle" for="sidebar-check"></label>
+  </li>
+  <li class="rootlink">
+    <img src="../_static/cmake-logo-16.png" width="16" height="16" alt=""> <a href="../index.html">CMake</a> <span class="version_switch">4.3.4</span> <span class="reldelim1"> »</span></li>
+  <li>
+    <a href="../index.html">文档</a> »</li>
+
+          <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
+        <li class="nav-item nav-item-this"><a href="RESOURCE.html">RESOURCE</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">© 版权所有 2000-2026 Kitware, Inc. 及贡献者。使用 <a href="https://sphinx-doc.cn/">Sphinx</a> 8.2.3 创建。</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://#." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6042509-4");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+(function() {
+  "use strict";
+  const hide = () => document.getElementById("sidebar-check").checked = false;
+  addEventListener("keydown", e => (e.key === "Escape") && hide());
+  addEventListener("click", e => (e.target.tagName === "A") && hide());
+  addEventListener("hashchange", hide)
+})();
+</script>
+  
+</body></html>
