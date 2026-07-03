@@ -8,6 +8,18 @@ CMakeDocsMobile 是一个轻量 Android 离线文档阅读器，内置 CMake 4.3
 
 ## 用法
 
+### 直接下载安装包
+
+在 GitHub Releases 页面下载最新版 APK：
+
+```text
+https://github.com/qqqhx0603-crypto/CMakeDocsMobile/releases/latest
+```
+
+下载 `cmake-docs-mobile.apk` 后传到 Android 手机，允许“安装未知来源应用”后安装即可。应用离线运行，不需要联网加载文档。
+
+### 从源码构建
+
 准备环境：
 
 - Windows PowerShell 5 或更高版本。
