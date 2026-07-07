@@ -55,11 +55,15 @@
             
   <section id="bundleutilities">
 <span id="module:BundleUtilities"></span><h1>BundleUtilities<a class="headerlink" href="BundleUtilities.html#bundleutilities" title="指向此标题的链接">¶</a></h1>
-<p>此模块提供了用于使用 CMake 组装独立、捆绑式（bundle-style）应用程序的实用命令，例如 macOS 的 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 捆绑包，或其他操作系统上类似的基于目录的应用程序捆绑包。</p>
+<p>此模块提供了用于使用 CMake 组装独立、捆绑式（bundle-style）应用程序的实用命令，例如 macOS（苹果桌面系统） 的 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 捆绑包，或其他操作系统上类似的基于目录的应用程序捆绑包。</p>
 <p>在 CMake 安装中通过以下方式加载此模块：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">BundleUtilities</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(BundleUtilities)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>请勿在配置时（即在 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中）使用此模块。相反，应在 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#code" title="install(code)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(CODE)</span></code></a> 或 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#script" title="install(script)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(SCRIPT)</span></code></a> 中引入并调用其命令。</p>
@@ -93,6 +97,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">fixup_bundle(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">fixup_bundle(&lt;app&gt; &lt;libs&gt; &lt;dirs&gt; [IGNORE_ITEM &lt;files&gt;...])</span></code>：调用 `fixup_bundle()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令会对 <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code> 捆绑包进行就地修改，使其成为独立且可移植的，以便可以拖放到另一台机器上运行（前提是所有系统库均兼容）。</p>
 <p>此命令会收集捆绑包内所有可执行文件和库的依赖项（键）。对于每个依赖项，它会将所需文件复制到捆绑包中，并根据它们各自的先决条件进行调整。完成后，它会清除收集到的键，并调用 <span class="target" id="index-1-command:verify_app"></span><a class="reference internal" href="BundleUtilities.html#command:verify_app" title="verify_app"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">verify_app()</span></code></a> 命令以确保最终的捆绑包确实是独立的。</p>
 <p>参数为</p>
@@ -118,6 +126,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_and_fixup_bundle(</span><span class="nv">&lt;src&gt;</span><span class="w"> </span><span class="nv">&lt;dst&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">copy_and_fixup_bundle(&lt;src&gt; &lt;dst&gt; &lt;libs&gt; &lt;dirs&gt;)</span></code>：调用 `copy_and_fixup_bundle()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令在位置 <code class="docutils literal notranslate"><span class="pre">&lt;dst&gt;</span></code> 创建捆绑包 <code class="docutils literal notranslate"><span class="pre">&lt;src&gt;</span></code> 的副本，然后在 <code class="docutils literal notranslate"><span class="pre">&lt;dst&gt;</span></code> 处就地修复该新拷贝。</p>
 <p>参数为</p>
 <dl class="simple">
@@ -139,6 +151,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">verify_app(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">verify_app(&lt;app&gt; [IGNORE_ITEM &lt;files&gt;...])</span></code>：调用 `verify_app()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果应用程序未能通过验证，则会发出 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="../command/message.html#command:message" title="message(fatal_error)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message(FATAL_ERROR)</span></code></a>，从而停止安装过程。</p>
 <p>参数为</p>
 <dl>
@@ -159,6 +175,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_main_executable(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_bundle_main_executable(&lt;bundle&gt; &lt;result-var&gt;)</span></code>：调用 `get_bundle_main_executable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>结果存储在 <code class="docutils literal notranslate"><span class="pre">&lt;result-var&gt;</span></code> 变量中，并将包含捆绑包主可执行文件的完整路径名，如果无法确定，则为以 <code class="docutils literal notranslate"><span class="pre">error:</span></code> 为前缀的字符串。</p>
 </dd></dl>
 
@@ -169,6 +189,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_dotapp_dir(</span><span class="nv">&lt;exe&gt;</span><span class="w"> </span><span class="nv">&lt;dotapp-dir-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_dotapp_dir(&lt;exe&gt; &lt;dotapp-dir-var&gt;)</span></code>：调用 `get_dotapp_dir()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令在给定可执行文件的完整路径时，检索名称以 <code class="docutils literal notranslate"><span class="pre">.app</span></code> 结尾的最近父目录，并将其存储到 <code class="docutils literal notranslate"><span class="pre">&lt;dotapp-dir-var&gt;</span></code> 变量中。如果没有这样的父目录，则它仅检索包含可执行文件的目录。</p>
 <p>检索到的目录可能存在，也可能不存在。</p>
 </dd></dl>
@@ -180,6 +204,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_and_executable(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;bundle-var&gt;</span><span class="w"> </span><span class="nv">&lt;executable-var&gt;</span><span class="w"> </span><span class="nv">&lt;valid-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_bundle_and_executable(&lt;app&gt; &lt;bundle-var&gt; &lt;executable-var&gt; &lt;valid-var&gt;)</span></code>：调用 `get_bundle_and_executable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>参数为</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code></dt><dd><p>正在处理的应用程序名称。</p>
@@ -200,6 +228,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_all_executables(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;exes-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_bundle_all_executables(&lt;bundle&gt; &lt;exes-var&gt;)</span></code>：调用 `get_bundle_all_executables()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令递归扫描 <code class="docutils literal notranslate"><span class="pre">&lt;bundle&gt;</span></code> 捆绑包以查找所有可执行文件，并将它们存储到变量 <code class="docutils literal notranslate"><span class="pre">&lt;exes-var&gt;</span></code> 中。</p>
 </dd></dl>
 
@@ -210,6 +242,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_item_key(</span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;key-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_item_key(&lt;item&gt; &lt;key-var&gt;)</span></code>：调用 `get_item_key()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>给定 <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> 文件名，此命令生成一个 <code class="docutils literal notranslate"><span class="pre">&lt;key-var&gt;</span></code> 键，考虑到需要复制或修复以使捆绑包独立的一组库，该键应该是唯一的。本质上，这是包含扩展名的文件名，并将 <code class="docutils literal notranslate"><span class="pre">.</span></code> 替换为 <code class="docutils literal notranslate"><span class="pre">_</span></code>。</p>
 <p>此键用作 CMake 变量的前缀，以便一组变量可以基于其键与给定项关联。</p>
 </dd></dl>
@@ -221,6 +257,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_item_rpaths(</span><span class="nv">&lt;item&gt;</span><span class="w"> </span><span class="nv">&lt;rpaths-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_item_rpaths(&lt;item&gt; &lt;rpaths-var&gt;)</span></code>：调用 `get_item_rpaths()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令获取 <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> 文件名的 RPATH，并将其存储到提供的变量名 <code class="docutils literal notranslate"><span class="pre">&lt;rpaths-var&gt;</span></code> 中。</p>
 </dd></dl>
 
@@ -231,6 +271,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">clear_bundle_keys(</span><span class="nv">&lt;keys-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">clear_bundle_keys(&lt;keys-var&gt;)</span></code>：调用 `clear_bundle_keys()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令遍历 <code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code> 键列表，清除与每个键关联的所有变量。循环结束后，它会清除键列表本身。当处理完键列表后，应在 <span class="target" id="index-1-command:get_bundle_keys"></span><a class="reference internal" href="BundleUtilities.html#command:get_bundle_keys" title="get_bundle_keys"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">get_bundle_keys()</span></code></a> 命令之后调用此命令。</p>
 </dd></dl>
 
@@ -249,6 +293,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set_bundle_key_values( &lt;keys-var&gt; &lt;context&gt; &lt;item&gt; &lt;exepath&gt; &lt;dirs&gt; &lt;copyflag&gt; [&lt;rpaths&gt;] )</span></code>：调用 `set_bundle_key_values()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令将 <code class="docutils literal notranslate"><span class="pre">&lt;keys-var&gt;</span></code> 键添加到给定项的列表中（如果需要）。如果添加，还会设置与该键关联的所有变量。</p>
 <p>参数为</p>
 <dl class="simple">
@@ -276,6 +324,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">get_bundle_keys(</span><span class="nv">&lt;app&gt;</span><span class="w"> </span><span class="nv">&lt;libs&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="w"> </span><span class="nv">&lt;keys-var&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">IGNORE_ITEM</span><span class="w"> </span><span class="nv">&lt;files&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">get_bundle_keys(&lt;app&gt; &lt;libs&gt; &lt;dirs&gt; &lt;keys-var&gt; [IGNORE_ITEM &lt;files&gt;...])</span></code>：调用 `get_bundle_keys()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令遍历 <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;</span></code> 捆绑包（以及作为额外 <code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code> 给出的项）内的所有可执行文件和库文件，并积累代表它们的键列表。它设置与每个键关联的值，以便可以遍历所有这些值，并将先决条件库复制到捆绑包中，然后执行适当的 <code class="docutils literal notranslate"><span class="pre">install_name_tool</span></code> 修复。</p>
 <p>参数为</p>
 <dl>
@@ -302,6 +354,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_resolved_item_into_bundle(</span><span class="nv">&lt;resolved-item&gt;</span><span class="w"> </span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">copy_resolved_item_into_bundle(&lt;resolved-item&gt; &lt;resolved-embedded-item&gt;)</span></code>：调用 `copy_resolved_item_into_bundle()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-item&gt;</span></code> 与 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> “相同”，则无需复制。</p>
 </dd></dl>
 
@@ -312,6 +368,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">copy_resolved_framework_into_bundle(</span><span class="nv">&lt;resolved-item&gt;</span><span class="w"> </span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">copy_resolved_framework_into_bundle(&lt;resolved-item&gt; &lt;resolved-embedded-item&gt;)</span></code>：调用 `copy_resolved_framework_into_bundle()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-item&gt;</span></code> 与 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> “相同”，则无需复制。</p>
 <p>在调用此命令之前，可以设置以下变量</p>
 <dl class="simple">
@@ -327,6 +387,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">fixup_bundle_item(</span><span class="nv">&lt;resolved-embedded-item&gt;</span><span class="w"> </span><span class="nv">&lt;exepath&gt;</span><span class="w"> </span><span class="nv">&lt;dirs&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">fixup_bundle_item(&lt;resolved-embedded-item&gt; &lt;exepath&gt; &lt;dirs&gt;)</span></code>：调用 `fixup_bundle_item()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令获取 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> 的直接/非系统先决条件，并为每个先决条件将其引用方式更改为该先决条件的 <code class="docutils literal notranslate"><span class="pre">_EMBEDDED_ITEM</span></code> 键控变量的值。最有可能更改为 <code class="docutils literal notranslate"><span class="pre">@executable_path</span></code> 样式的引用。</p>
 <p>此命令要求 <code class="docutils literal notranslate"><span class="pre">&lt;resolved-embedded-item&gt;</span></code> 已经在捆绑包<code class="docutils literal notranslate"><span class="pre">内部</span></code>。换句话说，如果插件作为其 <code class="docutils literal notranslate"><span class="pre">&lt;libs&gt;</span></code> 参数传递给 <span class="target" id="index-2-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a> 命令，则应在调用 <span class="target" id="index-3-command:fixup_bundle"></span><a class="reference internal" href="BundleUtilities.html#command:fixup_bundle" title="fixup_bundle"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">fixup_bundle()</span></code></a> 命令之前将它们安装或复制到捆绑包中。</p>
 <p>此外，它会将正在修复的项的 ID 更改为其自己的 <code class="docutils literal notranslate"><span class="pre">_EMBEDDED_ITEM</span></code> 值。</p>
@@ -359,6 +423,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">verify_bundle_prerequisites( &lt;bundle&gt; &lt;result-var&gt; &lt;info-var&gt; [IGNORE_ITEM &lt;files&gt;...] )</span></code>：调用 `verify_bundle_prerequisites()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>参数为</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">&lt;bundle&gt;</span></code></dt><dd><p>正在验证的捆绑包名称。</p>
@@ -382,6 +450,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">verify_bundle_symlinks(</span><span class="nv">&lt;bundle&gt;</span><span class="w"> </span><span class="nv">&lt;result-var&gt;</span><span class="w"> </span><span class="nv">&lt;info-var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">verify_bundle_symlinks(&lt;bundle&gt; &lt;result-var&gt; &lt;info-var&gt;)</span></code>：调用 `verify_bundle_symlinks()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>任何指向外部文件的符号链接都会导致此命令验证失败。</p>
 <p>参数为</p>
 <dl class="simple">
@@ -413,6 +485,10 @@
 <span class="s">"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># ... install(CODE &quot; include(BundleUtilities) set(BU_CHMOD_BUNDLE_ITEMS TRUE) fixup_bundle( \&quot;${fixup_exe}\&quot; \&quot;${plugins}\&quot; \&quot;${bin_dir};${library_dir};${binary_dir}\&quot; ) &quot;)</span></code>：这是注释，用来说明：... install(CODE &quot; include(BundleUtilities) set(BU_CHMOD_BUNDLE_ITEMS TRUE) fixup_bundle( \&quot;${fixup_exe}\&quot; \&quot;${plugins}\&quot; \&quot;${bin_dir};${library_dir};${binary_dir}\&quot; ) &quot;)。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>

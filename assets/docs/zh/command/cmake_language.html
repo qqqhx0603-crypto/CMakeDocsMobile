@@ -68,6 +68,10 @@ cmake_language(<a class="reference internal" href="cmake_language.html#set-depen
 cmake_language(<a class="reference internal" href="cmake_language.html#get-message-log-level">GET_MESSAGE_LOG_LEVEL</a> &lt;out-var&gt;)
 cmake_language(<a class="reference internal" href="cmake_language.html#exit">EXIT</a> &lt;exit-code&gt;)
 cmake_language(<a class="reference internal" href="cmake_language.html#trace">TRACE</a> &lt;boolean&gt; ...)</pre>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_language(CALL &lt;command&gt; [&lt;arg&gt;...]) cmake_language(EVAL CODE &lt;code&gt;...) cmake_language(DEFER &lt;options&gt;... CALL &lt;command&gt; [&lt;arg&gt;...]) cmake_language(SET_DEPENDENCY_PROVIDER &lt;command&gt; SUPPORTED_METHODS &lt;methods&gt;...) cmake_language(GET_MESSAGE_LOG_LEVEL &lt;out-var&gt;) cmake_language(EXIT &lt;exit-code&gt;) cmake_language(TRACE &lt;boolean&gt; ...)</span></code>：调用 `cmake_language()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="introduction">
 <h2>简介<a class="headerlink" href="cmake_language.html#introduction" title="此标题的链接">¶</a></h2>
@@ -78,16 +82,24 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <h2>调用命令<a class="headerlink" href="cmake_language.html#calling-commands" title="链接到此标题">¶</a></h2>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="call">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">CALL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;arg&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#call" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">CALL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;arg&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#call" title="跳转到此定义">¶</a></dt>
 <dd><p>使用给定的参数（如果有）调用指定的 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code>。例如，代码</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">message_command</span><span class="w"> </span><span class="s">"message"</span><span class="nf">)</span>
 <span class="nf">cmake_language(</span><span class="no">CALL</span><span class="w"> </span><span class="o">${</span><span class="nt">message_command</span><span class="o">}</span><span class="w"> </span><span class="no">STATUS</span><span class="w"> </span><span class="s">"Hello World!"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(message_command &quot;message&quot;) cmake_language(CALL ${message_command} STATUS &quot;Hello World!&quot;)</span></code>：调用 `set()` 命令，把变量 `message_command` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>等价于</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="no">STATUS</span><span class="w"> </span><span class="s">"Hello World!"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message(STATUS &quot;Hello World!&quot;)</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>为确保代码一致性，以下命令不允许使用：</p>
@@ -107,7 +119,7 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <h2>评估代码<a class="headerlink" href="cmake_language.html#evaluating-code" title="链接到此标题">¶</a></h2>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="eval">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">EVAL</span></span><span class="w"> </span><span class="no"><span class="pre">CODE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;code&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#eval" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">EVAL</span></span><span class="w"> </span><span class="no"><span class="pre">CODE</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;code&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#eval" title="跳转到此定义">¶</a></dt>
 <dd><p>将 <code class="docutils literal notranslate"><span class="pre">&lt;code&gt;...</span></code> 作为 CMake 代码进行评估。</p>
 <p>例如，以下代码：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">A</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
@@ -124,6 +136,10 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(A TRUE) set(B TRUE) set(C TRUE) set(condition &quot;(A AND B) OR C&quot;) cmake_language(EVAL CODE &quot; if (${condition}) message(STATUS TRUE) else() message(STATUS FALSE) endif()&quot; )</span></code>：调用 `set()` 命令，把变量 `A` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>等价于</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">A</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
 <span class="nf">set(</span><span class="no">B</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
@@ -141,6 +157,10 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <span class="nf">include(</span><span class="o">${</span><span class="nt">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="na">/eval.cmake</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(A TRUE) set(B TRUE) set(C TRUE) set(condition &quot;(A AND B) OR C&quot;) file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/eval.cmake &quot; if (${condition}) message(STATUS TRUE) else() message(STATUS FALSE) endif()&quot; ) include(${CMAKE_CURRENT_BINARY_DIR}/eval.cmake)</span></code>：调用 `set()` 命令，把变量 `A` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </dd></dl>
 
 </section>
@@ -151,7 +171,7 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 </div>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="defer">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">DEFER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;options&gt;...</span></span><span class="w"> </span><span class="no"><span class="pre">CALL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;arg&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#defer" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">DEFER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;options&gt;...</span></span><span class="w"> </span><span class="no"><span class="pre">CALL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="nv"><span class="pre">&lt;arg&gt;...</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#defer" title="跳转到此定义">¶</a></dt>
 <dd><p>安排在稍后时间调用指定的 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code> 并传入给定参数（如果有）。默认情况下，延迟调用就像写在当前目录的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件末尾一样执行，不同之处在于即使在 <span class="target" id="index-0-command:return"></span><a class="reference internal" href="return.html#command:return" title="return"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">return()</span></code></a> 调用之后它们也会运行。参数中的变量引用在延迟调用执行时进行评估。</p>
 <p>选项包括</p>
 <dl>
@@ -167,16 +187,28 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_language(</span><span class="no">DEFER</span><span class="w"> </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">GET_CALL_IDS</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_language(DEFER [DIRECTORY &lt;dir&gt;] GET_CALL_IDS &lt;var&gt;)</span></code>：调用 `cmake_language()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这会将延迟调用 ID 的 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a> 存储在 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 中。这些 ID 是针对调用所延迟到的目录作用域（即执行它们的地方）的，这可能与创建它们的作用域不同。<code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 选项可用于指定要获取调用 ID 的作用域。如果未提供该选项，则返回当前目录作用域的调用 ID。</p>
 <p>可以根据 ID 获取特定调用的详细信息</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_language(</span><span class="no">DEFER</span><span class="w"> </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">GET_CALL</span><span class="w"> </span><span class="nv">&lt;id&gt;</span><span class="w"> </span><span class="nv">&lt;var&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_language(DEFER [DIRECTORY &lt;dir&gt;] GET_CALL &lt;id&gt; &lt;var&gt;)</span></code>：调用 `cmake_language()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这会将一个 <a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔列表</span></a> 存储在 <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> 中，其中第一个元素是要调用的命令名称，其余元素是其未评估的参数（包含的任何 <code class="docutils literal notranslate"><span class="pre">;</span></code> 字符均按字面意思包含，无法与多个参数区分）。如果使用相同的 ID 调度了多个调用，则获取第一个调用。如果指定 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 作用域内（如果未提供 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 选项，则为当前目录作用域）没有使用给定 ID 调度的调用，则变量中存储空字符串。</p>
 <p>可以通过 ID 取消延迟调用</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_language(</span><span class="no">DEFER</span><span class="w"> </span><span class="p">[</span><span class="no">DIRECTORY</span><span class="w"> </span><span class="nv">&lt;dir&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">CANCEL_CALL</span><span class="w"> </span><span class="nv">&lt;id&gt;...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_language(DEFER [DIRECTORY &lt;dir&gt;] CANCEL_CALL &lt;id&gt;...)</span></code>：调用 `cmake_language()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这将取消指定 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 作用域（如果未提供 <code class="docutils literal notranslate"><span class="pre">DIRECTORY</span></code> 选项，则为当前目录作用域）内匹配任何给定 ID 的所有延迟调用。未知的 ID 会被静默忽略。</p>
 </dd></dl>
 
@@ -190,11 +222,19 @@ cmake_language(<a class="reference internal" href="cmake_language.html#trace">TR
 <span class="nf">set(</span><span class="nb">deferred_message</span><span class="w"> </span><span class="s">"Deferred Message"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_language(DEFER CALL message &quot;${deferred_message}&quot;) cmake_language(DEFER ID_VAR id CALL message &quot;Canceled Message&quot;) cmake_language(DEFER CANCEL_CALL ${id}) message(&quot;Immediate Message&quot;) set(deferred_message &quot;Deferred Message&quot;)</span></code>：调用 `cmake_language()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>输出</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Immediate Message
 Deferred Message
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">Immediate Message Deferred Message</span></code>：这一行给出示例文本或输出，用来说明：Immediate Message Deferred Message</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">Canceled</span> <span class="pre">Message</span></code> 从未被打印，因为它的命令被取消了。<code class="docutils literal notranslate"><span class="pre">deferred_message</span></code> 变量引用直到调用点才会被评估，因此可以在调度延迟调用后进行设置。</p>
 <p>为了在调度延迟调用时立即评估变量引用，请使用 <code class="docutils literal notranslate"><span class="pre">cmake_language(EVAL)</span></code> 包装它。但是，请注意参数将在延迟调用中重新评估，不过可以通过使用括号参数来避免这种情况。例如</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">deferred_message</span><span class="w"> </span><span class="s">"Deferred Message 1"</span><span class="nf">)</span>
@@ -207,12 +247,20 @@ Deferred Message
 <span class="nf">set(</span><span class="nb">deferred_message</span><span class="w"> </span><span class="s">"Deferred Message 2"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(deferred_message &quot;Deferred Message 1&quot;) set(re_evaluated [[${deferred_message}]]) cmake_language(EVAL CODE &quot; cmake_language(DEFER CALL message [[${deferred_message}]]) cmake_language(DEFER CALL message \&quot;${re_evaluated}\&quot;) &quot;) message(&quot;Immediate Message&quot;) set(deferred_message &quot;Deferred Message 2&quot;)</span></code>：调用 `set()` 命令，把变量 `deferred_message` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>也输出</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Immediate Message
 Deferred Message 1
 Deferred Message 2
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">Immediate Message Deferred Message 1 Deferred Message 2</span></code>：这一行给出示例文本或输出，用来说明：Immediate Message Deferred Message 1 Deferred Message 2</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 <section id="dependency-providers">
@@ -226,7 +274,7 @@ Deferred Message 2
 </div>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="set-dependency-provider">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">SET_DEPENDENCY_PROVIDER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">SUPPORTED_METHODS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;methods&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#set-dependency-provider" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">SET_DEPENDENCY_PROVIDER</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;command&gt;</span></span><span class="w"> </span><span class="no"><span class="pre">SUPPORTED_METHODS</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;methods&gt;...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#set-dependency-provider" title="跳转到此定义">¶</a></dt>
 <dd><p>当调用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 或 <span class="target" id="index-0-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 时，调用可能会转发给依赖提供程序，提供程序随后有机会满足该请求。如果请求是设置提供程序时指定的 <code class="docutils literal notranslate"><span class="pre">&lt;methods&gt;</span></code> 之一，CMake 将调用提供程序的 <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code> 并传入一组特定于方法参数。如果提供程序未满足请求，或者提供程序不支持该请求的方法，亦或未设置提供程序，则使用内置的 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 或 <span class="target" id="index-1-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 实现以常规方式满足请求。</p>
 <p>设置提供程序时，可以为 <code class="docutils literal notranslate"><span class="pre">&lt;methods&gt;</span></code> 指定以下一个或多个值：</p>
 <dl class="simple">
@@ -252,6 +300,10 @@ Deferred Message 2
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">xxx_provide_dependency(</span><span class="nv">&lt;method&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;method-specific-args&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">xxx_provide_dependency(&lt;method&gt; [&lt;method-specific-args&gt;...])</span></code>：调用 `xxx_provide_dependency()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>由于某些方法要求在调用作用域中设置某些变量，提供程序命令通常应实现为宏而不是函数。这确保它不会引入新的变量作用域。</p>
 <p>CMake 传递给依赖提供程序的参数取决于请求类型。第一个参数始终是方法，并且它将仅是设置提供程序时指定的 <code class="docutils literal notranslate"><span class="pre">&lt;methods&gt;</span></code> 之一。</p>
 <dl>
@@ -277,7 +329,7 @@ Deferred Message 2
 <h3>提供程序示例<a class="headerlink" href="cmake_language.html#provider-examples" title="链接到此标题">¶</a></h3>
 <p>第一个示例仅拦截 <span class="target" id="index-7-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用。如果该工具知道该依赖项，则提供程序命令会运行一个外部工具，将相关工件复制到特定于提供程序的目录中。然后它依赖内置实现来查找这些工件。<span class="target" id="index-4-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 调用不会经过提供程序。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Always ensure we have the policy settings this provider expects</span>
 <span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.24</span><span class="nf">)</span>
 
@@ -302,14 +354,22 @@ Deferred Message 2
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># Always ensure we have the policy settings this provider expects cmake_minimum_required(VERSION 3.24) set(MYCOMP_PROVIDER_INSTALL_DIR ${CMAKE_BINARY_DIR}/mycomp_packages CACHE PATH &quot;The directory this provider installs packages to&quot; ) # Tell the built-in implementation to look in our area first, unless # the find_package() call uses NO_..._PATH options to exclude it list(APPEND CMAKE_MODULE_PATH ${MYCOMP_PROVIDER_INSTALL_DIR}/cmake) list(APPEND CMAKE_PREFIX_PATH ${MYCOMP_PROVIDER_INSTALL_DIR}) macro(mycomp_provide_dependency method package_name) execute_process( COMMAND some_tool ${package_name} --installdir ${MYCOMP_PROVIDER_INSTALL_DIR} COMMAND_ERROR_IS_FATAL ANY ) endmacro() cmake_language( SET_DEPENDENCY_PROVIDER mycomp_provide_dependency SUPPORTED_METHODS FIND_PACKAGE )</span></code>：这是注释，用来说明：Always ensure we have the policy settings this provider expects cmake_minimum_required(VERSION 3.24) set(MYCOMP_PROVIDER_INSTALL_DIR ${CMAKE_BINARY_DIR}/mycomp_packages CACHE PATH &quot;The directory this provider installs packages to&quot; ) # Tell the built-in implementation to look in our area first, unless # the find_package() call uses NO_..._PATH options to exclude it list(APPEND CMAKE_MODULE_PATH ${MYCOMP_PROVIDER_INSTALL_DIR}/cmake) list(APPEND CMAKE_PREFIX_PATH ${MYCOMP_PROVIDER_INSTALL_DIR}) macro(mycomp_provide_dependency method package_name) execute_process( COMMAND some_tool ${package_name} --installdir ${MYCOMP_PROVIDER_INSTALL_DIR} COMMAND_ERROR_IS_FATAL ANY ) endmacro() cmake_language( SET_DEPENDENCY_PROVIDER mycomp_provide_dependency SUPPORTED_METHODS FIND_PACKAGE )。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>用户通常会这样使用上述文件</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/mycomp_provider.cmake ...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/mycomp_provider.cmake ...</span></code>：这一行给出示例文本或输出，用来说明：cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/mycomp_provider.cmake ...</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>下一个示例演示了一个接受两种方法但只处理一个特定依赖项的提供程序。它强制使用 <span class="target" id="index-1-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="fetchcontent_module"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 提供 Google Test，但将所有其他依赖项留给 CMake 的内置实现来满足。它接受几个不同的名称，这演示了解决那些硬编码不寻常或不良方式来将特定依赖项添加到构建中的项目的一种方法。该示例还演示了如何使用 <span class="target" id="index-0-command:list"></span><a class="reference internal" href="list.html#command:list" title="list"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">list()</span></code></a> 命令来保留可能被调用 <span class="target" id="index-5-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 覆盖的变量。</p>
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id3" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id3" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.24</span><span class="nf">)</span>
 
 <span class="c"># Because we declare this very early, it will take precedence over any</span>
@@ -362,10 +422,14 @@ Deferred Message 2
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.24) # Because we declare this very early, it will take precedence over any # details the project might declare later for the same thing include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0 ) # Both FIND_PACKAGE and FETCHCONTENT_MAKEAVAILABLE_SERIAL methods provide # the package or dependency name as the first method-specific argument. macro(mycomp_provide_dependency method dep_name) if(&quot;${dep_name}&quot; MATCHES &quot;^(gtest|googletest)$&quot;) # Save our current command arguments in case we are called recursively list(APPEND mycomp_provider_args ${method} ${dep_name}) # This will forward to the built-in FetchContent implementation, # which detects a recursive call for the same thing and avoids calling # the provider again if dep_name is the same as the current call. FetchContent_MakeAvailable(googletest) # Restore our command arguments list(POP_BACK mycomp_provider_args dep_name method) # Tell the caller we fulfilled the request if(&quot;${method}&quot; STREQUAL &quot;FIND_PACKAGE&quot;) # We need to set this if we got here from a find_package() call # since we used a different method to fulfill the request. # This example assumes projects only use the gtest targets, # not any of the variables the FindGTest module may define. set(${dep_name}_FOUND TRUE) elseif(NOT &quot;${dep_name}&quot; STREQUAL &quot;googletest&quot;) # We used the same method, but were given a different name to the # one we populated with. Tell the caller about the name it used. FetchContent_SetPopulated(${dep_name} SOURCE_DIR &quot;${googletest_SOURCE_DIR}&quot; BINARY_DIR &quot;${googletest_BINARY_DIR}&quot; ) endif() endif() endmacro() cmake_language( SET_DEPENDENCY_PROVIDER mycomp_provide_dependency SUPPORTED_METHODS FIND_PACKAGE FETCHCONTENT_MAKEAVAILABLE_SERIAL )</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>最后一个示例演示了如何修改 <span class="target" id="index-8-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用的参数。它强制所有此类调用都具有 <code class="docutils literal notranslate"><span class="pre">QUIET</span></code> 关键字。它使用 <code class="docutils literal notranslate"><span class="pre">BYPASS_PROVIDER</span></code> 关键字来防止为同一个依赖项递归调用提供程序命令。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id4" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">mycomp_provider.cmake</span><a class="headerlink" href="cmake_language.html#id4" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.24</span><span class="nf">)</span>
 
 <span class="nf">macro(</span><span class="nb">mycomp_provide_dependency</span><span class="w"> </span><span class="nb">method</span><span class="nf">)</span>
@@ -378,6 +442,10 @@ Deferred Message 2
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.24) macro(mycomp_provide_dependency method) find_package(${ARGN} BYPASS_PROVIDER QUIET) endmacro() cmake_language( SET_DEPENDENCY_PROVIDER mycomp_provide_dependency SUPPORTED_METHODS FIND_PACKAGE )</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>
@@ -388,7 +456,7 @@ Deferred Message 2
 </div>
 <dl class="cmake signature" id="query-message-log-level">
 <dt class="sig sig-object cmake" id="get-message-log-level">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">GET_MESSAGE_LOG_LEVEL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#get-message-log-level" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">GET_MESSAGE_LOG_LEVEL</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;output_variable&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#get-message-log-level" title="跳转到此定义">¶</a></dt>
 <dd><p>将当前的 <span class="target" id="index-0-command:message"></span><a class="reference internal" href="message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a> 日志级别写入给定的 <code class="docutils literal notranslate"><span class="pre">&lt;output_variable&gt;</span></code>。</p>
 <p>有关可能的日志级别，请参阅 <span class="target" id="index-1-command:message"></span><a class="reference internal" href="message.html#command:message" title="message"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">message()</span></code></a>。</p>
 <p>当前消息日志级别可以使用 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 程序的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-log-level"><code class="xref std std-option docutils literal notranslate"><span class="pre">--log-level</span></code></a> 命令行选项设置，也可以使用 <span class="target" id="index-0-variable:CMAKE_MESSAGE_LOG_LEVEL"></span><a class="reference internal" href="../variable/CMAKE_MESSAGE_LOG_LEVEL.html#variable:CMAKE_MESSAGE_LOG_LEVEL" title="CMAKE_MESSAGE_LOG_LEVEL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MESSAGE_LOG_LEVEL</span></code></a> 变量设置。</p>
@@ -403,10 +471,10 @@ Deferred Message 2
 </div>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="exit">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">EXIT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;exit-code&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#exit" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">EXIT</span></span><span class="w"> </span><span class="nv"><span class="pre">&lt;exit-code&gt;</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#exit" title="跳转到此定义">¶</a></dt>
 <dd><p>终止当前的 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-P"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-P</span></code></a> 脚本并以 <code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code> 退出。</p>
 <p>此命令仅在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">脚本模式</span></a> 下有效。如果在该上下文之外使用，将导致致命错误。</p>
-<p><code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code> 应为非负数。如果 <code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code> 为负数，则行为未定义（例如，在 Windows 上错误代码 -1 变为 <code class="docutils literal notranslate"><span class="pre">0xffffffff</span></code>，在 Linux 上变为 255）。底层 shell 或平台可能不支持超过 255 的退出代码，某些 shell 可能会特殊解释大于 125 的值。因此，建议仅指定 0 到 125 范围内的 <code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code> 应为非负数。如果 <code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code> 为负数，则行为未定义（例如，在 Windows（微软桌面系统） 上错误代码 -1 变为 <code class="docutils literal notranslate"><span class="pre">0xffffffff</span></code>，在 Linux 上变为 255）。底层 shell（命令解释器） 或平台可能不支持超过 255 的退出代码，某些 shell（命令解释器） 可能会特殊解释大于 125 的值。因此，建议仅指定 0 到 125 范围内的 <code class="docutils literal notranslate"><span class="pre">&lt;exit-code&gt;</span></code>。</p>
 </dd></dl>
 
 </section>
@@ -417,9 +485,9 @@ Deferred Message 2
 </div>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="trace">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">TRACE</span></span><span class="w"> </span><span class="no"><span class="pre">ON</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">EXPAND</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#trace" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">TRACE</span></span><span class="w"> </span><span class="no"><span class="pre">ON</span></span><span class="w"> </span><span class="p"><span class="pre">[</span></span><span class="no"><span class="pre">EXPAND</span></span><span class="p"><span class="pre">]</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#trace" title="跳转到此定义">¶</a></dt>
 <dt class="sig sig-object cmake" id="trace-off">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">TRACE</span></span><span class="w"> </span><span class="no"><span class="pre">OFF</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#trace-off" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_language(</span></span><span class="no"><span class="pre">TRACE</span></span><span class="w"> </span><span class="no"><span class="pre">OFF</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_language.html#trace-off" title="跳转到此定义">¶</a></dt>
 <dd><p>TRACE 子命令控制当前进程内执行的 CMake 命令和宏的运行时跟踪。启用后，跟踪输出的格式与 CMake 使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-trace"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--trace</span></code></a> 或 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-trace-expand"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--trace-expand</span></code></a> 命令行选项启动时的格式相同。</p>
 <p>跟踪作用域是可以嵌套的。多个 <code class="docutils literal notranslate"><span class="pre">TRACE</span> <span class="pre">ON</span></code> 调用可以同时处于活动状态，并且每个 <code class="docutils literal notranslate"><span class="pre">TRACE</span> <span class="pre">OFF</span></code> 都会停用一个嵌套级别。</p>
 <p>如果 CMake 使用 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-trace"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--trace</span></code></a> 或 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-trace-expand"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--trace-expand</span></code></a> 运行，则无论 <code class="docutils literal notranslate"><span class="pre">cmake_language(TRACE</span> <span class="pre">OFF)</span></code> 调用如何，这些选项都会覆盖并强制全局跟踪。在这种情况下，该命令仍可被调用，但对跟踪状态没有影响。</p>

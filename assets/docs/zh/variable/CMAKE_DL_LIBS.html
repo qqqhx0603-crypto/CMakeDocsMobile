@@ -55,7 +55,7 @@
             
   <section id="cmake-dl-libs">
 <span id="variable:CMAKE_DL_LIBS"></span><h1>CMAKE_DL_LIBS<a class="headerlink" href="CMAKE_DL_LIBS.html#cmake-dl-libs" title="链接到此标题">¶</a></h1>
-<p>此变量包含动态加载库的名称，或使用 <code class="docutils literal notranslate"><span class="pre">dlopen()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">dlclose()</span></code> 函数所需的系统库列表。</p>
+<p>此变量包含动态加载库的名称，或使用 <code class="docutils literal notranslate"><span class="pre">dlopen（动态装载接口）()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">dlclose()</span></code> 函数所需的系统库列表。</p>
 <p>此变量被设置为值的几个例子</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dl</span></code></dt><dd><p>在大多数类似 Unix 的系统上。</p>
@@ -66,7 +66,7 @@
 </dd>
 </dl>
 <dl class="simple">
-<dt>""</dt><dd><p>在具有默认库中包含 <code class="docutils literal notranslate"><span class="pre">dl*()</span></code> 函数的系统（例如 BSD 类系统、Haiku、macOS、SunOS 等）或不提供这些函数的系统（例如 Windows）上，该值为空字符串或未设置。</p>
+<dt>""</dt><dd><p>在具有默认库中包含 <code class="docutils literal notranslate"><span class="pre">dl*()</span></code> 函数的系统（例如 BSD 类系统、Haiku、macOS（苹果桌面系统）、SunOS 等）或不提供这些函数的系统（例如 Windows（微软桌面系统））上，该值为空字符串或未设置。</p>
 </dd>
 </dl>
 <section id="examples">
@@ -77,6 +77,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_DL_LIBS</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(example PRIVATE ${CMAKE_DL_LIBS})</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-checking-symbols">
 <h3>示例：检查符号<a class="headerlink" href="CMAKE_DL_LIBS.html#example-checking-symbols" title="链接到此标题">¶</a></h3>
@@ -90,6 +94,10 @@
 <span class="nf">cmake_pop_check_state()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckSymbolExists) include(CMakePushCheckState) cmake_push_check_state(RESET) set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_DL_LIBS}) check_symbol_exists(dlopen &quot;dlfcn.h&quot; HAVE_DLOPEN) cmake_pop_check_state()</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 </section>

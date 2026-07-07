@@ -59,7 +59,11 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">AVIFile</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>AVIFile 是一组用于 i386 机器使用各种 AVI 编解码器的库。 除了 Linux 之外，支持有限。 Windows 提供本机 AVI 支持，因此不需要此库。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(AVIFile [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>AVIFile 是一组用于 i386 机器使用各种 AVI 编解码器的库。 除了 Linux 之外，支持有限。 Windows（微软桌面系统） 提供本机 AVI 支持，因此不需要此库。</p>
 <section id="result-variables">
 <h2>结果变量<a class="headerlink" href="FindAVIFile.html#result-variables" title="此标题的链接">¶</a></h2>
 <p>此模块定义了以下变量</p>
@@ -96,7 +100,7 @@
 </section>
 <section id="examples">
 <h2>示例<a class="headerlink" href="FindAVIFile.html#examples" title="此标题的永久链接">¶</a></h2>
-<p>查找 AVIFile 并有条件地创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，该目标封装了其用于链接到项目目标的使用要求</p>
+<p>查找 AVIFile 并有条件地创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a>，该目标封装了其用于链接到项目目标的使用要求</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">AVIFile</span><span class="nf">)</span>
 
 <span class="nf">if(</span><span class="nb">AVIFile_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">AVIFile</span><span class="o">::</span><span class="nb">AVIFile</span><span class="nf">)</span>
@@ -113,6 +117,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">AVIFile</span><span class="o">::</span><span class="nb">AVIFile</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(AVIFile) if(AVIFile_FOUND AND NOT TARGET AVIFile::AVIFile) add_library(AVIFile::AVIFile INTERFACE IMPORTED) set_target_properties( AVIFile::AVIFile PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${AVIFILE_INCLUDE_DIR}&quot; INTERFACE_LINK_LIBRARIES &quot;${AVIFILE_LIBRARIES}&quot; INTERFACE_COMPILE_DEFINITIONS &quot;${AVIFILE_DEFINITIONS}&quot; ) endif() target_link_libraries(example PRIVATE AVIFile::AVIFile)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

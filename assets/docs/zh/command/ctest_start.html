@@ -61,6 +61,10 @@
 <span class="nf">ctest_start(</span><span class="p">[</span><span class="nv">&lt;model&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;source&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;binary&gt;</span><span class="p">]]]</span><span class="w"> </span><span class="p">[</span><span class="no">GROUP</span><span class="w"> </span><span class="nv">&lt;group&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="p">[</span><span class="no">QUIET</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ctest_start(&lt;model&gt; [&lt;source&gt; [&lt;binary&gt;]] [GROUP &lt;group&gt;] [QUIET]) ctest_start([&lt;model&gt; [&lt;source&gt; [&lt;binary&gt;]]] [GROUP &lt;group&gt;] APPEND [QUIET])</span></code>：调用 `ctest_start()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>启动给定模型的测试。该命令应在二进制目录初始化后调用。</p>
 <p>参数如下</p>
 <dl>
@@ -79,10 +83,18 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_start(</span><span class="nb">Experimental</span><span class="w"> </span><span class="no">GROUP</span><span class="w"> </span><span class="nb">GroupExperimental</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ctest_start(Experimental GROUP GroupExperimental)</span></code>：调用 `ctest_start()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>稍后，在另一个 <a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-S</span></code></a> 脚本中</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">ctest_start(</span><span class="no">APPEND</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ctest_start(APPEND)</span></code>：调用 `ctest_start()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当第二个脚本运行 <code class="docutils literal notranslate"><span class="pre">ctest_start(APPEND)</span></code> 时，它将从第一个 <code class="docutils literal notranslate"><span class="pre">ctest_start()</span></code> 命令生成的 <code class="docutils literal notranslate"><span class="pre">TAG</span></code> 文件中读取 <code class="docutils literal notranslate"><span class="pre">Experimental</span></code> 模型和 <code class="docutils literal notranslate"><span class="pre">GroupExperimental</span></code> 组。请注意，如果您调用 <code class="docutils literal notranslate"><span class="pre">ctest_start(APPEND)</span></code> 并指定与第一个 <code class="docutils literal notranslate"><span class="pre">ctest_start()</span></code> 命令不同的模型或组，将会发出警告，并使用新的模型和组。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">QUIET</span></code></dt><dd><div class="versionadded">
@@ -99,6 +111,10 @@
 <span class="nf">ctest_start(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">QUIET</span><span class="w"> </span><span class="nb">Experimental</span><span class="w"> </span><span class="na">path/to/source</span><span class="w"> </span><span class="no">GROUP</span><span class="w"> </span><span class="nb">SomeGroup</span><span class="w"> </span><span class="na">path/to/binary</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ctest_start(Experimental path/to/source path/to/binary GROUP SomeGroup QUIET APPEND) ctest_start(GROUP SomeGroup Experimental QUIET path/to/source APPEND path/to/binary) ctest_start(APPEND QUIET Experimental path/to/source GROUP SomeGroup path/to/binary)</span></code>：调用 `ctest_start()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>然而，为了可读性，建议您按照本页顶部列出的顺序排列参数。</p>
 <p>如果设置了 <span class="target" id="index-0-variable:CTEST_CHECKOUT_COMMAND"></span><a class="reference internal" href="../variable/CTEST_CHECKOUT_COMMAND.html#variable:CTEST_CHECKOUT_COMMAND" title="CTEST_CHECKOUT_COMMAND"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_CHECKOUT_COMMAND</span></code></a> 变量，其内容将被视为命令行。即使源代码目录已经存在，该命令也会在当前工作目录设置为源代码目录的父目录的情况下被调用。这可用于从版本控制仓库创建源代码树。</p>
 </section>

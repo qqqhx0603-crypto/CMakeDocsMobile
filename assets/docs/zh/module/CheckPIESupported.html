@@ -63,17 +63,25 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckPIESupported</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckPIESupported)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当设置 <span class="target" id="index-0-prop_tgt:POSITION_INDEPENDENT_CODE"></span><a class="reference internal" href="../prop_tgt/POSITION_INDEPENDENT_CODE.html#prop_tgt:POSITION_INDEPENDENT_CODE" title="POSITION_INDEPENDENT_CODE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code></a> 目标属性时，无论是否使用此模块，在构建库对象时都会添加与 PIC 相关的编译和链接选项，在构建可执行目标对象时会添加与 PIE 相关的编译选项。使用此模块可以确保可执行文件的 <code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性在链接时也能被遵循。</p>
 <section id="commands">
 <h2>命令<a class="headerlink" href="CheckPIESupported.html#commands" title="链接到此标题">¶</a></h2>
 <p>此模块提供以下命令</p>
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:check_pie_supported">
-<span class="sig-name descname"><span class="pre">check_pie_supported</span></span><a class="headerlink" href="CheckPIESupported.html#command:check_pie_supported" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_pie_supported</span></span><a class="headerlink" href="CheckPIESupported.html#command:check_pie_supported" title="跳转到此定义">¶</a></dt>
 <dd><p>检查 PIE/NO_PIE 支持情况，并准备所有可执行文件以启用链接时 PIE 选项</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_pie_supported(</span><span class="p">[</span><span class="no">OUTPUT_VARIABLE</span><span class="w"> </span><span class="nv">&lt;output&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">LANGUAGES</span><span class="w"> </span><span class="nv">&lt;langs&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">check_pie_supported([OUTPUT_VARIABLE &lt;output&gt;] [LANGUAGES &lt;langs&gt;...])</span></code>：调用 `check_pie_supported()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>选项包括：</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">OUTPUT_VARIABLE</span> <span class="pre">&lt;output&gt;</span></code></dt><dd><p>将任何错误详情设置到 <code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code> 变量中。如果由于使用了之前调用的缓存结果而跳过了检查，即使之前的调用中存在错误，输出也将为空。</p>
@@ -112,6 +120,10 @@
 <span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(foo ...) include(CheckPIESupported) check_pie_supported() set_property(TARGET foo PROPERTY POSITION_INDEPENDENT_CODE TRUE)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>由于并非所有链接器都需要或支持 PIE 相关的链接选项（例如 <code class="docutils literal notranslate"><span class="pre">MSVC</span></code>），获取任何错误消息对于日志记录可能很有用。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 
@@ -130,11 +142,19 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(foo ...) message(CHECK_START &quot;Checking for C linker PIE support&quot;) include(CheckPIESupported) check_pie_supported(OUTPUT_VARIABLE output LANGUAGES C) set_property(TARGET foo PROPERTY POSITION_INDEPENDENT_CODE TRUE) if(CMAKE_C_LINK_PIE_SUPPORTED) message(CHECK_PASS &quot;yes&quot;) else() message(CHECK_FAIL &quot;no&quot;) message(VERBOSE &quot;PIE is not supported at link time:\n${output}&quot; &quot;PIE link options will not be passed to linker.&quot;) endif()</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在不使用此模块的情况下对可执行目标设置 <code class="docutils literal notranslate"><span class="pre">POSITION_INDEPENDENT_CODE</span></code> 目标属性，将设置 PIE 相关的编译选项，但不会设置 PIE 相关的链接选项，这在某些情况下可能是不够的。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">foo</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 <span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">POSITION_INDEPENDENT_CODE</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(foo ...) set_property(TARGET foo PROPERTY POSITION_INDEPENDENT_CODE TRUE)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

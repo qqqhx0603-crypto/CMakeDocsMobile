@@ -61,6 +61,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="o">${</span><span class="nt">sources</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(example ${sources})</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>其行为就像是写成了</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">BUILD_SHARED_LIBS</span><span class="nf">)</span>
 <span class="w">  </span><span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="o">${</span><span class="nt">sources</span><span class="o">}</span><span class="nf">)</span>
@@ -69,10 +73,18 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(BUILD_SHARED_LIBS) add_library(example SHARED ${sources}) else() add_library(example STATIC ${sources}) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>CMake 默认不会定义 <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>，但项目通常会使用 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 命令为其创建缓存条目。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">BUILD_SHARED_LIBS</span><span class="w"> </span><span class="s">"Build using shared libraries"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS &quot;Build using shared libraries&quot; ON)</span></code>：调用 `option()` 命令，声明一个布尔型配置选项。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这提供了一个用户可以控制的开关，例如通过 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-D</span></code></a>。如果在项目中添加此类选项，请在顶级 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中，且在任何 <span class="target" id="index-2-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 调用之前进行设置。请注意，如果直接将外部依赖项引入构建（例如使用 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 或直接调用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a>），并且其中某个依赖项包含了对此类 <span class="target" id="index-1-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS</span> <span class="pre">...)</span></code></a> 的调用，那么顶级项目也必须在引入这些依赖项之前调用 <span class="target" id="index-2-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS</span> <span class="pre">...)</span></code></a>。如果不这样做，可能会导致首次运行 CMake 与后续运行之间的行为不一致。</p>
 </section>
 

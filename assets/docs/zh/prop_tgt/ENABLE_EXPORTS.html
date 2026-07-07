@@ -58,14 +58,14 @@
 <p>指定可执行文件或共享库是否导出符号。</p>
 <p>通常，可执行文件不导出任何符号，因为它最终程序。但可执行文件可以导出符号供可加载模块使用。当此属性设置为 true 时，CMake 将允许其他目标使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令“链接”到可执行文件。在所有平台上，对于链接到它的目标，都会创建到可执行文件的目标级别依赖项。在可加载模块的链接行上处理可执行文件因平台而异</p>
 <ul class="simple">
-<li><p>在基于 Windows 的系统（包括 Cygwin）上，将与可执行文件一起创建一个“导入库”来列出导出的符号。可加载模块链接到导入库以获取这些符号。</p></li>
-<li><p>在 macOS 上，可加载模块使用 <code class="docutils literal notranslate"><span class="pre">-bundle_loader</span></code> 标志链接到可执行文件本身。</p></li>
+<li><p>在基于 Windows（微软桌面系统） 的系统（包括 Cygwin）上，将与可执行文件一起创建一个“导入库”来列出导出的符号。可加载模块链接到导入库以获取这些符号。</p></li>
+<li><p>在 macOS（苹果桌面系统） 上，可加载模块使用 <code class="docutils literal notranslate"><span class="pre">-bundle_loader</span></code> 标志链接到可执行文件本身。</p></li>
 <li><p>在 AIX 上，将与可执行文件一起创建一个链接器“导入文件”来列出导出符号，以便在链接其他目标时导入。可加载模块链接到导入文件以获取这些符号。</p></li>
 <li><p>在其他平台上，可加载模块直接链接，无需引用可执行文件，因为动态加载器会在加载模块时自动绑定符号。</p></li>
 </ul>
 <p>此属性由 <span class="target" id="index-0-variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_EXECUTABLE_ENABLE_EXPORTS.html#variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS" title="CMAKE_EXECUTABLE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTABLE_ENABLE_EXPORTS</span></code></a> 变量的值初始化，如果该变量在创建可执行文件目标时设置。如果未设置 <span class="target" id="index-1-variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_EXECUTABLE_ENABLE_EXPORTS.html#variable:CMAKE_EXECUTABLE_ENABLE_EXPORTS" title="CMAKE_EXECUTABLE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_EXECUTABLE_ENABLE_EXPORTS</span></code></a>，则为了向后兼容，将使用 <span class="target" id="index-0-variable:CMAKE_ENABLE_EXPORTS"></span><a class="reference internal" href="../variable/CMAKE_ENABLE_EXPORTS.html#variable:CMAKE_ENABLE_EXPORTS" title="CMAKE_ENABLE_EXPORTS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_ENABLE_EXPORTS</span></code></a> 变量来初始化该属性。有关共享库目标的替代初始化行为，请参见下文。</p>
 <div class="versionadded">
-<p><span class="versionmodified added">3.27 版本新增：</span>要在 macOS 上与共享库链接，或在任何 Apple 平台上与共享框架链接，可以使用链接器导入文件代替实际的共享库。这些链接器导入文件也称为基于文本的存根，它们具有 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件扩展名。</p>
+<p><span class="versionmodified added">3.27 版本新增：</span>要在 macOS（苹果桌面系统） 上与共享库链接，或在任何 Apple 平台上与共享框架链接，可以使用链接器导入文件代替实际的共享库。这些链接器导入文件也称为基于文本的存根，它们具有 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件扩展名。</p>
 <p>此属性控制这些链接器导入文件的生成以及它们的消耗。当此属性设置为共享库目标的 true 时，CMake 将为该库生成一个 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件。然后，链接到共享库目标的其他目标将在链接时使用此 <code class="docutils literal notranslate"><span class="pre">.tbd</span></code> 文件，而不是链接到共享库二进制文件。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>

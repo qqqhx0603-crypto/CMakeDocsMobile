@@ -55,7 +55,7 @@
             
   <section id="map-imported-config-config">
 <span id="prop_tgt:MAP_IMPORTED_CONFIG_<CONFIG>"></span><h1>MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;<a class="headerlink" href="MAP_IMPORTED_CONFIG_CONFIG.html#map-imported-config-config" title="链接到此标题">¶</a></h1>
-<p>将项目配置映射到 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a> 的配置。</p>
+<p>将项目配置映射到 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a> 的配置。</p>
 <p>将其设置为导入目标可用于当前项目 <code class="docutils literal notranslate"><span class="pre">&lt;CONFIG&gt;</span></code> 配置的配置列表。从另一个项目导入的目标可能不提供当前项目可用的相同配置名称集。设置此属性会告诉 CMake 哪些导入配置适合在构建 <code class="docutils literal notranslate"><span class="pre">&lt;CONFIG&gt;</span></code> 配置时使用。列表中找到的第一个由导入目标提供的配置（即通过 <span class="target" id="index-0-prop_tgt:IMPORTED_LOCATION_<CONFIG>"></span><a class="reference internal" href="IMPORTED_LOCATION_CONFIG.html#prop_tgt:IMPORTED_LOCATION_<CONFIG>" title="IMPORTED_LOCATION_<CONFIG>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_LOCATION_&lt;CONFIG&gt;</span></code></a> 映射到的 <code class="docutils literal notranslate"><span class="pre">&lt;CONFIG&gt;</span></code>）将被选中。作为特殊情况，空列表元素引用无配置的导入目标位置（即 <span class="target" id="index-0-prop_tgt:IMPORTED_LOCATION"></span><a class="reference internal" href="IMPORTED_LOCATION.html#prop_tgt:IMPORTED_LOCATION" title="IMPORTED_LOCATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_LOCATION</span></code></a>）。</p>
 <p>如果设置了此属性但没有可用的匹配配置，则导入目标将被视为未找到。此属性对于非导入目标将被忽略。</p>
 <p>当创建目标时，如果设置了 <span class="target" id="index-0-variable:CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>"></span><a class="reference internal" href="../variable/CMAKE_MAP_IMPORTED_CONFIG_CONFIG.html#variable:CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>" title="CMAKE_MAP_IMPORTED_CONFIG_<CONFIG>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MAP_IMPORTED_CONFIG_&lt;CONFIG&gt;</span></code></a> 变量，则此属性将由该变量的值初始化。</p>
@@ -65,6 +65,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">foo</span><span class="w"> </span><span class="no">STATIC</span><span class="w"> </span><span class="no">IMPORTED</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(foo STATIC IMPORTED)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 构建类型，使用 <code class="docutils literal notranslate"><span class="pre">foo_debug</span></code> 路径</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_property(</span>
 <span class="w">  </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="no">DEBUG</span>
@@ -76,6 +80,10 @@
 <span class="w">  </span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set_property( TARGET foo APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG ) set_target_properties(foo PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG &quot;CXX&quot; IMPORTED_LOCATION_DEBUG &quot;${foo_debug}&quot; )</span></code>：调用 `set_property()` 命令，设置目标、目录、源文件等对象的属性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 构建类型，使用 <code class="docutils literal notranslate"><span class="pre">foo_release</span></code> 路径</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_property(</span>
 <span class="w">  </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="no">APPEND</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">IMPORTED_CONFIGURATIONS</span><span class="w"> </span><span class="no">RELEASE</span>
@@ -87,6 +95,10 @@
 <span class="w">  </span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set_property( TARGET foo APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE ) set_target_properties(foo PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE &quot;CXX&quot; IMPORTED_LOCATION_RELEASE &quot;${foo_release}&quot; )</span></code>：调用 `set_property()` 命令，设置目标、目录、源文件等对象的属性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于 <code class="docutils literal notranslate"><span class="pre">MinSizeRel</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RelWithDebInfo</span></code> 构建类型，使用库的 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 版本</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set_target_properties(</span><span class="nb">foo</span><span class="w"> </span><span class="no">PROPERTIES</span>
 <span class="w">  </span><span class="no">MAP_IMPORTED_CONFIG_MINSIZEREL</span><span class="w"> </span><span class="nb">Release</span>
@@ -94,6 +106,10 @@
 <span class="w">  </span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set_target_properties(foo PROPERTIES MAP_IMPORTED_CONFIG_MINSIZEREL Release MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release )</span></code>：调用 `set_target_properties()` 命令，批量设置目标属性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

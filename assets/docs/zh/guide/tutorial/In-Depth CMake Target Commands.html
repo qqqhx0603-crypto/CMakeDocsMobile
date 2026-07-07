@@ -14,8 +14,8 @@
     <link rel="icon" href="../../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Step 5: In-Depth CMake Library Concepts" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
-    <link rel="prev" title="Step 3: Configuration and Cache Variables" href="Configuration&#32;and&#32;Cache&#32;Variables.html" />
+    <link rel="next" title="第 5 步：深入了解 CMake 库概念" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
+    <link rel="prev" title="第 3 步：配置与缓存变量" href="Configuration&#32;and&#32;Cache&#32;Variables.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../../version_switch.js"></script>
  
@@ -32,9 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts" accesskey="N">下一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="第 5 步：深入了解 CMake 库概念" accesskey="N">下一页</a> |</li>
         <li class="right">
-          <a href="Configuration&#32;and&#32;Cache&#32;Variables.html" title="Step 3: Configuration and Cache Variables" accesskey="P">上一页</a> |</li>
+          <a href="Configuration&#32;and&#32;Cache&#32;Variables.html" title="第 3 步：配置与缓存变量" accesskey="P">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -98,12 +98,20 @@
 <span class="nf">message(</span><span class="s">"Hello: ${HelloVar}"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(Example) set_target_properties(Example PROPERTIES Key Value Hello World ) get_target_property(KeyVar Example Key) get_target_property(HelloVar Example Hello) message(&quot;Key: ${KeyVar}&quot;) message(&quot;Hello: ${HelloVar}&quot;)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build
 <span class="go">...</span>
 <span class="go">Key: Value</span>
 <span class="go">Hello: World</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake -B build ... Key: Value Hello: World</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对 CMake 具有语义意义的目标属性完整列表记录在 <span class="target" id="index-0-manual:cmake-properties(7)"></span><a class="reference internal" href="../../manual/cmake-properties.7.html#manual:cmake-properties(7)" title="cmake-properties(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-properties(7)</span></code></a> 中，但其中大多数属性应该使用各自的专用命令来修改。例如，无需直接操作 <code class="docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code>，因为这些属性由 <span class="target" id="index-2-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 处理。</p>
 <p>相反，一些较少使用的属性只能通过这些命令访问。<span class="target" id="index-0-prop_tgt:DEPRECATION"></span><a class="reference internal" href="../../prop_tgt/DEPRECATION.html#prop_tgt:DEPRECATION" title="DEPRECATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">DEPRECATION</span></code></a> 属性（用于向目标附加弃用通知）只能通过 <span class="target" id="index-3-command:set_target_properties"></span><a class="reference internal" href="../../command/set_target_properties.html#command:set_target_properties" title="set_target_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_target_properties()</span></code></a> 设置；同样，<span class="target" id="index-0-prop_tgt:ADDITIONAL_CLEAN_FILES"></span><a class="reference internal" href="../../prop_tgt/ADDITIONAL_CLEAN_FILES.html#prop_tgt:ADDITIONAL_CLEAN_FILES" title="ADDITIONAL_CLEAN_FILES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ADDITIONAL_CLEAN_FILES</span></code></a>（用于描述由 CMake <code class="docutils literal notranslate"><span class="pre">clean</span></code> 目标删除的额外文件）以及其他此类属性也是如此。</p>
 <p><span class="target" id="index-2-command:target_precompile_headers"></span><a class="reference internal" href="../../command/target_precompile_headers.html#command:target_precompile_headers" title="target_precompile_headers"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_precompile_headers()</span></code></a> 命令接收一个头文件列表（类似于 <span class="target" id="index-2-command:target_sources"></span><a class="reference internal" href="../../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a>），并从中创建一个预编译头文件。此预编译头文件随后会被强制包含在目标的所有翻译单元中。这对于提升构建性能很有帮助。</p>
@@ -114,6 +122,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_compile_features(</span><span class="nb">MyApp</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_20</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_features(MyApp PRIVATE cxx_std_20)</span></code>：调用 `target_compile_features()` 命令，为目标声明所需语言特性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><span class="target" id="index-2-command:target_compile_features"></span><a class="reference internal" href="../../command/target_compile_features.html#command:target_compile_features" title="target_compile_features"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_features()</span></code></a> 命令将最低语言标准描述为目标属性。如果 <span class="target" id="index-1-variable:CMAKE_<LANG>_STANDARD"></span><a class="reference internal" href="../../variable/CMAKE_LANG_STANDARD.html#variable:CMAKE_<LANG>_STANDARD" title="CMAKE_<LANG>_STANDARD"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_STANDARD</span></code></a> 高于此版本，或者编译器默认已提供该语言标准，则不会采取任何行动。如果需要额外的标志来启用该标准，CMake 会自动添加它们。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -131,6 +143,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_definitions(MyLibrary PRIVATE MYLIBRARY_USE_EXPERIMENTAL_IMPLEMENTATION PUBLIC MYLIBRARY_EXCLUDE_DEPRECATED_FUNCTIONS )</span></code>：调用 `target_compile_definitions()` 命令，为目标设置编译宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>无需也不建议在使用 <span class="target" id="index-2-command:target_compile_definitions"></span><a class="reference internal" href="../../command/target_compile_definitions.html#command:target_compile_definitions" title="target_compile_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code></a> 描述的编译定义上添加 <code class="docutils literal notranslate"><span class="pre">-D</span></code> 前缀。CMake 会为当前编译器确定正确的标志。</p>
 <section id="goal">
 <h3>目标<a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#goal" title="此标题的永久链接">¶</a></h3>
@@ -165,21 +181,29 @@
 <span class="go">cmake --build build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出是否符合我们对 <code class="docutils literal notranslate"><span class="pre">std::sqrt</span></code> 的预期。</p>
 </section>
 <section id="solution">
 <h3>解决方案<a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#solution" title="此标题的永久链接">¶</a></h3>
 <p>首先，我们在顶层 CMakeLists.txt 中添加一个新选项。</p>
 <details><summary>TODO 1：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-tutorial-use-std-sqrt">
-<div class="code-block-caption"><span class="caption-text">TODO 1: CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#cmakelists-txt-tutorial-use-std-sqrt" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 1: CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#cmakelists-txt-tutorial-use-std-sqrt" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">TUTORIAL_BUILD_UTILITIES</span><span class="w"> </span><span class="s">"Build the Tutorial executable"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 <span class="nf">option(</span><span class="no">TUTORIAL_USE_STD_SQRT</span><span class="w"> </span><span class="s">"Use std::sqrt"</span><span class="w"> </span><span class="no">OFF</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(TUTORIAL_BUILD_UTILITIES &quot;Build the Tutorial executable&quot; ON) option(TUTORIAL_USE_STD_SQRT &quot;Use std::sqrt&quot; OFF)</span></code>：调用 `option()` 命令，声明一个布尔型配置选项。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>然后我们将编译特性和定义添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 中。</p>
 <details><summary>TODO 2-3: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-target-compile-features">
-<div class="code-block-caption"><span class="caption-text">TODO 2-3: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-cmakelists-txt-target-compile-features" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 2-3: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-cmakelists-txt-target-compile-features" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_compile_features(</span><span class="nb">MathFunctions</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_20</span><span class="nf">)</span>
 
 <span class="nf">if(</span><span class="no">TUTORIAL_USE_STD_SQRT</span><span class="nf">)</span>
@@ -187,25 +211,37 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_features(MathFunctions PRIVATE cxx_std_20) if(TUTORIAL_USE_STD_SQRT) target_compile_definitions(MathFunctions PRIVATE TUTORIAL_USE_STD_SQRT) endif()</span></code>：调用 `target_compile_features()` 命令，为目标声明所需语言特性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>并为 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 添加编译特性。</p>
 <details><summary>TODO 4：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorial-cmakelists-txt-target-compile-features">
-<div class="code-block-caption"><span class="caption-text">TODO 4: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-target-compile-features" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 4: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-target-compile-features" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_compile_features(</span><span class="nb">Tutorial</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">cxx_std_20</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_features(Tutorial PRIVATE cxx_std_20)</span></code>：调用 `target_compile_features()` 命令，为目标声明所需语言特性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>现在我们可以修改 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 以利用这个新定义。</p>
 <details><summary>TODO 5-6: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-cmath">
-<div class="code-block-caption"><span class="caption-text">TODO 5: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-mathfunctions-cxx-cmath" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 5: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-mathfunctions-cxx-cmath" title="跳转到此代码">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cmath&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;format&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;cmath&gt; #include &lt;format&gt; #include &lt;iostream&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-std-sqrt">
-<div class="code-block-caption"><span class="caption-text">TODO 6: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-mathfunctions-cxx-std-sqrt" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 6: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#mathfunctions-mathfunctions-cxx-std-sqrt" title="跳转到此代码">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="cp">#ifdef TUTORIAL_USE_STD_SQRT</span>
@@ -216,15 +252,23 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">double sqrt(double x) { #ifdef TUTORIAL_USE_STD_SQRT return std::sqrt(x); #else return mysqrt(x); #endif }</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>最后更新我们的 <code class="docutils literal notranslate"><span class="pre">CMakePresets.json</span></code>。我们不再需要显式设置 <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_STANDARD</span></code>，但我们要尝试使用新的编译定义。</p>
 <details><summary>TODO 7-8: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakepresets-json-std-sqrt">
-<div class="code-block-caption"><span class="caption-text">TODO 7-8: CMakePresets.json</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#cmakepresets-json-std-sqrt" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 7-8: CMakePresets.json</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#cmakepresets-json-std-sqrt" title="跳转到此代码">¶</a></div>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nt">"TUTORIAL_USE_STD_SQRT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">&quot;cacheVariables&quot;: { &quot;TUTORIAL_USE_STD_SQRT&quot;: &quot;ON&quot; }</span></code>：这一行给键 `cacheVariables` 指定对应的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details></section>
 </section>
@@ -235,6 +279,10 @@
 <span class="nf">target_link_options(</span><span class="nb">MyApp</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="p">-</span><span class="no">T</span><span class="w"> </span><span class="nb">LinksScript.ld</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_options(MyApp PRIVATE -Wall -Werror) target_link_options(MyApp PRIVATE -T LinksScript.ld)</span></code>：调用 `target_compile_options()` 命令，为目标设置编译选项。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>无条件调用 <span class="target" id="index-2-command:target_compile_options"></span><a class="reference internal" href="../../command/target_compile_options.html#command:target_compile_options" title="target_compile_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_compile_options()</span></code></a> 或 <span class="target" id="index-2-command:target_link_options"></span><a class="reference internal" href="../../command/target_link_options.html#command:target_link_options" title="target_link_options"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_options()</span></code></a> 会带来几个问题。主要问题是编译器标志是特定于所使用的编译器前端的。为了确保我们的项目支持多个编译器前端，我们必须只向编译器传递兼容的标志。</p>
 <p>我们可以通过检查 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER_FRONTEND_VARIANT"></span><a class="reference internal" href="../../variable/CMAKE_LANG_COMPILER_FRONTEND_VARIANT.html#variable:CMAKE_<LANG>_COMPILER_FRONTEND_VARIANT" title="CMAKE_<LANG>_COMPILER_FRONTEND_VARIANT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER_FRONTEND_VARIANT</span></code></a> 变量来实现这一点，该变量告诉我们编译器前端支持的标志样式。</p>
 <div class="admonition note">
@@ -273,13 +321,17 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake</span><span class="w"> </span><span class="p">--</span><span class="nb">build</span><span class="w"> </span><span class="nb">build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这应该会揭示构建中的一个简单警告。你可以去修复它。</p>
 </section>
 <section id="id6">
 <h3>解决方案<a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#id6" title="此标题的永久链接">¶</a></h3>
 <p>我们需要为 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 添加两个编译选项：一个 MSVC 风格标志和一个 GNU 风格标志。</p>
 <details><summary>TODO 9-10: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorial-cmakelists-txt-target-compile-options">
-<div class="code-block-caption"><span class="caption-text">TODO 9-10: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-target-compile-options" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 9-10: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-target-compile-options" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span>
 <span class="w">  </span><span class="nf">(</span><span class="no">CMAKE_CXX_COMPILER_ID</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"MSVC"</span><span class="nf">)</span><span class="w"> </span><span class="no">OR</span>
 <span class="w">  </span><span class="nf">(</span><span class="no">CMAKE_CXX_COMPILER_FRONTEND_VARIANT</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"MSVC"</span><span class="nf">)</span>
@@ -297,6 +349,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if( (CMAKE_CXX_COMPILER_ID STREQUAL &quot;MSVC&quot;) OR (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL &quot;MSVC&quot;) ) target_compile_options(Tutorial PRIVATE /W3) elseif( (CMAKE_CXX_COMPILER_ID STREQUAL &quot;GNU&quot;) OR (CMAKE_CXX_COMPILER_ID MATCHES &quot;Clang&quot;) ) target_compile_options(Tutorial PRIVATE -Wall) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details></section>
 </section>
@@ -313,6 +369,10 @@
 <span class="nf">target_include_directories(</span><span class="nb">MyApp</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="na">Vendor/include</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_directories(MyApp PRIVATE Vendor/lib) target_include_directories(MyApp PRIVATE Vendor/include)</span></code>：调用 `target_link_directories()` 命令，为目标配置链接目录。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这些命令使用的属性映射到 <code class="docutils literal notranslate"><span class="pre">-L</span></code> 和 <code class="docutils literal notranslate"><span class="pre">-I</span></code> 编译器标志（或编译器用于链接和包含目录的任何标志）。</p>
 <p>当然，传递链接目录并不会告诉编译器将任何东西链接到构建中。为此我们需要 <span class="target" id="index-3-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>。当 <span class="target" id="index-4-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 接收到一个不映射到目标名称的参数时，它会将该字符串直接添加到链接行中，作为要链接到构建中的库（并预置任何适当的标志，例如 <code class="docutils literal notranslate"><span class="pre">-l</span></code>）。</p>
 <section id="id7">
@@ -342,12 +402,20 @@
 <span class="go">ar rvs libVendor.a Vendor.o</span>
 </pre></div>
 </div>
-<p>同样，Windows 上 MSVC 工具链的示例命令是</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">g++ -c Vendor.cxx ar rvs libVendor.a Vendor.o</span></code>：这是命令执行后的输出结果，内容为：g++ -c Vendor.cxx ar rvs libVendor.a Vendor.o</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>同样，Windows（微软桌面系统） 上 MSVC 工具链的示例命令是</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cl -c Vendor.cxx</span>
 <span class="go">lib -out:Vendor.lib Vendor.obj</span>
 </pre></div>
 </div>
-<p>在此处，由于你直接调用了 <code class="docutils literal notranslate"><span class="pre">cl</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lib</span></code>，请确保使用与此 CMake 项目所使用的目标架构相匹配的 Visual Studio 开发人员命令提示符。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cl -c Vendor.cxx lib -out:Vendor.lib Vendor.obj</span></code>：这是命令执行后的输出结果，内容为：cl -c Vendor.cxx lib -out:Vendor.lib Vendor.obj</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>在此处，由于你直接调用了 <code class="docutils literal notranslate"><span class="pre">cl</span></code> 和 <code class="docutils literal notranslate"><span class="pre">lib</span></code>，请确保使用与此 CMake 项目所使用的目标架构相匹配的 Visual Studio（集成开发环境） 开发人员命令提示符。</p>
 <p>然后完成 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">11</span></code> 到 <code class="docutils literal notranslate"><span class="pre">TODO</span> <span class="pre">14</span></code>。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -361,13 +429,17 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>运行 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 现在应该会输出一条关于结果对供应商的可接受性的消息。</p>
 </section>
 <section id="id12">
 <h3>解决方案<a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#id12" title="链接到此标题">¶</a></h3>
 <p>我们需要使用目标链接和包含命令，将归档文件及其头文件描述为 <code class="docutils literal notranslate"><span class="pre">VendorLib</span></code> 的 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 要求。</p>
 <details><summary>TODO 11-13: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="vendor-cmakelists-txt">
-<div class="code-block-caption"><span class="caption-text">TODO 11-13: Vendor/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#vendor-cmakelists-txt" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 11-13: Vendor/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#vendor-cmakelists-txt" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nb">VendorLib</span>
 <span class="w">  </span><span class="no">INTERFACE</span>
 <span class="w">    </span><span class="nb">include</span>
@@ -384,10 +456,14 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_include_directories(VendorLib INTERFACE include ) target_link_directories(VendorLib INTERFACE lib ) target_link_libraries(VendorLib INTERFACE Vendor )</span></code>：调用 `target_include_directories()` 命令，为目标配置头文件搜索目录。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>然后我们可以将 <code class="docutils literal notranslate"><span class="pre">VendorLib</span></code> 添加到 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的链接库中。</p>
 <details><summary>TODO 14: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorial-cmakelists-txt-vendorlib">
-<div class="code-block-caption"><span class="caption-text">TODO 14: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-vendorlib" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 14: Tutorial/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html#tutorial-cmakelists-txt-vendorlib" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">Tutorial</span>
 <span class="w">  </span><span class="no">PRIVATE</span>
 <span class="w">    </span><span class="nb">MathFunctions</span>
@@ -395,6 +471,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(Tutorial PRIVATE MathFunctions VendorLib )</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details></section>
 </section>
@@ -478,9 +558,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts">下一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="第 5 步：深入了解 CMake 库概念">下一页</a> |</li>
         <li class="right">
-          <a href="Configuration&#32;and&#32;Cache&#32;Variables.html" title="Step 3: Configuration and Cache Variables">上一页</a> |</li>
+          <a href="Configuration&#32;and&#32;Cache&#32;Variables.html" title="第 3 步：配置与缓存变量">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>

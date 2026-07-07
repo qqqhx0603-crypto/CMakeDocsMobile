@@ -85,9 +85,13 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p><span class="target" id="index-0-guide:Using Dependencies Guide"></span><a class="reference internal" href="../guide/using-dependencies/index.html#guide:Using Dependencies Guide" title="Using Dependencies Guide"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">使用依赖指南</span></code></a> 对此通用主题进行了高层次的介绍。它更广泛地概述了 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块在宏观架构中的定位，包括其与 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的关系。建议在阅读下方的详细信息之前先阅读该指南。</p>
+<p><span class="target" id="index-0-guide:使用依赖项指南"></span><a class="reference internal" href="../guide/using-dependencies/index.html#guide:使用依赖项指南" title="使用依赖项指南"><code class="xref cmake cmake-guide docutils literal notranslate"><span class="pre">使用依赖指南</span></code></a> 对此通用主题进行了高层次的介绍。它更广泛地概述了 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块在宏观架构中的定位，包括其与 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的关系。建议在阅读下方的详细信息之前先阅读该指南。</p>
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="FetchContent.html#id6" role="doc-backlink">概述</a><a class="headerlink" href="FetchContent.html#overview" title="链接至此标题">¶</a></h2>
@@ -108,6 +112,10 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">myCompanyIcons</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 ) FetchContent_Declare( myCompanyIcons URL https://intranet.mycompany.com/assets/iconset_1.12.tar.gz URL_HASH MD5=5588a7b18261c20068beabfb4f530b87 ) FetchContent_MakeAvailable(googletest myCompanyIcons)</span></code>：调用 `FetchContent_Declare()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><span class="target" id="index-0-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 命令确保指定的依赖项已被填充（通过之前的调用，或者由它自己执行填充）。执行填充时，如果可能，它还会将它们添加到主构建中，以便主构建可以使用已填充项目的目标等。有关如何执行这些步骤的详细信息，请参阅该命令的文档。</p>
 <p>使用分层项目结构时，层次结构中更高级别的项目可以覆盖在项目层次结构中任何较低级别处指定的已声明内容细节。对于给定的依赖项，最先声明的细节具有优先权，无论该声明发生在项目层次结构中的何处。同样，第一个尝试填充依赖项的调用会“获胜”，后续的填充将复用第一次的结果，而不是再次重复填充过程。请参阅 <a class="reference internal" href="FetchContent.html#fetch-content-examples"><span class="std std-ref">示例</span></a>，其中演示了此场景。</p>
 <p><code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块还支持在单次调用中定义和填充内容，而不检查该内容是否已在其他地方被填充。这不应在项目中执行，但对于在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">CMake 脚本模式</span></a> 下填充内容可能是合适的。有关详细信息，请参阅 <span class="target" id="index-0-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a>。</p>
@@ -127,6 +135,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Declare( &lt;name&gt; &lt;contentOptions&gt;... [EXCLUDE_FROM_ALL] [SYSTEM] [OVERRIDE_FIND_PACKAGE | FIND_PACKAGE_ARGS args...] )</span></code>：调用 `FetchContent_Declare()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code> 函数记录描述如何填充指定内容的选项。如果此类细节已在本项目的较早位置记录（无论项目层次结构中的位置如何），则此调用以及后续对相同 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 内容的所有调用都将被忽略。这种“先记录者获胜”的方法允许分层项目由父项目覆盖子项目的内容细节。</p>
 <p>内容 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 可以是任何不带空格的字符串，但最佳实践是仅使用字母、数字和下划线。名称将不区分大小写，且应能直观反映其代表的内容。它通常是子项目的名称，或者是传递给其顶级 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令的值（如果是 CMake 项目）。对于知名的公共项目，名称通常应为项目的官方名称。选择一个不寻常的名称会降低其他需要相同内容的项目使用相同名称的可能性，从而导致内容被重复填充多次。</p>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;contentOptions&gt;</span></code> 可以是 <span class="target" id="index-1-command:externalproject_add"></span><a class="reference internal" href="ExternalProject.html#command:externalproject_add" title="externalproject_add"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">ExternalProject_Add()</span></code></a> 命令所理解的任何下载、更新或补丁选项。配置、构建、安装和测试步骤被显式禁用，因此与这些步骤相关的选项被禁止，如果提供将被丢弃。<code class="docutils literal notranslate"><span class="pre">SOURCE_SUBDIR</span></code> 选项是一个例外，有关它如何影响行为的详细信息，请参阅 <span class="target" id="index-1-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
@@ -153,6 +165,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 ) FetchContent_Declare( myCompanyIcons URL https://intranet.mycompany.com/assets/iconset_1.12.tar.gz URL_HASH MD5=5588a7b18261c20068beabfb4f530b87 ) FetchContent_Declare( myCompanyCertificates SVN_REPOSITORY svn+ssh://svn.mycompany.com/srv/svn/trunk/certs SVN_REVISION -r12345 )</span></code>：调用 `FetchContent_Declare()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果内容是从远程位置获取且您无法控制该服务器，建议使用 <code class="docutils literal notranslate"><span class="pre">GIT_TAG</span></code> 的哈希值，而不是分支名称或标签名称。提交哈希更安全，并有助于确认下载的内容正是您所预期的。</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">版本 3.14 中更改：</span>用于下载、更新或补丁步骤的命令可以访问终端。这在需要密码提示或实时显示命令进度等场景下可能是必要的。</p>
@@ -199,6 +215,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nv">&lt;name1&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;name2&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(&lt;name1&gt; [&lt;name2&gt;...])</span></code>：调用 `FetchContent_MakeAvailable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令确保每个命名的依赖项在返回时都已对项目可用。必须已为每个依赖项调用了 <span class="target" id="index-0-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a>，并且第一个此类调用将控制该依赖项如何变得可用，如下所述。</p>
 <p>如果未设置 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code></p>
 <ul>
@@ -243,12 +263,20 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">other</span><span class="nf">)</span><span class="w">  </span><span class="c"># Would use details declared by uses_other</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># WRONG: Should declare all details first FetchContent_Declare(uses_other ...) FetchContent_MakeAvailable(uses_other) FetchContent_Declare(other ...) # Will be ignored, uses_other beat us to it FetchContent_MakeAvailable(other) # Would use details declared by uses_other</span></code>：这是注释，用来说明：WRONG: Should declare all details first FetchContent_Declare(uses_other ...) FetchContent_MakeAvailable(uses_other) FetchContent_Declare(other ...) # Will be ignored, uses_other beat us to it FetchContent_MakeAvailable(other) # Would use details declared by uses_other。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># CORRECT: All details declared first, so they will take priority</span>
 <span class="nf">FetchContent_Declare(</span><span class="nb">uses_other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span><span class="nb">other</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">uses_other</span><span class="w"> </span><span class="nb">other</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># CORRECT: All details declared first, so they will take priority FetchContent_Declare(uses_other ...) FetchContent_Declare(other ...) FetchContent_MakeAvailable(uses_other other)</span></code>：这是注释，用来说明：CORRECT: All details declared first, so they will take priority FetchContent_Declare(uses_other ...) FetchContent_Declare(other ...) FetchContent_MakeAvailable(uses_other other)。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>请注意，<span class="target" id="index-0-variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_INTERFACE_HEADER_SETS.html#variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS" title="CMAKE_VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_PRIVATE_HEADER_SETS.html#variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS" title="CMAKE_VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_PRIVATE_HEADER_SETS</span></code></a> 在进入 <code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code> 时被明确设置为 false，并在命令返回前恢复为原始值。开发人员通常只想验证主项目的头文件集，而不是来自任何依赖项的头文件集。对 <span class="target" id="index-1-variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_INTERFACE_HEADER_SETS.html#variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS" title="CMAKE_VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-1-variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../variable/CMAKE_VERIFY_PRIVATE_HEADER_SETS.html#variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS" title="CMAKE_VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_PRIVATE_HEADER_SETS</span></code></a> 变量的这种局部操作提供了直观的行为。您可以使用诸如 <span class="target" id="index-0-variable:CMAKE_PROJECT_INCLUDE"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_INCLUDE.html#variable:CMAKE_PROJECT_INCLUDE" title="CMAKE_PROJECT_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_INCLUDE</span></code></a> 或 <span class="target" id="index-0-variable:CMAKE_PROJECT_<PROJECT-NAME>_INCLUDE"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_PROJECT-NAME_INCLUDE.html#variable:CMAKE_PROJECT_PROJECT-NAME_INCLUDE" title="CMAKE_PROJECT_PROJECT-NAME_INCLUDE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_&lt;PROJECT-NAME&gt;_INCLUDE</span></code></a> 的变量来重新打开对所有或部分依赖项的验证。您还可以设置单个目标的 <span class="target" id="index-0-prop_tgt:VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="../prop_tgt/VERIFY_INTERFACE_HEADER_SETS.html#prop_tgt:VERIFY_INTERFACE_HEADER_SETS" title="VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERIFY_INTERFACE_HEADER_SETS</span></code></a> 和 <span class="target" id="index-0-prop_tgt:VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../prop_tgt/VERIFY_PRIVATE_HEADER_SETS.html#prop_tgt:VERIFY_PRIVATE_HEADER_SETS" title="VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERIFY_PRIVATE_HEADER_SETS</span></code></a> 属性。</p>
 </dd></dl>
 
@@ -266,6 +294,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Populate( &lt;name&gt; [QUIET] [SUBBUILD_DIR &lt;subBuildDir&gt;] [SOURCE_DIR &lt;srcDir&gt;] [BINARY_DIR &lt;binDir&gt;] ... )</span></code>：调用 `FetchContent_Populate()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在 <cite>&lt;name&gt;</cite> 之后必须指定至少一个选项，否则该调用的解释方式不同（见<a class="reference internal" href="FetchContent.html#fetchcontent-populate-depname"><span class="std std-ref">下文</span></a>）。 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 支持的选项与 <span class="target" id="index-8-command:fetchcontent_declare"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 相同，但有几个例外。以下选项与使用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 填充内容无关，因此不受支持。</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code></p></li>
@@ -317,6 +349,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_Populate(</span><span class="nv">&lt;name&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_Populate(&lt;name&gt;)</span></code>：调用 `FetchContent_Populate()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionchanged">
 <p><span class="versionmodified changed">版本 3.30 中更改：</span>此形式已弃用。策略 <span class="target" id="index-0-policy:CMP0169"></span><a class="reference internal" href="../policy/CMP0169.html#policy:CMP0169" title="CMP0169"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0169</span></code></a> 为仍然需要使用此形式的项目提供向后兼容性，但应更新项目以改用 <span class="target" id="index-9-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
 </div>
@@ -345,6 +381,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_GetProperties( &lt;name&gt; [SOURCE_DIR &lt;srcDirVar&gt;] [BINARY_DIR &lt;binDirVar&gt;] [POPULATED &lt;doneVar&gt;] )</span></code>：调用 `FetchContent_GetProperties()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code>、<code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">POPULATED</span></code> 选项可用于指定应检索哪些属性。每个选项都接受一个值，该值是要存储该属性的变量的名称。不过，大多数时候只给出了 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>，在这种情况下，调用将设置与对 <span class="target" id="index-11-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(name)</span></code></a> 或 <span class="target" id="index-2-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate(name)</span></code></a> 的调用相同的变量。请注意，如果调用由 <a class="reference internal" href="../command/cmake_language.html#dependency-providers"><span class="std std-ref">依赖提供程序</span></a> 满足，则 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 的值可能为空。</p>
 <p>使用 <span class="target" id="index-12-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 时，几乎不需要此命令。它更常用于实现 <span class="target" id="index-3-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a> 的已弃用模式，这确保了无论填充是否已经在项目中其他地方执行，相关变量都将始终被定义。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># WARNING: This pattern is deprecated, don't use it!</span>
@@ -363,6 +403,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># WARNING: This pattern is deprecated, don&#x27;t use it! # # Check if population has already been performed FetchContent_GetProperties(depname) if(NOT depname_POPULATED) # Fetch the content using previously declared details FetchContent_Populate(depname) # Set custom variables, policies, etc. # ... # Bring the populated content into the build add_subdirectory(${depname_SOURCE_DIR} ${depname_BINARY_DIR}) endif()</span></code>：这是注释，用来说明：WARNING: This pattern is deprecated, don&#x27;t use it! # # Check if population has already been performed FetchContent_GetProperties(depname) if(NOT depname_POPULATED) # Fetch the content using previously declared details FetchContent_Populate(depname) # Set custom variables, policies, etc. # ... # Bring the populated content into the build add_subdirectory(${depname_SOURCE_DIR} ${depname_BINARY_DIR}) endif()。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </dd></dl>
 
 <dl class="cmake command">
@@ -382,6 +426,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_SetPopulated( &lt;name&gt; [SOURCE_DIR &lt;srcDir&gt;] [BINARY_DIR &lt;binDir&gt;] )</span></code>：调用 `FetchContent_SetPopulated()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果提供程序命令满足了 <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_MAKEAVAILABLE_SERIAL</span></code> 请求，它必须在返回前调用此函数。<code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code> 参数可用于指定 <span class="target" id="index-3-command:fetchcontent_getproperties"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_getproperties" title="fetchcontent_getproperties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code></a> 应为其相应参数返回的值。仅在它们具有与内置 <span class="target" id="index-13-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 实现填充相同含义时，才提供 <code class="docutils literal notranslate"><span class="pre">SOURCE_DIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BINARY_DIR</span></code>。</p>
 </dd></dl>
 
@@ -396,7 +444,7 @@
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:FETCHCONTENT_BASE_DIR">
 <span class="sig-name descname"><span class="pre">FETCHCONTENT_BASE_DIR</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_BASE_DIR" title="链接至此定义">¶</a></dt>
-<dd><p>在大多数情况下，保存的细节不会指定任何有关用于内部子构建、最终源和构建区域的目录的选项。最好将这些决定留给 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块来代表项目处理。<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_BASE_DIR</span></code> 缓存变量控制收集所有内容填充目录的点，但在大多数情况下，开发人员不需要更改此项。默认位置是 <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/_deps</span></code>，但如果开发人员更改此值，他们应设法保持路径较短，并位于构建树的顶级下方，以避免在 Windows 上遇到路径长度问题。</p>
+<dd><p>在大多数情况下，保存的细节不会指定任何有关用于内部子构建、最终源和构建区域的目录的选项。最好将这些决定留给 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 模块来代表项目处理。<code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_BASE_DIR</span></code> 缓存变量控制收集所有内容填充目录的点，但在大多数情况下，开发人员不需要更改此项。默认位置是 <code class="docutils literal notranslate"><span class="pre">${CMAKE_BINARY_DIR}/_deps</span></code>，但如果开发人员更改此值，他们应设法保持路径较短，并位于构建树的顶级下方，以避免在 Windows（微软桌面系统） 上遇到路径长度问题。</p>
 </dd></dl>
 
 <dl class="cmake variable">
@@ -429,7 +477,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE">
-<span class="sig-name descname"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="跳转到此定义">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.24 版本中添加。</span></p>
 </div>
@@ -449,13 +497,13 @@
 <p>除上述内容外，每个内容名称还定义了以下变量：</p>
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;">
-<span class="sig-name descname"><span class="pre">FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_SOURCE_DIR_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_SOURCE_DIR_<uppercaseName>" title="跳转到此定义">¶</a></dt>
 <dd><p>如果设置了此项，则不会为指定的内容执行下载或更新步骤，并且返回给调用者的 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_SOURCE_DIR</span></code> 变量将指向此位置。这为开发人员提供了一种单独检出内容的方法，他们可以自由修改这些内容而不会受到构建过程的干扰。构建过程直接使用现有的源代码，但它仍然定义了 <code class="docutils literal notranslate"><span class="pre">&lt;lowercaseName&gt;_BINARY_DIR</span></code> 以指向其自身的构建区域。强烈建议开发人员使用此机制，而不是编辑默认位置中填充的源代码，因为当项目更改内容填充细节时，默认位置中源代码的更改可能会丢失。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:FETCHCONTENT_UPDATES_DISCONNECTED_&lt;uppercaseName&gt;">
-<span class="sig-name descname"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED_<uppercaseName>" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED_&lt;uppercaseName&gt;</span></span><a class="headerlink" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED_<uppercaseName>" title="跳转到此定义">¶</a></dt>
 <dd><p>这是 <span class="target" id="index-1-variable:FETCHCONTENT_UPDATES_DISCONNECTED"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_UPDATES_DISCONNECTED" title="FETCHCONTENT_UPDATES_DISCONNECTED"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_UPDATES_DISCONNECTED</span></code></a> 的特定于内容的版本。如果全局选项或此选项为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>，则 git 和 hg 方法的更新将不会为指定内容联系任何远程服务器。它们将仅使用本地已有的信息。为单个内容禁用更新对于那些细节很少更改的内容非常有用，同时仍然保持其他经常更改的内容处于启用更新的状态。</p>
 </dd></dl>
 
@@ -482,6 +530,10 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">Catch2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 ) FetchContent_Declare( Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG 605a34765aa5d5ecbf476b4598a862ada971b0cc # v3.0.1 ) # After the following call, the CMake targets defined by googletest and # Catch2 will be available to the rest of the build FetchContent_MakeAvailable(googletest Catch2)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="integrating-with-find-package">
 <span id="fetchcontent-find-package-integration-examples"></span><h3><a class="toc-backref" href="FetchContent.html#id11" role="doc-backlink">与 find_package() 集成</a><a class="headerlink" href="FetchContent.html#integrating-with-find-package" title="链接到此标题">¶</a></h3>
@@ -504,6 +556,10 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">Catch2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 FIND_PACKAGE_ARGS NAMES GTest ) FetchContent_Declare( Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG 605a34765aa5d5ecbf476b4598a862ada971b0cc # v3.0.1 FIND_PACKAGE_ARGS ) # This will try calling find_package() first for both dependencies FetchContent_MakeAvailable(googletest Catch2)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于 <code class="docutils literal notranslate"><span class="pre">Catch2</span></code>，不需要对 <span class="target" id="index-20-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 进行额外参数设置，因此在 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code> 关键字之后不提供额外参数。对于 <code class="docutils literal notranslate"><span class="pre">googletest</span></code>，其包通常称为 <code class="docutils literal notranslate"><span class="pre">GTest</span></code>，因此添加了参数以支持按该名称查找它。</p>
 <p>如果用户想要禁止 <span class="target" id="index-21-command:fetchcontent_makeavailable"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a> 为任何依赖项调用 <span class="target" id="index-21-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>（即使其在声明的详细信息中提供了 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code>），他们可以将 <span class="target" id="index-6-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 设置为 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code>。</p>
 <p>如果项目想要表明这两个依赖项应该从源代码下载并构建，并且 <span class="target" id="index-22-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用应该重定向以使用构建好的依赖项，则在声明内容细节时应使用 <code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 选项。</p>
@@ -526,6 +582,10 @@
 <span class="nf">find_package(</span><span class="nb">Catch2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 OVERRIDE_FIND_PACKAGE ) FetchContent_Declare( Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG 605a34765aa5d5ecbf476b4598a862ada971b0cc # v3.0.1 OVERRIDE_FIND_PACKAGE ) # The following will automatically forward through to FetchContent_MakeAvailable() find_package(googletest) find_package(Catch2)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>CMake 提供了 FindGTest 模块，它定义了一些旧项目可能会使用的变量，而不是链接到导入的目标。为了支持这些情况，我们可以提供一个额外的文件。秉承 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>“先定义者胜”的理念，我们仅在尚未有其他机制写入该文件时才写入它。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="nf">)</span>
 
@@ -546,6 +606,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(googletest) if(NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletest-extra.cmake AND NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletestExtra.cmake) file(WRITE ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletest-extra.cmake [=[ if(&quot;${GTEST_LIBRARIES}&quot; STREQUAL &quot;&quot; AND TARGET GTest::gtest) set(GTEST_LIBRARIES GTest::gtest) endif() if(&quot;${GTEST_MAIN_LIBRARIES}&quot; STREQUAL &quot;&quot; AND TARGET GTest::gtest_main) set(GTEST_MAIN_LIBRARIES GTest::gtest_main) endif() if(&quot;${GTEST_BOTH_LIBRARIES}&quot; STREQUAL &quot;&quot;) set(GTEST_BOTH_LIBRARIES ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}) endif() ]=]) endif()</span></code>：调用 `FetchContent_MakeAvailable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>项目很可能也会使用 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">find_package(googletest)</span></code>，但可以利用 <span class="target" id="index-4-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 区域将后者作为前者的依赖项引入。这很可能足以满足典型的 <code class="docutils literal notranslate"><span class="pre">find_package(GTest)</span></code> 调用。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="nf">)</span>
 
@@ -570,6 +634,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable(googletest) if(NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/gtest-config.cmake AND NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/GTestConfig.cmake) file(WRITE ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/gtest-config.cmake [=[ include(CMakeFindDependencyMacro) find_dependency(googletest) ]=]) endif() if(NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/gtest-config-version.cmake AND NOT EXISTS ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/GTestConfigVersion.cmake) file(WRITE ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/gtest-config-version.cmake [=[ include(${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletest-config-version.cmake OPTIONAL) if(NOT PACKAGE_VERSION_COMPATIBLE) include(${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/googletestConfigVersion.cmake OPTIONAL) endif() ]=]) endif()</span></code>：调用 `FetchContent_MakeAvailable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="overriding-where-to-find-cmakelists-txt">
 <h3><a class="toc-backref" href="FetchContent.html#id12" role="doc-backlink">覆盖查找 CMakeLists.txt 的位置</a><a class="headerlink" href="FetchContent.html#overriding-where-to-find-cmakelists-txt" title="链接到此标题">¶</a></h3>
@@ -585,12 +653,16 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">protobuf</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( protobuf GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git GIT_TAG ae50d9b9902526efd6c7a1907d09739f959c6297 # v3.15.0 SOURCE_SUBDIR cmake ) set(protobuf_BUILD_TESTS OFF CACHE INTERNAL &quot;&quot;) FetchContent_MakeAvailable(protobuf)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="complex-dependency-hierarchies">
 <h3><a class="toc-backref" href="FetchContent.html#id13" role="doc-backlink">复杂的依赖层级</a><a class="headerlink" href="FetchContent.html#complex-dependency-hierarchies" title="链接到此标题">¶</a></h3>
 <p>在更复杂的项目层级中，依赖关系可能更复杂。考虑一个层级，其中 <code class="docutils literal notranslate"><span class="pre">projA</span></code> 是顶层项目，它直接依赖于项目 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code>。 <code class="docutils literal notranslate"><span class="pre">projB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">projC</span></code> 都可以独立构建，并且它们也都依赖于另一个项目 <code class="docutils literal notranslate"><span class="pre">projD</span></code>。<code class="docutils literal notranslate"><span class="pre">projB</span></code> 还额外依赖于 <code class="docutils literal notranslate"><span class="pre">projE</span></code>。此示例假定所有五个项目都可在公司 git 服务器上获取。每个项目的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 可能包含如下部分：</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text"><em>projA</em></span><a class="headerlink" href="FetchContent.html#id1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><em>projA</em></span><a class="headerlink" href="FetchContent.html#id1" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">projB</span>
@@ -617,9 +689,13 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="w"> </span><span class="nb">projB</span><span class="w"> </span><span class="nb">projC</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( projB GIT_REPOSITORY git@mycompany.com:git/projB.git GIT_TAG 4a89dc7e24ff212a7b5167bef7ab079d ) FetchContent_Declare( projC GIT_REPOSITORY git@mycompany.com:git/projC.git GIT_TAG 4ad4016bd1d8d5412d135cf8ceea1bb9 ) FetchContent_Declare( projD GIT_REPOSITORY git@mycompany.com:git/projD.git GIT_TAG origin/integrationBranch ) FetchContent_Declare( projE GIT_REPOSITORY git@mycompany.com:git/projE.git GIT_TAG v2.3-rc1 ) # Order is important, see notes in the discussion further below FetchContent_MakeAvailable(projD projB projC)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><em>projB</em></span><a class="headerlink" href="FetchContent.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><em>projB</em></span><a class="headerlink" href="FetchContent.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">projD</span>
@@ -635,9 +711,13 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="w"> </span><span class="nb">projE</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( projD GIT_REPOSITORY git@mycompany.com:git/projD.git GIT_TAG 20b415f9034bbd2a2e8216e9a5c9e632 ) FetchContent_Declare( projE GIT_REPOSITORY git@mycompany.com:git/projE.git GIT_TAG 68e20f674a48be38d60e129f600faf7d ) FetchContent_MakeAvailable(projD projE)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text"><em>projC</em></span><a class="headerlink" href="FetchContent.html#id3" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><em>projC</em></span><a class="headerlink" href="FetchContent.html#id3" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Declare(</span>
 <span class="w">  </span><span class="nb">projD</span>
@@ -648,6 +728,10 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">projD</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( projD GIT_REPOSITORY git@mycompany.com:git/projD.git GIT_TAG 7d9a17ad2c962aa13e2fbb8043fb6b8a ) FetchContent_MakeAvailable(projD)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>上述内容中应注意以下几个关键点：</p>
 <ul class="simple">
@@ -671,17 +755,25 @@
 <span class="nf">project(</span><span class="nb">CrossCompileExample</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.14) include(FetchContent) FetchContent_Declare( mycom_toolchains URL https://intranet.mycompany.com//toolchains_1.3.2.tar.gz ) FetchContent_MakeAvailable(mycom_toolchains) project(CrossCompileExample)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>项目可以配置为使用下载的工具链之一，如下所示：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>_deps/mycom_toolchains-src/toolchain_arm.cmake<span class="w"> </span>/path/to/src
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>_deps/mycom_toolchains-src/toolchain_arm.cmake<span class="w"> </span>/path/to/src
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -DCMAKE_TOOLCHAIN_FILE=_deps/mycom_toolchains-src/toolchain_arm.cmake /path/to/src</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当 CMake 处理 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件时，它会将 tarball 下载并解压到相对于构建目录的 <code class="docutils literal notranslate"><span class="pre">_deps/mycompany_toolchains-src</span></code>。在执行到 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令之前，不会使用 <span class="target" id="index-0-variable:CMAKE_TOOLCHAIN_FILE"></span><a class="reference internal" href="../variable/CMAKE_TOOLCHAIN_FILE.html#variable:CMAKE_TOOLCHAIN_FILE" title="CMAKE_TOOLCHAIN_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code></a> 变量，此时 CMake 会相对于构建目录查找命名的工具链文件。因为 tarball 到那时已经下载并解压完毕，即使是第一次在构建目录中运行 <strong class="program">cmake</strong>，工具链文件也已经到位。</p>
 </section>
 <section id="populating-content-in-cmake-script-mode">
 <h3><a class="toc-backref" href="FetchContent.html#id15" role="doc-backlink">在 CMake 脚本模式下填充内容</a><a class="headerlink" href="FetchContent.html#populating-content-in-cmake-script-mode" title="链接到此标题">¶</a></h3>
 <p>最后一个示例演示了如何使用 CMake 的 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">脚本模式</span></a> 下载并解压固件 tarball。对 <span class="target" id="index-4-command:fetchcontent_populate"></span><a class="reference internal" href="FetchContent.html#command:fetchcontent_populate" title="fetchcontent_populate"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code></a> 的调用指定了所有内容详细信息，解压后的固件将放置在当前工作目录下的 <code class="docutils literal notranslate"><span class="pre">firmware</span></code> 目录中。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text"><code class="file docutils literal notranslate"><span class="pre">getFirmware.cmake</span></code></span><a class="headerlink" href="FetchContent.html#id4" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="file docutils literal notranslate"><span class="pre">getFirmware.cmake</span></code></span><a class="headerlink" href="FetchContent.html#id4" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># NOTE: Intended to be run in script mode with cmake -P</span>
 <span class="nf">include(</span><span class="nb">FetchContent</span><span class="nf">)</span>
 <span class="nf">FetchContent_Populate(</span>
@@ -692,6 +784,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># NOTE: Intended to be run in script mode with cmake -P include(FetchContent) FetchContent_Populate( firmware URL https://mycompany.com/assets/firmware-1.23-arm.tar.gz URL_HASH MD5=68247684da89b608d466253762b0ff11 SOURCE_DIR firmware )</span></code>：这是注释，用来说明：NOTE: Intended to be run in script mode with cmake -P include(FetchContent) FetchContent_Populate( firmware URL https://mycompany.com/assets/firmware-1.23-arm.tar.gz URL_HASH MD5=68247684da89b608d466253762b0ff11 SOURCE_DIR firmware )。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>

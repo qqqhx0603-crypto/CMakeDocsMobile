@@ -67,6 +67,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_test(NAME mytest COMMAND ${CMAKE_COMMAND} -E echo &quot;Skipped this test&quot;) set_property(TEST mytest PROPERTY SKIP_REGULAR_EXPRESSION &quot;[^a-z]Skip&quot; &quot;SKIP&quot; &quot;Skipped&quot; )</span></code>：调用 `add_test()` 命令，登记一个测试用例。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">SKIP_REGULAR_EXPRESSION</span></code> 期望一个正则表达式列表。</p>
 <p>要运行可能存在系统级错误的测试，但如果 <code class="docutils literal notranslate"><span class="pre">SKIP_REGULAR_EXPRESSION</span></code> 匹配则仍然跳过，请使用 CMake 命令来包装可执行文件的运行。 请注意，这将阻止自动处理 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 和 <span class="target" id="index-0-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 目标属性。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.c</span><span class="nf">)</span>
@@ -76,11 +80,19 @@
 <span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">sigabrt</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">SKIP_REGULAR_EXPRESSION</span><span class="w"> </span><span class="s">"SIGABRT;[aA]bort"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(main main.c) add_test(NAME sigabrt COMMAND ${CMAKE_COMMAND} -E env $&lt;TARGET_FILE:main&gt;) set_property(TEST sigabrt PROPERTY SKIP_REGULAR_EXPRESSION &quot;SIGABRT;[aA]bort&quot;)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span>
 
 <span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span><span class="w"> </span><span class="n">raise</span><span class="p">(</span><span class="n">SIGABRT</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;signal.h&gt; int main(void){ raise(SIGABRT); return 0; }</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>另请参阅 <span class="target" id="index-0-prop_test:SKIP_RETURN_CODE"></span><a class="reference internal" href="SKIP_RETURN_CODE.html#prop_test:SKIP_RETURN_CODE" title="SKIP_RETURN_CODE"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">SKIP_RETURN_CODE</span></code></a>、<span class="target" id="index-0-prop_test:PASS_REGULAR_EXPRESSION"></span><a class="reference internal" href="PASS_REGULAR_EXPRESSION.html#prop_test:PASS_REGULAR_EXPRESSION" title="PASS_REGULAR_EXPRESSION"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">PASS_REGULAR_EXPRESSION</span></code></a> 和 <span class="target" id="index-0-prop_test:FAIL_REGULAR_EXPRESSION"></span><a class="reference internal" href="FAIL_REGULAR_EXPRESSION.html#prop_test:FAIL_REGULAR_EXPRESSION" title="FAIL_REGULAR_EXPRESSION"><code class="xref cmake cmake-prop_test docutils literal notranslate"><span class="pre">FAIL_REGULAR_EXPRESSION</span></code></a> 测试属性。</p>
 </section>
 

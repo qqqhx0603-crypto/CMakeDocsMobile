@@ -59,11 +59,15 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenAL</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenAL [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>OpenAL 是一个跨平台的 3D 音频 API，旨在高效渲染多声道三维定位音频。它常用于游戏和多媒体应用程序，以提供沉浸式和空间化的声音效果。</p>
-<p>使用此模块的项目应使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;al.h&gt;</span></code> 来包含 OpenAL 头文件，而<strong>不是</strong> <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;AL/al.h&gt;</span></code>。原因是后者不具备可移植性。例如，Windows/Creative Labs 默认不会将 OpenAL 头文件放在 <code class="docutils literal notranslate"><span class="pre">AL/</span></code> 目录下，而 macOS 使用的是 <code class="docutils literal notranslate"><span class="pre">&lt;OpenAL/al.h&gt;</span></code> 这种约定。</p>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindOpenAL.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<p>使用此模块的项目应使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;al.h&gt;</span></code> 来包含 OpenAL 头文件，而<strong>不是</strong> <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;AL/al.h&gt;</span></code>。原因是后者不具备可移植性。例如，Windows（微软桌面系统）/Creative Labs 默认不会将 OpenAL 头文件放在 <code class="docutils literal notranslate"><span class="pre">AL/</span></code> 目录下，而 macOS（苹果桌面系统） 使用的是 <code class="docutils literal notranslate"><span class="pre">&lt;OpenAL/al.h&gt;</span></code> 这种约定。</p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindOpenAL.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">OpenAL::OpenAL</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
@@ -100,7 +104,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">OPENALDIR</span></code></dt><dd><p>环境变量，可用于设置 OpenAL 的安装前缀，以便在非标准位置查找库。</p>
 <p>OpenAL 将按以下顺序搜索：</p>
 <ol class="arabic simple">
-<li><p>在 macOS 上，默认首先搜索系统框架：<code class="docutils literal notranslate"><span class="pre">/System/Library/Frameworks</span></code>，其优先级可以通过设置 <span class="target" id="index-0-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 变量来更改。</p></li>
+<li><p>在 macOS（苹果桌面系统） 上，默认首先搜索系统框架：<code class="docutils literal notranslate"><span class="pre">/System/Library/Frameworks</span></code>，其优先级可以通过设置 <span class="target" id="index-0-variable:CMAKE_FIND_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FIND_FRAMEWORK.html#variable:CMAKE_FIND_FRAMEWORK" title="CMAKE_FIND_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_FRAMEWORK</span></code></a> 变量来更改。</p></li>
 <li><p>环境变量 <code class="docutils literal notranslate"><span class="pre">ENV{OPENALDIR}</span></code>。</p></li>
 <li><p>系统路径。</p></li>
 <li><p>用户编译的框架：<code class="docutils literal notranslate"><span class="pre">~/Library/Frameworks</span></code>。</p></li>
@@ -128,6 +132,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">OpenAL</span><span class="o">::</span><span class="nb">OpenAL</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenAL) target_link_libraries(project_target PRIVATE OpenAL::OpenAL)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 
@@ -142,7 +150,7 @@
     <h3>目录</h3>
     <ul>
 <li><a class="reference internal" href="FindOpenAL.html#">FindOpenAL</a><ul>
-<li><a class="reference internal" href="FindOpenAL.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindOpenAL.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindOpenAL.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindOpenAL.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindOpenAL.html#hints">提示</a></li>

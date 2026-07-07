@@ -63,6 +63,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">KDE4</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此模块是以下上游 KDE 4 模块的包装器</p>
 <p><code class="docutils literal notranslate"><span class="pre">FindKDE4Internal.cmake</span></code></p>
 <blockquote>
@@ -79,6 +83,10 @@
 <span class="nf">include(</span><span class="nb">KDE4Defaults</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4) include(KDE4Defaults)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </dd>
 </dl>
 <p>有关用法详情，请参考上游 KDE 4 文档。例如，在 <code class="docutils literal notranslate"><span class="pre">FindKDE4Internal</span></code> 模块的顶部，提供了这些模块所包含的所有变量和命令的完整文档。</p>
@@ -125,6 +133,10 @@
 <span class="nf">install(</span><span class="no">FILES</span><span class="w"> </span><span class="nb">kfoo.desktop</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">XDG_APPS_DIR</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 REQUIRED) set(sources main.cpp mywidget.cpp mypart.cpp) # The kde4_*() commands are provided by the KDE4Macros module, which is # included automatically by FindKDE4, if KDE4 is found: kde4_automoc(${sources}) kde4_add_executable(example ${sources}) target_include_directories(example PRIVATE ${KDE4_INCLUDES}) target_link_libraries(example PRIVATE ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS}) install(TARGETS example DESTINATION ${CMAKE_INSTALL_BINDIR}) install(FILES kfoo.desktop DESTINATION ${XDG_APPS_DIR})</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-full-featured-example">
 <h3>示例：全功能示例<a class="headerlink" href="FindKDE4.html#example-full-featured-example" title="链接至此标题">¶</a></h3>
@@ -156,7 +168,11 @@
 <span class="nf">kde4_add_executable(</span><span class="nb">kfoo</span><span class="w"> </span><span class="o">${</span><span class="nt">sources</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">kde4_add_executable()</span></code> 命令是 CMake <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 命令的稍微扩展版本。此外，它还进行了一些额外的 <code class="docutils literal notranslate"><span class="pre">RPATH</span></code> 处理，并支持 <code class="docutils literal notranslate"><span class="pre">KDE4_ENABLE_FINAL</span></code> 变量。第一个参数是可执行文件的名称，后面是源文件列表。如果需要创建库而不是可执行文件，可以使用 <code class="docutils literal notranslate"><span class="pre">kde4_add_library()</span></code>。它是 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 命令的扩展版本。它增加了对 <code class="docutils literal notranslate"><span class="pre">KDE4_ENABLE_FINAL</span></code> 变量的支持，并在 Windows 下将 <code class="docutils literal notranslate"><span class="pre">-DMAKE_KFOO_LIB</span></code> 添加到编译标志中。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">project(kfoo) find_package(KDE4 REQUIRED) # Append path from where to include local project modules if any: list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake) include_directories(${KDE4_INCLUDE_DIRS}) add_definitions(${KDE4_DEFINITIONS}) set(sources main.cpp myappl.cpp view.cpp) # If Qt designer UI files version 3 or 4 are available add them to the # sources variable: kde4_add_ui_files(sources maindialog.ui logindialog.ui) kde4_add_ui3_files(sources printerdlg.ui previewdlg.ui) # If there are files for the kconfig_compiler add them this way: kde4_add_kcfg_files(sources settings.kcfg) # When everything is listed, probably automoc is wanted: kde4_automoc(${sources}) # Finally, specify what to build: kde4_add_executable(kfoo ${sources})</span></code>：调用 `project()` 命令，定义项目名称及语言等元数据。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p><code class="docutils literal notranslate"><span class="pre">kde4_add_executable()</span></code> 命令是 CMake <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 命令的稍微扩展版本。此外，它还进行了一些额外的 <code class="docutils literal notranslate"><span class="pre">RPATH</span></code> 处理，并支持 <code class="docutils literal notranslate"><span class="pre">KDE4_ENABLE_FINAL</span></code> 变量。第一个参数是可执行文件的名称，后面是源文件列表。如果需要创建库而不是可执行文件，可以使用 <code class="docutils literal notranslate"><span class="pre">kde4_add_library()</span></code>。它是 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 命令的扩展版本。它增加了对 <code class="docutils literal notranslate"><span class="pre">KDE4_ENABLE_FINAL</span></code> 变量的支持，并在 Windows（微软桌面系统） 下将 <code class="docutils literal notranslate"><span class="pre">-DMAKE_KFOO_LIB</span></code> 添加到编译标志中。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">KDE4</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
 
 <span class="c"># ...</span>
@@ -167,16 +183,28 @@
 <span class="nf">set_target_properties(</span><span class="nb">kfoo</span><span class="w"> </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">VERSION</span><span class="w"> </span><span class="m">5.0.0</span><span class="w"> </span><span class="no">SOVERSION</span><span class="w"> </span><span class="m">5</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 REQUIRED) # ... kde4_add_library(kfoo ${sources}) # Optionally, set the library version number if needed: set_target_properties(kfoo PROPERTIES VERSION 5.0.0 SOVERSION 5)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>KDE 的模块化程度很高，因此如果需要创建 KPart、控制中心模块或 ioslave，其操作方法如下</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">KDE4</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
 <span class="c"># ...</span>
 <span class="nf">kde4_add_plugin(</span><span class="nb">kfoo</span><span class="w"> </span><span class="o">${</span><span class="nt">sources</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 REQUIRED) # ... kde4_add_plugin(kfoo ${sources})</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>现在，应用程序/库/插件可能需要链接到某些库。为此，请使用标准的 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令。对于每个 KDE 库，都有 <code class="docutils literal notranslate"><span class="pre">KDE4_FOO_LIBS</span></code> 形式的变量可用。使用它们可以获取所有依赖库。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">kfoo</span><span class="w"> </span><span class="o">${</span><span class="nt">KDE4_KDEUI_LIBS</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nt">KDE4_KIO_LIBS</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(kfoo ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS})</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-the-kdeinit-executable">
 <h3>示例：kdeinit 可执行文件<a class="headerlink" href="FindKDE4.html#example-the-kdeinit-executable" title="链接至此标题">¶</a></h3>
@@ -193,6 +221,10 @@
 <span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">kdeinit_kbar</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 REQUIRED) # ... kde4_add_kdeinit_executable(kbar ${kbarSources}) target_link_libraries(kdeinit_kbar ${KDE4_KIO_LIBS}) target_link_libraries(kbar kdeinit_kbar) install(TARGETS kbar DESTINATION ${CMAKE_INSTALL_BINDIR}) install(TARGETS kdeinit_kbar DESTINATION ${CMAKE_INSTALL_LIBDIR})</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-removing-compile-definitions">
 <h3>示例：移除编译定义<a class="headerlink" href="FindKDE4.html#example-removing-compile-definitions" title="链接至此标题">¶</a></h3>
@@ -206,6 +238,10 @@
 <span class="nf">remove_definitions(</span><span class="p">-</span><span class="no">DQT_NO_STL</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(KDE4 REQUIRED) add_definitions(${KDE4_DEFINITIONS}) # ... remove_definitions(-DQT_NO_STL)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 </section>

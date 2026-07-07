@@ -59,7 +59,11 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">FLTK</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>FLTK 使用基于 CMake 的构建系统，并为项目查找自身提供了软件包配置文件。从 1.4.0 版本开始，它还提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，用以封装使用需求。例如 <code class="docutils literal notranslate"><span class="pre">fltk::fltk</span></code>，它可以链接到需要 FLTK 的项目目标中。此模块考虑了这一点，并首先尝试以“配置模式 (config mode)”查找 FLTK。如果配置文件不可用，它将回退到“模块模式 (module mode)”并搜索标准位置。有关如何将 FLTK 与 CMake 一起使用的更多信息，请参阅 FLTK 官方文档。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(FLTK [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>FLTK 使用基于 CMake 的构建系统，并为项目查找自身提供了软件包配置文件。从 1.4.0 版本开始，它还提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，用以封装使用需求。例如 <code class="docutils literal notranslate"><span class="pre">fltk::fltk</span></code>，它可以链接到需要 FLTK 的项目目标中。此模块考虑了这一点，并首先尝试以“配置模式 (config mode)”查找 FLTK。如果配置文件不可用，它将回退到“模块模式 (module mode)”并搜索标准位置。有关如何将 FLTK 与 CMake 一起使用的更多信息，请参阅 FLTK 官方文档。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.11 版本新增： </span>调试（Debug）和发布（Release，即优化版）库变体将被分开查找，并使用<a class="reference internal" href="../manual/cmake-buildsystem.7.html#build-configurations"><span class="std std-ref">按配置 (per-configuration)</span></a>变量。</p>
 </div>
@@ -135,7 +139,7 @@
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">FLTK_SKIP_IMAGES</span></code></dt><dd><p>设置为布尔值 true，将 FLTK Image 库标记为可选；因此它不会被包含在 <code class="docutils literal notranslate"><span class="pre">FLTK_LIBRARIES</span></code> 结果变量中。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">FLTK_SKIP_OPENGL</span></code></dt><dd><p>设置为布尔值 true，将 FLTK OpenGL 库标记为可选；因此它不会被包含在 <code class="docutils literal notranslate"><span class="pre">FLTK_LIBRARIES</span></code> 结果变量中。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">FLTK_SKIP_OPENGL</span></code></dt><dd><p>设置为布尔值 true，将 FLTK OpenGL（开放图形库） 库标记为可选；因此它不会被包含在 <code class="docutils literal notranslate"><span class="pre">FLTK_LIBRARIES</span></code> 结果变量中。</p>
 </dd>
 </dl>
 </section>
@@ -157,6 +161,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">fltk</span><span class="o">::</span><span class="nb">fltk</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(FLTK) if(FLTK_FOUND AND NOT TARGET fltk::fltk) add_library(fltk::fltk INTERFACE IMPORTED) set_target_properties( fltk::fltk PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${FLTK_INCLUDE_DIR}&quot; INTERFACE_LINK_LIBRARIES &quot;${FLTK_LIBRARIES}&quot; ) endif() target_link_libraries(project_target PRIVATE fltk::fltk)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

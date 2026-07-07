@@ -64,6 +64,10 @@
 <span class="nf">endblock()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">block([SCOPE_FOR [POLICIES] [VARIABLES]] [PROPAGATE &lt;var-name&gt;...]) &lt;commands&gt; endblock()</span></code>：调用 `block()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">block()</span></code> 和对应的 <span class="target" id="index-0-command:endblock"></span><a class="reference internal" href="endblock.html#command:endblock" title="endblock"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endblock()</span></code></a> 之间的所有命令都会被记录下来，而不会立即执行。一旦 <span class="target" id="index-1-command:endblock"></span><a class="reference internal" href="endblock.html#command:endblock" title="endblock"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endblock()</span></code></a> 被评估，记录的命令列表就会在请求的作用域内执行，随后 <code class="docutils literal notranslate"><span class="pre">block()</span></code> 命令创建的作用域将被移除。</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">SCOPE_FOR</span></code></dt><dd><p>指定必须创建哪些作用域。</p>
@@ -77,6 +81,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">block(</span><span class="no">SCOPE_FOR</span><span class="w"> </span><span class="no">VARIABLES</span><span class="w"> </span><span class="no">POLICIES</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">block(SCOPE_FOR VARIABLES POLICIES)</span></code>：调用 `block()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">PROPAGATE</span></code></dt><dd><p>当 <span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令创建变量作用域时，该选项用于在父作用域中设置或取消设置指定的变量。这等同于 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set(PARENT_SCOPE)</span></code></a> 或 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset(PARENT_SCOPE)</span></code></a> 命令。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">var1</span><span class="w"> </span><span class="s">"INIT1"</span><span class="nf">)</span>
@@ -92,6 +100,10 @@
 <span class="c"># Now var1 holds VALUE1, var2 is unset, and var3 holds the initial value INIT3</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(var1 &quot;INIT1&quot;) set(var2 &quot;INIT2&quot;) set(var3 &quot;INIT3&quot;) block(PROPAGATE var1 var2) set(var1 &quot;VALUE1&quot;) unset(var2) set(var3 &quot;VALUE3&quot;) endblock() # Now var1 holds VALUE1, var2 is unset, and var3 holds the initial value INIT3</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此选项仅允许在创建变量作用域时使用。在其他情况下将会报错。</p>
 </dd>
 </dl>
@@ -105,6 +117,10 @@
 <span class="nf">endwhile()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">while(TRUE) block() ... # the break() command will terminate the while() command break() endblock() endwhile()</span></code>：调用 `while()` 命令，开始 while 循环。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="block.html#see-also" title="链接到此标题">¶</a></h2>
 <ul class="simple">

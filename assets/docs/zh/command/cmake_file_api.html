@@ -61,7 +61,7 @@
 <p>启用与 <span class="target" id="index-0-manual:cmake-file-api(7)"></span><a class="reference internal" href="../manual/cmake-file-api.7.html#manual:cmake-file-api(7)" title="cmake-file-api(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">文件</span> <span class="pre">API</span></code></a> 的交互。</p>
 <dl class="cmake signature">
 <dt class="sig sig-object cmake" id="query">
-<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_file_api(</span></span><span class="no"><span class="pre">QUERY</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_file_api.html#query" title="Link to this definition">¶</a></dt>
+<span class="code cmake highlight sig-name descname"><span class="nf"><span class="pre">cmake_file_api(</span></span><span class="no"><span class="pre">QUERY</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="nf"><span class="pre">)</span></span></span><a class="headerlink" href="cmake_file_api.html#query" title="跳转到此定义">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">QUERY</span></code> 子命令为当前的 CMake 调用添加一个文件 API 查询。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_file_api(</span>
 <span class="w">  </span><span class="no">QUERY</span>
@@ -73,6 +73,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_file_api( QUERY API_VERSION &lt;version&gt; [CODEMODEL &lt;versions&gt;...] [CACHE &lt;versions&gt;...] [CMAKEFILES &lt;versions&gt;...] [TOOLCHAINS &lt;versions&gt;...] )</span></code>：调用 `cmake_file_api()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>必须始终提供 <code class="docutils literal notranslate"><span class="pre">API_VERSION</span></code>。目前，<code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> 唯一支持的值是 1。有关回复内容和位置的详细信息，请参阅 <a class="reference internal" href="../manual/cmake-file-api.7.html#file-api-v1"><span class="std std-ref">API v1</span></a>。</p>
 <p>可选关键字 <code class="docutils literal notranslate"><span class="pre">CODEMODEL</span></code>、<code class="docutils literal notranslate"><span class="pre">CACHE</span></code>、<code class="docutils literal notranslate"><span class="pre">CMAKEFILES</span></code> 和 <code class="docutils literal notranslate"><span class="pre">TOOLCHAINS</span></code> 中的每一个都对应项目可以请求的对象种类之一。由于 <code class="docutils literal notranslate"><span class="pre">configureLog</span></code> 对象种类必须在 CMake 开始读取顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件之前进行设置，因此无法通过此命令进行设置。</p>
 <p>对于每个可选关键字，<code class="docutils literal notranslate"><span class="pre">&lt;versions&gt;</span></code> 列表必须包含一个或多个形式为 <code class="docutils literal notranslate"><span class="pre">major</span></code> 或 <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> 的版本值，其中 <code class="docutils literal notranslate"><span class="pre">major</span></code> 和 <code class="docutils literal notranslate"><span class="pre">minor</span></code> 为整数。项目应按其首选顺序列出它们接受的版本，因为列表中只会选择第一个受支持的值。如果某个对象种类的 <code class="docutils literal notranslate"><span class="pre">major</span></code> 版本号高于该种类支持的任何主版本号，命令将忽略该版本。如果遇到无效的版本号，或者所请求的版本均不受支持，命令将报错。</p>
@@ -98,6 +102,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_file_api( QUERY API_VERSION 1 CODEMODEL 2.3 TOOLCHAINS 1 ) add_custom_target(verify_project COMMAND ${CMAKE_COMMAND} -D BUILD_DIR=${CMAKE_BINARY_DIR} -D CONFIG=$&lt;CONFIG&gt; -P ${CMAKE_CURRENT_SOURCE_DIR}/verify_project.cmake )</span></code>：调用 `cmake_file_api()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

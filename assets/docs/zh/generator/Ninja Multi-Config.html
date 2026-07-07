@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-hans" data-content_root="../"><head>    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Ninja Multi-Config — CMake 4.3.4 文档 - CMake 构建系统</title>
+  <title>Ninja（构建工具） Multi-Config — CMake 4.3.4 文档 - CMake 构建系统</title>
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
@@ -10,12 +10,12 @@
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
     
-    <link rel="canonical" href="Ninja&#32;Multi-Config.html" />
+    <link rel="canonical" href="Ninja（构建工具）&#32;Multi-Config.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="FASTBuild" href="FASTBuild.html" />
-    <link rel="prev" title="Ninja" href="Ninja.html" />
+    <link rel="prev" title="Ninja（构建工具）" href="Ninja（构建工具）.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
  
@@ -34,7 +34,7 @@
         <li class="right">
           <a href="FASTBuild.html" title="FASTBuild" accesskey="N">下一页</a> |</li>
         <li class="right">
-          <a href="Ninja.html" title="Ninja" accesskey="P">上一页</a> |</li>
+          <a href="Ninja（构建工具）.html" title="Ninja（构建工具）" accesskey="P">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -44,7 +44,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-generators.7.html" accesskey="U">cmake-generators(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="Ninja&#32;Multi-Config.html">Ninja 多配置</a></li> 
+        <li class="nav-item nav-item-this"><a href="Ninja（构建工具）&#32;Multi-Config.html">Ninja（构建工具） 多配置</a></li> 
       </ul>
     </div>  
 
@@ -54,16 +54,16 @@
           <div class="body" role="main">
             
   <section id="ninja-multi-config">
-<span id="generator:Ninja Multi-Config"></span><h1>Ninja 多配置<a class="headerlink" href="Ninja&#32;Multi-Config.html#ninja-multi-config" title="此标题的永久链接">¶</a></h1>
+<span id="generator:Ninja（构建工具） Multi-Config"></span><h1>Ninja（构建工具） 多配置<a class="headerlink" href="Ninja（构建工具）&#32;Multi-Config.html#ninja-multi-config" title="此标题的永久链接">¶</a></h1>
 <div class="versionadded">
 <p><span class="versionmodified added">在 3.17 版本中添加。</span></p>
 </div>
 <p>生成多个 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件。</p>
-<p>此生成器与 <span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器非常相似，但有一些关键区别。本文档仅讨论这些区别。</p>
-<p>与 <span class="target" id="index-1-generator:Ninja"></span><a class="reference internal" href="Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a> 生成器不同，<code class="docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code> 通过 <span class="target" id="index-0-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a> 同时生成多种配置，而不是像 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 那样仅生成单一配置。对于每种配置，都会生成一个 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件（其中 <code class="docutils literal notranslate"><span class="pre">&lt;Config&gt;</span></code> 为配置名称）。这些文件旨在通过 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">-f</span> <span class="pre">build-&lt;Config&gt;.ninja</span></code> 运行。此外，还会生成一个 <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code> 文件，它使用 <span class="target" id="index-0-variable:CMAKE_DEFAULT_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_DEFAULT_BUILD_TYPE.html#variable:CMAKE_DEFAULT_BUILD_TYPE" title="CMAKE_DEFAULT_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_DEFAULT_BUILD_TYPE</span></code></a> 或 <span class="target" id="index-1-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a> 中的第一个项目作为配置。</p>
+<p>此生成器与 <span class="target" id="index-0-generator:Ninja（构建工具）"></span><a class="reference internal" href="Ninja（构建工具）.html#generator:Ninja（构建工具）" title="Ninja（构建工具）"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code></a> 生成器非常相似，但有一些关键区别。本文档仅讨论这些区别。</p>
+<p>与 <span class="target" id="index-1-generator:Ninja（构建工具）"></span><a class="reference internal" href="Ninja（构建工具）.html#generator:Ninja（构建工具）" title="Ninja（构建工具）"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code></a> 生成器不同，<code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code> 通过 <span class="target" id="index-0-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a> 同时生成多种配置，而不是像 <span class="target" id="index-0-variable:CMAKE_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_BUILD_TYPE.html#variable:CMAKE_BUILD_TYPE" title="CMAKE_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code></a> 那样仅生成单一配置。对于每种配置，都会生成一个 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件（其中 <code class="docutils literal notranslate"><span class="pre">&lt;Config&gt;</span></code> 为配置名称）。这些文件旨在通过 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">-f</span> <span class="pre">build-&lt;Config&gt;.ninja</span></code> 运行。此外，还会生成一个 <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code> 文件，它使用 <span class="target" id="index-0-variable:CMAKE_DEFAULT_BUILD_TYPE"></span><a class="reference internal" href="../variable/CMAKE_DEFAULT_BUILD_TYPE.html#variable:CMAKE_DEFAULT_BUILD_TYPE" title="CMAKE_DEFAULT_BUILD_TYPE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_DEFAULT_BUILD_TYPE</span></code></a> 或 <span class="target" id="index-1-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a> 中的第一个项目作为配置。</p>
 <p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span> <span class="pre">--config</span> <span class="pre">&lt;Config&gt;</span></code> 将始终使用 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 进行构建。如果未指定 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-build-config"><code class="xref std std-option docutils literal notranslate"><span class="pre">--config</span></code></a> 参数，<a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-build"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span></code></a> 将使用 <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code>。</p>
 <p>每个 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件都包含 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;</span></code> 目标以及 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;:&lt;Config&gt;</span></code> 目标，其中 <code class="docutils literal notranslate"><span class="pre">&lt;Config&gt;</span></code> 与 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 中指定的配置相同。此外，如果启用了跨配置（cross-config）模式，<code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 可能包含 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;:&lt;OtherConfig&gt;</span></code> 目标（其中 <code class="docutils literal notranslate"><span class="pre">&lt;OtherConfig&gt;</span></code> 是跨配置），以及 <code class="docutils literal notranslate"><span class="pre">&lt;target&gt;:all</span></code>（用于在所有跨配置中构建该目标）。请参阅下文了解如何启用跨配置模式。</p>
-<p><code class="docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code> 生成器识别以下变量：</p>
+<p><code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code> 生成器识别以下变量：</p>
 <dl class="simple">
 <dt><span class="target" id="index-2-variable:CMAKE_CONFIGURATION_TYPES"></span><a class="reference internal" href="../variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES" title="CMAKE_CONFIGURATION_TYPES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CONFIGURATION_TYPES</span></code></a></dt><dd><p>指定要构建的配置的总集合。与其他多配置生成器不同，此变量默认值为 <code class="docutils literal notranslate"><span class="pre">Debug;Release;RelWithDebInfo</span></code>。</p>
 </dd>
@@ -83,26 +83,38 @@
 <span class="nf">add_library(</span><span class="nb">generated</span><span class="w"> </span><span class="o">${</span><span class="nt">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="na">/generated.c</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>假设您使用 <code class="docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code> 配置了项目并运行了以下命令之一：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ninja<span class="w"> </span>-f<span class="w"> </span>build-Debug.ninja<span class="w"> </span>generated
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.16) project(MultiConfigNinja C) add_executable(generator generator.c) add_custom_command(OUTPUT generated.c COMMAND generator generated.c) add_library(generated ${CMAKE_BINARY_DIR}/generated.c)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>假设您使用 <code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code> 配置了项目并运行了以下命令之一：</p>
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>ninja<span class="w"> </span>-f<span class="w"> </span>build-Debug.ninja<span class="w"> </span>generated
 <span class="c1"># OR</span>
 cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Debug<span class="w"> </span>--target<span class="w"> </span>generated
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ninja -f build-Debug.ninja generated # OR cmake --build . --config Debug --target generated</span></code>：这是一条命令行输入，调用 Ninja 构建工具。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这将构建 <code class="docutils literal notranslate"><span class="pre">generator</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 配置，该配置用于生成 <code class="docutils literal notranslate"><span class="pre">generated.c</span></code>，进而用于构建 <code class="docutils literal notranslate"><span class="pre">generated</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 配置。</p>
 <p>但是，如果 <span class="target" id="index-1-variable:CMAKE_CROSS_CONFIGS"></span><a class="reference internal" href="../variable/CMAKE_CROSS_CONFIGS.html#variable:CMAKE_CROSS_CONFIGS" title="CMAKE_CROSS_CONFIGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CROSS_CONFIGS</span></code></a> 被设置为 <code class="docutils literal notranslate"><span class="pre">all</span></code>，且您改为运行以下命令：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ninja<span class="w"> </span>-f<span class="w"> </span>build-Release.ninja<span class="w"> </span>generated:Debug
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>ninja<span class="w"> </span>-f<span class="w"> </span>build-Release.ninja<span class="w"> </span>generated:Debug
 <span class="c1"># OR</span>
 cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Release<span class="w"> </span>--target<span class="w"> </span>generated:Debug
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ninja -f build-Release.ninja generated:Debug # OR cmake --build . --config Release --target generated:Debug</span></code>：这是一条命令行输入，调用 Ninja 构建工具。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这将构建 <code class="docutils literal notranslate"><span class="pre">generator</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 配置，该配置用于生成 <code class="docutils literal notranslate"><span class="pre">generated.c</span></code>，进而用于构建 <code class="docutils literal notranslate"><span class="pre">generated</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 配置。这对于在运行生成器工具的性能优化版本（Release）的同时，构建由生成代码构成的调试版本（Debug）的目标非常有用。</p>
 <section id="custom-commands">
-<h2>自定义命令<a class="headerlink" href="Ninja&#32;Multi-Config.html#custom-commands" title="链接到此标题">¶</a></h2>
+<h2>自定义命令<a class="headerlink" href="Ninja（构建工具）&#32;Multi-Config.html#custom-commands" title="链接到此标题">¶</a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code> 生成器通过其跨配置模式为 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 和 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 增加了额外的功能。<code class="docutils literal notranslate"><span class="pre">COMMAND</span></code>、<code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code> 参数可以在“命令配置”（当前使用的 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件的“原生”配置）或“输出配置”（用于评估 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 的配置）的上下文中进行评估。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code> 生成器通过其跨配置模式为 <span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 和 <span class="target" id="index-0-command:add_custom_target"></span><a class="reference internal" href="../command/add_custom_target.html#command:add_custom_target" title="add_custom_target"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_target()</span></code></a> 增加了额外的功能。<code class="docutils literal notranslate"><span class="pre">COMMAND</span></code>、<code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code> 参数可以在“命令配置”（当前使用的 <code class="docutils literal notranslate"><span class="pre">build-&lt;Config&gt;.ninja</span></code> 文件的“原生”配置）或“输出配置”（用于评估 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 的配置）的上下文中进行评估。</p>
 <p>如果 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 或 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 命名了一个跨多个配置通用的路径（例如未使用任何生成器表达式），则所有参数默认在命令配置中评估。如果所有 <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code> 和 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 路径对于每个配置都是唯一的（例如通过使用 <span class="target" id="index-0-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code></a> 生成器表达式），则 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 的第一个参数默认仍在命令配置中评估，而所有后续参数，以及 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">WORKING_DIRECTORY</span></code> 的参数，则在输出配置中评估。这些默认值可以使用 <span class="target" id="index-0-genex:OUTPUT_CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:OUTPUT_CONFIG" title="OUTPUT_CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;OUTPUT_CONFIG:...&gt;</span></code></a> 和 <span class="target" id="index-0-genex:COMMAND_CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:COMMAND_CONFIG" title="COMMAND_CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;COMMAND_CONFIG:...&gt;</span></code></a> 生成器表达式进行覆盖。注意，如果一个目标在 <code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> 中或作为 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 的第一个参数通过其名称指定，它将始终在命令配置中评估，即使它被包装在 <span class="target" id="index-1-genex:OUTPUT_CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:OUTPUT_CONFIG" title="OUTPUT_CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;OUTPUT_CONFIG:...&gt;</span></code></a> 中（因为其纯名称不是生成器表达式）。</p>
 <p>例如，考虑以下内容：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span>
@@ -119,6 +131,10 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
 <span class="w">  </span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_command( OUTPUT &quot;$&lt;CONFIG&gt;.txt&quot; COMMAND generator &quot;$&lt;CONFIG&gt;.txt&quot; &quot;$&lt;OUTPUT_CONFIG:$&lt;CONFIG&gt;&gt;&quot; &quot;$&lt;COMMAND_CONFIG:$&lt;CONFIG&gt;&gt;&quot; DEPENDS tgt1 &quot;$&lt;TARGET_FILE:tgt2&gt;&quot; &quot;$&lt;OUTPUT_CONFIG:$&lt;TARGET_FILE:tgt3&gt;&gt;&quot; &quot;$&lt;COMMAND_CONFIG:$&lt;TARGET_FILE:tgt4&gt;&gt;&quot; )</span></code>：调用 `add_custom_command()` 命令，定义自定义构建命令及其输入输出关系。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>假设 <code class="docutils literal notranslate"><span class="pre">generator</span></code>、<code class="docutils literal notranslate"><span class="pre">tgt1</span></code>、<code class="docutils literal notranslate"><span class="pre">tgt2</span></code>、<code class="docutils literal notranslate"><span class="pre">tgt3</span></code> 和 <code class="docutils literal notranslate"><span class="pre">tgt4</span></code> 都是可执行目标，并假设 <code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;.txt</span></code> 是在 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 输出配置下使用 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 命令配置构建的。<code class="docutils literal notranslate"><span class="pre">generator</span></code> 目标的 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 构建将以 <code class="docutils literal notranslate"><span class="pre">Debug.txt</span> <span class="pre">Debug</span> <span class="pre">Release</span></code> 作为参数被调用。该命令依赖于 <code class="docutils literal notranslate"><span class="pre">tgt1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">tgt4</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 构建，以及 <code class="docutils literal notranslate"><span class="pre">tgt2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">tgt3</span></code> 的 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 构建。</p>
 <p>目标的 <code class="docutils literal notranslate"><span class="pre">PRE_BUILD</span></code>、<code class="docutils literal notranslate"><span class="pre">PRE_LINK</span></code> 和 <code class="docutils literal notranslate"><span class="pre">POST_BUILD</span></code> 自定义命令仅在其“原生”配置（即 <code class="docutils literal notranslate"><span class="pre">build-Release.ninja</span></code> 文件中的 <code class="docutils literal notranslate"><span class="pre">Release</span></code> 配置）中运行，除非它们没有 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code>，或者它们的 <code class="docutils literal notranslate"><span class="pre">BYPRODUCTS</span></code> 是按配置唯一的。考虑以下示例：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">exe</span><span class="w"> </span><span class="nb">main.c</span><span class="nf">)</span>
@@ -146,7 +162,11 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
 <span class="w">  </span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>在此示例中，如果您在 <code class="docutils literal notranslate"><span class="pre">build-Release.ninja</span></code> 中构建 <code class="docutils literal notranslate"><span class="pre">exe:Debug</span></code>，第一个和第二个自定义命令会运行，因为它们的副产品（byproducts）是按配置唯一的，但最后一个自定义命令不会运行。然而，如果您在 <code class="docutils literal notranslate"><span class="pre">build-Release.ninja</span></code> 中构建 <code class="docutils literal notranslate"><span class="pre">exe:Release</span></code>，则所有三个自定义命令都会运行。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(exe main.c) add_custom_command( TARGET exe POST_BUILD COMMAND ${CMAKE_COMMAND} -E echo &quot;Running no-byproduct command&quot; ) add_custom_command( TARGET exe POST_BUILD COMMAND ${CMAKE_COMMAND} -E echo &quot;Running separate-byproduct command for $&lt;CONFIG&gt;&quot; BYPRODUCTS $&lt;CONFIG&gt;.txt ) add_custom_command( TARGET exe POST_BUILD COMMAND ${CMAKE_COMMAND} -E echo &quot;Running common-byproduct command for $&lt;CONFIG&gt;&quot; BYPRODUCTS exe.txt )</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>在此示例中，如果您在 <code class="docutils literal notranslate"><span class="pre">build-Release.ninja</span></code> 中构建 <code class="docutils literal notranslate"><span class="pre">exe:Debug</span></code>，第一个和第二个自定义命令会运行，因为它们的副产品（byproduct（副产品文件）s）是按配置唯一的，但最后一个自定义命令不会运行。然而，如果您在 <code class="docutils literal notranslate"><span class="pre">build-Release.ninja</span></code> 中构建 <code class="docutils literal notranslate"><span class="pre">exe:Release</span></code>，则所有三个自定义命令都会运行。</p>
 </section>
 </section>
 
@@ -160,8 +180,8 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
   <div>
     <h3>目录</h3>
     <ul>
-<li><a class="reference internal" href="Ninja&#32;Multi-Config.html#">Ninja 多配置</a><ul>
-<li><a class="reference internal" href="Ninja&#32;Multi-Config.html#custom-commands">自定义命令</a></li>
+<li><a class="reference internal" href="Ninja（构建工具）&#32;Multi-Config.html#">Ninja（构建工具） 多配置</a><ul>
+<li><a class="reference internal" href="Ninja（构建工具）&#32;Multi-Config.html#custom-commands">自定义命令</a></li>
 </ul>
 </li>
 </ul>
@@ -169,7 +189,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
   </div>
   <div>
     <h4>上一主题</h4>
-    <p class="topless"><a href="Ninja.html" title="上一章">Ninja</a></p>
+    <p class="topless"><a href="Ninja（构建工具）.html" title="上一章">Ninja（构建工具）</a></p>
   </div>
   <div>
     <h4>下一主题</h4>
@@ -178,7 +198,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
   <div role="note" aria-label="source link">
     <h3>本页</h3>
     <ul class="this-page-menu">
-      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/generator/Ninja&#32;Multi-Config.rst.txt" rel="nofollow">显示源</a></li>
+      <li><a href="https://cmake.com.cn/cmake/help/latest/_sources/generator/Ninja（构建工具）&#32;Multi-Config.rst.txt" rel="nofollow">显示源</a></li>
     </ul>
    </div>
 <search id="searchbox" style="display: none" role="search">
@@ -203,7 +223,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
         <li class="right">
           <a href="FASTBuild.html" title="FASTBuild">下一页</a> |</li>
         <li class="right">
-          <a href="Ninja.html" title="Ninja">上一页</a> |</li>
+          <a href="Ninja（构建工具）.html" title="Ninja（构建工具）">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -213,7 +233,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-generators.7.html">cmake-generators(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="Ninja&#32;Multi-Config.html">Ninja 多配置</a></li> 
+        <li class="nav-item nav-item-this"><a href="Ninja（构建工具）&#32;Multi-Config.html">Ninja（构建工具） 多配置</a></li> 
       </ul>
     </div>
 

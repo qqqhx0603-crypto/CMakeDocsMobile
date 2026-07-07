@@ -59,9 +59,13 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SDL_ttf</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL_ttf [&lt;version&gt;] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>此模块专门用于 SDL_ttf 版本 1。从 2.0.15 版本开始，当使用 CMake 构建时，SDL_ttf 会提供一个 CMake 包配置文件，应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2_ttf)</span></code> 来查找。同样地，SDL_ttf 版本 3 应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL3_ttf)</span></code> 来查找。这些较新的版本提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，其中封装了使用需求。有关更多信息，请参考 SDL 官方文档。</p>
+<p>此模块专门用于 SDL_ttf 版本 1。从 2.0.15 版本开始，当使用 CMake 构建时，SDL_ttf 会提供一个 CMake 包配置文件，应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2_ttf)</span></code> 来查找。同样地，SDL_ttf 版本 3 应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL3_ttf)</span></code> 来查找。这些较新的版本提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，其中封装了使用需求。有关更多信息，请参考 SDL 官方文档。</p>
 </div>
 <section id="result-variables">
 <h2>结果变量<a class="headerlink" href="FindSDL_ttf.html#result-variables" title="此标题的链接">¶</a></h2>
@@ -136,16 +140,28 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL</span><span class="o">::</span><span class="nb">SDL_ttf</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL_ttf) if(SDL_ttf_FOUND AND NOT TARGET SDL::SDL_ttf) add_library(SDL::SDL_ttf INTERFACE IMPORTED) set_target_properties( SDL::SDL_ttf PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${SDL_TTF_INCLUDE_DIRS}&quot; INTERFACE_LINK_LIBRARIES &quot;${SDL_TTF_LIBRARIES}&quot; ) endif() target_link_libraries(project_target PRIVATE SDL::SDL_ttf)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在使用 SDL_ttf 版本 2 时，上游包直接提供了 <code class="docutils literal notranslate"><span class="pre">SDL2_ttf::SDL2_ttf</span></code> 导入目标。它可以在项目中直接使用，无需使用此模块。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SDL2_ttf</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">SDL2_ttf</span><span class="o">::</span><span class="nb">SDL2_ttf</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL2_ttf) target_link_libraries(project_target PRIVATE SDL2_ttf::SDL2_ttf)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>同样地，对于 SDL_ttf 版本 3</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SDL3_ttf</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">SDL3_ttf</span><span class="o">::</span><span class="nb">SDL3_ttf</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL3_ttf) target_link_libraries(project_target PRIVATE SDL3_ttf::SDL3_ttf)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="FindSDL_ttf.html#see-also" title="链接到此标题">¶</a></h2>

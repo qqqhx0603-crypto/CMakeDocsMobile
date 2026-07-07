@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSSL</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenSSL [&lt;version&gt;] [COMPONENTS &lt;components&gt;...] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionadded">
 <p><span class="versionmodified added">3.20 版本新增： </span>支持在调用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令时指定版本范围。当请求版本时，可以像以前一样指定单个值，现在也可以使用版本范围。有关版本范围用法和功能的详细描述，请参阅 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令。</p>
 </div>
@@ -84,11 +88,15 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSSL</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenSSL [COMPONENTS &lt;components&gt;...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果不请求任何组件，模块默认会将 <code class="docutils literal notranslate"><span class="pre">Crypto</span></code> 作为必需组件查找，将 <code class="docutils literal notranslate"><span class="pre">SSL</span></code> 作为可选组件查找。</p>
 </section>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindOpenSSL.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindOpenSSL.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">OpenSSL::Crypto</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">3.4 版本新增。</span></p>
@@ -104,13 +112,17 @@
 <p><span class="versionmodified added">在 3.18 版本中新增。</span></p>
 </div>
 <p>封装 OpenSSL 应用程序端接口（<code class="docutils literal notranslate"><span class="pre">openssl/applink.c</span></code>）使用要求的目标，仅在找到 OpenSSL 且版本至少为 0.9.8 时可用。</p>
-<p>该接口提供了 OpenSSL BIO 层与 Windows 编译器运行时环境之间的粘合剂，在使用 MSVC 时可能需要编译到项目中。通过链接此目标，即使项目使用不同的 MSVC 运行时配置，也可以链接其他 OpenSSL 导入目标。在非 MSVC 平台上链接此目标无效。</p>
+<p>该接口提供了 OpenSSL BIO 层与 Windows（微软桌面系统） 编译器运行时环境之间的粘合剂，在使用 MSVC 时可能需要编译到项目中。通过链接此目标，即使项目使用不同的 MSVC 运行时配置，也可以链接其他 OpenSSL 导入目标。在非 MSVC 平台上链接此目标无效。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>接口文件通过 <span class="target" id="index-0-prop_tgt:INTERFACE_SOURCES"></span><a class="reference internal" href="../prop_tgt/INTERFACE_SOURCES.html#prop_tgt:INTERFACE_SOURCES" title="INTERFACE_SOURCES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_SOURCES</span></code></a> 目标属性添加。由于 CMake 中传播接口源的方式，建议将 <code class="docutils literal notranslate"><span class="pre">OpenSSL::applink</span></code> 目标作为 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#target-command-scope"><span class="std std-ref">PRIVATE</span></a> 链接，以确保它在任何库或可执行文件的整个依赖关系图中只被链接一次。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">OpenSSL</span><span class="o">::</span><span class="nb">applink</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(project_target PRIVATE OpenSSL::applink)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>为此目标使用其他作用域可能会导致构建或链接过程中出现意外问题，因为 ISO C 和 ISO C++ 标准对链接行为的规定非常少。</p>
 </div>
 </dd>
@@ -189,11 +201,19 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">OpenSSL</span><span class="o">::</span><span class="nb">Crypto</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenSSL) target_link_libraries(project_target PRIVATE OpenSSL::Crypto)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>以下示例展示了如何查找 OpenSSL <code class="docutils literal notranslate"><span class="pre">crypto</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ssl</span></code> 库并将它们链接到项目目标。显式指定了 <code class="docutils literal notranslate"><span class="pre">SSL</span></code> 组件，以确保如果未找到 <code class="docutils literal notranslate"><span class="pre">ssl</span></code> 库，查找模块会报错。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSSL</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="no">SSL</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">OpenSSL</span><span class="o">::</span><span class="no">SSL</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenSSL COMPONENTS SSL) target_link_libraries(project_target PRIVATE OpenSSL::SSL)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 
@@ -209,7 +229,7 @@
     <ul>
 <li><a class="reference internal" href="FindOpenSSL.html#">FindOpenSSL</a><ul>
 <li><a class="reference internal" href="FindOpenSSL.html#components">组件</a></li>
-<li><a class="reference internal" href="FindOpenSSL.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindOpenSSL.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindOpenSSL.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindOpenSSL.html#hints">提示</a></li>
 <li><a class="reference internal" href="FindOpenSSL.html#deprecated-variables">已弃用变量</a></li>

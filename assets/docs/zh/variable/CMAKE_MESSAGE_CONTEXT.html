@@ -91,6 +91,10 @@
 <span class="nf">list(</span><span class="no">POP_BACK</span><span class="w"> </span><span class="no">CMAKE_MESSAGE_CONTEXT</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function(bar) list(APPEND CMAKE_MESSAGE_CONTEXT &quot;bar&quot;) message(VERBOSE &quot;bar VERBOSE message&quot;) endfunction() function(baz) list(APPEND CMAKE_MESSAGE_CONTEXT &quot;baz&quot;) message(DEBUG &quot;baz DEBUG message&quot;) endfunction() function(foo) list(APPEND CMAKE_MESSAGE_CONTEXT &quot;foo&quot;) bar() message(TRACE &quot;foo TRACE message&quot;) baz() endfunction() list(APPEND CMAKE_MESSAGE_CONTEXT &quot;top&quot;) message(VERBOSE &quot;Before `foo`&quot;) foo() message(VERBOSE &quot;After `foo`&quot;) list(POP_BACK CMAKE_MESSAGE_CONTEXT)</span></code>：定义一个函数，并为其后的语句建立独立作用域。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>结果如下</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- [top] Before `foo`
 -- [top.foo.bar] bar VERBOSE message
@@ -99,6 +103,10 @@
 -- [top] After `foo`
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">-- [top] Before `foo` -- [top.foo.bar] bar VERBOSE message -- [top.foo] foo TRACE message -- [top.foo.baz] baz DEBUG message -- [top] After `foo`</span></code>：这一行给出示例文本或输出，用来说明：-- [top] Before `foo` -- [top.foo.bar] bar VERBOSE message -- [top.foo] foo TRACE message -- [top.foo.baz] baz DEBUG message -- [top] After `foo`</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 
 

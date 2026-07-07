@@ -70,6 +70,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">main</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">A</span><span class="w"> </span><span class="no">B</span><span class="w"> </span><span class="no">C</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(A STATIC ...) add_library(B STATIC ...) add_library(C STATIC ...) add_executable(main ...) target_link_libraries(B PRIVATE A) target_link_libraries(C PRIVATE A) target_link_libraries(main PRIVATE A B C)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>支持的策略包括</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">REORDER_MINIMALLY</span></code></dt><dd><p><span class="target" id="index-2-prop_tgt:LINK_LIBRARIES"></span><a class="reference internal" href="LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES" title="LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARIES</span></code></a> 的条目始终首先出现，并保持其原始顺序。未被原始条目满足的间接链接依赖项可能会在彼此之间进行重新排序和去重，但始终会附加在原始条目之后。这可能会导致链接行效率较低，但允许项目控制独立条目之间的排序。当混合使用链接标志与库，或者当多个库提供给定符号时，这种控制可能非常重要。</p>
@@ -87,8 +91,8 @@
 <p>例如，如果 <code class="docutils literal notranslate"><span class="pre">REORDER_MINIMALLY</span></code> 策略产生 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>，则实际链接行可能会按如下方式对 <code class="docutils literal notranslate"><span class="pre">A</span></code> 进行去重</p>
 <ul class="simple">
 <li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是一个静态库且链接器会自动重新扫描，则保留第一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code>。请参阅策略 <span class="target" id="index-0-policy:CMP0179"></span><a class="reference internal" href="../policy/CMP0179.html#policy:CMP0179" title="CMP0179"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0179</span></code></a></p></li>
-<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 Windows 上的共享库，则保留第一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code>。</p></li>
-<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 macOS 或 UNIX 平台上的共享库，则保留最后一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 Windows（微软桌面系统） 上的共享库，则保留第一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">B</span> <span class="pre">C</span></code>。</p></li>
+<li><p>如果 <code class="docutils literal notranslate"><span class="pre">A</span></code> 是 macOS（苹果桌面系统） 或 UNIX 平台上的共享库，则保留最后一次出现的位置，结果为 <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">C</span> <span class="pre">A</span></code>。</p></li>
 </ul>
 </section>
 </section>

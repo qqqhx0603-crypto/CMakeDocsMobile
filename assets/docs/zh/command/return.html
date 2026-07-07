@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">return(</span><span class="p">[</span><span class="no">PROPAGATE</span><span class="w"> </span><span class="nv">&lt;var-name&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">return([PROPAGATE &lt;var-name&gt;...])</span></code>：调用 `return()` 命令，从当前函数、宏或脚本提前返回。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当此命令在被包含的文件中（通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 或 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>）遇到时，它会停止处理当前文件并将控制权返回给包含该文件的父文件。如果它在未被其他文件包含的文件（例如 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>）中遇到，则会调用由 <span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="cmake_language.html#defer" title="cmake_language(defer)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(DEFER)</span></code></a> 调度的延迟调用，并将控制权返回给父目录（如果存在）。</p>
 <p>如果 <code class="docutils literal notranslate"><span class="pre">return()</span></code> 在函数中被调用，控制权将返回给该函数的调用者。请注意，<span class="target" id="index-0-command:macro"></span><a class="reference internal" href="macro.html#command:macro" title="macro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">macro()</span></code></a> 与 <span class="target" id="index-0-command:function"></span><a class="reference internal" href="function.html#command:function" title="function"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">function()</span></code></a> 不同，宏是在原地展开的，因此无法处理 <code class="docutils literal notranslate"><span class="pre">return()</span></code>。</p>
 <p>策略 <span class="target" id="index-0-policy:CMP0140"></span><a class="reference internal" href="../policy/CMP0140.html#policy:CMP0140" title="CMP0140"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0140</span></code></a> 控制该命令关于参数的行为。除非该策略被设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code>，否则所有参数都会被忽略。</p>
@@ -69,7 +73,7 @@
 <p>此选项用于设置或取消设置父目录或函数调用者作用域中的指定变量。这等效于 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set(PARENT_SCOPE)</span></code></a> 或 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset(PARENT_SCOPE)</span></code></a> 命令，但它与 <span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令的交互方式有所不同，如下所述。</p>
 <p><code class="docutils literal notranslate"><span class="pre">PROPAGATE</span></code> 选项与 <span class="target" id="index-1-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令结合使用时非常有用。<code class="docutils literal notranslate"><span class="pre">return</span></code> 将把指定的变量传播到由 <span class="target" id="index-2-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令创建的任何封闭块作用域中。在函数内部，这确保了无论函数内部有多少块，变量都会传播到函数的调用者。如果不在函数内部，它确保变量被传播到父文件或父目录作用域。例如：</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">CMakeLists.txt</span><a class="headerlink" href="return.html#id1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">CMakeLists.txt</span><a class="headerlink" href="return.html#id1" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.25</span><span class="nf">)</span>
 <span class="nf">project(</span><span class="nb">example</span><span class="nf">)</span>
 
@@ -83,9 +87,13 @@
 <span class="c"># var1 has the value "top-value"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.25) project(example) set(var1 &quot;top-value&quot;) block(SCOPE_FOR VARIABLES) add_subdirectory(subDir) # var1 has the value &quot;block-nested&quot; endblock() # var1 has the value &quot;top-value&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">subDir/CMakeLists.txt</span><a class="headerlink" href="return.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">subDir/CMakeLists.txt</span><a class="headerlink" href="return.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">multi_scopes</span><span class="w"> </span><span class="nb">result_var1</span><span class="w"> </span><span class="nb">result_var2</span><span class="nf">)</span>
 <span class="w">  </span><span class="nf">block(</span><span class="no">SCOPE_FOR</span><span class="w"> </span><span class="no">VARIABLES</span><span class="nf">)</span>
 <span class="w">    </span><span class="c"># This would only propagate out of the immediate block, not to</span>
@@ -117,6 +125,10 @@
 <span class="nf">endblock()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function(multi_scopes result_var1 result_var2) block(SCOPE_FOR VARIABLES) # This would only propagate out of the immediate block, not to # the caller of the function. #set(${result_var1} &quot;new-value&quot; PARENT_SCOPE) #unset(${result_var2} PARENT_SCOPE) # This propagates the variables through the enclosing block and # out to the caller of the function. set(${result_var1} &quot;new-value&quot;) unset(${result_var2}) return(PROPAGATE ${result_var1} ${result_var2}) endblock() endfunction() set(var1 &quot;some-value&quot;) set(var2 &quot;another-value&quot;) multi_scopes(var1 var2) # Now var1 will hold &quot;new-value&quot; and var2 will be unset block(SCOPE_FOR VARIABLES) # This return() will set var1 in the directory scope that included us # via add_subdirectory(). The surrounding block() here does not limit # propagation to the current file, but the block() in the parent # directory scope does prevent propagation going any further. set(var1 &quot;block-nested&quot;) return(PROPAGATE var1) endblock()</span></code>：定义一个函数，并为其后的语句建立独立作用域。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </dd>
 </dl>

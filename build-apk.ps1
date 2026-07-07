@@ -70,8 +70,8 @@ if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed" }
   --java $GenDir `
   --min-sdk-version 23 `
   --target-sdk-version 35 `
-  --version-code 5 `
-  --version-name '1.4' `
+  --version-code 6 `
+  --version-name '1.5' `
   $CompiledRes
 if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed" }
 
@@ -125,5 +125,10 @@ if ($LASTEXITCODE -ne 0) { throw "apksigner failed" }
 
 & $ApkSigner verify --verbose $SignedApk
 if ($LASTEXITCODE -ne 0) { throw "apksigner verify failed" }
+
+$IdSigPath = "$SignedApk.idsig"
+if (Test-Path -LiteralPath $IdSigPath) {
+  Remove-Item -LiteralPath $IdSigPath -Force -ErrorAction SilentlyContinue
+}
 
 Get-Item -LiteralPath $SignedApk | Select-Object FullName, Length

@@ -14,8 +14,8 @@
     <link rel="icon" href="../../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Step 7: Custom Commands and Generated Files" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" />
-    <link rel="prev" title="Step 5: In-Depth CMake Library Concepts" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
+    <link rel="next" title="第 7 步：自定义命令与生成文件" href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" />
+    <link rel="prev" title="第 5 步：深入了解 CMake 库概念" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../../version_switch.js"></script>
  
@@ -32,9 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files" accesskey="N">下一页</a> |</li>
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="第 7 步：自定义命令与生成文件" accesskey="N">下一页</a> |</li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts" accesskey="P">上一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="第 5 步：深入了解 CMake 库概念" accesskey="P">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -83,6 +83,10 @@
 <span class="nf">check_include_files(</span><span class="na">sys/socket.h</span><span class="w"> </span><span class="no">HAVE_SYS_SOCKET_H</span><span class="w"> </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">CXX</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIncludeFiles) check_include_files(sys/socket.h HAVE_SYS_SOCKET_H LANGUAGE CXX)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>这些函数在 CMake 中不是立即生效的，必须通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 其关联模块（即 CMakeLang 文件）来添加。许多模块位于 CMake 自身的 <code class="docutils literal notranslate"><span class="pre">Modules</span></code> 文件夹中。这个内置的 <code class="docutils literal notranslate"><span class="pre">Modules</span></code> 文件夹是 CMake 在评估 <span class="target" id="index-1-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令时搜索的地方之一。你可以将这些模块视为标准库头文件，它们预期是可用的。</p>
@@ -118,11 +122,19 @@
 <span class="go">cmake --build build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在配置步骤的输出中，我们应该观察到 CMake 正在检查 <code class="docutils literal notranslate"><span class="pre">emmintrin.h</span></code> 头文件。</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-- Looking for include file emmintrin.h</span>
 <span class="go">-- Looking for include file emmintrin.h - found</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">-- Looking for include file emmintrin.h -- Looking for include file emmintrin.h - found</span></code>：这是命令执行后的输出结果，内容为：-- Looking for include file emmintrin.h -- Looking for include file emmintrin.h - found</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果你的系统上有此头文件，请验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出是否包含关于使用 SSE2 的消息。相反，如果头文件不可用，你应该看到来自 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的常规行为。</p>
 </section>
 <section id="solution">
@@ -134,6 +146,10 @@
 <span class="nf">check_include_files(</span><span class="nb">emmintrin.h</span><span class="w"> </span><span class="no">HAS_EMMINTRIN</span><span class="w"> </span><span class="no">LANGUAGE</span><span class="w"> </span><span class="no">CXX</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIncludeFiles) check_include_files(emmintrin.h HAS_EMMINTRIN LANGUAGE CXX)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>然后，我们使用检查结果有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 上设置编译定义。</p>
 <details><summary>TODO 2：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-define-use-sse2">
@@ -143,6 +159,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(HAS_EMMINTRIN) target_compile_definitions(MathFunctions PRIVATE TUTORIAL_USE_SSE2) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>最后，我们可以有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库中包含该头文件。</p>
 <details><summary>TODO 3：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-include-sse2">
@@ -152,6 +172,10 @@
 <span class="cp">#endif</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#ifdef TUTORIAL_USE_SSE2 # include &lt;emmintrin.h&gt; #endif</span></code>：这一行开始预处理条件分支，按宏条件决定后续代码是否参与编译。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details></section>
 </section>
@@ -170,6 +194,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckSourceCompiles) check_source_compiles(CXX &quot; int main() { int a, b, c; __builtin_add_overflow(a, b, &amp;c); } &quot; HAS_CHECKED_ADDITION )</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>默认情况下，<span class="target" id="index-1-module:CheckSourceCompiles"></span><a class="reference internal" href="../../module/CheckSourceCompiles.html#module:CheckSourceCompiles" title="CheckSourceCompiles"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSourceCompiles</span></code></a> 会构建并链接一个可执行文件。要检查的代码必须提供一个有效的 <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">main()</span></code> 才能成功。</p>
@@ -202,6 +230,10 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>如果检查失败而你认为它应该成功，你需要通过删除 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 文件来清除 CMake 缓存。如果 CMake 已经有了缓存结果，它将不会在后续运行中重新执行编译检查。</p>
@@ -211,6 +243,10 @@
 <span class="go">-- Performing Test HAS_GNU_BUILTIN - Success</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">-- Performing Test HAS_GNU_BUILTIN -- Performing Test HAS_GNU_BUILTIN - Success</span></code>：这是命令执行后的输出结果，内容为：-- Performing Test HAS_GNU_BUILTIN -- Performing Test HAS_GNU_BUILTIN - Success</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果你的编译器上有这些内置函数，请验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出是否包含关于使用 GNU 内置函数的消息。相反，如果这些内置函数不可用，你应该看到来自 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的之前行为。</p>
 </section>
 <section id="id6">
@@ -230,6 +266,10 @@ check_source_compiles(CXX
 )
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckSourceCompiles) check_source_compiles(CXX [=[ typedef double v2df __attribute__((vector_size(16))); int main() { __builtin_ia32_sqrtsd(v2df{}); } ]=] HAS_GNU_BUILTIN )</span></code>：这一行给出示例文本或输出，用来说明：include(CheckSourceCompiles) check_source_compiles(CXX [=[ typedef double v2df __attribute__((vector_size(16))); int main() { __builtin_ia32_sqrtsd(v2df{}); } ]=] HAS_GNU_BUILTIN )</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>然后，我们使用检查结果有条件地在 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 上设置编译定义。</p>
 <details><summary>TODO 5：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-define-use-gnu-builtin">
@@ -239,6 +279,10 @@ check_source_compiles(CXX
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(HAS_GNU_BUILTIN) target_compile_definitions(MathFunctions PRIVATE TUTORIAL_USE_GNU_BUILTIN) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details></section>
 </section>
@@ -253,6 +297,10 @@ check_source_compiles(CXX
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIPOSupported) check_ipo_supported() # fatal error if IPO is not supported set_target_properties(MyApp PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE )</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>关于项目内的 IPO 配置，有几个重要的注意事项：</p>
@@ -290,6 +338,10 @@ check_source_compiles(CXX
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake --build build</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果 IPO 不可用，我们将在配置过程中看到错误消息。否则，没有任何变化。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -304,6 +356,10 @@ check_source_compiles(CXX
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">TUTORIAL_ENABLE_IPO</span><span class="w"> </span><span class="s">"Check for and use IPO support"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(TUTORIAL_ENABLE_IPO &quot;Check for and use IPO support&quot; ON)</span></code>：调用 `option()` 命令，声明一个布尔型配置选项。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><p>下一步比较复杂，但 <span class="target" id="index-2-module:CheckIPOSupported"></span><a class="reference internal" href="../../module/CheckIPOSupported.html#module:CheckIPOSupported" title="CheckIPOSupported"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckIPOSupported</span></code></a> 的文档中几乎有一个完整的示例，说明我们需要做什么。唯一的区别是我们将在整个项目范围内而不是为单个目标启用 IPO。</p>
 <details><summary>TODO 7：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="cmakelists-txt-check-ipo">
@@ -320,6 +376,10 @@ check_source_compiles(CXX
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(TUTORIAL_ENABLE_IPO) include(CheckIPOSupported) check_ipo_supported(RESULT result OUTPUT output) if(result) message(&quot;IPO is supported, enabling IPO&quot;) set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON) else() message(WARNING &quot;IPO is not supported: ${output}&quot;) endif() endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </details><div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -407,9 +467,9 @@ check_source_compiles(CXX
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="Step 7: Custom Commands and Generated Files">下一页</a> |</li>
+          <a href="Custom&#32;Commands&#32;and&#32;Generated&#32;Files.html" title="第 7 步：自定义命令与生成文件">下一页</a> |</li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="Step 5: In-Depth CMake Library Concepts">上一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" title="第 5 步：深入了解 CMake 库概念">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>

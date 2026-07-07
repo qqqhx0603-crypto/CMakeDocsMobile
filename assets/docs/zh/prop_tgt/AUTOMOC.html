@@ -97,6 +97,10 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"&lt;base&gt;.moc"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;&lt;base&gt;.moc&gt; // or #include &quot;&lt;base&gt;.moc&quot;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>然后该源文件将通过 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 编译为输出文件 <code class="docutils literal notranslate"><span class="pre">&lt;base&gt;.moc</span></code>。关于完整输出文件路径的描述请见 <a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a> 一节。</p>
 <p>如果附加文件依赖项中的文件发生更改，该源文件将被 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 重新编译。</p>
 <section id="including-header-moc-files-in-sources">
@@ -106,6 +110,10 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"moc_&lt;header_base&gt;.cpp"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;moc_&lt;header_base&gt;.cpp&gt; // or #include &quot;moc_&lt;header_base&gt;.cpp&quot;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果源文件包含了头文件的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 输出文件，它将生成在与不包含时不同的位置。这在 <a class="reference internal" href="AUTOMOC.html#output-file-location">输出文件位置</a> 一节中有所描述。</p>
 </section>
 </section>
@@ -167,6 +175,10 @@
 <span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">myTarget</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">AUTOMOC</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function (add_qt5_client) find_package(Qt5 REQUIRED QUIET COMPONENTS Core Widgets) ... set_property(DIRECTORY &quot;${CMAKE_CURRENT_SOURCE_DIR}&quot; PROPERTY Qt5Core_VERSION_MAJOR &quot;${Qt5Core_VERSION_MAJOR}&quot;) set_property(DIRECTORY &quot;${CMAKE_CURRENT_SOURCE_DIR}&quot; PROPERTY Qt5Core_VERSION_MINOR &quot;${Qt5Core_VERSION_MAJOR}&quot;) ... endfunction () ... add_qt5_client() add_executable(myTarget main.cpp) target_link_libraries(myTarget Qt5::QtWidgets) set_property(TARGET myTarget PROPERTY AUTOMOC ON)</span></code>：定义一个函数，并为其后的语句建立独立作用域。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="modifiers">
 <h2>修饰符<a class="headerlink" href="AUTOMOC.html#modifiers" title="此标题的链接">¶</a></h2>
@@ -182,7 +194,7 @@
 <p><span class="target" id="index-0-prop_gbl:AUTOGEN_TARGETS_FOLDER"></span><a class="reference internal" href="../prop_gbl/AUTOGEN_TARGETS_FOLDER.html#prop_gbl:AUTOGEN_TARGETS_FOLDER" title="AUTOGEN_TARGETS_FOLDER"><code class="xref cmake cmake-prop_gbl docutils literal notranslate"><span class="pre">AUTOGEN_TARGETS_FOLDER</span></code></a>: 此全局属性可用于在 IDE（如 MSVS）中将 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code>、<span class="target" id="index-1-prop_tgt:AUTOUIC"></span><a class="reference internal" href="AUTOUIC.html#prop_tgt:AUTOUIC" title="AUTOUIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOUIC</span></code></a> 和 <span class="target" id="index-2-prop_tgt:AUTORCC"></span><a class="reference internal" href="AUTORCC.html#prop_tgt:AUTORCC" title="AUTORCC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTORCC</span></code></a> 目标归为一组。</p>
 <p><span class="target" id="index-0-variable:CMAKE_GLOBAL_AUTOGEN_TARGET"></span><a class="reference internal" href="../variable/CMAKE_GLOBAL_AUTOGEN_TARGET.html#variable:CMAKE_GLOBAL_AUTOGEN_TARGET" title="CMAKE_GLOBAL_AUTOGEN_TARGET"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GLOBAL_AUTOGEN_TARGET</span></code></a>: 当此变量为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 时，将生成一个全局 <code class="docutils literal notranslate"><span class="pre">autogen</span></code> 目标，该目标依赖于项目中所有 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 或 <span class="target" id="index-2-prop_tgt:AUTOUIC"></span><a class="reference internal" href="AUTOUIC.html#prop_tgt:AUTOUIC" title="AUTOUIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOUIC</span></code></a> 生成的 <a class="reference internal" href="../manual/cmake-qt.7.html#origin-autogen"><span class="std std-ref">&lt;ORIGIN&gt;_autogen</span></a> 目标。</p>
 <p><span class="target" id="index-0-prop_tgt:AUTOGEN_PARALLEL"></span><a class="reference internal" href="AUTOGEN_PARALLEL.html#prop_tgt:AUTOGEN_PARALLEL" title="AUTOGEN_PARALLEL"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_PARALLEL</span></code></a>: 此目标属性控制构建期间并行启动的 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 进程的数量。</p>
-<p><span class="target" id="index-0-prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX"></span><a class="reference internal" href="AUTOGEN_COMMAND_LINE_LENGTH_MAX.html#prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX" title="AUTOGEN_COMMAND_LINE_LENGTH_MAX"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_COMMAND_LINE_LENGTH_MAX</span></code></a>: 此目标属性控制在 Windows 上何时对 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 进程使用响应文件的限制。</p>
+<p><span class="target" id="index-0-prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX"></span><a class="reference internal" href="AUTOGEN_COMMAND_LINE_LENGTH_MAX.html#prop_tgt:AUTOGEN_COMMAND_LINE_LENGTH_MAX" title="AUTOGEN_COMMAND_LINE_LENGTH_MAX"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">AUTOGEN_COMMAND_LINE_LENGTH_MAX</span></code></a>: 此目标属性控制在 Windows（微软桌面系统） 上何时对 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 或 <code class="docutils literal notranslate"><span class="pre">uic</span></code> 进程使用响应文件的限制。</p>
 <p>有关将 CMake 与 Qt 结合使用的更多信息，请参阅 <span class="target" id="index-0-manual:cmake-qt(7)"></span><a class="reference internal" href="../manual/cmake-qt.7.html#manual:cmake-qt(7)" title="cmake-qt(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-qt(7)</span></code></a> 手册。</p>
 </section>
 </section>

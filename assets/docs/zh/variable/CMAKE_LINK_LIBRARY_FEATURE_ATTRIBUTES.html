@@ -97,6 +97,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CMAKE_LINK_LIBRARY_WHOLE_ARCHIVE_ATTRIBUTES LIBRARY_TYPE=STATIC OVERRIDE=DEFAULT DEDUPLICATION=YES )</span></code>：调用 `set()` 命令，把变量 `CMAKE_LINK_LIBRARY_WHOLE_ARCHIVE_ATTRIBUTES` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">LIBRARY_TYPE=STATIC</span></code></dt><dd><p>此特性仅对静态库有意义。</p>
 </dd>
@@ -116,6 +120,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">global</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="o">$&lt;</span><span class="no">LINK_LIBRARY</span><span class="o">:</span><span class="no">WHOLE_ARCHIVE</span><span class="p">,</span><span class="no">A</span><span class="p">&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(A STATIC ...) add_library(B STATIC ...) target_link_libraries(B PUBLIC A) target_link_libraries(A PUBLIC B) add_library(global SHARED ...) target_link_libraries(global PRIVATE $&lt;LINK_LIBRARY:WHOLE_ARCHIVE,A&gt;)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>最终生成的链接命令中只会指定一次 <code class="docutils literal notranslate"><span class="pre">A</span></code> 库，并且链接器标志将确保从 <code class="docutils literal notranslate"><span class="pre">A</span></code> 库中加载所有符号。</p>
 </section>
 </section>

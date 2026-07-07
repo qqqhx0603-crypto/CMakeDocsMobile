@@ -66,6 +66,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_COVERAGE_COMMAND</span><span class="w"> </span><span class="p">...</span><span class="na">/run-coverage-and-consolidate.sh</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CTEST_COVERAGE_COMMAND .../run-coverage-and-consolidate.sh)</span></code>：调用 `set()` 命令，把变量 `CTEST_COVERAGE_COMMAND` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>其中 <code class="docutils literal notranslate"><span class="pre">run-coverage-and-consolidate.sh</span></code> 脚本可能由 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 命令创建，并且可能包含以下代码</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 <span class="nv">CoberturaFiles</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>find<span class="w"> </span><span class="s2">"/path/to/source"</span><span class="w"> </span>-name<span class="w"> </span><span class="s2">"cobertura.ser"</span><span class="k">)</span><span class="s2">"</span>
@@ -75,6 +79,10 @@ cobertura-report<span class="w"> </span>--datafile<span class="w"> </span>cobert
 <span class="w">                 </span>--format<span class="w"> </span>xml<span class="w"> </span><span class="nv">$SourceDirs</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#!/usr/bin/env bash CoberturaFiles=&quot;$(find &quot;/path/to/source&quot; -name &quot;cobertura.ser&quot;)&quot; SourceDirs=&quot;$(find &quot;/path/to/source&quot; -name &quot;java&quot; -type d)&quot; cobertura-merge --datafile coberturamerge.ser $CoberturaFiles cobertura-report --datafile coberturamerge.ser --destination . \ --format xml $SourceDirs</span></code>：这是命令执行后的输出结果，内容为：#!/usr/bin/env bash CoberturaFiles=&quot;$(find &quot;/path/to/source&quot; -name &quot;cobertura.ser&quot;)&quot; SourceDirs=&quot;$(find &quot;/path/to/source&quot; -name &quot;java&quot; -type d)&quot; cobertura-merge --datafile coberturamerge.ser $CoberturaFiles cobertura-report --datafile coberturamerge.ser --destination . \ --format xml $SourceDirs</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>该脚本使用 <code class="docutils literal notranslate"><span class="pre">find</span></code> 捕获项目源目录下方找到的所有 <code class="docutils literal notranslate"><span class="pre">cobertura.ser</span></code> 文件的路径。它保留文件列表，并将其作为参数提供给 <code class="docutils literal notranslate"><span class="pre">cobertura-merge</span></code> 程序。 <code class="docutils literal notranslate"><span class="pre">--datafile</span></code> 参数表示将把合并结果保存在哪里。</p>
 <p>然后使用 <code class="docutils literal notranslate"><span class="pre">cobertura-report</span></code> 程序使用组合的 <code class="docutils literal notranslate"><span class="pre">coberturamerge.ser</span></code> 文件生成 XML 报告。对 cobertura-report 程序的调用需要一些命名参数。</p>
 <dl class="simple">

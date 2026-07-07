@@ -58,20 +58,28 @@
 <div class="versionadded">
 <p><span class="versionmodified added">3.6 版本新增。</span></p>
 </div>
-<p>告知 <a class="reference internal" href="../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja 生成器</span></a> 在 <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code> 中的每个输出路径前添加一个前缀。如果前缀缺少尾部斜杠，则会附加一个斜杠。</p>
+<p>告知 <a class="reference internal" href="../manual/cmake-generators.7.html#ninja-generators"><span class="std std-ref">Ninja（构建工具） 生成器</span></a> 在 <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code> 中的每个输出路径前添加一个前缀。如果前缀缺少尾部斜杠，则会附加一个斜杠。</p>
 <p>当生成的 ninja 文件旨在作为 <code class="docutils literal notranslate"><span class="pre">subninja</span></code> 文件嵌入到 *超级* ninja 项目中时，这很有用。例如，命令</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>super-build-dir<span class="w"> </span><span class="o">&amp;&amp;</span>
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>super-build-dir<span class="w"> </span><span class="o">&amp;&amp;</span>
 cmake<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-S<span class="w"> </span>/path/to/src<span class="w"> </span>-B<span class="w"> </span>sub<span class="w"> </span>-DCMAKE_NINJA_OUTPUT_PATH_PREFIX<span class="o">=</span>sub/
 <span class="c1">#                                 ^^^---------- these match -----------^^^</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cd super-build-dir &amp;&amp; cmake -G Ninja -S /path/to/src -B sub -DCMAKE_NINJA_OUTPUT_PATH_PREFIX=sub/ # ^^^---------- these match -----------^^^</span></code>：这是一条命令行输入，切换当前工作目录。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>生成一个构建目录，其顶级目录 (<span class="target" id="index-0-variable:CMAKE_BINARY_DIR"></span><a class="reference internal" href="CMAKE_BINARY_DIR.html#variable:CMAKE_BINARY_DIR" title="CMAKE_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_BINARY_DIR</span></code></a>) 位于 <code class="docutils literal notranslate"><span class="pre">super-build-dir/sub</span></code> 中。构建目录的路径以输出路径前缀结尾。这使其适合在单独编写的 <code class="docutils literal notranslate"><span class="pre">super-build-dir/build.ninja</span></code> 文件中使用如下指令</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>subninja sub/build.ninja
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">subninja sub/build.ninja</span></code>：这一行给出示例文本或输出，用来说明：subninja sub/build.ninja</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在 <code class="docutils literal notranslate"><span class="pre">super-build-dir/build.ninja</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">auto-regeneration</span></code> 规则必须对 <code class="docutils literal notranslate"><span class="pre">sub/build.ninja</span></code> 具有仅顺序依赖关系。</p>
 <div class="versionadded">
-<p><span class="versionmodified added">3.27 版本新增：</span><span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 生成器支持此变量。</p>
+<p><span class="versionmodified added">3.27 版本新增：</span><span class="target" id="index-0-generator:Ninja（构建工具） Multi-Config"></span><a class="reference internal" href="../generator/Ninja（构建工具）&#32;Multi-Config.html#generator:Ninja（构建工具） Multi-Config" title="Ninja（构建工具） Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code></a> 生成器支持此变量。</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注意</p>

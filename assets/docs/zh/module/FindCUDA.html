@@ -68,7 +68,7 @@
 <section id="documentation-of-deprecated-usage">
 <h2>弃用用法文档<a class="headerlink" href="FindCUDA.html#documentation-of-deprecated-usage" title="链接到此标题">¶</a></h2>
 <p>用于构建 CUDA C 文件的工具：库和构建依赖项。</p>
-<p>该脚本用于定位 NVIDIA CUDA C 工具。它应适用于 Linux、Windows 和 macOS，并应与 CUDA C 发布版本保持合理同步。</p>
+<p>该脚本用于定位 NVIDIA CUDA C 工具。它应适用于 Linux、Windows（微软桌面系统） 和 macOS（苹果桌面系统），并应与 CUDA C 发布版本保持合理同步。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增：</span>支持 QNX。</p>
 </div>
@@ -81,7 +81,7 @@
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">CUDA_64_BIT_DEVICE_CODE</span></code> (默认值：主机位宽)</dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以编译 64 位设备代码，设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 则为 32 位设备代码。请注意，当从 CUDA 代码生成对象文件或 C 文件时，如果将其与主机代码设置为不同，将无法工作，因为生成的源代码中 <code class="docutils literal notranslate"><span class="pre">size_t</span></code> 是由 nvcc 定义的。如果您编译为 PTX 然后自行加载文件，则可以混合使用设备和主机的位宽。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">ON</span></code>)</dt><dd><p>如果您希望将自定义构建规则附加到 Visual Studio 中的源文件，请设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。如果您将同一个 cuda 文件添加到多个目标中，请将其设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">ON</span></code>)</dt><dd><p>如果您希望将自定义构建规则附加到 Visual Studio（集成开发环境） 中的源文件，请设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code>。如果您将同一个 cuda 文件添加到多个目标中，请将其设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code>。</p>
 <p>这允许用户从 CUDA 文件构建目标；但是，如果 CUDA 源文件被添加到多个目标中，可能会发生不好的事情。在执行并行构建时，自定义构建命令可能会被多次且并行运行，从而导致晦涩的构建错误。VS 会为目标中的每个源文件运行规则，无论它被添加到多少个项目中，一个源文件只能有一个规则。当规则从多个目标运行时，生成的文件可能会出现竞争条件。最终一切都会构建完成，但如果用户不知道这种行为，可能会产生困惑。如果此脚本能够检测到跨多个目标的源文件重用并自动为用户关闭该选项会很好，但目前尚未找到好的解决方案。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CUDA_BUILD_CUBIN</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">OFF</span></code>)</dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 可在设备模式下启用带有 <code class="docutils literal notranslate"><span class="pre">-cubin</span></code> 选项的额外编译步骤。输出将被解析，并在构建期间打印寄存器和共享内存的使用情况。</p>
@@ -97,7 +97,7 @@
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CUDA_HOST_COMPILATION_CPP</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">ON</span></code>)</dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 以使用 C 编译器编译主机代码。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CUDA_HOST_COMPILER</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">CMAKE_C_COMPILER</span></code>)</dt><dd><p>设置 nvcc 使用的主机编译器。如果 <code class="docutils literal notranslate"><span class="pre">CUDA_NVCC_FLAGS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CUDA_NVCC_FLAGS_&lt;CONFIG&gt;</span></code> 变量中已存在 <code class="docutils literal notranslate"><span class="pre">-ccbin</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--compiler-bindir</span></code>，则忽略此项。对于 Visual Studio 目标，主机编译器是通过一个或多个 Visual Studio 宏（例如 <code class="docutils literal notranslate"><span class="pre">$(VCInstallDir)</span></code>）构建的，当在 VS 中运行命令时，这些宏会展开为路径。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDA_HOST_COMPILER</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">CMAKE_C_COMPILER</span></code>)</dt><dd><p>设置 nvcc 使用的主机编译器。如果 <code class="docutils literal notranslate"><span class="pre">CUDA_NVCC_FLAGS</span></code> 或 <code class="docutils literal notranslate"><span class="pre">CUDA_NVCC_FLAGS_&lt;CONFIG&gt;</span></code> 变量中已存在 <code class="docutils literal notranslate"><span class="pre">-ccbin</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--compiler-bindir</span></code>，则忽略此项。对于 Visual Studio（集成开发环境） 目标，主机编译器是通过一个或多个 Visual Studio（集成开发环境） 宏（例如 <code class="docutils literal notranslate"><span class="pre">$(VCInstallDir)</span></code>）构建的，当在 VS 中运行命令时，这些宏会展开为路径。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.13 版本新增：</span>如果设置了 <span class="target" id="index-0-envvar:CUDAHOSTCXX"></span><a class="reference internal" href="../envvar/CUDAHOSTCXX.html#envvar:CUDAHOSTCXX" title="CUDAHOSTCXX"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CUDAHOSTCXX</span></code></a> 环境变量，它将被用作默认值。</p>
 </div>
@@ -121,7 +121,7 @@
 </div>
 <p>启用后，将在 <code class="docutils literal notranslate"><span class="pre">CUDA_LIBRARIES</span></code> 中使用静态版本的 CUDA 运行时库。如果配置的 CUDA 版本不支持此选项，它将被静默禁用。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CUDA_VERBOSE_BUILD</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">OFF</span></code>)</dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以查看构建 CUDA 文件时使用的所有命令。使用 Makefile 生成器时，该值默认为 <code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code>（运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">VERBOSE=1</span></code> 以查看输出），尽管将 <code class="docutils literal notranslate"><span class="pre">CUDA_VERBOSE_BUILD</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 将始终打印输出。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDA_VERBOSE_BUILD</span></code> (默认值：<code class="docutils literal notranslate"><span class="pre">OFF</span></code>)</dt><dd><p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以查看构建 CUDA 文件时使用的所有命令。使用 Makefile（构建脚本） 生成器时，该值默认为 <code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code>（运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">VERBOSE=1</span></code> 以查看输出），尽管将 <code class="docutils literal notranslate"><span class="pre">CUDA_VERBOSE_BUILD</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 将始终打印输出。</p>
 </dd>
 </dl>
 </section>
@@ -131,37 +131,69 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_add_cufft_to_target(</span><span class="nv">&lt;cuda_target&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_add_cufft_to_target(&lt;cuda_target&gt;)</span></code>：调用 `cuda_add_cufft_to_target()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将 cufft 库添加到目标（可以是任何目标）。处理是否处于仿真模式。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_add_cublas_to_target(</span><span class="nv">&lt;cuda_target&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_add_cublas_to_target(&lt;cuda_target&gt;)</span></code>：调用 `cuda_add_cublas_to_target()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将 cublas 库添加到目标（可以是任何目标）。处理是否处于仿真模式。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_add_executable(</span><span class="nv">&lt;cuda_target&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span>
 <span class="w">                    </span><span class="p">[</span><span class="no">WIN32</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">MACOSX_BUNDLE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_add_executable(&lt;cuda_target&gt; &lt;file&gt;... [WIN32] [MACOSX_BUNDLE] [EXCLUDE_FROM_ALL] [OPTIONS ...])</span></code>：调用 `cuda_add_executable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>创建一个由指定文件组成的可执行文件 <code class="docutils literal notranslate"><span class="pre">&lt;cuda_target&gt;</span></code>。所有非 CUDA C 文件使用 CMake 指定的标准构建规则进行编译，而 CUDA 文件则使用 nvcc 和主机编译器编译为对象文件。此外，<code class="docutils literal notranslate"><span class="pre">CUDA_INCLUDE_DIRS</span></code> 会自动添加到 <span class="target" id="index-0-command:include_directories"></span><a class="reference internal" href="../command/include_directories.html#command:include_directories" title="include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include_directories()</span></code></a> 中。调用此宏后，可以在目标上使用一些标准的 CMake 目标调用（例如 <span class="target" id="index-0-command:set_target_properties"></span><a class="reference internal" href="../command/set_target_properties.html#command:set_target_properties" title="set_target_properties"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set_target_properties()</span></code></a> 和 <span class="target" id="index-3-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>），但设置调整编译标志的属性不会影响由 nvcc 编译的代码。此类标志应在调用 <code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code>、<code class="docutils literal notranslate"><span class="pre">cuda_add_library()</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cuda_wrap_srcs()</span></code> 之前进行修改。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_add_library(</span><span class="nv">&lt;cuda_target&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span>
 <span class="w">                 </span><span class="p">[</span><span class="no">STATIC</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">MODULE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">EXCLUDE_FROM_ALL</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_add_library(&lt;cuda_target&gt; &lt;file&gt;... [STATIC | SHARED | MODULE] [EXCLUDE_FROM_ALL] [OPTIONS ...])</span></code>：调用 `cuda_add_library()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>与 <code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code> 相同，不同之处在于创建的是库。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_build_clean_target()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_build_clean_target()</span></code>：调用 `cuda_build_clean_target()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>创建一个便利目标，用于删除所有生成的依赖文件。运行此目标后，您应该执行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> 以确保依赖文件被重新生成。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_compile(</span><span class="nv">&lt;generated_files&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">STATIC</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">MODULE</span><span class="p">]</span>
 <span class="w">             </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_compile(&lt;generated_files&gt; &lt;file&gt;... [STATIC | SHARED | MODULE] [OPTIONS ...])</span></code>：调用 `cuda_compile()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>从输入源文件中返回一个生成文件列表，供 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 或 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 使用。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_compile_ptx(</span><span class="nv">&lt;generated_files&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_compile_ptx(&lt;generated_files&gt; &lt;file&gt;... [OPTIONS ...])</span></code>：调用 `cuda_compile_ptx()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>返回从输入源文件生成的 <code class="docutils literal notranslate"><span class="pre">PTX</span></code> 文件列表。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_compile_fatbin(</span><span class="nv">&lt;generated_files&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_compile_fatbin(&lt;generated_files&gt; &lt;file&gt;... [OPTIONS ...])</span></code>：调用 `cuda_compile_fatbin()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionadded">
 <p><span class="versionmodified added">版本 3.1 中新增。</span></p>
 </div>
@@ -169,6 +201,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_compile_cubin(</span><span class="nv">&lt;generated_files&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_compile_cubin(&lt;generated_files&gt; &lt;file&gt;... [OPTIONS ...])</span></code>：调用 `cuda_compile_cubin()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionadded">
 <p><span class="versionmodified added">版本 3.1 中新增。</span></p>
 </div>
@@ -178,19 +214,35 @@
 <span class="w">                                                    </span><span class="nv">&lt;object_files&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_compute_separable_compilation_object_file_name(&lt;output_file_var&gt; &lt;cuda_target&gt; &lt;object_files&gt;)</span></code>：调用 `cuda_compute_separable_compilation_object_file_name()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>计算用于可分离编译的中间链接文件的名称。此文件名通常传递给 <code class="docutils literal notranslate"><span class="pre">CUDA_LINK_SEPARABLE_COMPILATION_OBJECTS</span></code>。output_file_var 是根据 cuda_target 和由 <code class="docutils literal notranslate"><span class="pre">&lt;object_files&gt;</span></code> 指定的需要可分离编译的对象文件列表生成的。如果 <code class="docutils literal notranslate"><span class="pre">&lt;object_files&gt;</span></code> 列表为空，则 <code class="docutils literal notranslate"><span class="pre">&lt;output_file_var&gt;</span></code> 将为空。此函数会自动为 <code class="docutils literal notranslate"><span class="pre">cuda_add_library()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code> 调用。请注意这是一个函数，而不是宏。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_include_directories(</span><span class="nb">path0</span><span class="w"> </span><span class="nb">path1</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_include_directories(path0 path1 ...)</span></code>：调用 `cuda_include_directories()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>设置应传递给 nvcc 的目录（例如 <code class="docutils literal notranslate"><span class="pre">nvcc</span> <span class="pre">-Ipath0</span> <span class="pre">-Ipath1</span> <span class="pre">...</span></code>）。这些路径通常包含其他 <code class="docutils literal notranslate"><span class="pre">.cu</span></code> 文件。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_link_separable_compilation_objects(</span><span class="nv">&lt;output_file_var&gt;</span><span class="w"> </span><span class="nv">&lt;cuda_target&gt;</span>
 <span class="w">                                        </span><span class="nv">&lt;nvcc_flags&gt;</span><span class="w"> </span><span class="nv">&lt;object_files&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_link_separable_compilation_objects(&lt;output_file_var&gt; &lt;cuda_target&gt; &lt;nvcc_flags&gt; &lt;object_files&gt;)</span></code>：调用 `cuda_link_separable_compilation_objects()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>根据给定的对象文件生成可分离编译所需的链接对象。这会自动为 <code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cuda_add_library()</span></code> 调用，但在直接使用 <code class="docutils literal notranslate"><span class="pre">cuda_wrap_srcs()</span></code> 时可以手动调用。当从 <code class="docutils literal notranslate"><span class="pre">cuda_add_library()</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code> 调用时，传入的 <code class="docutils literal notranslate"><span class="pre">&lt;nvcc_flags&gt;</span></code> 与通过 <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> 参数传入的标志相同。自动添加的唯一 nvcc 标志是由 <code class="docutils literal notranslate"><span class="pre">CUDA_64_BIT_DEVICE_CODE</span></code> 指定的位宽标志。请注意这是一个函数，而不是宏。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_select_nvcc_arch_flags(</span><span class="nv">&lt;out_variable&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;target_CUDA_architecture&gt;</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_select_nvcc_arch_flags(&lt;out_variable&gt; [&lt;target_CUDA_architecture&gt; ...])</span></code>：调用 `cuda_select_nvcc_arch_flags()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>根据 <code class="docutils literal notranslate"><span class="pre">target_CUDA_architecture</span></code> 为 nvcc 选择 GPU 架构标志。</p>
 <p><code class="docutils literal notranslate"><span class="pre">target_CUDA_architecture</span></code> 的值</p>
 <ul class="simple">
@@ -205,11 +257,19 @@
 <span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CUDA_NVCC_FLAGS</span><span class="w"> </span><span class="o">${</span><span class="nt">ARCH_FLAGS</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_select_nvcc_arch_flags(ARCH_FLAGS &quot;3.0&quot; &quot;3.5+PTX&quot; &quot;5.2(5.0)&quot; &quot;Maxwell&quot;) list(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})</span></code>：调用 `cuda_select_nvcc_arch_flags()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>更多关于 CUDA 架构的信息：<a class="reference external" href="https://en.wikipedia.org/wiki/CUDA">https://en.wikipedia.org/wiki/CUDA</a>。请注意这是一个函数，而不是宏。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_wrap_srcs(</span><span class="nv">&lt;cuda_target&gt;</span><span class="w"> </span><span class="nv">&lt;format&gt;</span><span class="w"> </span><span class="nv">&lt;generated_files&gt;</span><span class="w"> </span><span class="nv">&lt;file&gt;...</span>
 <span class="w">               </span><span class="p">[</span><span class="no">STATIC</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">SHARED</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="no">MODULE</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">OPTIONS</span><span class="w"> </span><span class="p">...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_wrap_srcs(&lt;cuda_target&gt; &lt;format&gt; &lt;generated_files&gt; &lt;file&gt;... [STATIC | SHARED | MODULE] [OPTIONS ...])</span></code>：调用 `cuda_wrap_srcs()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这就是所有魔法发生的地方。<code class="docutils literal notranslate"><span class="pre">cuda_add_executable()</span></code>、<code class="docutils literal notranslate"><span class="pre">cuda_add_library()</span></code>、<code class="docutils literal notranslate"><span class="pre">cuda_compile()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">cuda_compile_ptx()</span></code> 都在内部调用此函数。</p>
 <p>给定文件列表 <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;...</span></code>，此宏生成用于产生 PTX 或可链接对象的自定义命令（使用 <code class="docutils literal notranslate"><span class="pre">PTX</span></code> 或 <code class="docutils literal notranslate"><span class="pre">OBJ</span></code> 作为 <code class="docutils literal notranslate"><span class="pre">&lt;format&gt;</span></code> 参数进行切换）。不以 <code class="docutils literal notranslate"><span class="pre">.cu</span></code> 结尾或具有 <code class="docutils literal notranslate"><span class="pre">HEADER_FILE_ONLY</span></code> 属性的文件将被忽略。</p>
 <p><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> 之后传入的参数是提供给 nvcc 的额外命令行选项。您也可以通过指定配置名称后跟选项来指定每个配置的选项。通用选项必须先于配置特定选项。不需要指定所有配置，仅使用提供的配置。例如：</p>
@@ -221,10 +281,14 @@
 <span class="w">  </span><span class="no">MINSIZEREL</span><span class="w"> </span><span class="p">--</span><span class="nb">use_fast_math</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>对于某些配置（即在设置了 <code class="docutils literal notranslate"><span class="pre">CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE</span></code> 为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 的情况下 VS 生成对象文件），给定的 cuda 文件不会产生生成的文件。这是因为当您将 cuda 文件添加到 Visual Studio 时，它知道该文件会产生一个对象文件，并会自动链接生成的对象文件。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cuda_add_executable(... OPTIONS -DFLAG=2 &quot;-DFLAG_OTHER=space in flag&quot; DEBUG -g RELEASE --use_fast_math RELWITHDEBINFO --use_fast_math;-g MINSIZEREL --use_fast_math)</span></code>：调用 `cuda_add_executable()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>对于某些配置（即在设置了 <code class="docutils literal notranslate"><span class="pre">CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE</span></code> 为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 的情况下 VS 生成对象文件），给定的 cuda 文件不会产生生成的文件。这是因为当您将 cuda 文件添加到 Visual Studio（集成开发环境） 时，它知道该文件会产生一个对象文件，并会自动链接生成的对象文件。</p>
 <p>此脚本还将生成一个单独的 cmake 脚本，该脚本在构建时用于调用 nvcc。原因有几个：</p>
 <ul class="simple">
-<li><p>nvcc 可能会返回负数作为返回值，这会误导 Visual Studio 认为命令成功。该脚本现在会检查错误代码，并在出现问题时生成错误。</p></li>
+<li><p>nvcc 可能会返回负数作为返回值，这会误导 Visual Studio（集成开发环境） 认为命令成功。该脚本现在会检查错误代码，并在出现问题时生成错误。</p></li>
 <li><p>众所周知，nvcc 在遇到问题时不会删除不完整的输出。这会误导构建系统认为目标已生成，而实际上存在一个不可用的文件。如果发生错误，该脚本现在会删除输出文件。</p></li>
 <li><p>通过将所有影响构建的选项放入一个文件，然后使构建规则依赖于该文件，当选项发生变化时，输出文件将被重新生成。</p></li>
 </ul>
@@ -301,9 +365,9 @@
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CUDA_npps_LIBRARY</span></code></dt><dd><p>NVIDIA 性能原语库（信号处理）。仅适用于 CUDA 5.5+ 版本。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CUDA_nvcuvenc_LIBRARY</span></code></dt><dd><p>CUDA 视频编码器库。仅适用于 CUDA 3.2+ 版本。仅限 Windows。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDA_nvcuvenc_LIBRARY</span></code></dt><dd><p>CUDA 视频编码器库。仅适用于 CUDA 3.2+ 版本。仅限 Windows（微软桌面系统）。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CUDA_nvcuvid_LIBRARY</span></code></dt><dd><p>CUDA 视频解码器库。仅适用于 CUDA 3.2+ 版本。仅限 Windows。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CUDA_nvcuvid_LIBRARY</span></code></dt><dd><p>CUDA 视频解码器库。仅适用于 CUDA 3.2+ 版本。仅限 Windows（微软桌面系统）。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CUDA_nvToolsExt_LIBRARY</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">3.16 版本新增：</span>NVIDIA CUDA 工具扩展库。适用于 CUDA 5+ 版本。</p>

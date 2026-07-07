@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">CxxTest</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(CxxTest [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <section id="result-variables">
 <h2>结果变量<a class="headerlink" href="FindCxxTest.html#result-variables" title="此标题的链接">¶</a></h2>
 <p>此模块定义了以下变量</p>
@@ -103,11 +107,15 @@
 <p>如果找到 CxxTest，该模块提供以下命令</p>
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:cxxtest_add_test">
-<span class="sig-name descname"><span class="pre">cxxtest_add_test</span></span><a class="headerlink" href="FindCxxTest.html#command:cxxtest_add_test" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cxxtest_add_test</span></span><a class="headerlink" href="FindCxxTest.html#command:cxxtest_add_test" title="跳转到此定义">¶</a></dt>
 <dd><p>创建一个 CxxTest 运行器并将其添加到 CTest 测试套件中</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cxxtest_add_test(</span><span class="nv">&lt;test-name&gt;</span><span class="w"> </span><span class="nv">&lt;gen-source-file&gt;</span><span class="w"> </span><span class="nv">&lt;input-files-to-testgen&gt;...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cxxtest_add_test(&lt;test-name&gt; &lt;gen-source-file&gt; &lt;input-files-to-testgen&gt;...)</span></code>：调用 `cxxtest_add_test()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>参数</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">&lt;test-name&gt;</span></code></dt><dd><p>要创建并在 CTest 套件中注册为测试的测试可执行目标名称。</p>
@@ -140,7 +148,7 @@
 <h2>示例<a class="headerlink" href="FindCxxTest.html#examples" title="此标题的永久链接">¶</a></h2>
 <p>以下示例演示了如何在此模块中将 CxxTest 与 CMake 一起使用。如果找到 CxxTest</p>
 <ul class="simple">
-<li><p>在项目中手动创建额外的接口 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，以封装 CxxTest 的使用需求并将其链接到指定的测试。此类目标在处理多个测试时非常有用。</p></li>
+<li><p>在项目中手动创建额外的接口 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a>，以封装 CxxTest 的使用需求并将其链接到指定的测试。此类目标在处理多个测试时非常有用。</p></li>
 <li><p>调用测试生成器，从位于当前源目录的输入头文件 <code class="docutils literal notranslate"><span class="pre">foo_test.h</span></code> 在当前二进制目录中创建 <code class="docutils literal notranslate"><span class="pre">foo_test.cc</span></code>。</p></li>
 <li><p>构建一个名为 <code class="docutils literal notranslate"><span class="pre">unit_test_foo</span></code> 的可执行文件，并将其在 CTest 中注册为一项测试。</p></li>
 </ul>
@@ -177,9 +185,13 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(CxxTest) # Create interface imported target: if(CxxTest_FOUND AND NOT TARGET CxxTest::CxxTest) add_library(CxxTest::CxxTest INTERFACE IMPORTED) set_target_properties( CxxTest::CxxTest PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${CXXTEST_INCLUDE_DIRS}&quot; ) endif() # Add test: if(CxxTest_FOUND) enable_testing() cxxtest_add_test( unit_test_foo foo_test.cc ${CMAKE_CURRENT_SOURCE_DIR}/foo_test.h ) target_link_libraries( unit_test_foo PRIVATE CxxTest::CxxTest # Link any project targets as needed, if test depends on them: foo ) endif()</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">foo_test.h</span></code></span><a class="headerlink" href="FindCxxTest.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">foo_test.h</span></code></span><a class="headerlink" href="FindCxxTest.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cxxtest/TestSuite.h&gt;</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MyTestSuite</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CxxTest</span><span class="o">::</span><span class="n">TestSuite</span>
@@ -193,6 +205,10 @@
 <span class="p">};</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;cxxtest/TestSuite.h&gt; class MyTestSuite : public CxxTest::TestSuite { public: void testAddition(void) { TS_ASSERT(1 + 1 &gt; 1); TS_ASSERT_EQUALS(1 + 1, 2); } };</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>

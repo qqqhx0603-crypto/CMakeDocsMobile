@@ -62,19 +62,31 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">OpenSceneGraph</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(OpenSceneGraph)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>该模块被 <span class="target" id="index-1-module:FindOpenSceneGraph"></span><a class="reference internal" href="FindOpenSceneGraph.html#module:FindOpenSceneGraph" title="FindOpenSceneGraph"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindOpenSceneGraph</span></code></a> 内部用于查找 osg 库。在常规使用 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令时，不建议直接包含此模块。但是，它也可以作为一个独立的模块供高级用户使用，以便在需要对检测过程进行更细粒度控制时（例如显式查找 osg 库或绕过自动组件检测）使用。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">osg</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(osg)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>OpenSceneGraph 核心库头文件在 C++ 项目源码中的包含方式如下：</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.cxx</span></code></span><a class="headerlink" href="Findosg.html#id1" title="此代码的链接">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;osg/PositionAttitudeTransform&gt;</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;osg/PositionAttitudeTransform&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
-<p>使用 OpenSceneGraph 工具包时，可能还需要其他库，例如 OpenGL。</p>
+<p>使用 OpenSceneGraph 工具包时，可能还需要其他库，例如 OpenGL（开放图形库）。</p>
 <section id="result-variables">
 <h2>结果变量<a class="headerlink" href="Findosg.html#result-variables" title="此标题的链接">¶</a></h2>
 <p>此模块定义了以下变量</p>
@@ -121,7 +133,7 @@
 </section>
 <section id="examples">
 <h2>示例<a class="headerlink" href="Findosg.html#examples" title="此标题的永久链接">¶</a></h2>
-<p>使用此模块显式查找 osg 库，并创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (imported target)</span></a> 接口，该接口封装了将其链接到项目目标时所需的各项要求。</p>
+<p>使用此模块显式查找 osg 库，并创建一个 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (imported target)</span></a> 接口，该接口封装了将其链接到项目目标时所需的各项要求。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">osg</span><span class="nf">)</span>
 
 <span class="nf">if(</span><span class="nb">osg_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">osg</span><span class="o">::</span><span class="nb">osg</span><span class="nf">)</span>
@@ -137,6 +149,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">osg</span><span class="o">::</span><span class="nb">osg</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(osg) if(osg_FOUND AND NOT TARGET osg::osg) add_library(osg::osg INTERFACE IMPORTED) set_target_properties( osg::osg PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${OSG_INCLUDE_DIR}&quot; INTERFACE_LINK_LIBRARIES &quot;${OSG_LIBRARIES}&quot; ) endif() target_link_libraries(example PRIVATE osg::osg)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="Findosg.html#see-also" title="链接到此标题">¶</a></h2>

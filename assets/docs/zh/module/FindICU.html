@@ -62,8 +62,12 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ICU</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(ICU [&lt;version&gt;] COMPONENTS &lt;components&gt;... [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionadded">
-<p><span class="versionmodified added">3.11 版本新增：</span>支持 Windows 上的静态库。</p>
+<p><span class="versionmodified added">3.11 版本新增：</span>支持 Windows（微软桌面系统） 上的静态库。</p>
 </div>
 <section id="components">
 <h2>组件<a class="headerlink" href="FindICU.html#components" title="此标题的链接">¶</a></h2>
@@ -71,11 +75,15 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ICU</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(ICU COMPONENTS &lt;components&gt;...)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>支持以下组件</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>查找 ICU 数据库。在 Windows 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">dt</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>查找 ICU 数据库。在 Windows（微软桌面系统） 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">dt</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">i18n</span></code></dt><dd><p>查找 ICU 国际化库。在 Windows 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">in</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">i18n</span></code></dt><dd><p>查找 ICU 国际化库。在 Windows（微软桌面系统） 上，该库组件命名为 <code class="docutils literal notranslate"><span class="pre">in</span></code>，否则可使用上述任何组件名称，系统将自动选择相应的特定平台库名称。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">io</span></code></dt><dd><p>查找 ICU 流与 I/O (Unicode stdio) 库。</p>
 </dd>
@@ -92,9 +100,9 @@
 </dl>
 <p>为了让该模块成功找到 ICU，至少应指定一个组件。</p>
 </section>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindICU.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindICU.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <p><code class="docutils literal notranslate"><span class="pre">ICU::&lt;component&gt;</span></code></p>
 <blockquote>
 <div><p>封装了指定 ICU 组件使用要求的目标，仅在找到该组件时可用。<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;</span></code> 应按上述列表以小写形式编写。例如，对于国际化库，使用 <code class="docutils literal notranslate"><span class="pre">ICU::i18n</span></code>。</p>
@@ -157,7 +165,7 @@
 </dl>
 <p>ICU 数据文件定义在以下变量中</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">ICU_MAKEFILE_INC</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Makefile.inc</span></code> 文件的路径。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ICU_MAKEFILE_INC</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Makefile（构建脚本）.inc</span></code> 文件的路径。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ICU_PKGDATA_INC</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">pkgdata.inc</span></code> 文件的路径。</p>
 </dd>
@@ -194,6 +202,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">i18n</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">io</span><span class="w"> </span><span class="no">ICU</span><span class="o">::</span><span class="nb">uc</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(ICU COMPONENTS i18n io uc) target_link_libraries(project_target PRIVATE ICU::i18n ICU::io ICU::uc)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 
@@ -209,7 +221,7 @@
     <ul>
 <li><a class="reference internal" href="FindICU.html#">FindICU</a><ul>
 <li><a class="reference internal" href="FindICU.html#components">组件</a></li>
-<li><a class="reference internal" href="FindICU.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindICU.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindICU.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindICU.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindICU.html#hints">提示</a></li>

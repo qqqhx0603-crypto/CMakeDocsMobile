@@ -60,16 +60,24 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIncludeFile</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIncludeFile)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <section id="commands">
 <h2>命令<a class="headerlink" href="CheckIncludeFile.html#commands" title="链接到此标题">¶</a></h2>
 <p>此模块提供以下命令</p>
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:check_include_file">
-<span class="sig-name descname"><span class="pre">check_include_file</span></span><a class="headerlink" href="CheckIncludeFile.html#command:check_include_file" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_include_file</span></span><a class="headerlink" href="CheckIncludeFile.html#command:check_include_file" title="跳转到此定义">¶</a></dt>
 <dd><p>一次性检查头文件是否存在且能否在 C 代码中被包含</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_include_file(</span><span class="nv">&lt;include&gt;</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;flags&gt;</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">check_include_file(&lt;include&gt; &lt;variable&gt; [&lt;flags&gt;])</span></code>：调用 `check_include_file()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p class="rubric">参数为</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">&lt;include&gt;</span></code></dt><dd><p>要检查的头文件。</p>
@@ -101,7 +109,7 @@
 </dd>
 </dl>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
 </dd>
 </dl>
 <dl>
@@ -134,11 +142,15 @@
 <span class="nf">check_include_file(</span><span class="nb">unistd.h</span><span class="w"> </span><span class="no">HAVE_UNISTD_H</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIncludeFile) check_include_file(unistd.h HAVE_UNISTD_H)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-isolated-check">
 <h3>示例：独立检查<a class="headerlink" href="CheckIncludeFile.html#example-isolated-check" title="此标题的链接">¶</a></h3>
 <p>在以下示例中，本模块与 <span class="target" id="index-0-module:CMakePushCheckState"></span><a class="reference internal" href="CMakePushCheckState.html#module:CMakePushCheckState" title="CMakePushCheckState"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakePushCheckState</span></code></a> 模块结合使用，以临时修改所需的编译定义（通过 <code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_DEFINITIONS</span></code>）并验证 C 头文件 <code class="docutils literal notranslate"><span class="pre">&lt;ucontext.h&gt;</span></code> 是否可用。结果存储在内部缓存变量 <code class="docutils literal notranslate"><span class="pre">HAVE_UCONTEXT_H</span></code> 中。</p>
-<p>例如，在 macOS 上，<code class="docutils literal notranslate"><span class="pre">ucontext</span></code> API 已被弃用，除非定义了特定的功能宏，否则头文件可能会被隐藏。特别是，定义 <code class="docutils literal notranslate"><span class="pre">_XOPEN_SOURCE</span></code>（不带值）可以在不启用更广泛的 POSIX 或 SUS（单一 Unix 规范）特性（值 500 或更高）的情况下暴露必要的符号。</p>
+<p>例如，在 macOS（苹果桌面系统） 上，<code class="docutils literal notranslate"><span class="pre">ucontext</span></code> API 已被弃用，除非定义了特定的功能宏，否则头文件可能会被隐藏。特别是，定义 <code class="docutils literal notranslate"><span class="pre">_XOPEN_SOURCE</span></code>（不带值）可以在不启用更广泛的 POSIX 或 SUS（单一 Unix 规范）特性（值 500 或更高）的情况下暴露必要的符号。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckIncludeFile</span><span class="nf">)</span>
 <span class="nf">include(</span><span class="nb">CMakePushCheckState</span><span class="nf">)</span>
 
@@ -151,6 +163,10 @@
 <span class="nf">cmake_pop_check_state()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckIncludeFile) include(CMakePushCheckState) cmake_push_check_state(RESET) if(CMAKE_SYSTEM_NAME STREQUAL &quot;Darwin&quot;) set(CMAKE_REQUIRED_DEFINITIONS -D_XOPEN_SOURCE) endif() check_include_file(ucontext.h HAVE_UCONTEXT_H) cmake_pop_check_state()</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 <section id="see-also">

@@ -56,7 +56,7 @@
   <section id="cmake-verify-private-header-sets">
 <span id="variable:CMAKE_VERIFY_PRIVATE_HEADER_SETS"></span><h1>CMAKE_VERIFY_PRIVATE_HEADER_SETS<a class="headerlink" href="CMAKE_VERIFY_PRIVATE_HEADER_SETS.html#cmake-verify-private-header-sets" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
-<p><span class="versionmodified added">Added in version 4.3.</span></p>
+<p><span class="versionmodified added">4.3 版本新增。</span></p>
 </div>
 <p>此变量用于初始化目标创建时 <span class="target" id="index-1-prop_tgt:VERIFY_PRIVATE_HEADER_SETS"></span><a class="reference internal" href="../prop_tgt/VERIFY_PRIVATE_HEADER_SETS.html#prop_tgt:VERIFY_PRIVATE_HEADER_SETS" title="VERIFY_PRIVATE_HEADER_SETS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">VERIFY_PRIVATE_HEADER_SETS</span></code></a> 属性。将其设置为 true 可启用私有头文件集合验证。</p>
 <p>项目通常不应设置此变量，它旨在作为开发人员的控制，在 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="../manual/cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令或其他等效方法上设置。开发人员必须能够根据其自身机器和编译器的功能启用或禁用头文件集合验证。</p>
@@ -77,6 +77,10 @@
 <span class="nf">add_subdirectory(</span><span class="nb">src</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># Save original setting so we can restore it later set(want_interface_header_set_verification ${CMAKE_VERIFY_INTERFACE_HEADER_SETS}) set(want_private_header_set_verification ${CMAKE_VERIFY_PRIVATE_HEADER_SETS}) # Include the vendored dependency with header set verification disabled set(CMAKE_VERIFY_INTERFACE_HEADER_SETS OFF) set(CMAKE_VERIFY_PRIVATE_HEADER_SETS OFF) add_subdirectory(...) # Vendored sources, e.g. from git submodules # Add the project&#x27;s own sources. Restore the developer&#x27;s original choice # for whether to enable header set verification. set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ${want_interface_header_set_verification}) set(CMAKE_VERIFY_PRIVATE_HEADER_SETS ${want_private_header_set_verification}) add_subdirectory(src)</span></code>：这是注释，用来说明：Save original setting so we can restore it later set(want_interface_header_set_verification ${CMAKE_VERIFY_INTERFACE_HEADER_SETS}) set(want_private_header_set_verification ${CMAKE_VERIFY_PRIVATE_HEADER_SETS}) # Include the vendored dependency with header set verification disabled set(CMAKE_VERIFY_INTERFACE_HEADER_SETS OFF) set(CMAKE_VERIFY_PRIVATE_HEADER_SETS OFF) add_subdirectory(...) # Vendored sources, e.g. from git submodules # Add the project&#x27;s own sources. Restore the developer&#x27;s original choice # for whether to enable header set verification. set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ${want_interface_header_set_verification}) set(CMAKE_VERIFY_PRIVATE_HEADER_SETS ${want_private_header_set_verification}) add_subdirectory(src)。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>默认情况下，此变量未设置，这将导致禁用私有头文件集合验证。</p>
 <p>另请参阅 <span class="target" id="index-2-variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS"></span><a class="reference internal" href="CMAKE_VERIFY_INTERFACE_HEADER_SETS.html#variable:CMAKE_VERIFY_INTERFACE_HEADER_SETS" title="CMAKE_VERIFY_INTERFACE_HEADER_SETS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_VERIFY_INTERFACE_HEADER_SETS</span></code></a>。</p>
 </section>

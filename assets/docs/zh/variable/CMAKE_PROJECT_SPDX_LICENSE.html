@@ -56,7 +56,7 @@
   <section id="cmake-project-spdx-license">
 <span id="variable:CMAKE_PROJECT_SPDX_LICENSE"></span><h1>CMAKE_PROJECT_SPDX_LICENSE<a class="headerlink" href="CMAKE_PROJECT_SPDX_LICENSE.html#cmake-project-spdx-license" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
-<p><span class="versionmodified added">Added in version 4.3.</span></p>
+<p><span class="versionmodified added">4.3 版本新增。</span></p>
 </div>
 <p>顶级项目的许可证。</p>
 <p>此变量包含在顶级 CMakeLists.txt 文件中由 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令指定的项目许可证表达式。如果顶级 CMakeLists.txt 文件包含多个 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 调用，则来自该顶级 CMakeLists.txt 的最近一次调用将决定 <code class="docutils literal notranslate"><span class="pre">CMAKE_PROJECT_SPDX_LICENSE</span></code> 包含的值。例如，考虑以下顶级 CMakeLists.txt</p>
@@ -67,15 +67,27 @@
 <span class="nf">project(</span><span class="nb">Third</span><span class="w"> </span><span class="no">SPDX_LICENSE</span><span class="w"> </span><span class="s">"BSD-3-Clause AND CC0-1.0"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 4.3) project(First SPDX_LICENSE &quot;BSD-3-Clause&quot;) project(Second SPDX_LICENSE &quot;BSD-3-Clause AND CC-BY-SA-4.0&quot;) add_subdirectory(sub) project(Third SPDX_LICENSE &quot;BSD-3-Clause AND CC0-1.0&quot;)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>以及以下内容的 <code class="docutils literal notranslate"><span class="pre">sub/CMakeLists.txt</span></code>：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">project(</span><span class="nb">SubProj</span><span class="w"> </span><span class="no">SPDX_LICENSE</span><span class="w"> </span><span class="nb">Apache-2.0</span><span class="nf">)</span>
 <span class="nf">message(</span><span class="s">"CMAKE_PROJECT_SPDX_LICENSE = ${CMAKE_PROJECT_SPDX_LICENSE}"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">project(SubProj SPDX_LICENSE Apache-2.0) message(&quot;CMAKE_PROJECT_SPDX_LICENSE = ${CMAKE_PROJECT_SPDX_LICENSE}&quot;)</span></code>：调用 `project()` 命令，定义项目名称及语言等元数据。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>来自顶级 `CMakeLists.txt` 的最后看到的 `project()` 命令将是 `project(Second ...)`，因此这将打印：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CMAKE_PROJECT_SPDX_LICENSE = BSD-3-Clause AND CC-BY-SA-4.0
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">CMAKE_PROJECT_SPDX_LICENSE = BSD-3-Clause AND CC-BY-SA-4.0</span></code>：这一行把某个名称与给定值关联起来，常见于配置或键值示例。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>要从当前目录范围或更高范围内的 <span class="target" id="index-3-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 的最近一次调用中获取版本，请参阅 <span class="target" id="index-0-variable:PROJECT_SPDX_LICENSE"></span><a class="reference internal" href="PROJECT_SPDX_LICENSE.html#variable:PROJECT_SPDX_LICENSE" title="PROJECT_SPDX_LICENSE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">PROJECT_SPDX_LICENSE</span></code></a> 变量。</p>
 </section>
 

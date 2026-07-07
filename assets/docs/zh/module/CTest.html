@@ -62,6 +62,10 @@
 <span class="nf">include(</span><span class="nb">CTest</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">project(MyProject) ... include(CTest)</span></code>：调用 `project()` 命令，定义项目名称及语言等元数据。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>该模块会自动创建以下变量</p>
 <p><span class="target" id="index-0-variable:BUILD_TESTING"></span><a class="reference internal" href="../variable/BUILD_TESTING.html#variable:BUILD_TESTING" title="BUILD_TESTING"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code></a></p>
 <blockquote>
@@ -73,17 +77,29 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(BUILD_TESTING) # ... CMake code to create tests ... endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在启用测试时创建测试。</p>
 <p>要启用向 CDash 服务器提交，请在项目的顶部创建一个 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件，内容如下</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_NIGHTLY_START_TIME</span><span class="w"> </span><span class="s">"01:00:00 UTC"</span><span class="nf">)</span>
 <span class="nf">set(</span><span class="no">CTEST_SUBMIT_URL</span><span class="w"> </span><span class="s">"http://my.cdash.org/submit.php?project=MyProject"</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>CDash 服务器可以向项目管理员提供该文件，项目管理员配置 <code class="docutils literal notranslate"><span class="pre">MyProject</span></code>。配置文件中的设置由此 <code class="docutils literal notranslate"><span class="pre">CTest</span></code> 模块和 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 命令行 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">Dashboard Client</span></a> 模式 (<a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-S</span></code></a>) 共用。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CTEST_NIGHTLY_START_TIME &quot;01:00:00 UTC&quot;) set(CTEST_SUBMIT_URL &quot;http://my.cdash.org/submit.php?project=MyProject&quot;)</span></code>：调用 `set()` 命令，把变量 `CTEST_NIGHTLY_START_TIME` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>CDash 服务器可以向项目管理员提供该文件，项目管理员配置 <code class="docutils literal notranslate"><span class="pre">MyProject</span></code>。配置文件中的设置由此 <code class="docutils literal notranslate"><span class="pre">CTest</span></code> 模块和 <span class="target" id="index-0-manual:ctest(1)"></span><a class="reference internal" href="../manual/ctest.1.html#manual:ctest(1)" title="ctest(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">ctest(1)</span></code></a> 命令行 <a class="reference internal" href="../manual/ctest.1.html#dashboard-client"><span class="std std-ref">Dashboard Client（仪表板客户端）</span></a> 模式 (<a class="reference internal" href="../manual/ctest.1.html#cmdoption-ctest-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">ctest</span> <span class="pre">-S</span></code></a>) 共用。</p>
 <p>在构建项目以提交到 CDash 时，CTest 会扫描构建输出中的错误和警告，并附带构建日志中的上下文信息进行报告。这种通用方法适用于所有构建工具，但无法提供产生特定问题的命令调用详细信息。可以通过在 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件中设置 <span class="target" id="index-0-variable:CTEST_USE_LAUNCHERS"></span><a class="reference internal" href="../variable/CTEST_USE_LAUNCHERS.html#variable:CTEST_USE_LAUNCHERS" title="CTEST_USE_LAUNCHERS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CTEST_USE_LAUNCHERS</span></code></a> 变量来获得更详细的报告</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">CTEST_USE_LAUNCHERS</span><span class="w"> </span><span class="m">1</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CTEST_USE_LAUNCHERS 1)</span></code>：调用 `set()` 命令，把变量 `CTEST_USE_LAUNCHERS` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在 <code class="docutils literal notranslate"><span class="pre">CTestConfig.cmake</span></code> 文件中。</p>
 </section>
 

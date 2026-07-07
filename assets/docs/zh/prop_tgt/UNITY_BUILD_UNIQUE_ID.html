@@ -67,6 +67,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set_target_properties(myTarget PROPERTIES UNITY_BUILD &quot;ON&quot; UNITY_BUILD_UNIQUE_ID &quot;MY_UNITY_ID&quot; )</span></code>：调用 `set_target_properties()` 命令，批量设置目标属性。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>符号 <code class="docutils literal notranslate"><span class="pre">MY_UNITY_ID</span></code> 被定义为每个文件唯一的数值。</p>
 <p>此标识符的一个已知用例是在有限范围内消除匿名命名空间中的变量歧义。 匿名命名空间为 unity 构建带来问题，因为它们用于确保某些变量和声明限定于一个翻译单元，这近似于单个源文件。 当源文件在 unity 构建文件中组合时，来自不同文件的这些变量被组合到一个翻译单元中，并且名称会冲突。 可以使用此属性通过以下代码避免这种情况</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Needed for when unity builds are disabled</span>
@@ -86,6 +90,10 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">// Needed for when unity builds are disabled #ifndef MY_UNITY_ID #define MY_UNITY_ID #endif namespace { namespace MY_UNITY_ID { // The name &#x27;i&#x27; clashes (or could clash) with other // variables in other anonymous namespaces int i = 42; }} int use_var() { return MY_UNITY_ID::i; }</span></code>：这是注释，用来说明：Needed for when unity builds are disabled #ifndef MY_UNITY_ID #define MY_UNITY_ID #endif namespace { namespace MY_UNITY_ID { // The name &#x27;i&#x27; clashes (or could clash) with other // variables in other anonymous namespaces int i = 42; }} int use_var() { return MY_UNITY_ID::i; }。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>伪匿名命名空间在真正的匿名命名空间中使用。 在许多平台上，这保持了内部符号在执行 unity 构建时不具有外部链接的不变性。</p>
 </section>
 

@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Gettext</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext [&lt;version&gt;] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>GNU gettext 是一个用于国际化 (i18n) 和本地化 (l10n) 的系统，由命令行工具和运行时库 (<code class="docutils literal notranslate"><span class="pre">libintl</span></code>) 组成。此模块用于查找 gettext 工具（如 <code class="docutils literal notranslate"><span class="pre">msgmerge</span></code> 和 <code class="docutils literal notranslate"><span class="pre">msgfmt</span></code>），而运行时库可以通过独立的 <span class="target" id="index-0-module:FindIntl"></span><a class="reference internal" href="FindIntl.html#module:FindIntl" title="FindIntl"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindIntl</span></code></a> 模块进行查找，该模块抽象了各种实现中的 <code class="docutils literal notranslate"><span class="pre">libintl</span></code> 处理方式。</p>
 <p>gettext 使用的常用文件类型</p>
 <dl class="simple">
@@ -100,7 +104,7 @@
 <p>如果找到了 gettext，此模块提供以下命令以在 CMake 中使用 gettext</p>
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:gettext_process_po_files">
-<span class="sig-name descname"><span class="pre">gettext_process_po_files</span></span><a class="headerlink" href="FindGettext.html#command:gettext_process_po_files" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gettext_process_po_files</span></span><a class="headerlink" href="FindGettext.html#command:gettext_process_po_files" title="跳转到此定义">¶</a></dt>
 <dd><p>创建一个构建规则，将一个或多个 <code class="docutils literal notranslate"><span class="pre">.po</span></code> 翻译文件处理为指定可翻译语言区域的二进制 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gettext_process_po_files(</span>
 <span class="w">  </span><span class="nv">&lt;language&gt;</span>
@@ -110,6 +114,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">gettext_process_po_files( &lt;language&gt; [ALL] [INSTALL_DESTINATION &lt;destdir&gt;] PO_FILES &lt;po-files&gt;... )</span></code>：调用 `gettext_process_po_files()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令定义了一个自定义目标，将给定的 <code class="docutils literal notranslate"><span class="pre">&lt;po-files&gt;</span></code> 编译为指定 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;</span></code> 的 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件。在首次调用时，它还会创建一个名为 <code class="docutils literal notranslate"><span class="pre">pofiles</span></code> 的全局自定义目标，后续所有的调用都会贡献于此。该目标可用于集体构建所有翻译文件，或在其他 CMake 命令中引用。</p>
 <p>此命令应针对每个语言区域分别调用，以便为每个区域生成相应的 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件。</p>
 <p>参数为</p>
@@ -128,7 +136,7 @@
 
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:gettext_process_pot_file">
-<span class="sig-name descname"><span class="pre">gettext_process_pot_file</span></span><a class="headerlink" href="FindGettext.html#command:gettext_process_pot_file" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gettext_process_pot_file</span></span><a class="headerlink" href="FindGettext.html#command:gettext_process_pot_file" title="跳转到此定义">¶</a></dt>
 <dd><p>创建一个构建规则，将 gettext 便携式对象模板 (<code class="docutils literal notranslate"><span class="pre">.pot</span></code>) 文件和关联的 <code class="docutils literal notranslate"><span class="pre">.po</span></code> 文件处理为编译后的 gettext 机器对象 (<code class="docutils literal notranslate"><span class="pre">.mo</span></code>) 文件</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gettext_process_pot_file(</span>
 <span class="w">  </span><span class="nv">&lt;pot-file&gt;</span>
@@ -138,6 +146,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">gettext_process_pot_file( &lt;pot-file&gt; [ALL] [INSTALL_DESTINATION &lt;destdir&gt;] LANGUAGES &lt;languages&gt;... )</span></code>：调用 `gettext_process_pot_file()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令定义了一个名为 <code class="docutils literal notranslate"><span class="pre">potfiles</span></code> 的自定义目标，它将给定的 <code class="docutils literal notranslate"><span class="pre">&lt;pot-file&gt;</span></code> 和特定语言的 <code class="docutils literal notranslate"><span class="pre">.po</span></code> 文件编译为每个指定语言的二进制 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件。在调用此命令之前，相应的 <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;.po</span></code> 文件必须已存在于当前二进制目录（<span class="target" id="index-0-variable:CMAKE_CURRENT_BINARY_DIR"></span><a class="reference internal" href="../variable/CMAKE_CURRENT_BINARY_DIR.html#variable:CMAKE_CURRENT_BINARY_DIR" title="CMAKE_CURRENT_BINARY_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code></a>）中。</p>
 <p>参数为</p>
 <dl class="simple">
@@ -154,11 +166,15 @@
 
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:gettext_create_translations">
-<span class="sig-name descname"><span class="pre">gettext_create_translations</span></span><a class="headerlink" href="FindGettext.html#command:gettext_create_translations" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gettext_create_translations</span></span><a class="headerlink" href="FindGettext.html#command:gettext_create_translations" title="跳转到此定义">¶</a></dt>
 <dd><p>创建一个构建规则，将给定的 <code class="docutils literal notranslate"><span class="pre">.pot</span></code> 模板文件和关联的 <code class="docutils literal notranslate"><span class="pre">.po</span></code> 翻译文件处理为编译后的机器对象 (<code class="docutils literal notranslate"><span class="pre">.mo</span></code>) 文件</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">gettext_create_translations(</span><span class="nv">&lt;pot-file&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">ALL</span><span class="p">]</span><span class="w"> </span><span class="nv">&lt;po-files&gt;...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">gettext_create_translations(&lt;pot-file&gt; [ALL] &lt;po-files&gt;...)</span></code>：调用 `gettext_create_translations()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此命令定义了一个名为 <code class="docutils literal notranslate"><span class="pre">translations</span></code> 的自定义目标，将指定的 <code class="docutils literal notranslate"><span class="pre">&lt;pot-file&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;po-files&gt;</span></code> 编译为二进制 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件。它还会自动为生成的 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件添加一个安装规则，在安装阶段将其安装到默认的 <code class="docutils literal notranslate"><span class="pre">share/locale/&lt;language&gt;/LC_MESSAGES/&lt;pot-base-filename&gt;.mo</span></code> 路径中。</p>
 <p>参数为</p>
 <dl class="simple">
@@ -200,20 +216,32 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Gettext</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>或者，查找 gettext 并指定最低要求版本</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Gettext</span><span class="w"> </span><span class="m">0.21</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext 0.21)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>或者，查找 gettext 并将其设为必须（如果未找到，处理将停止并报错）</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Gettext</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext REQUIRED)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-working-with-gettext-in-cmake">
 <h3>示例：在 CMake 中使用 gettext<a class="headerlink" href="FindGettext.html#example-working-with-gettext-in-cmake" title="链接到此标题">¶</a></h3>
 <p>刚开始使用 gettext 时，<code class="docutils literal notranslate"><span class="pre">.pot</span></code> 文件通常被视为手动创建的。例如，在提供的 <code class="docutils literal notranslate"><span class="pre">main.cxx</span></code> 源代码文件上使用 <code class="docutils literal notranslate"><span class="pre">xgettext</span></code> 工具</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">main.cxx</span></code></span><a class="headerlink" href="FindGettext.html#id1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">main.cxx</span></code></span><a class="headerlink" href="FindGettext.html#id1" title="跳转到此代码">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;libintl.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;locale.h&gt;</span>
@@ -237,19 +265,31 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;iostream&gt; #include &lt;libintl.h&gt; #include &lt;locale.h&gt; int main() { // Set locale from environment setlocale(LC_ALL, &quot;&quot;); // Bind the text domain const char* dir = std::getenv(&quot;TEXTDOMAINDIR&quot;); if (!dir) { dir = &quot;/usr/local/share/locale&quot;; } bindtextdomain(&quot;MyApp&quot;, dir); textdomain(&quot;MyApp&quot;); std::cout &lt;&lt; gettext(&quot;Hello, World&quot;) &lt;&lt; std::endl; return 0; }</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">xgettext</span></code> 工具会从提供的源代码中所有 <code class="docutils literal notranslate"><span class="pre">gettext()</span></code> 调用中提取字符串，并创建可翻译字符串</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>xgettext<span class="w"> </span>-o<span class="w"> </span>MyApp.pot<span class="w"> </span>main.cxx
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ xgettext -o MyApp.pot main.cxx</span></code>：这是一条命令行输入，用来演示终端中实际执行的命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>项目可以使用 <code class="docutils literal notranslate"><span class="pre">msginit</span></code> 工具手动初始化可翻译文件</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>locale/de_DE
 <span class="gp">$ </span>msginit<span class="w"> </span>-l<span class="w"> </span>de_DE.UTF8<span class="w"> </span>-o<span class="w"> </span>locale/de_DE/MyApp.po<span class="w"> </span>-i<span class="w"> </span>MyApp.pot<span class="w"> </span>--no-translator
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ mkdir -p locale/de_DE $ msginit -l de_DE.UTF8 -o locale/de_DE/MyApp.po -i MyApp.pot --no-translator</span></code>：这是一条命令行输入，创建目录。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>它会创建一个人类可读的文件，可以将其翻译成所需的语言（根据需要进行调整）</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">locale/de_DE/MyApp.po</span></code></span><a class="headerlink" href="FindGettext.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">locale/de_DE/MyApp.po</span></code></span><a class="headerlink" href="FindGettext.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-po notranslate"><div class="highlight"><pre><span></span><span class="nv">msgid</span> <span class="s">""</span>
 <span class="nv">msgstr</span> <span class="s">""</span>
 <span class="s">"</span><span class="py">Language:</span><span class="s"> de\n"</span>
@@ -261,6 +301,10 @@
 <span class="hll"><span class="nv">msgstr</span> <span class="s">"Hallo, Welt"</span>
 </span></pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">msgid &quot;&quot; msgstr &quot;&quot; &quot;Language: de\n&quot; &quot;Content-Type: text/plain; charset=UTF-8\n&quot; &quot;Content-Transfer-Encoding: 8bit\n&quot; &quot;Plural-Forms: nplurals=2; plural=(n != 1);\n&quot; msgid &quot;Hello, World&quot; msgstr &quot;Hallo, Welt&quot;</span></code>：这一行给出示例文本或输出，用来说明：msgid &quot;&quot; msgstr &quot;&quot; &quot;Language: de\n&quot; &quot;Content-Type: text/plain; charset=UTF-8\n&quot; &quot;Content-Transfer-Encoding: 8bit\n&quot; &quot;Plural-Forms: nplurals=2; plural=(n != 1);\n&quot; msgid &quot;Hello, World&quot; msgstr &quot;Hallo, Welt&quot;</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>在 CMake 中，此模块提供的 <span class="target" id="index-1-command:gettext_process_po_files"></span><a class="reference internal" href="FindGettext.html#command:gettext_process_po_files" title="gettext_process_po_files"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">gettext_process_po_files()</span></code></a> 命令会自动创建应用程序在运行时加载所需的 <code class="docutils literal notranslate"><span class="pre">.mo</span></code> 文件，具体取决于系统环境变量（如 <code class="docutils literal notranslate"><span class="pre">LANG</span></code>）。在下面的示例中，还使用了 <span class="target" id="index-0-module:GNUInstallDirs"></span><a class="reference internal" href="GNUInstallDirs.html#module:GNUInstallDirs" title="GNUInstallDirs"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">GNUInstallDirs</span></code></a> 模块来提供 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_LOCALEDIR</span></code> 变量</p>
 <div class="literal-block-wrapper docutils container" id="id3">
@@ -291,17 +335,29 @@
 <span class="nf">install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">example</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.24) project(GettextExample) include(GNUInstallDirs) find_package(Gettext) if(Gettext_FOUND) foreach(language IN ITEMS de_DE) gettext_process_po_files( ${language} ALL PO_FILES locale/${language}/MyApp.po INSTALL_DESTINATION ${CMAKE_INSTALL_LOCALEDIR} ) endforeach() endif() add_executable(example main.cxx) # Find and link Intl library to use gettext() from libintl.h find_package(Intl) target_link_libraries(example PRIVATE Intl::Intl) install(TARGETS example)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-B<span class="w"> </span>build
 <span class="gp">$ </span>cmake<span class="w"> </span>--build<span class="w"> </span>build
 <span class="gp">$ </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/stage<span class="w"> </span>cmake<span class="w"> </span>--install<span class="w"> </span>build
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake -B build $ cmake --build build $ DESTDIR=$(pwd)/stage cmake --install build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>要利用翻译，系统上需要启用 <code class="docutils literal notranslate"><span class="pre">de_DE</span></code> 区域设置（请参阅 <code class="docutils literal notranslate"><span class="pre">locale</span> <span class="pre">-a</span></code>）。然后可以运行本地化的输出</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">LANG</span><span class="o">=</span>de_DE.UTF-8<span class="w"> </span><span class="nv">TEXTDOMAINDIR</span><span class="o">=</span>./stage/usr/local/share/locale<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>./stage/usr/local/bin/example
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ LANG=de_DE.UTF-8 TEXTDOMAINDIR=./stage/usr/local/share/locale \ ./stage/usr/local/bin/example</span></code>：这是一条命令行输入，用来演示终端中实际执行的命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-processing-pot-file">
 <h3>示例：处理 POT 文件<a class="headerlink" href="FindGettext.html#example-processing-pot-file" title="链接到此标题">¶</a></h3>
@@ -326,6 +382,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext) if(Gettext_FOUND) set(languages de_DE fr zh_CN) foreach(language IN LISTS languages) configure_file(locale/${language}.po ${language}.po COPYONLY) endforeach() gettext_process_pot_file( MyApp.pot ALL INSTALL_DESTINATION ${CMAKE_INSTALL_LOCALEDIR} LANGUAGES ${languages} ) endif()</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 <section id="example-creating-translations">
@@ -346,6 +406,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Gettext) if(Gettext_FOUND) gettext_create_translations( MyApp.pot ALL locale/de_DE.po locale/fr.po locale/zh_CN.po ) endif()</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>

@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     private static final String PREFS = "cmake_docs_state";
     private static final String ASSET_BASE = "file:///android_asset/docs/";
     private static final int MAX_HISTORY = 30;
-    private static final int CONTENT_VERSION = 4;
+    private static final int CONTENT_VERSION = 5;
 
     private WebView webView;
     private WebView standbyWebView;
@@ -318,7 +318,9 @@ public class MainActivity extends Activity {
             JSONObject item = array.getJSONObject(i);
             String path = item.getString("path");
             String title = item.optString("title", path);
-            list.add(new PageInfo(lang, path, title));
+            String keywords = item.optString("keywords", "");
+            String summary = item.optString("summary", "");
+            list.add(new PageInfo(lang, path, title, keywords, summary));
             set.add(stripFragment(path));
         }
     }
@@ -326,8 +328,8 @@ public class MainActivity extends Activity {
     private void addFallbackIndex(String lang) {
         ArrayList<PageInfo> list = pages.get(lang);
         HashSet<String> set = pagePathSets.get(lang);
-        list.add(new PageInfo(lang, "index.html", "CMake"));
-        list.add(new PageInfo(lang, "search.html", "Search"));
+        list.add(new PageInfo(lang, "index.html", "CMake", "CMake index", ""));
+        list.add(new PageInfo(lang, "search.html", "Search", "search", ""));
         set.add("index.html");
         set.add("search.html");
     }
@@ -553,10 +555,10 @@ public class MainActivity extends Activity {
                 adapter.add("请输入关键词，例如 cmake、install、generator");
             } else {
                 for (PageInfo info : finalSource) {
-                    String hay = (info.title + " " + info.path).toLowerCase(Locale.ROOT);
+                    String hay = info.searchBlob();
                     if (hay.contains(q)) {
                         shown.add(info);
-                        adapter.add(info.title + "\n" + info.path);
+                        adapter.add(info.listLabel());
                         if (shown.size() >= 260) {
                             break;
                         }
@@ -640,10 +642,10 @@ public class MainActivity extends Activity {
 
             if (q.length() > 0) {
                 for (PageInfo info : finalSource) {
-                    String hay = (info.title + " " + info.path).toLowerCase(Locale.ROOT);
+                    String hay = info.searchBlob();
                     if (hay.contains(q)) {
                         addPickerRow(adapter, shownKinds, shownTargets, shownPages,
-                                "page", info.path, info, "🔎 " + info.title + "\n" + info.path);
+                                "page", info.path, info, "🔎 " + info.listLabel());
                         if (shownPages.size() >= 260) {
                             break;
                         }
@@ -680,7 +682,7 @@ public class MainActivity extends Activity {
                 }
                 for (PageInfo info : childPages) {
                     addPickerRow(adapter, shownKinds, shownTargets, shownPages,
-                            "page", info.path, info, "📄 " + info.title + "\n" + info.path);
+                            "page", info.path, info, "📄 " + info.listLabel());
                 }
             }
 
@@ -1154,10 +1156,26 @@ public class MainActivity extends Activity {
         final String lang;
         final String path;
         final String title;
-        PageInfo(String lang, String path, String title) {
+        final String keywords;
+        final String summary;
+
+        PageInfo(String lang, String path, String title, String keywords, String summary) {
             this.lang = lang;
             this.path = path;
             this.title = title;
+            this.keywords = keywords == null ? "" : keywords;
+            this.summary = summary == null ? "" : summary;
+        }
+
+        String searchBlob() {
+            return (title + " " + path + " " + keywords + " " + summary).toLowerCase(Locale.ROOT);
+        }
+
+        String listLabel() {
+            if (summary.length() > 0 && !title.contains(summary)) {
+                return title + "\n" + summary + "\n" + path;
+            }
+            return title + "\n" + path;
         }
     }
 }

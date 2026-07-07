@@ -59,16 +59,20 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL [&lt;version&gt;] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>SDL 是一个跨平台库，用于开发多媒体软件，例如游戏和模拟器。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>此模块专门用于 SDL 1 版本。从 2 版本开始，SDL 在通过 CMake 构建时提供了一个 CMake 软件包配置文件，应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2)</span></code> 来查找。同样，SDL 3 版本可以使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL3)</span></code> 来查找。这些较新的版本提供了单独的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，封装了使用要求。有关更多信息，请参考官方 SDL 文档。</p>
+<p>此模块专门用于 SDL 1 版本。从 2 版本开始，SDL 在通过 CMake 构建时提供了一个 CMake 软件包配置文件，应使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2)</span></code> 来查找。同样，SDL 3 版本可以使用 <code class="docutils literal notranslate"><span class="pre">find_package(SDL3)</span></code> 来查找。这些较新的版本提供了单独的 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，封装了使用要求。有关更多信息，请参考官方 SDL 文档。</p>
 </div>
 <p>请注意，SDL 头文件的包含路径在近期的 SDL 1 版本中已从 <code class="docutils literal notranslate"><span class="pre">SDL/SDL.h</span></code> 更改为简单的 <code class="docutils literal notranslate"><span class="pre">SDL.h</span></code>。此更改符合 SDL 使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">"SDL.h"</span></code> 以实现可移植性的约定，因为并非所有系统都将头文件安装在 <code class="docutils literal notranslate"><span class="pre">SDL/</span></code> 子目录中（例如 FreeBSD）。</p>
-<p>当针对 macOS 并使用 SDL 框架时，请确保在项目中同时包含 <code class="docutils literal notranslate"><span class="pre">SDLmain.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SDLmain.m</span></code>。对于其他平台，<code class="docutils literal notranslate"><span class="pre">SDLmain</span></code> 库通常使用 <code class="docutils literal notranslate"><span class="pre">-lSDLmain</span></code> 进行链接，此模块将尝试自动定位它。此外，对于 macOS，此模块将根据需要添加 <code class="docutils literal notranslate"><span class="pre">-framework</span> <span class="pre">Cocoa</span></code> 标志。</p>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindSDL.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<p>当针对 macOS（苹果桌面系统） 并使用 SDL 框架时，请确保在项目中同时包含 <code class="docutils literal notranslate"><span class="pre">SDLmain.h</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SDLmain.m</span></code>。对于其他平台，<code class="docutils literal notranslate"><span class="pre">SDLmain</span></code> 库通常使用 <code class="docutils literal notranslate"><span class="pre">-lSDLmain</span></code> 进行链接，此模块将尝试自动定位它。此外，对于 macOS（苹果桌面系统），此模块将根据需要添加 <code class="docutils literal notranslate"><span class="pre">-framework</span> <span class="pre">Cocoa</span></code> 标志。</p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindSDL.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">SDL::SDL</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
@@ -132,7 +136,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">SDL_BUILDING_LIBRARY</span></code></dt><dd><p>当设置为布尔值 true 时，<code class="docutils literal notranslate"><span class="pre">SDL_main</span></code> 库将从链接中排除，因为它在构建 SDL 库本身时不需要（只有应用程序需要 <code class="docutils literal notranslate"><span class="pre">main()</span></code> 函数）。如果未设置，该模块会假定正在构建应用程序，并尝试定位并在返回的 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 变量中包含适当的 <code class="docutils literal notranslate"><span class="pre">SDL_main</span></code> 链接标志。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">SDLDIR</span></code></dt><dd><p>环境变量，可用于帮助定位安装在自定义位置的 SDL 库。它应指向配置、构建和安装 SDL 库时使用的安装目标：<code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--prefix=$SDLDIR</span></code>。</p>
-<p>在 macOS 上，设置此变量将优先选择框架版本（如果找到）。在这种情况下，需要手动更改 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 的缓存值以覆盖此选择，或者设置 <span class="target" id="index-0-variable:CMAKE_INCLUDE_PATH"></span><a class="reference internal" href="../variable/CMAKE_INCLUDE_PATH.html#variable:CMAKE_INCLUDE_PATH" title="CMAKE_INCLUDE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INCLUDE_PATH</span></code></a> 变量来修改搜索路径。</p>
+<p>在 macOS（苹果桌面系统） 上，设置此变量将优先选择框架版本（如果找到）。在这种情况下，需要手动更改 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 的缓存值以覆盖此选择，或者设置 <span class="target" id="index-0-variable:CMAKE_INCLUDE_PATH"></span><a class="reference internal" href="../variable/CMAKE_INCLUDE_PATH.html#variable:CMAKE_INCLUDE_PATH" title="CMAKE_INCLUDE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INCLUDE_PATH</span></code></a> 变量来修改搜索路径。</p>
 </dd>
 </dl>
 </section>
@@ -158,16 +162,28 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL</span><span class="o">::</span><span class="no">SDL</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL) target_link_libraries(project_target PRIVATE SDL::SDL)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>使用 SDL 2 版本时，上游包直接提供 <code class="docutils literal notranslate"><span class="pre">SDL2::SDL2</span></code> 导入目标。它可以在项目中直接使用，而无需使用此模块。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL2</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL2</span><span class="o">::</span><span class="no">SDL2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL2) target_link_libraries(project_target PRIVATE SDL2::SDL2)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>同样，对于 SDL 3 版本：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">SDL3</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL3</span><span class="o">::</span><span class="no">SDL3</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL3) target_link_libraries(project_target PRIVATE SDL3::SDL3)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="FindSDL.html#see-also" title="链接到此标题">¶</a></h2>
@@ -193,7 +209,7 @@
     <h3>目录</h3>
     <ul>
 <li><a class="reference internal" href="FindSDL.html#">FindSDL</a><ul>
-<li><a class="reference internal" href="FindSDL.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindSDL.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindSDL.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindSDL.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindSDL.html#hints">提示</a></li>

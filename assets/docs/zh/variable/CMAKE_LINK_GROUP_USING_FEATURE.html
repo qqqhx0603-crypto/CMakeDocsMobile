@@ -71,6 +71,10 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;PREFIX&gt; &lt;SUFFIX&gt;
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt; &lt;SUFFIX&gt;</span></code>：这一行给出示例文本或输出，用来说明：&lt;PREFIX&gt; &lt;SUFFIX&gt;</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在链接器命令行上，<code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;</span></code> 将出现在组中库列表的前面，而 <code class="docutils literal notranslate"><span class="pre">&lt;SUFFIX&gt;</span></code> 将出现在后面。</p>
 <p>对于此变量的元素，可以使用 <code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀。</p>
 <p>要将选项传递给链接器工具，每个编译器驱动程序都有其自己的语法。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀和 <code class="docutils literal notranslate"><span class="pre">,</span></code> 分隔符可用于以可移植的方式指定传递给链接器工具的选项。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 会被替换为适当的驱动程序选项，<code class="docutils literal notranslate"><span class="pre">,</span></code> 会被替换为适当的驱动程序分隔符。驱动程序前缀和驱动程序分隔符由 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG"></span><a class="reference internal" href="CMAKE_LANG_LINKER_WRAPPER_FLAG.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"></span><a class="reference internal" href="CMAKE_LANG_LINKER_WRAPPER_FLAG_SEP.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG_SEP</span></code></a> 变量的值给定。</p>
@@ -113,6 +117,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CMAKE_C_LINK_GROUP_USING_cross_refs_SUPPORTED TRUE) if(CMAKE_C_COMPILER_ID STREQUAL &quot;GNU&quot; AND CMAKE_SYSTEM_NAME STREQUAL &quot;Linux&quot;) set(CMAKE_C_LINK_GROUP_USING_cross_refs &quot;LINKER:--start-group&quot; &quot;LINKER:--end-group&quot; ) elseif(CMAKE_C_COMPILER_ID STREQUAL &quot;SunPro&quot; AND CMAKE_SYSTEM_NAME STREQUAL &quot;SunOS&quot;) set(CMAKE_C_LINK_GROUP_USING_cross_refs &quot;LINKER:-z,rescan-start&quot; &quot;LINKER:-z,rescan-end&quot; ) else() # feature not yet supported for the other environments set(CMAKE_C_LINK_GROUP_USING_cross_refs_SUPPORTED FALSE) endif() add_library(lib1 STATIC ...) add_library(lib2 SHARED ...) if(CMAKE_C_LINK_GROUP_USING_cross_refs_SUPPORTED) target_link_libraries(lib2 PRIVATE &quot;$&lt;LINK_GROUP:cross_refs,lib1,external&gt;&quot;) else() target_link_libraries(lib2 PRIVATE lib1 external) endif()</span></code>：调用 `set()` 命令，把变量 `CMAKE_C_LINK_GROUP_USING_cross_refs_SUPPORTED` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当链接 <code class="docutils literal notranslate"><span class="pre">lib2</span></code> 时，CMake 将生成以下链接器命令行片段</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">GNU</span></code>: <code class="docutils literal notranslate"><span class="pre">-Wl,--start-group</span> <span class="pre">/path/to/lib1.a</span> <span class="pre">-lexternal</span> <span class="pre">-Wl,--end-group</span></code></p></li>
@@ -127,7 +135,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">RESCAN</span></code></dt><dd><p>有些链接器是单次扫描的。对于这些链接器，库之间的循环引用通常会导致未解析的符号。此特性指示链接器反复搜索指定的静态库，直到没有新的未定义引用被创建。</p>
 <p>通常，静态库只在命令行上指定的顺序中被搜索一次。如果该库中的某个符号需要解析由命令行上稍后出现的库中的对象引用的未定义符号，链接器将无法解析该引用。通过使用 <code class="docutils literal notranslate"><span class="pre">RESCAN</span></code> 特性对静态库进行分组，它们将被反复搜索，直到所有可能的引用都被解析。这将使用诸如 <code class="docutils literal notranslate"><span class="pre">--start-group</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--end-group</span></code> 的链接器选项，或者在 SunOS 上使用 <code class="docutils literal notranslate"><span class="pre">-z</span> <span class="pre">rescan-start</span></code> 和 <code class="docutils literal notranslate"><span class="pre">-z</span> <span class="pre">rescan-end</span></code>。</p>
 <p>使用此功能会带来显著的性能成本。最好仅在两个或多个静态库之间存在不可避免的循环引用时才使用它。</p>
-<p>此功能在使用针对 Linux、BSD 和 SunOS 的工具链时可用。在使用 GNU 工具链时，也可以在针对 Windows 平台时使用。</p>
+<p>此功能在使用针对 Linux、BSD 和 SunOS 的工具链时可用。在使用 GNU 工具链时，也可以在针对 Windows（微软桌面系统） 平台时使用。</p>
 </dd>
 </dl>
 </section>

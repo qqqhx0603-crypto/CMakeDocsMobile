@@ -56,7 +56,7 @@
   <section id="cmake-install-exports-as-package-info">
 <span id="variable:CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO"></span><h1>CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO<a class="headerlink" href="CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO.html#cmake-install-exports-as-package-info" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
-<p><span class="versionmodified added">Added in version 4.3.</span></p>
+<p><span class="versionmodified added">4.3 版本新增。</span></p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -66,6 +66,10 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;export-name&gt;:&lt;package-name&gt;[/[l][a&lt;appendix-name&gt;][/&lt;destination&gt;]]
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">&lt;export-name&gt;:&lt;package-name&gt;[/[l][a&lt;appendix-name&gt;][/&lt;destination&gt;]]</span></code>：这一行给出示例文本或输出，用来说明：&lt;export-name&gt;:&lt;package-name&gt;[/[l][a&lt;appendix-name&gt;][/&lt;destination&gt;]]</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>斜杠用于分隔指令的不同组件。</p>
 <p>请注意，此功能旨在供包分发者使用，应<strong>仅</strong>在无法编辑项目的 CMake 脚本时使用。开发人员应直接使用 <span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#package-info" title="install(package_info)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PACKAGE_INFO)</span></code></a>。</p>
 <p>此外，由于 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO</span></code> 的工作原理是模拟对 <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#package-info" title="install(package_info)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PACKAGE_INFO)</span></code></a> 的调用，因此在已经直接调用 <span class="target" id="index-3-command:install"></span><a class="reference internal" href="../command/install.html#package-info" title="install(package_info)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(PACKAGE_INFO)</span></code></a> 的项目中使用它可能会导致安装指令冲突，这通常会导致项目的配置阶段失败。</p>
@@ -110,7 +114,11 @@
 <span class="nf">install(</span><span class="no">EXPORT</span><span class="w"> </span><span class="nb">optional-targets</span><span class="w"> </span><span class="no">FILE</span><span class="w"> </span><span class="nb">example-optional-targets.cmake</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 </pre></div>
 </div>
-<p>在此示例中，假设 <code class="docutils literal notranslate"><span class="pre">example-targets.cmake</span></code> 是始终安装的文件，而 <code class="docutils literal notranslate"><span class="pre">example-optional-targets.cmake</span></code> 是可选安装的文件（例如作为依赖于“基础”包的单独包的一部分进行分发）。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">project(Example VERSION 1.2.3 SPDX_LICENSE &quot;BSD-3-Clause&quot;) add_library(foo ...) add_library(bar ...) install(TARGETS foo EXPORT required-targets) install(TARGETS bar EXPORT optional-targets) install(EXPORT required-targets FILE example-targets.cmake ...) install(EXPORT optional-targets FILE example-optional-targets.cmake ...)</span></code>：调用 `project()` 命令，定义项目名称及语言等元数据。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>在此示例中，假设 <code class="docutils literal notranslate"><span class="pre">example-targets（目标）.cmake</span></code> 是始终安装的文件，而 <code class="docutils literal notranslate"><span class="pre">example-optional-targets（目标）.cmake</span></code> 是可选安装的文件（例如作为依赖于“基础”包的单独包的一部分进行分发）。</p>
 <p>现在，假设我们是一位分发者，想要向用户提供“通用包规范”包信息文件，但我们不想修改项目的构建文件。我们可以通过将以下参数传递给 CMake 来实现这一点：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-DCMAKE_EXPERIMENTAL_FIXME=&lt;elided&gt;
 -DCMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO=\
@@ -120,7 +128,11 @@
 -Drequired-targets_EXPORT_PACKAGE_INFO_LICENSE=@Example_SPDX_LICENSE@
 </pre></div>
 </div>
-<p>（为了可读性而添加的空格和续行符，在实际使用时应删除。参数可能需要加引号以防止被命令行 shell 重新解析。）</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">-DCMAKE_EXPERIMENTAL_FIXME=&lt;elided&gt; -DCMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO=\ required-targets:Example/l;\ optional-targets:Example/laoptional -Drequired-targets_EXPORT_PACKAGE_INFO_VERSION=@Example_VERSION@ -Drequired-targets_EXPORT_PACKAGE_INFO_LICENSE=@Example_SPDX_LICENSE@</span></code>：这一行给出示例文本或输出，用来说明：-DCMAKE_EXPERIMENTAL_FIXME=&lt;elided&gt; -DCMAKE_INSTALL_EXPORTS_AS_PACKAGE_INFO=\ required-targets:Example/l;\ optional-targets:Example/laoptional -Drequired-targets_EXPORT_PACKAGE_INFO_VERSION=@Example_VERSION@ -Drequired-targets_EXPORT_PACKAGE_INFO_LICENSE=@Example_SPDX_LICENSE@</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>（为了可读性而添加的空格和续行符，在实际使用时应删除。参数可能需要加引号以防止被命令行 shell（命令解释器） 重新解析。）</p>
 <p>这将导致 CMake 同时创建并安装描述 <code class="docutils literal notranslate"><span class="pre">Example</span></code> 包的 <code class="docutils literal notranslate"><span class="pre">example.cps</span></code> 和 <code class="docutils literal notranslate"><span class="pre">example-optional.cps</span></code> 文件。如果项目没有通过 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令提供此信息，我们还可以使用包构建系统（例如 rpm、dpkg）提供的替换项来指定版本和许可证信息。</p>
 </section>
 </section>

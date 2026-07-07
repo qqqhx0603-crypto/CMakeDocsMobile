@@ -63,6 +63,10 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>feature[,link-item]*
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">feature[,link-item]*</span></code>：这一行给出示例文本或输出，用来说明：feature[,link-item]*</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于每个逗号分隔的 <code class="docutils literal notranslate"><span class="pre">link-item</span></code>，任何与它关联的现有库特性都将被设置此属性的目标所忽略。该项将改为与指定的 <code class="docutils literal notranslate"><span class="pre">feature</span></code> 关联。每个 <code class="docutils literal notranslate"><span class="pre">link-item</span></code> 可以是任何在 <span class="target" id="index-2-genex:LINK_LIBRARY"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:LINK_LIBRARY" title="LINK_LIBRARY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">LINK_LIBRARY</span></code></a> 生成器表达式中作为 <code class="docutils literal notranslate"><span class="pre">library-list</span></code> 一部分被接受的内容。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">lib1</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 <span class="nf">add_library(</span><span class="nb">lib2</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
@@ -80,6 +84,10 @@
 <span class="c"># lib1 and external will now be associated with feature2 instead when linking lib3</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib1 ...) add_library(lib2 ...) add_library(lib3 ...) target_link_libraries(lib1 PUBLIC &quot;$&lt;LINK_LIBRARY:feature1,external&gt;&quot;) target_link_libraries(lib2 PUBLIC &quot;$&lt;LINK_LIBRARY:feature2,lib1&gt;&quot;) target_link_libraries(lib3 PRIVATE lib1 lib2) # lib1 is associated with both feature2 and no feature. Without any override, # this would result in a fatal error at generation time for lib3. # Define an override to resolve the incompatible feature associations. set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE &quot;feature2,lib1,external&quot;) # lib1 and external will now be associated with feature2 instead when linking lib3</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>也可以使用预定义的 <code class="docutils literal notranslate"><span class="pre">DEFAULT</span></code> 库特性覆盖任何特性。这实际上会丢弃该链接项的所有特性，且仅针对该目标（此示例中的 <code class="docutils literal notranslate"><span class="pre">lib3</span></code>）有效。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># When linking lib3, discard any library feature for lib1, and use feature2 for external</span>
 <span class="nf">set_property(</span><span class="no">TARGET</span><span class="w"> </span><span class="nb">lib3</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">LINK_LIBRARY_OVERRIDE</span>
@@ -88,6 +96,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># When linking lib3, discard any library feature for lib1, and use feature2 for external set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE &quot;DEFAULT,lib1&quot; &quot;feature2,external&quot; )</span></code>：这是注释，用来说明：When linking lib3, discard any library feature for lib1, and use feature2 for external set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE &quot;DEFAULT,lib1&quot; &quot;feature2,external&quot; )。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>上面的示例还演示了如何为不同的链接项指定不同的特性覆盖。有关覆盖单个库的库特性的另一种可能在某些情况下更简单的方法，请参阅 <span class="target" id="index-0-prop_tgt:LINK_LIBRARY_OVERRIDE_<LIBRARY>"></span><a class="reference internal" href="LINK_LIBRARY_OVERRIDE_LIBRARY.html#prop_tgt:LINK_LIBRARY_OVERRIDE_<LIBRARY>" title="LINK_LIBRARY_OVERRIDE_<LIBRARY>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</span></code></a> 目标属性。如果两个属性都已定义并为同一个链接项指定了覆盖，则 <span class="target" id="index-1-prop_tgt:LINK_LIBRARY_OVERRIDE_<LIBRARY>"></span><a class="reference internal" href="LINK_LIBRARY_OVERRIDE_LIBRARY.html#prop_tgt:LINK_LIBRARY_OVERRIDE_<LIBRARY>" title="LINK_LIBRARY_OVERRIDE_<LIBRARY>"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</span></code></a> 的优先级高于 <code class="docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE</span></code>。</p>
 <p><code class="docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE</span></code> 的内容可以使用 <span class="target" id="index-0-manual:cmake-generator-expressions(7)"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)" title="cmake-generator-expressions(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">生成器表达式</span></code></a>。</p>
 <p>有关库特性的更多信息，请参阅 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINK_LIBRARY_USING_<FEATURE>"></span><a class="reference internal" href="../variable/CMAKE_LANG_LINK_LIBRARY_USING_FEATURE.html#variable:CMAKE_<LANG>_LINK_LIBRARY_USING_<FEATURE>" title="CMAKE_<LANG>_LINK_LIBRARY_USING_<FEATURE>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINK_LIBRARY_USING_&lt;FEATURE&gt;</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_LINK_LIBRARY_USING_<FEATURE>"></span><a class="reference internal" href="../variable/CMAKE_LINK_LIBRARY_USING_FEATURE.html#variable:CMAKE_LINK_LIBRARY_USING_<FEATURE>" title="CMAKE_LINK_LIBRARY_USING_<FEATURE>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_LINK_LIBRARY_USING_&lt;FEATURE&gt;</span></code></a> 变量。</p>

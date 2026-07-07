@@ -75,6 +75,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON) add_executable(myapp main.cpp) target_link_libraries(myapp PRIVATE static_lib) add_library(static_lib STATIC static.cpp) set_property(TARGET static_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LIB_1;STATIC_LIB_2&quot; )</span></code>：调用 `set()` 命令，把变量 `AUTOMOC` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-2">
 <h2>示例 2<a class="headerlink" href="INTERFACE_AUTOMOC_MACRO_NAMES.html#example-2" title="此标题的永久链接">¶</a></h2>
@@ -111,6 +115,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">app</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">shared_lib</span><span class="w"> </span><span class="nb">static_lib</span><span class="w"> </span><span class="nb">interface_lib</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON) add_library(shared_deep_lib SHARED deep_lib.cpp) add_library(static_deep_lib STATIC deep_lib.cpp) add_library(interface_deep_lib INTERFACE) set_property(TARGET shared_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;SHARED_LINK_LIB&quot; ) set_property(TARGET static_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LINK_LIB&quot; ) set_property(TARGET interface_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;INTERFACE_LINK_LIB&quot; ) add_library(shared_lib SHARED lib.cpp) add_library(static_lib STATIC lib.cpp) add_library(interface_lib INTERFACE) # PUBLIC and INTERFACE here ensure the macro names propagate to any # consumers of shared_lib, static_lib or interface_lib too target_link_libraries(shared_lib PUBLIC shared_deep_lib) target_link_libraries(static_lib PUBLIC static_deep_lib) target_link_libraries(interface_lib INTERFACE interface_deep_lib) # This consumer will receive all three of the above custom macro names as # transitive usage requirements add_executable(app main.cpp) target_link_libraries(app PRIVATE shared_lib static_lib interface_lib)</span></code>：调用 `set()` 命令，把变量 `AUTOMOC` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在上述内容中</p>
 <ul class="simple">
 <li><p>如果 <code class="docutils literal notranslate"><span class="pre">shared_lib</span></code> 的源文件包含 <code class="docutils literal notranslate"><span class="pre">SHARED_LINK_LIB</span></code>，则这些源文件将由 <code class="docutils literal notranslate"><span class="pre">moc</span></code> 处理。</p></li>

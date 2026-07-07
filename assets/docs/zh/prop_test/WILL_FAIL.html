@@ -61,6 +61,10 @@
 <span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">failed</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">WILL_FAIL</span><span class="w"> </span><span class="nb">true</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_test(NAME failed COMMAND ${CMAKE_COMMAND} -E true) set_property(TEST failed PROPERTY WILL_FAIL true)</span></code>：调用 `add_test()` 命令，登记一个测试用例。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>要运行可能存在系统级错误的测试，但如果设置了 <code class="docutils literal notranslate"><span class="pre">WILL_FAIL</span></code> 仍然可以通过，请使用 CMake 命令来包装可执行文件的运行。 请注意，这将阻止自动处理 <span class="target" id="index-0-prop_tgt:CROSSCOMPILING_EMULATOR"></span><a class="reference internal" href="../prop_tgt/CROSSCOMPILING_EMULATOR.html#prop_tgt:CROSSCOMPILING_EMULATOR" title="CROSSCOMPILING_EMULATOR"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">CROSSCOMPILING_EMULATOR</span></code></a> 和 <span class="target" id="index-0-prop_tgt:TEST_LAUNCHER"></span><a class="reference internal" href="../prop_tgt/TEST_LAUNCHER.html#prop_tgt:TEST_LAUNCHER" title="TEST_LAUNCHER"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">TEST_LAUNCHER</span></code></a> 目标属性。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">main</span><span class="w"> </span><span class="nb">main.c</span><span class="nf">)</span>
 
@@ -69,11 +73,19 @@
 <span class="nf">set_property(</span><span class="no">TEST</span><span class="w"> </span><span class="nb">sigabrt</span><span class="w"> </span><span class="no">PROPERTY</span><span class="w"> </span><span class="no">WILL_FAIL</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(main main.c) add_test(NAME sigabrt COMMAND ${CMAKE_COMMAND} -E env $&lt;TARGET_FILE:main&gt;) set_property(TEST sigabrt PROPERTY WILL_FAIL TRUE)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span>
 
 <span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span><span class="w"> </span><span class="n">raise</span><span class="p">(</span><span class="n">SIGABRT</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;signal.h&gt; int main(void){ raise(SIGABRT); return 0; }</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 
 

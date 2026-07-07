@@ -14,7 +14,7 @@
     <link rel="icon" href="../../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Step 1: Getting Started with CMake" href="Getting&#32;Started&#32;with&#32;CMake.html" />
+    <link rel="next" title="第 1 步：CMake 入门" href="Getting&#32;Started&#32;with&#32;CMake.html" />
     <link rel="prev" title="CMake Tutorial" href="index.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../../version_switch.js"></script>
@@ -32,7 +32,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="Getting&#32;Started&#32;with&#32;CMake.html" title="Step 1: Getting Started with CMake" accesskey="N">下一页</a> |</li>
+          <a href="Getting&#32;Started&#32;with&#32;CMake.html" title="第 1 步：CMake 入门" accesskey="N">下一页</a> |</li>
         <li class="right">
           <a href="index.html" title="CMake Tutorial" accesskey="P">上一页</a> |</li>
   <li>
@@ -68,28 +68,32 @@
 <section id="getting-cmake">
 <h2>获取 CMake<a class="headerlink" href="Before&#32;You&#32;Begin.html#getting-cmake" title="链接到此标题">¶</a></h2>
 <p>获取 CMake 最直观的方法是从 CMake 网站下载它。<a class="reference external" href="https://cmake.com.cn/download/">网站的“下载”部分</a>包含了适用于所有常见（以及一些不常见）桌面平台的最新 CMake 构建版本。</p>
-<p>然而，最好通过您所在平台常用的开发者工具分发机制来获取 CMake。CMake 在大多数软件包存储库中均有提供，作为 Visual Studio 的一个组件，甚至可以从 Python 包索引中安装。此外，CMake 通常作为面向 C/C++ 的大多数 CI/CD 运行器基础镜像的一部分提供。您应该查阅您的软件构建环境文档，查看 CMake 是否已可用。</p>
+<p>然而，最好通过您所在平台常用的开发者工具分发机制来获取 CMake。CMake 在大多数软件包存储库中均有提供，作为 Visual Studio（集成开发环境） 的一个组件，甚至可以从 Python 包索引中安装。此外，CMake 通常作为面向 C/C++ 的大多数 CI/CD 运行器基础镜像的一部分提供。您应该查阅您的软件构建环境文档，查看 CMake 是否已可用。</p>
 <p>CMake 也可以使用 CMake 源码树根目录下的 <code class="docutils literal notranslate"><span class="pre">README.rst</span></code> 中描述的说明从源代码进行编译。</p>
 <p>像任何程序一样，CMake 需要在 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 环境变量中可用，才能从 Shell 中运行。您可以通过运行任何 CMake 命令来验证 CMake 是否可用。</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cmake<span class="w"> </span>--version
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cmake<span class="w"> </span>--version
 cmake<span class="w"> </span>version<span class="w"> </span><span class="m">3</span>.23.5
 
 CMake<span class="w"> </span>suite<span class="w"> </span>maintained<span class="w"> </span>and<span class="w"> </span>supported<span class="w"> </span>by<span class="w"> </span>Kitware<span class="w"> </span><span class="o">(</span>kitware.com/cmake<span class="o">)</span>.
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake --version cmake version 3.23.5 CMake suite maintained and supported by Kitware (kitware.com/cmake).</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>如果使用 Visual Studio 提供的开发环境，最好在“开发人员命令提示符”（Developer Command Prompt）或“开发人员 Powershell”（Developer Powershell）中运行 CMake。这可确保 CMake 有权访问所有必需的开发工具和环境变量。</p>
+<p>如果使用 Visual Studio（集成开发环境） 提供的开发环境，最好在“开发人员命令提示符”（Developer Command Prompt）或“开发人员 Powershell（命令解释器）”（Developer Powershell（命令解释器））中运行 CMake。这可确保 CMake 有权访问所有必需的开发工具和环境变量。</p>
 </div>
 </section>
 <section id="cmake-generators">
 <h2>CMake 生成器<a class="headerlink" href="Before&#32;You&#32;Begin.html#cmake-generators" title="链接到此标题">¶</a></h2>
 <p>CMake 是一个配置程序，有时被称为“元”构建系统。与其他配置系统一样，CMake 最终不负责运行生成软件构建的命令。相反，CMake 会根据项目、环境和用户提供的配置信息生成构建系统。</p>
 <p>CMake 支持多种构建系统作为此配置过程的输出。这些输出后端被称为“生成器”，因为它们负责生成构建系统。CMake 支持许多生成器，相关文档可在 <span class="target" id="index-0-manual:cmake-generators(7)"></span><a class="reference internal" href="../../manual/cmake-generators.7.html#manual:cmake-generators(7)" title="cmake-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake-generators(7)</span></code></a> 中找到。有关您的特定 CMake 安装所支持生成器的信息，可以通过 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-h"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--help</span></code></a> 命令下的“Generators”标题查看。</p>
-<p>因此，使用 CMake 需要提供一种能够使用该生成器输出的构建程序。<code class="docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code>、<code class="docutils literal notranslate"><span class="pre">Ninja</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span></code> 生成器分别需要兼容的 <code class="docutils literal notranslate"><span class="pre">make</span></code>、<code class="docutils literal notranslate"><span class="pre">ninja</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span></code> 安装。</p>
+<p>因此，使用 CMake 需要提供一种能够使用该生成器输出的构建程序。<code class="docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefile（构建脚本）s</span></code>、<code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span></code> 生成器分别需要兼容的 <code class="docutils literal notranslate"><span class="pre">make</span></code>、<code class="docutils literal notranslate"><span class="pre">ninja</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span></code> 安装。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>Windows 上的默认生成器通常是机器上安装的最新 Visual Studio 版本，而在其他所有平台上则是 <code class="docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code>。</p>
+<p>Windows（微软桌面系统） 上的默认生成器通常是机器上安装的最新 Visual Studio（集成开发环境） 版本，而在其他所有平台上则是 <code class="docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefile（构建脚本）s</span></code>。</p>
 </div>
 <p>可以使用 <span class="target" id="index-0-envvar:CMAKE_GENERATOR"></span><a class="reference internal" href="../../envvar/CMAKE_GENERATOR.html#envvar:CMAKE_GENERATOR" title="CMAKE_GENERATOR"><code class="xref cmake cmake-envvar docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code></a> 环境变量或 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-G</span></code></a> 选项来控制使用哪个生成器。</p>
 </section>
@@ -112,11 +116,11 @@ CMake<span class="w"> </span>suite<span class="w"> </span>maintained<span class=
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><span class="target" id="index-0-generator:Ninja"></span><a class="reference internal" href="../../generator/Ninja.html#generator:Ninja" title="Ninja"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span></code></a></p></td>
-<td><p><span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a></p></td>
+<tr class="row-even"><td><p><span class="target" id="index-0-generator:Ninja（构建工具）"></span><a class="reference internal" href="../../generator/Ninja（构建工具）.html#generator:Ninja（构建工具）" title="Ninja（构建工具）"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code></a></p></td>
+<td><p><span class="target" id="index-0-generator:Ninja（构建工具） Multi-Config"></span><a class="reference internal" href="../../generator/Ninja（构建工具）&#32;Multi-Config.html#generator:Ninja（构建工具） Multi-Config" title="Ninja（构建工具） Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="target" id="index-0-generator:Unix Makefiles"></span><a class="reference internal" href="../../generator/Unix&#32;Makefiles.html#generator:Unix Makefiles" title="Unix Makefiles"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefiles</span></code></a></p></td>
-<td><p>Visual Studio (所有版本)</p></td>
+<tr class="row-odd"><td><p><span class="target" id="index-0-generator:Unix Makefile（构建脚本）s"></span><a class="reference internal" href="../../generator/Unix&#32;Makefile（构建脚本）s.html#generator:Unix Makefile（构建脚本）s" title="Unix Makefile（构建脚本）s"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Unix</span> <span class="pre">Makefile（构建脚本）s</span></code></a></p></td>
+<td><p>Visual Studio（集成开发环境） (所有版本)</p></td>
 </tr>
 <tr class="row-even"><td><p><span class="target" id="index-0-generator:FASTBuild"></span><a class="reference internal" href="../../generator/FASTBuild.html#generator:FASTBuild" title="FASTBuild"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">FASTBuild</span></code></a></p></td>
 <td><p><span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a></p></td>
@@ -151,32 +155,48 @@ CMake<span class="w"> </span>suite<span class="w"> </span>maintained<span class=
 <h2>尝试一下<a class="headerlink" href="Before&#32;You&#32;Begin.html#try-it-out" title="链接到此标题">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step0</span></code> 目录包含一个简单的“Hello World”C++ 项目。CMake 如何配置该项目的细节将在教程的第 1 步中讨论，我们现在只需要关心如何运行 CMake 程序本身。</p>
 <p>如上所述，根据我们想要用于构建的生成器，有许多运行 CMake 的可能方式。如果我们导航到 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step0</span></code> 目录并运行：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-B<span class="w"> </span>build
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
-<p>CMake 将使用该平台的默认生成器，在 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step0/build</span></code> 中为 Step0 项目生成一个构建系统。或者，我们可以指定一个特定的生成器，例如 <code class="docutils literal notranslate"><span class="pre">Ninja</span></code>：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-B<span class="w"> </span>build
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>CMake 将使用该平台的默认生成器，在 <code class="docutils literal notranslate"><span class="pre">Help/guide/tutorial/Step0/build</span></code> 中为 Step0 项目生成一个构建系统。或者，我们可以指定一个特定的生成器，例如 <code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code>：</p>
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
-<p>效果类似，但会使用 <code class="docutils literal notranslate"><span class="pre">Ninja</span></code> 生成器而不是平台默认值。</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -G Ninja -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>效果类似，但会使用 <code class="docutils literal notranslate"><span class="pre">Ninja（构建工具）</span></code> 生成器而不是平台默认值。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>我们不能在不同的生成器之间重用同一个构建目录。如果您想在相同的构建目录中使用不同的生成器，则必须在运行 CMake 之前删除旧的构建目录。</p>
 </div>
-<p>生成构建系统后，我们如何构建和运行项目取决于所使用的生成器类型。如果是非 Windows 平台上的单配置生成器，我们可以直接运行：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build
+<p>生成构建系统后，我们如何构建和运行项目取决于所使用的生成器类型。如果是非 Windows（微软桌面系统） 平台上的单配置生成器，我们可以直接运行：</p>
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build
 ./build/hello
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build ./build/hello</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>在 Windows 上，根据所使用的 Shell，我们可能需要指定文件扩展名，例如 <code class="docutils literal notranslate"><span class="pre">./build/hello.exe</span></code></p>
+<p>在 Windows（微软桌面系统） 上，根据所使用的 Shell，我们可能需要指定文件扩展名，例如 <code class="docutils literal notranslate"><span class="pre">./build/hello.exe</span></code></p>
 </div>
 <p>如果我们使用多配置生成器，则需要指定构建配置。默认配置包括 <code class="docutils literal notranslate"><span class="pre">Debug</span></code>、<code class="docutils literal notranslate"><span class="pre">Release</span></code>、<code class="docutils literal notranslate"><span class="pre">RelWithDebInfo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MinRelSize</span></code>。构建结果将存储在构建文件夹中特定于配置的子目录中。例如，我们可以运行：</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--config<span class="w"> </span>Debug
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--config<span class="w"> </span>Debug
 ./build/Debug/hello
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build --config Debug ./build/Debug/hello</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="getting-help-and-additional-resources">
 <h2>获取帮助和其他资源<a class="headerlink" href="Before&#32;You&#32;Begin.html#getting-help-and-additional-resources" title="链接到此标题">¶</a></h2>
@@ -242,7 +262,7 @@ CMake<span class="w"> </span>suite<span class="w"> </span>maintained<span class=
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="Getting&#32;Started&#32;with&#32;CMake.html" title="Step 1: Getting Started with CMake">下一页</a> |</li>
+          <a href="Getting&#32;Started&#32;with&#32;CMake.html" title="第 1 步：CMake 入门">下一页</a> |</li>
         <li class="right">
           <a href="index.html" title="CMake Tutorial">上一页</a> |</li>
   <li>

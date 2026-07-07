@@ -61,6 +61,10 @@
 <span class="nf">endmacro()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">macro(&lt;name&gt; [&lt;arg1&gt; ...]) &lt;commands&gt; endmacro()</span></code>：定义一个宏，后续语句会在调用方作用域内展开执行。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>定义一个名为 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 的宏，它接收名为 <code class="docutils literal notranslate"><span class="pre">&lt;arg1&gt;</span></code> 等参数。在 <code class="docutils literal notranslate"><span class="pre">macro</span></code> 之后、匹配的 <span class="target" id="index-0-command:endmacro"></span><a class="reference internal" href="endmacro.html#command:endmacro" title="endmacro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endmacro()</span></code></a> 之前的命令，直到宏被调用时才会被执行。</p>
 <p>按照惯例，<span class="target" id="index-1-command:endmacro"></span><a class="reference internal" href="endmacro.html#command:endmacro" title="endmacro"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">endmacro()</span></code></a> 命令允许一个可选的 <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> 参数。如果使用了该参数，它必须与起始 <code class="docutils literal notranslate"><span class="pre">macro</span></code> 命令的参数完全一致。</p>
 <p>有关宏内部策略的行为，请参阅 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 命令文档。</p>
@@ -73,6 +77,10 @@
 <span class="nf">endmacro()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">macro(foo) &lt;commands&gt; endmacro()</span></code>：定义一个宏，后续语句会在调用方作用域内展开执行。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>的宏可以通过以下任意方式调用</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">foo()</span>
 <span class="nf">Foo()</span>
@@ -80,6 +88,10 @@
 <span class="nf">cmake_language(</span><span class="no">CALL</span><span class="w"> </span><span class="nb">foo</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">foo() Foo() FOO() cmake_language(CALL foo)</span></code>：调用 `foo()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>等等。但是，强烈建议保持宏定义中选择的大小写格式。通常宏名使用全小写。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.18 版本新增：</span><span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="cmake_language.html#command:cmake_language" title="cmake_language(call ...)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(CALL</span> <span class="pre">...)</span></code></a> 命令也可用于调用宏。</p>
@@ -107,11 +119,19 @@
 <span class="nf">foreach(</span><span class="nb">loop_var</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="no">ARGN</span><span class="nf">)</span><span class="w"> </span><span class="c"># ARGN is not a variable</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(ARGV1) # ARGV1 is not a variable if(DEFINED ARGV2) # ARGV2 is not a variable if(ARGC GREATER 2) # ARGC is not a variable foreach(loop_var IN LISTS ARGN) # ARGN is not a variable</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在第一种情况下，您可以使用 <code class="docutils literal notranslate"><span class="pre">if(${ARGV1})</span></code>。在第二和第三种情况下，检查是否向宏传递了可选变量的正确方法是使用 <code class="docutils literal notranslate"><span class="pre">if(${ARGC}</span> <span class="pre">GREATER</span> <span class="pre">2)</span></code>。在最后一种情况下，您可以使用 <code class="docutils literal notranslate"><span class="pre">foreach(loop_var</span> <span class="pre">${ARGN})</span></code>，但这会跳过空参数。如果您需要包含它们，可以使用</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">list_var</span><span class="w"> </span><span class="s">"${ARGN}"</span><span class="nf">)</span>
 <span class="nf">foreach(</span><span class="nb">loop_var</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="nb">list_var</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(list_var &quot;${ARGN}&quot;) foreach(loop_var IN LISTS list_var)</span></code>：调用 `set()` 命令，把变量 `list_var` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>请注意，如果您在调用宏的作用域中有一个同名变量，使用未引用的名称将使用现有变量，而不是参数。例如</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">macro(</span><span class="nb">bar</span><span class="nf">)</span>
 <span class="w">  </span><span class="nf">foreach(</span><span class="nb">arg</span><span class="w"> </span><span class="no">IN</span><span class="w"> </span><span class="no">LISTS</span><span class="w"> </span><span class="no">ARGN</span><span class="nf">)</span>
@@ -126,6 +146,10 @@
 <span class="nf">foo(</span><span class="nb">a</span><span class="w"> </span><span class="nb">b</span><span class="w"> </span><span class="nb">c</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">macro(bar) foreach(arg IN LISTS ARGN) &lt;commands&gt; endforeach() endmacro() function(foo) bar(x y z) endfunction() foo(a b c)</span></code>：定义一个宏，后续语句会在调用方作用域内展开执行。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>它将遍历 <code class="docutils literal notranslate"><span class="pre">a;b;c</span></code> 而不是预期的 <code class="docutils literal notranslate"><span class="pre">x;y;z</span></code>。如果您需要真正的 CMake 变量和/或更好的 CMake 作用域控制，请查看 function 命令。</p>
 </section>
 <section id="see-also">

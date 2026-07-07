@@ -58,7 +58,7 @@
 <div class="versionadded">
 <p><span class="versionmodified added">版本 4.2 中添加。</span></p>
 </div>
-<p>导入目标（imported targets）的定位和配置选择更加一致。</p>
+<p>导入目标（imported targets（目标））的定位和配置选择更加一致。</p>
 <p>CMake 历史上选择导入目标所用配置的方式，优先考虑候选配置的位置属性，仅将 <span class="target" id="index-0-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 作为后备选项。这可能导致不正确的配置选择，尤其是对于 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库。</p>
 <p>CMake 4.2 及更高版本将 <span class="target" id="index-1-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 视为可用配置的最终列表，无论是否为该库提供了特定于配置的位置。此外，当未指定特定于配置的位置时，CMake 将尊重非特定于配置的位置。</p>
 <p>此策略为依赖于历史行为的项目提供了兼容性。策略设置应用于目标，并在创建导入目标时记录。因此，导入的包可能会覆盖消费者为其创建的目标所设置的策略。特别是，从“通用包规范”（Common Package Specification）包中导入的目标始终使用 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为。</p>
@@ -96,6 +96,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(test INTERFACE IMPORTED) set_target_properties(test PROPERTIES IMPORTED_CONFIGURATIONS &quot;RELEASE;DEBUG&quot; INTERFACE_COMPILE_DEFINITIONS &quot;$&lt;$&lt;CONFIG:debug&gt;:DEBUG&gt;&quot; )</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 策略下，CMake 将为任何链接到 <code class="docutils literal notranslate"><span class="pre">test</span></code> 的目标选择 <code class="docutils literal notranslate"><span class="pre">test</span></code> 的 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> 配置（从而定义符号 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>），因为 CMake 不认为任何配置是“有效的”，并且作为一种实现产物，最后考虑的配置会被接受。</p>
 <p>在 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 策略下，如果消费项目以 <code class="docutils literal notranslate"><span class="pre">Debug</span></code> 以外的任何配置构建（请记住配置匹配是不区分大小写的），则将选择 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 配置。这是因为如果消费者的配置也是 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>，则会优先选择 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>；否则，由于 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> 在 <span class="target" id="index-8-prop_tgt:IMPORTED_CONFIGURATIONS"></span><a class="reference internal" href="../prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS" title="IMPORTED_CONFIGURATIONS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_CONFIGURATIONS</span></code></a> 中排在第一位，并且其出现使其成为 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库的“有效”配置，因此将优先选择 <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code>。</p>
 </section>

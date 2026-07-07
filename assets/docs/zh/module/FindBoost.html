@@ -70,9 +70,13 @@
 <span class="w">  </span><span class="nf">)</span><span class="w">                      </span><span class="c"># e.g. "date_time" for "libboost_date_time"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Boost [version] [EXACT] # Minimum or EXACT version e.g. 1.67.0 [REQUIRED] # Fail with error if Boost is not found [COMPONENTS &lt;libs&gt;...] # Boost libraries by their canonical name # e.g. &quot;date_time&quot; for &quot;libboost_date_time&quot; [OPTIONAL_COMPONENTS &lt;libs&gt;...] # Optional Boost libraries by their canonical name) ) # e.g. &quot;date_time&quot; for &quot;libboost_date_time&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此模块用于查找头文件和请求的组件库，或者查找由“Boost CMake”构建提供的 CMake 软件包配置文件。对于后者，请直接跳至下方的 <a class="reference internal" href="FindBoost.html#boost-cmake"><span class="std std-ref">Boost CMake</span></a> 部分。</p>
 <div class="versionadded">
-<p><span class="versionmodified added">3.7 版本新增: </span><code class="docutils literal notranslate"><span class="pre">bzip2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zlib</span></code> 组件（仅限 Windows）。</p>
+<p><span class="versionmodified added">3.7 版本新增: </span><code class="docutils literal notranslate"><span class="pre">bzip2</span></code> 和 <code class="docutils literal notranslate"><span class="pre">zlib</span></code> 组件（仅限 Windows（微软桌面系统））。</p>
 </div>
 <div class="versionadded">
 <p><span class="versionmodified added">3.11 版本新增: </span><code class="docutils literal notranslate"><span class="pre">OPTIONAL_COMPONENTS</span></code> 选项。</p>
@@ -118,7 +122,7 @@
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">Boost_VERSION_COUNT</span></code></dt><dd><p>版本组件数量 (3)。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIB_DIAGNOSTIC_DEFINITIONS</span></code> (Windows 专用)</dt><dd><p>传递给 <span class="target" id="index-0-command:add_definitions"></span><a class="reference internal" href="../command/add_definitions.html#command:add_definitions" title="add_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_definitions()</span></code></a> 以便在编译期间显示有关 Boost 自动链接的诊断信息。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Boost_LIB_DIAGNOSTIC_DEFINITIONS</span></code> (Windows（微软桌面系统） 专用)</dt><dd><p>传递给 <span class="target" id="index-0-command:add_definitions"></span><a class="reference internal" href="../command/add_definitions.html#command:add_definitions" title="add_definitions"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_definitions()</span></code></a> 以便在编译期间显示有关 Boost 自动链接的诊断信息。</p>
 </dd>
 </dl>
 <div class="versionadded">
@@ -162,12 +166,12 @@
 <p>用户可以将这些提示或结果设置为 <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> 条目。项目不应直接读取这些条目，而应使用上述结果变量。请注意，某些提示名称以大写 <code class="docutils literal notranslate"><span class="pre">BOOST</span></code> 开头。如果未将它们指定为 CMake 变量或缓存条目，则可以将它们指定为环境变量。</p>
 <p>此模块首先使用上述提示变量（不包括 <code class="docutils literal notranslate"><span class="pre">BOOST_LIBRARYDIR</span></code>）搜索 Boost 头文件，并将结果保存在 <code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIR</span></code> 中。然后，它使用上述提示（不包括 <code class="docutils literal notranslate"><span class="pre">BOOST_INCLUDEDIR</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_ADDITIONAL_VERSIONS</span></code>）、<code class="docutils literal notranslate"><span class="pre">Boost_INCLUDE_DIR</span></code> 附近的 "lib" 目录以及下方的库名称配置设置来搜索请求的组件库。它将库目录保存在 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_DEBUG</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_LIBRARY_DIR_RELEASE</span></code> 中，并将各个库的位置保存在 <code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_DEBUG</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Boost_&lt;COMPONENT&gt;_LIBRARY_RELEASE</span></code> 中。当用户更改同一构建树中之前搜索所使用的设置（不包括环境变量）时，此模块会丢弃受影响的旧搜索结果并重新搜索。</p>
 </section>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindBoost.html#imported-targets" title="此标题的链接">¶</a></h2>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindBoost.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">3.5 版本新增。</span></p>
 </div>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Boost::boost</span></code></dt><dd><p>仅头文件依赖的目标。（Boost 头文件目录）。</p>
 </dd>
@@ -249,10 +253,14 @@
 <p>设置为 <code class="docutils literal notranslate"><span class="pre">ON</span></code> 以抑制关于新 Boost 版本未知依赖项的警告。</p>
 </dd>
 </dl>
-<p>在 Visual Studio 和 Borland 编译器上，Boost 头文件会请求自动链接到相应的库。这需要显式链接匹配的库或使其在链接库搜索路径中可用。在这种情况下，将 <code class="docutils literal notranslate"><span class="pre">Boost_USE_STATIC_LIBS</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 可能无法实现动态链接。Boost 自动链接通常请求静态库，极少数情况除外（例如 <code class="docutils literal notranslate"><span class="pre">Boost.Python</span></code>）。使用</p>
+<p>在 Visual Studio（集成开发环境） 和 Borland 编译器上，Boost 头文件会请求自动链接到相应的库。这需要显式链接匹配的库或使其在链接库搜索路径中可用。在这种情况下，将 <code class="docutils literal notranslate"><span class="pre">Boost_USE_STATIC_LIBS</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">OFF</span></code> 可能无法实现动态链接。Boost 自动链接通常请求静态库，极少数情况除外（例如 <code class="docutils literal notranslate"><span class="pre">Boost.Python</span></code>）。使用</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_definitions(</span><span class="o">${</span><span class="nt">Boost_LIB_DIAGNOSTIC_DEFINITIONS</span><span class="o">}</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})</span></code>：调用 `add_definitions()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>来请求 Boost 报告有关自动链接请求的信息。</p>
 </section>
 <section id="examples">
@@ -265,6 +273,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Boost 1.36.0) if(Boost_FOUND) include_directories(${Boost_INCLUDE_DIRS}) add_executable(foo foo.cc) endif()</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>查找 Boost 库并使用导入的目标</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.56</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">COMPONENTS</span>
 <span class="w">             </span><span class="nb">date_time</span><span class="w"> </span><span class="nb">filesystem</span><span class="w"> </span><span class="nb">iostreams</span><span class="nf">)</span>
@@ -273,6 +285,10 @@
 <span class="w">                          </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">iostreams</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Boost 1.56 REQUIRED COMPONENTS date_time filesystem iostreams) add_executable(foo foo.cc) target_link_libraries(foo Boost::date_time Boost::filesystem Boost::iostreams)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>查找 Boost Python 3.6 库并使用导入的目标</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.67</span><span class="w"> </span><span class="no">REQUIRED</span><span class="w"> </span><span class="no">COMPONENTS</span>
 <span class="w">             </span><span class="nb">python36</span><span class="w"> </span><span class="nb">numpy36</span><span class="nf">)</span>
@@ -280,6 +296,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">foo</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">python36</span><span class="w"> </span><span class="nb">Boost</span><span class="o">::</span><span class="nb">numpy36</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Boost 1.67 REQUIRED COMPONENTS python36 numpy36) add_executable(foo foo.cc) target_link_libraries(foo Boost::python36 Boost::numpy36)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>查找 Boost 头文件和一些<em>静态</em>（仅限 Release）库</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="nb">Boost_USE_STATIC_LIBS</span><span class="w">        </span><span class="no">ON</span><span class="nf">)</span><span class="w">  </span><span class="c"># only find static libs</span>
 <span class="nf">set(</span><span class="nb">Boost_USE_DEBUG_LIBS</span><span class="w">        </span><span class="no">OFF</span><span class="nf">)</span><span class="w">  </span><span class="c"># ignore debug libs and</span>
@@ -294,6 +314,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(Boost_USE_STATIC_LIBS ON) # only find static libs set(Boost_USE_DEBUG_LIBS OFF) # ignore debug libs and set(Boost_USE_RELEASE_LIBS ON) # only find release libs set(Boost_USE_MULTITHREADED ON) set(Boost_USE_STATIC_RUNTIME OFF) find_package(Boost 1.66.0 COMPONENTS date_time filesystem system ...) if(Boost_FOUND) include_directories(${Boost_INCLUDE_DIRS}) add_executable(foo foo.cc) target_link_libraries(foo ${Boost_LIBRARIES}) endif()</span></code>：调用 `set()` 命令，把变量 `Boost_USE_STATIC_LIBS` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="boost-cmake">
 <span id="id1"></span><h2>Boost CMake<a class="headerlink" href="FindBoost.html#boost-cmake" title="此标题的链接">¶</a></h2>
@@ -316,7 +340,7 @@
 <li><a class="reference internal" href="FindBoost.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindBoost.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindBoost.html#hints">提示</a></li>
-<li><a class="reference internal" href="FindBoost.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindBoost.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindBoost.html#other-variables">其他变量</a></li>
 <li><a class="reference internal" href="FindBoost.html#examples">示例</a></li>
 <li><a class="reference internal" href="FindBoost.html#boost-cmake">Boost CMake</a></li>

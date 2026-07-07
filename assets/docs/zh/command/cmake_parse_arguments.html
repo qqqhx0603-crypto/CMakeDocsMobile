@@ -63,6 +63,10 @@
 <span class="w">                      </span><span class="nv">&lt;one_value_keywords&gt;</span><span class="w"> </span><span class="nv">&lt;multi_value_keywords&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_parse_arguments(&lt;prefix&gt; &lt;options&gt; &lt;one_value_keywords&gt; &lt;multi_value_keywords&gt; &lt;args&gt;...) cmake_parse_arguments(PARSE_ARGV &lt;N&gt; &lt;prefix&gt; &lt;options&gt; &lt;one_value_keywords&gt; &lt;multi_value_keywords&gt;)</span></code>：调用 `cmake_parse_arguments()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="versionadded">
 <p><span class="versionmodified added">3.5 版本新增：</span>此命令现已原生实现。此前，它定义在 <span class="target" id="index-0-module:CMakeParseArguments"></span><a class="reference internal" href="../module/CMakeParseArguments.html#module:CMakeParseArguments" title="CMakeParseArguments"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CMakeParseArguments</span></code></a> 模块中。</p>
 </div>
@@ -107,6 +111,10 @@
 <span class="w">    </span><span class="c">#   arg_KEYWORDS_MISSING_VALUES</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function(my_install) set(options OPTIONAL FAST) set(oneValueArgs DESTINATION RENAME) set(multiValueArgs TARGETS CONFIGURATIONS) cmake_parse_arguments(PARSE_ARGV 0 arg &quot;${options}&quot; &quot;${oneValueArgs}&quot; &quot;${multiValueArgs}&quot; ) # The above will set or unset variables with the following names: # arg_OPTIONAL # arg_FAST # arg_DESTINATION # arg_RENAME # arg_TARGETS # arg_CONFIGURATIONS # # The following will also be set or unset: # arg_UNPARSED_ARGUMENTS # arg_KEYWORDS_MISSING_VALUES</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在宏内部使用时，<code class="docutils literal notranslate"><span class="pre">arg</span></code> 可能不是合适的前缀，因为代码会影响调用作用域。如果同一作用域内调用的另一个宏在调用 <code class="docutils literal notranslate"><span class="pre">cmake_parse_arguments()</span></code> 时也使用了 <code class="docutils literal notranslate"><span class="pre">arg</span></code>，并且两个宏之间有任何公共关键字，那么后续调用的变量可能会覆盖或删除前一个宏调用的变量。因此，建议在 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> 中加入宏名称中唯一的部分，例如 <code class="docutils literal notranslate"><span class="pre">arg_lowercase_macro_name</span></code>。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">macro(</span><span class="nb">my_install</span><span class="nf">)</span>
 <span class="w">    </span><span class="nf">set(</span><span class="nb">options</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
@@ -132,11 +140,19 @@
 <span class="nf">endmacro()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">macro(my_install) set(options OPTIONAL FAST) set(oneValueArgs DESTINATION RENAME) set(multiValueArgs TARGETS CONFIGURATIONS) cmake_parse_arguments(arg_my_install &quot;${options}&quot; &quot;${oneValueArgs}&quot; &quot;${multiValueArgs}&quot; ${ARGN} ) # ... endmacro() macro(my_special_install) # NOTE: Has the same keywords as my_install() set(options OPTIONAL FAST) set(oneValueArgs DESTINATION RENAME) set(multiValueArgs TARGETS CONFIGURATIONS) cmake_parse_arguments(arg_my_special_install &quot;${options}&quot; &quot;${oneValueArgs}&quot; &quot;${multiValueArgs}&quot; ${ARGN} ) # ... endmacro()</span></code>：定义一个宏，后续语句会在调用方作用域内展开执行。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>假设上述宏依次调用，如下所示</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">my_install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">foo</span><span class="w"> </span><span class="nb">bar</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">bin</span><span class="w"> </span><span class="no">OPTIONAL</span><span class="w"> </span><span class="nb">blub</span><span class="w"> </span><span class="no">CONFIGURATIONS</span><span class="nf">)</span>
 <span class="nf">my_special_install(</span><span class="no">TARGETS</span><span class="w"> </span><span class="nb">barry</span><span class="w"> </span><span class="no">DESTINATION</span><span class="w"> </span><span class="nb">sbin</span><span class="w"> </span><span class="no">RENAME</span><span class="w"> </span><span class="no">FAST</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">my_install(TARGETS foo bar DESTINATION bin OPTIONAL blub CONFIGURATIONS) my_special_install(TARGETS barry DESTINATION sbin RENAME FAST)</span></code>：调用 `my_install()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在完成这两个调用后，以下内容描述了将被设置或取消设置的变量</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>arg_my_install_OPTIONAL = TRUE
 arg_my_install_FAST = FALSE # was not present in call to my_install
@@ -157,6 +173,10 @@ arg_my_special_install_UNPARSED_ARGUMENTS &lt;UNSET&gt;
 arg_my_special_install_KEYWORDS_MISSING_VALUES = "RENAME"
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">arg_my_install_OPTIONAL = TRUE arg_my_install_FAST = FALSE # was not present in call to my_install arg_my_install_DESTINATION = &quot;bin&quot; arg_my_install_RENAME &lt;UNSET&gt; # was not present arg_my_install_TARGETS = &quot;foo;bar&quot; arg_my_install_CONFIGURATIONS &lt;UNSET&gt; # was not present arg_my_install_UNPARSED_ARGUMENTS = &quot;blub&quot; # nothing expected after &quot;OPTIONAL&quot; arg_my_install_KEYWORDS_MISSING_VALUES = &quot;CONFIGURATIONS&quot; # value was missing arg_my_special_install_OPTIONAL = FALSE # was not present arg_my_special_install_FAST = TRUE arg_my_special_install_DESTINATION = &quot;sbin&quot; arg_my_special_install_RENAME &lt;UNSET&gt; # value was missing arg_my_special_install_TARGETS = &quot;barry&quot; arg_my_special_install_CONFIGURATIONS &lt;UNSET&gt; # was not present arg_my_special_install_UNPARSED_ARGUMENTS &lt;UNSET&gt; arg_my_special_install_KEYWORDS_MISSING_VALUES = &quot;RENAME&quot;</span></code>：这一行把某个名称与给定值关联起来，常见于配置或键值示例。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>关键字会终止值列表。如果关键字直接出现在 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keyword&gt;</span></code> 之后，则该 <code class="docutils literal notranslate"><span class="pre">&lt;one_value_keyword&gt;</span></code> 不会接收到任何值，且该关键字会被添加到 <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;_KEYWORDS_MISSING_VALUES</span></code> 变量中。在上面的例子中，对 <code class="docutils literal notranslate"><span class="pre">my_special_install()</span></code> 的调用包含了 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code> 关键字，紧接着是 <code class="docutils literal notranslate"><span class="pre">FAST</span></code> 关键字。在这种情况下，<code class="docutils literal notranslate"><span class="pre">FAST</span></code> 终止了对 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code> 关键字的处理。<code class="docutils literal notranslate"><span class="pre">arg_my_special_install_FAST</span></code> 被设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，<code class="docutils literal notranslate"><span class="pre">arg_my_special_install_RENAME</span></code> 被取消设置，并且 <code class="docutils literal notranslate"><span class="pre">arg_my_special_install_KEYWORDS_MISSING_VALUES</span></code> 包含值 <code class="docutils literal notranslate"><span class="pre">RENAME</span></code>。</p>
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="cmake_parse_arguments.html#see-also" title="链接到此标题">¶</a></h2>

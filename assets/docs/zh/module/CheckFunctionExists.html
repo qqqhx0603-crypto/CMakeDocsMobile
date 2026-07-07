@@ -60,16 +60,24 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckFunctionExists</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckFunctionExists)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <section id="commands">
 <h2>命令<a class="headerlink" href="CheckFunctionExists.html#commands" title="链接到此标题">¶</a></h2>
 <p>此模块提供以下命令</p>
 <dl class="cmake command">
 <dt class="sig sig-object cmake" id="command:check_function_exists">
-<span class="sig-name descname"><span class="pre">check_function_exists</span></span><a class="headerlink" href="CheckFunctionExists.html#command:check_function_exists" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_function_exists</span></span><a class="headerlink" href="CheckFunctionExists.html#command:check_function_exists" title="跳转到此定义">¶</a></dt>
 <dd><p>检查 C 函数是否可以从系统库中链接，仅执行一次</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">check_function_exists(</span><span class="nv">&lt;function&gt;</span><span class="w"> </span><span class="nv">&lt;variable&gt;</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">check_function_exists(&lt;function&gt; &lt;variable&gt;)</span></code>：调用 `check_function_exists()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>该命令检查系统库中是否提供了 <code class="docutils literal notranslate"><span class="pre">&lt;function&gt;</span></code>，并将结果存储在内部缓存变量 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 中。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -102,7 +110,7 @@
 </dd>
 </dl>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">CMAKE_REQUIRED_LIBRARIES</span></code></dt><dd><p>要添加到链接命令的库的分号分隔列表。这些可以是系统库的名称，也可以是 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入的目标</span></a>（有关更多详细信息，请参阅 <span class="target" id="index-1-command:try_compile"></span><a class="reference internal" href="../command/try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a>）。</p>
 </dd>
 </dl>
 <dl>
@@ -132,10 +140,14 @@
 <span class="nf">check_function_exists(</span><span class="nb">fopen</span><span class="w"> </span><span class="no">HAVE_FOPEN</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckFunctionExists) check_function_exists(fopen HAVE_FOPEN)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-missing-declaration">
 <h3>示例：缺少声明<a class="headerlink" href="CheckFunctionExists.html#example-missing-declaration" title="链接到此标题">¶</a></h3>
-<p>如上所述，<span class="target" id="index-1-module:CheckSymbolExists"></span><a class="reference internal" href="CheckSymbolExists.html#module:CheckSymbolExists" title="CheckSymbolExists"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSymbolExists</span></code></a> 模块是检查 C 函数的首选，因为它还会验证函数是否已被声明或定义为宏。在以下示例中，该模块被用于检查函数可能未在系统头文件中声明的边缘情况。例如，在 macOS 上，<code class="docutils literal notranslate"><span class="pre">fdatasync()</span></code> 函数可能存在于 C 库中，但其声明未在 <code class="docutils literal notranslate"><span class="pre">unistd.h</span></code> 系统头文件中提供。</p>
+<p>如上所述，<span class="target" id="index-1-module:CheckSymbolExists"></span><a class="reference internal" href="CheckSymbolExists.html#module:CheckSymbolExists" title="CheckSymbolExists"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CheckSymbolExists</span></code></a> 模块是检查 C 函数的首选，因为它还会验证函数是否已被声明或定义为宏。在以下示例中，该模块被用于检查函数可能未在系统头文件中声明的边缘情况。例如，在 macOS（苹果桌面系统） 上，<code class="docutils literal notranslate"><span class="pre">fdatasync()</span></code> 函数可能存在于 C 库中，但其声明未在 <code class="docutils literal notranslate"><span class="pre">unistd.h</span></code> 系统头文件中提供。</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="CheckFunctionExists.html#id1" title="此代码的永久链接">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">CheckFunctionExists</span><span class="nf">)</span>
@@ -149,15 +161,23 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CheckFunctionExists) include(CheckSymbolExists) check_symbol_exists(fdatasync &quot;unistd.h&quot; HAVE_FDATASYNC) # Check if fdatasync() is available in the C library. if(NOT HAVE_FDATASYNC) check_function_exists(fdatasync HAVE_FDATASYNC_WITHOUT_DECL) endif()</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>在这种情况下，如果缺少声明，项目可以提供自己的声明。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.c</span></code></span><a class="headerlink" href="CheckFunctionExists.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">example.c</span></code></span><a class="headerlink" href="CheckFunctionExists.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifdef HAVE_FDATASYNC_WITHOUT_DECL</span>
 <span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">fdatasync</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
 <span class="cp">#endif</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#ifdef HAVE_FDATASYNC_WITHOUT_DECL extern int fdatasync(int); #endif</span></code>：这一行开始预处理条件分支，按宏条件决定后续代码是否参与编译。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>

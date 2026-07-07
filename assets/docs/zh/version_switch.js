@@ -5,7 +5,7 @@
   const all_versions = {
     'git-stage': 'git-stage',
     'git-master': 'git-master',
-    'latest': 'latest release',
+    'latest': '最新版本',
     'v4.3': '4.3',
     'v4.2': '4.2',
     'v4.1': '4.1',
@@ -76,7 +76,7 @@
     const new_url = patch_url(url, selected);
 
     if (new_url != url) {
-      // check beforehand if url exists, else redirect to version's start page
+      // 先检查目标页面是否存在；如果不存在，则跳转到该版本的首页
       fetch(new_url)
         .then((response) => {
           if (response.ok) {
@@ -103,7 +103,7 @@
         selectElement.addEventListener('change', on_switch);
       });
       document.querySelectorAll('.version_switch_note').forEach((placeholder) => {
-        placeholder.innerHTML = 'Or, select a version from the drop-down menu above.';
+        placeholder.innerHTML = '或者从上方下拉菜单中选择其他版本。';
       });
     }
   });

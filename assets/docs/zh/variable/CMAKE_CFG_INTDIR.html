@@ -56,26 +56,26 @@
   <section id="cmake-cfg-intdir">
 <span id="variable:CMAKE_CFG_INTDIR"></span><h1>CMAKE_CFG_INTDIR<a class="headerlink" href="CMAKE_CFG_INTDIR.html#cmake-cfg-intdir" title="链接到此标题">¶</a></h1>
 <div class="deprecated">
-<p><span class="versionmodified deprecated">自 3.21 版本弃用： </span>此变量对 <span class="target" id="index-0-generator:Ninja Multi-Config"></span><a class="reference internal" href="../generator/Ninja&#32;Multi-Config.html#generator:Ninja Multi-Config" title="Ninja Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja</span> <span class="pre">Multi-Config</span></code></a> 的支持较差，并且早于 <span class="target" id="index-0-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code></a> 生成器表达式的出现。请使用 <code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code> 代替。</p>
+<p><span class="versionmodified deprecated">自 3.21 版本弃用： </span>此变量对 <span class="target" id="index-0-generator:Ninja（构建工具） Multi-Config"></span><a class="reference internal" href="../generator/Ninja（构建工具）&#32;Multi-Config.html#generator:Ninja（构建工具） Multi-Config" title="Ninja（构建工具） Multi-Config"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Ninja（构建工具）</span> <span class="pre">Multi-Config</span></code></a> 的支持较差，并且早于 <span class="target" id="index-0-genex:CONFIG"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:CONFIG" title="CONFIG"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code></a> 生成器表达式的出现。请使用 <code class="docutils literal notranslate"><span class="pre">$&lt;CONFIG&gt;</span></code> 代替。</p>
 </div>
 <p>构建时引用每个配置的输出子目录。</p>
-<p>对于支持在构建树中进行多个配置的本机构建系统（例如 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio 生成器</span></a> 和 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a>），其值是对构建时变量的引用，该变量指定每个配置的输出子目录的名称。在 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile 生成器</span></a> 上，它评估为 <code class="docutils literal notranslate"><span class="pre">.</span></code>，因为构建树中只有一个配置。示例值</p>
+<p>对于支持在构建树中进行多个配置的本机构建系统（例如 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio（集成开发环境） 生成器</span></a> 和 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a>），其值是对构建时变量的引用，该变量指定每个配置的输出子目录的名称。在 <a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile（构建脚本） 生成器</span></a> 上，它评估为 <code class="docutils literal notranslate"><span class="pre">.</span></code>，因为构建树中只有一个配置。示例值</p>
 <table class="docutils align-left">
 <tbody>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$(Configuration)</span></code></p></td>
-<td><p>Visual Studio</p></td>
+<td><p>Visual Studio（集成开发环境）</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$(CONFIGURATION)</span></code></p></td>
 <td><p>Xcode</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code></p></td>
-<td><p>基于 Makefile 的工具</p></td>
+<td><p>基于 Makefile（构建脚本） 的工具</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code></p></td>
-<td><p>Ninja</p></td>
+<td><p>Ninja（构建工具）</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">${CONFIGURATION}</span></code></p></td>
-<td><p>Ninja 多配置</p></td>
+<td><p>Ninja（构建工具） 多配置</p></td>
 </tr>
 </tbody>
 </table>
@@ -90,6 +90,10 @@
 <span class="nf">add_custom_target(</span><span class="nb">drive</span><span class="w"> </span><span class="no">ALL</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="nb">out.txt</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(mytool mytool.c) add_custom_command( OUTPUT out.txt COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/mytool ${CMAKE_CURRENT_SOURCE_DIR}/in.txt out.txt DEPENDS mytool in.txt ) add_custom_target(drive ALL DEPENDS out.txt)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>请注意，<code class="docutils literal notranslate"><span class="pre">CMAKE_CFG_INTDIR</span></code> 不再需要此目的，但为了与现有项目兼容而保留。相反，<span class="target" id="index-0-command:add_custom_command"></span><a class="reference internal" href="../command/add_custom_command.html#command:add_custom_command" title="add_custom_command"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_custom_command()</span></code></a> 在其 <code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 选项中识别可执行目标名称，因此 <code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/mytool</span></code> 可以简单地替换为 <code class="docutils literal notranslate"><span class="pre">mytool</span></code>。</p>
 <p>此变量是只读的。设置它会导致未定义行为。在多配置构建系统中，此变量的值作为预处理器符号 <code class="docutils literal notranslate"><span class="pre">CMAKE_INTDIR</span></code> 的值传递给所有源文件的编译。</p>
 </section>

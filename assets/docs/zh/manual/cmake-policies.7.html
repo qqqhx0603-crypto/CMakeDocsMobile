@@ -123,6 +123,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.10...4.2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.10...4.2)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这使用了 <code class="docutils literal notranslate"><span class="pre">&lt;min&gt;...&lt;policy_max&gt;</span></code> 语法，以启用 CMake 4.2 及更早版本中引入的策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为，同时仅要求 CMake 3.10 作为最低版本。该项目预计能够在这些版本之间引入的策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为下正常工作。</p>
 </section>
 <section id="transition-schedule">
@@ -132,9 +136,13 @@
 <li><p>如果项目未设置某项策略，CMake 将使用其 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为，但也可能会警告该策略尚未设置。</p>
 <ul>
 <li><p>运行 CMake 的用户可以在不修改项目的情况下，通过在 <span class="target" id="index-0-manual:cmake(1)"></span><a class="reference internal" href="cmake.1.html#manual:cmake(1)" title="cmake(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cmake(1)</span></code></a> 命令行上设置 <span class="target" id="index-0-variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>"></span><a class="reference internal" href="../variable/CMAKE_POLICY_DEFAULT_CMPNNNN.html#variable:CMAKE_POLICY_DEFAULT_CMP<NNNN>" title="CMAKE_POLICY_DEFAULT_CMP<NNNN>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_POLICY_DEFAULT_CMP&lt;NNNN&gt;</span></code></a> 变量作为缓存条目来静默该警告。</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_POLICY_DEFAULT_CMP0990<span class="o">=</span>OLD<span class="w"> </span>...
+<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DCMAKE_POLICY_DEFAULT_CMP0990<span class="o">=</span>OLD<span class="w"> </span>...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -DCMAKE_POLICY_DEFAULT_CMP0990=OLD ...</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </li>
 <li><p>项目可以通过使用 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 命令显式地将策略设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 或 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为来消除该警告。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if(</span><span class="no">POLICY</span><span class="w"> </span><span class="no">CMP0990</span><span class="nf">)</span>
@@ -142,6 +150,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(POLICY CMP0990) cmake_policy(SET CMP0990 NEW) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>除非是为了在已冻结或稳定的代码库中消除警告，或者作为更大迁移路径的一部分临时使用，否则策略几乎不应被设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code>。</p>
@@ -175,7 +187,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0204.html">CMP0204: 针对 MSVC ABI 时，字符集总是被定义。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0203.html">CMP0203: 针对 MSVC ABI 的共享库会定义 _WINDLL。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0203.html">CMP0203: 针对 MSVC ABI 的共享库会定义 _WINDLL（动态链接库）。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0202.html">CMP0202: PDB 文件名总是包含其目标的每配置 POSTFIX。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0201.html">CMP0201: Python::NumPy 不再依赖 Python::Development.Module。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0200.html">CMP0200: 导入目标的定位和配置选择更加一致。</a></li>
@@ -244,7 +256,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0165.html">CMP0165: enable_language() 不得在 project() 之前调用。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0164.html">CMP0164: 当平台不支持时，add_library() 拒绝 SHARED 库。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0163.html">CMP0163: GENERATED 源文件属性现在在所有目录中可见。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0162.html">CMP0162: Visual Studio 生成器默认添加 UseDebugLibraries 指标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0162.html">CMP0162: Visual Studio（集成开发环境） 生成器默认添加 UseDebugLibraries 指标。</a></li>
 </ul>
 </div>
 </section>
@@ -278,9 +290,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0151.html">CMP0151: AUTOMOC 包含目录默认作为系统包含目录。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0150.html">CMP0150: ExternalProject_Add 和 FetchContent_Declare 将相对 git 仓库路径视为相对于父项目的远程仓库。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0149.html">CMP0149: Visual Studio 生成器默认选择最新的 Windows SDK。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0149.html">CMP0149: Visual Studio（集成开发环境） 生成器默认选择最新的 Windows（微软桌面系统） SDK。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0148.html">CMP0148: FindPythonInterp 和 FindPythonLibs 模块被移除。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0147.html">CMP0147: Visual Studio 生成器并行构建自定义命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0147.html">CMP0147: Visual Studio（集成开发环境） 生成器并行构建自定义命令。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0146.html">CMP0146: FindCUDA 模块被移除。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0145.html">CMP0145: Dart 和 FindDart 模块被移除。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0144.html">CMP0144: find_package 使用大写的 PACKAGENAME_ROOT 变量。</a></li>
@@ -314,7 +326,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0137.html">CMP0137: try_compile() 在项目模式下传递平台变量。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0136.html">CMP0136: Watcom 运行时库标志由抽象层选择。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0135.html">CMP0135: URL 下载方式的 ExternalProject 和 FetchContent 默认忽略归档中的时间戳。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0134.html">CMP0134: 当 "TARGET" 视图不可用时，回退到 "HOST" Windows 注册表视图。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0134.html">CMP0134: 当 "TARGET" 视图不可用时，回退到 "HOST" Windows（微软桌面系统） 注册表视图。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0133.html">CMP0133: CPack 模块默认在 CPack DragNDrop 生成器中禁用 SLA。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0132.html">CMP0132: 不要在第一次运行时设置编译器环境变量。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0131.html">CMP0131: LINK_LIBRARIES 支持 LINK_ONLY 生成器表达式。</a></li>
@@ -360,7 +372,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0119.html">CMP0119: LANGUAGE 源文件属性显式按语言编译。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0118.html">CMP0118: GENERATED 源文件可以在不手动标记的情况下跨目录使用。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0117.html">CMP0117: MSVC RTTI 标志 /GR 默认不添加到 CMAKE_CXX_FLAGS。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0116.html">CMP0116: Ninja 生成器转换来自 add_custom_command() 的 DEPFILE。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0116.html">CMP0116: Ninja（构建工具） 生成器转换来自 add_custom_command() 的 DEPFILE。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0115.html">CMP0115: 源文件扩展名必须显式指定。</a></li>
 </ul>
 </div>
@@ -370,7 +382,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0114.html">CMP0114: ExternalProject 步骤目标完全采用其步骤。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0113.html">CMP0113: Makefile 生成器不会重复目标依赖中的自定义命令。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0113.html">CMP0113: Makefile（构建脚本） 生成器不会重复目标依赖中的自定义命令。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0112.html">CMP0112: 目标文件组件生成器表达式不会添加目标依赖。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0111.html">CMP0111: 缺少位置属性的导入目标在生成期间会失败。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0110.html">CMP0110: add_test() 支持在测试名称中使用任意字符。</a></li>
@@ -467,7 +479,7 @@
 <h3><a class="toc-backref" href="cmake-policies.7.html#id30" role="doc-backlink">CMake 3.11 引入的策略</a><a class="headerlink" href="cmake-policies.7.html#policies-introduced-by-cmake-3-11" title="链接至此标题">¶</a></h3>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0072.html">CMP0072: FindOpenGL 在可用时默认更倾向于 GLVND。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0072.html">CMP0072: FindOpenGL（开放图形库） 在可用时默认更倾向于 GLVND。</a></li>
 </ul>
 </div>
 </section>
@@ -485,7 +497,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0069.html">CMP0069: 启用 INTERPROCEDURAL_OPTIMIZATION 时强制执行。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0068.html">CMP0068: macOS 上的 RPATH 设置不影响 install_name。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0068.html">CMP0068: macOS（苹果桌面系统） 上的 RPATH 设置不影响 install_name。</a></li>
 </ul>
 </div>
 </section>
@@ -527,7 +539,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0061.html">CMP0061: CTest 默认不告诉 make 忽略错误 (-i)。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0060.html">CMP0060: 即使在隐式目录中也按完整路径链接库。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0059.html">CMP0059: 不要将 DEFINITIONS 视为内置目录属性。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0058.html">CMP0058: Ninja 要求自定义命令的副产品必须是显式的。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0058.html">CMP0058: Ninja（构建工具） 要求自定义命令的副产品必须是显式的。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0057.html">CMP0057: 支持新的 IN_LIST if() 操作符。</a></li>
 </ul>
 </div>
@@ -593,7 +605,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0023.html">CMP0023: 不能混合使用普通和关键字 target_link_libraries 签名。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0022.html">CMP0022: INTERFACE_LINK_LIBRARIES 定义链接接口。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0021.html">CMP0021: INCLUDE_DIRECTORIES 目标属性中的相对路径会导致致命错误。</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0020.html">CMP0020: 在 Windows 上自动将 Qt 可执行文件链接到 qtmain 目标。</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../policy/CMP0020.html">CMP0020: 在 Windows（微软桌面系统） 上自动将 Qt 可执行文件链接到 qtmain 目标。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0019.html">CMP0019: 不要重新展开包含和链接信息中的变量。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0018.html">CMP0018: 忽略 CMAKE_SHARED_LIBRARY_Lang_FLAGS 变量。</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../policy/CMP0017.html">CMP0017: 从 CMake 模块目录包含文件时，优先使用该目录下的文件。</a></li>

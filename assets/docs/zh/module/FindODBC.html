@@ -62,12 +62,16 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">ODBC</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(ODBC [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>ODBC 使应用程序能够使用一组通用的函数与不同的数据库管理系统 (DBMS) 进行通信。与特定数据库的通信通过 ODBC 驱动程序处理，这些驱动程序由库在运行时加载。</p>
-<p>在 Windows 上，使用 Visual Studio 构建时，此模块假定 ODBC 库由可用的 Windows SDK 提供。</p>
+<p>在 Windows（微软桌面系统） 上，使用 Visual Studio（集成开发环境） 构建时，此模块假定 ODBC 库由可用的 Windows（微软桌面系统） SDK 提供。</p>
 <p>在类 Unix 系统上，此模块搜索由 unixODBC 或 iODBC 实现的 ODBC API 提供的 ODBC 库。默认情况下，此模块会查找 ODBC 配置程序以确定 ODBC 库和包含目录，优先顺序为先 unixODBC，后 iODBC。如果未找到配置程序，它将在标准位置搜索 ODBC 头文件和库。</p>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindODBC.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindODBC.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">ODBC::ODBC</span></code></dt><dd><p>封装 ODBC 使用要求的目标，在找到 ODBC 时可用。</p>
 </dd>
@@ -89,9 +93,9 @@
 <h2>缓存变量<a class="headerlink" href="FindODBC.html#cache-variables" title="此标题的链接">¶</a></h2>
 <p>以下缓存变量也可以设置</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">ODBC_INCLUDE_DIR</span></code></dt><dd><p>包含 <code class="docutils literal notranslate"><span class="pre">sql.h</span></code> 和其他 ODBC 头文件的目录路径。在 Windows 上可能为空，因为对应于预期 Windows SDK 的包含目录已在编译环境中可用。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ODBC_INCLUDE_DIR</span></code></dt><dd><p>包含 <code class="docutils literal notranslate"><span class="pre">sql.h</span></code> 和其他 ODBC 头文件的目录路径。在 Windows（微软桌面系统） 上可能为空，因为对应于预期 Windows（微软桌面系统） SDK 的包含目录已在编译环境中可用。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ODBC_LIBRARY</span></code></dt><dd><p>ODBC 库的路径或库名称。在 Windows 上，这可能仅是一个库名称，因为对应于预期 Windows SDK 的库目录已在编译环境中可用。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ODBC_LIBRARY</span></code></dt><dd><p>ODBC 库的路径或库名称。在 Windows（微软桌面系统） 上，这可能仅是一个库名称，因为对应于预期 Windows（微软桌面系统） SDK 的库目录已在编译环境中可用。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ODBC_CONFIG</span></code></dt><dd><p>如果找到或指定了 ODBC 配置程序，则为其路径。例如，unixODBC 使用 <code class="docutils literal notranslate"><span class="pre">odbc_config</span></code>，或 iODBC 使用 <code class="docutils literal notranslate"><span class="pre">iodbc-config</span></code>。</p>
 </dd>
@@ -100,7 +104,7 @@
 <section id="limitations">
 <h2>限制<a class="headerlink" href="FindODBC.html#limitations" title="此标题的永久链接">¶</a></h2>
 <ul class="simple">
-<li><p>在 Windows 上，此模块不会搜索 iODBC。</p></li>
+<li><p>在 Windows（微软桌面系统） 上，此模块不会搜索 iODBC。</p></li>
 <li><p>在类 Unix 系统上，没有内置机制来优先选择 unixODBC 或 iODBC。要绕过此限制，请明确将 <code class="docutils literal notranslate"><span class="pre">ODBC_CONFIG</span></code> 变量设置为所需 ODBC 配置程序的路径。</p></li>
 <li><p>此模块不支持搜索或选择特定的 ODBC 驱动程序。</p></li>
 </ul>
@@ -116,6 +120,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">ODBC</span><span class="o">::</span><span class="no">ODBC</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(ODBC) target_link_libraries(project_target PRIVATE ODBC::ODBC)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 <section id="example-finding-a-custom-odbc-installation">
@@ -125,14 +133,26 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-D<span class="w"> </span><span class="nv">CMAKE_PREFIX_PATH</span><span class="o">=</span>/path/to/odbc-installation<span class="w"> </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake -D CMAKE_PREFIX_PATH=/path/to/odbc-installation -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>或者使用专门的 <span class="target" id="index-0-variable:<PackageName>_ROOT"></span><a class="reference internal" href="../variable/PackageName_ROOT.html#variable:<PackageName>_ROOT" title="<PackageName>_ROOT"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">ODBC_ROOT</span></code></a> 变量</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-D<span class="w"> </span><span class="nv">ODBC_ROOT</span><span class="o">=</span>/path/to/odbc-installation<span class="w"> </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake -D ODBC_ROOT=/path/to/odbc-installation -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>手动指定 ODBC 配置程序（如果可用），以便可以根据配置工具自动确定 ODBC 安装</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span>-D<span class="w"> </span><span class="nv">ODBC_CONFIG</span><span class="o">=</span>/path/to/odbc/bin/odbc-config<span class="w"> </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake -D ODBC_CONFIG=/path/to/odbc/bin/odbc-config -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>手动指定 ODBC 库和包含目录</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cmake<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-D<span class="w"> </span><span class="nv">ODBC_LIBRARY</span><span class="o">=</span>/path/to/odbc/lib/libodbc.so<span class="w"> </span><span class="se">\</span>
@@ -140,6 +160,10 @@
 <span class="w">    </span>-B<span class="w"> </span>build
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">$ cmake \ -D ODBC_LIBRARY=/path/to/odbc/lib/libodbc.so \ -D ODBC_INCLUDE_DIR=/path/to/odbc/include \ -B build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 </section>
@@ -155,7 +179,7 @@
     <h3>目录</h3>
     <ul>
 <li><a class="reference internal" href="FindODBC.html#">FindODBC</a><ul>
-<li><a class="reference internal" href="FindODBC.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindODBC.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindODBC.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindODBC.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindODBC.html#limitations">限制</a></li>

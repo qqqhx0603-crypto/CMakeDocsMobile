@@ -55,10 +55,10 @@
             
   <section id="framework">
 <span id="prop_tgt:FRAMEWORK"></span><h1>FRAMEWORK<a class="headerlink" href="FRAMEWORK.html#framework" title="链接到此标题">¶</a></h1>
-<p>在 macOS 和 iOS 上将 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code> 库构建为框架包 (Framework Bundle)。</p>
-<p>如果此类库目标的此属性被设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，则在 macOS 和 iOS 上构建时，它将被构建为框架。它将拥有框架所需的目录结构，并适用于 <code class="docutils literal notranslate"><span class="pre">-framework</span></code> 选项。如果在创建目标时设置了 <span class="target" id="index-0-variable:CMAKE_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FRAMEWORK.html#variable:CMAKE_FRAMEWORK" title="CMAKE_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK</span></code></a> 变量，则此属性将由该变量的值初始化。</p>
+<p>在 macOS（苹果桌面系统） 和 iOS 上将 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code> 或 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code> 库构建为框架包 (Framework Bundle)。</p>
+<p>如果此类库目标的此属性被设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，则在 macOS（苹果桌面系统） 和 iOS 上构建时，它将被构建为框架。它将拥有框架所需的目录结构，并适用于 <code class="docutils literal notranslate"><span class="pre">-framework</span></code> 选项。如果在创建目标时设置了 <span class="target" id="index-0-variable:CMAKE_FRAMEWORK"></span><a class="reference internal" href="../variable/CMAKE_FRAMEWORK.html#variable:CMAKE_FRAMEWORK" title="CMAKE_FRAMEWORK"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FRAMEWORK</span></code></a> 变量，则此属性将由该变量的值初始化。</p>
 <p>要自定义框架中的 <code class="docutils literal notranslate"><span class="pre">Info.plist</span></code> 文件，请使用 <span class="target" id="index-0-prop_tgt:MACOSX_FRAMEWORK_INFO_PLIST"></span><a class="reference internal" href="MACOSX_FRAMEWORK_INFO_PLIST.html#prop_tgt:MACOSX_FRAMEWORK_INFO_PLIST" title="MACOSX_FRAMEWORK_INFO_PLIST"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">MACOSX_FRAMEWORK_INFO_PLIST</span></code></a> 目标属性。</p>
-<p>对于 macOS，另请参阅 <span class="target" id="index-0-prop_tgt:FRAMEWORK_VERSION"></span><a class="reference internal" href="FRAMEWORK_VERSION.html#prop_tgt:FRAMEWORK_VERSION" title="FRAMEWORK_VERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK_VERSION</span></code></a> 目标属性。</p>
+<p>对于 macOS（苹果桌面系统），另请参阅 <span class="target" id="index-0-prop_tgt:FRAMEWORK_VERSION"></span><a class="reference internal" href="FRAMEWORK_VERSION.html#prop_tgt:FRAMEWORK_VERSION" title="FRAMEWORK_VERSION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK_VERSION</span></code></a> 目标属性。</p>
 <p>创建 <code class="docutils literal notranslate"><span class="pre">dynamicFramework</span></code> 的示例</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">dynamicFramework</span><span class="w"> </span><span class="no">SHARED</span>
 <span class="w">            </span><span class="nb">dynamicFramework.c</span>
@@ -78,6 +78,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(dynamicFramework SHARED dynamicFramework.c dynamicFramework.h ) set_target_properties(dynamicFramework PROPERTIES FRAMEWORK TRUE FRAMEWORK_VERSION C MACOSX_FRAMEWORK_IDENTIFIER com.cmake.dynamicFramework MACOSX_FRAMEWORK_INFO_PLIST Info.plist # &quot;current version&quot; in semantic format in Mach-O binary file VERSION 16.4.0 # &quot;compatibility version&quot; in semantic format in Mach-O binary file SOVERSION 1.0.0 PUBLIC_HEADER dynamicFramework.h XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY &quot;iPhone Developer&quot; )</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 
 

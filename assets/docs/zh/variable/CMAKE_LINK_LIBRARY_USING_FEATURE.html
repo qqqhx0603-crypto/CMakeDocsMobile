@@ -71,10 +71,14 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;PREFIX&gt;] &lt;LIBRARY_EXPRESSION&gt; [&lt;SUFFIX&gt;]
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">[&lt;PREFIX&gt;] &lt;LIBRARY_EXPRESSION&gt; [&lt;SUFFIX&gt;]</span></code>：这一行给出示例文本或输出，用来说明：[&lt;PREFIX&gt;] &lt;LIBRARY_EXPRESSION&gt; [&lt;SUFFIX&gt;]</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当指定了 <code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;SUFFIX&gt;</span></code> 时，它们分别位于 <span class="target" id="index-2-genex:LINK_LIBRARY"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:LINK_LIBRARY" title="LINK_LIBRARY"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">LINK_LIBRARY</span></code></a> 表达式中指定的所有库列表的前面和后面，而不是针对每个库单独设置。然而，不能保证指定的库列表会始终保持组合在一起，因此如果 CMake 为了满足其他约束而重组了库列表，<code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;SUFFIX&gt;</span></code> 可能会出现多次。这意味着像 GNU <code class="docutils literal notranslate"><span class="pre">ld</span></code> 链接器支持的 <code class="docutils literal notranslate"><span class="pre">--start-group</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--end-group</span></code> 这样的结构不能以这种方式使用。对于此类结构，应改用 <span class="target" id="index-0-genex:LINK_GROUP"></span><a class="reference internal" href="../manual/cmake-generator-expressions.7.html#genex:LINK_GROUP" title="LINK_GROUP"><code class="xref cmake cmake-genex docutils literal notranslate"><span class="pre">LINK_GROUP</span></code></a> 生成器表达式。</p>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;LIBRARY_EXPRESSION&gt;</span></code> 用于指定在链接器命令行中为每个库构建相应片段的模式。表达式中可以使用以下占位符：</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;LIBRARY&gt;</span></code> 会展开为 CMake 目标的库完整路径；否则，将根据项目项展开为特定于平台的值（在 Windows 上与 <code class="docutils literal notranslate"><span class="pre">&lt;LINK_ITEM&gt;</span></code> 相同，在其他平台上为库的基本名称）。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;LIBRARY&gt;</span></code> 会展开为 CMake 目标的库完整路径；否则，将根据项目项展开为特定于平台的值（在 Windows（微软桌面系统） 上与 <code class="docutils literal notranslate"><span class="pre">&lt;LINK_ITEM&gt;</span></code> 相同，在其他平台上为库的基本名称）。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;LINK_ITEM&gt;</span></code> 会展开为该库通常在链接器命令行上的链接方式。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;LIB_ITEM&gt;</span></code> 会展开为 CMake 目标的库完整路径；否则，即为在 <code class="docutils literal notranslate"><span class="pre">&lt;LIBRARY_EXPRESSION&gt;</span></code> 中精确指定的项目本身。</p></li>
 </ul>
@@ -84,6 +88,10 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CMAKE_LINK_LIBRARY_USING_weak_library &quot;PATH{-weak_library &lt;LIBRARY&gt;}NAME{LINKER:-weak-l&lt;LIB_ITEM&gt;}&quot; )</span></code>：调用 `set()` 命令，把变量 `CMAKE_LINK_LIBRARY_USING_weak_library` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于此变量的所有三个元素（<code class="docutils literal notranslate"><span class="pre">&lt;PREFIX&gt;</span></code>、<code class="docutils literal notranslate"><span class="pre">&lt;LIBRARY_EXPRESSION&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&lt;SUFFIX&gt;</span></code>），都可以使用 <code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀。</p>
 <p>要将选项传递给链接器工具，每个编译器驱动程序都有其自己的语法。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 前缀和 <code class="docutils literal notranslate"><span class="pre">,</span></code> 分隔符可用于以可移植的方式指定要传递给链接器工具的选项。<code class="docutils literal notranslate"><span class="pre">LINKER:</span></code> 会被替换为相应的驱动程序选项，<code class="docutils literal notranslate"><span class="pre">,</span></code> 会被替换为相应的驱动程序分隔符。驱动程序前缀和分隔符由 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG"></span><a class="reference internal" href="CMAKE_LANG_LINKER_WRAPPER_FLAG.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG</span></code></a> 和 <span class="target" id="index-0-variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"></span><a class="reference internal" href="CMAKE_LANG_LINKER_WRAPPER_FLAG_SEP.html#variable:CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP" title="CMAKE_<LANG>_LINKER_WRAPPER_FLAG_SEP"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_LINKER_WRAPPER_FLAG_SEP</span></code></a> 变量的值给出。</p>
 <p>例如，对于 <code class="docutils literal notranslate"><span class="pre">Clang</span></code>，<code class="docutils literal notranslate"><span class="pre">"LINKER:-z,defs"</span></code> 会变成 <code class="docutils literal notranslate"><span class="pre">-Xlinker</span> <span class="pre">-z</span> <span class="pre">-Xlinker</span> <span class="pre">defs</span></code>；对于 <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">GCC</span></code>，则会变成 <code class="docutils literal notranslate"><span class="pre">-Wl,-z,defs</span></code>。</p>
@@ -131,6 +139,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(CMAKE_C_LINK_LIBRARY_USING_load_archive_SUPPORTED TRUE) if(CMAKE_C_COMPILER_ID STREQUAL &quot;AppleClang&quot;) set(CMAKE_C_LINK_LIBRARY_USING_load_archive &quot;-force_load &lt;LIB_ITEM&gt;&quot;) elseif(CMAKE_C_COMPILER_ID STREQUAL &quot;GNU&quot; AND CMAKE_SYSTEM_NAME STREQUAL &quot;Linux&quot;) set(CMAKE_C_LINK_LIBRARY_USING_load_archive &quot;LINKER:--push-state,--whole-archive&quot; &quot;&lt;LINK_ITEM&gt;&quot; &quot;LINKER:--pop-state&quot; ) elseif(CMAKE_C_COMPILER_ID STREQUAL &quot;MSVC&quot;) set(CMAKE_C_LINK_LIBRARY_USING_load_archive &quot;/WHOLEARCHIVE:&lt;LIBRARY&gt;&quot;) else() # feature not yet supported for the other environments set(CMAKE_C_LINK_LIBRARY_USING_load_archive_SUPPORTED FALSE) endif() add_library(lib1 STATIC ...) add_library(lib2 SHARED ...) if(CMAKE_C_LINK_LIBRARY_USING_load_archive_SUPPORTED) # The -force_load Apple linker option requires a file name set(external_lib &quot;$&lt;IF:$&lt;LINK_LANG_AND_ID:C,AppleClang&gt;,libexternal.a,external&gt;&quot; ) target_link_libraries(lib2 PRIVATE &quot;$&lt;LINK_LIBRARY:load_archive,lib1,${external_lib}&gt;&quot; ) else() target_link_libraries(lib2 PRIVATE lib1 external) endif()</span></code>：调用 `set()` 命令，把变量 `CMAKE_C_LINK_LIBRARY_USING_load_archive_SUPPORTED` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>CMake 将生成以下链接表达式：</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">AppleClang</span></code>: <code class="docutils literal notranslate"><span class="pre">-force_load</span> <span class="pre">/path/to/lib1.a</span> <span class="pre">-force_load</span> <span class="pre">libexternal.a</span></code></p></li>
@@ -140,7 +152,7 @@
 </section>
 <section id="linking-a-library-as-weak">
 <h3>将库链接为弱引用<a class="headerlink" href="CMAKE_LINK_LIBRARY_USING_FEATURE.html#linking-a-library-as-weak" title="链接到此标题">¶</a></h3>
-<p>在 macOS 上，可以将库以弱模式链接（库及其所有引用都被标记为弱导入）。对于通过文件路径指定的库，与通过名称指定的库相比，必须使用不同的标志。此约束可以使用 <code class="docutils literal notranslate"><span class="pre">PATH{}</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NAME{}</span></code> 包装器来解决。同样，以下示例展示了如何为某些链接器实现这一点，但这仅用于演示目的。项目应改用内置的 <code class="docutils literal notranslate"><span class="pre">WEAK_FRAMEWORK</span></code> 或 <code class="docutils literal notranslate"><span class="pre">WEAK_LIBRARY</span></code> 功能（参见 <a class="reference internal" href="CMAKE_LINK_LIBRARY_USING_FEATURE.html#predefined-features">预定义功能</a>），它们提供了更完整、更稳健的实现。</p>
+<p>在 macOS（苹果桌面系统） 上，可以将库以弱模式链接（库及其所有引用都被标记为弱导入）。对于通过文件路径指定的库，与通过名称指定的库相比，必须使用不同的标志。此约束可以使用 <code class="docutils literal notranslate"><span class="pre">PATH{}</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NAME{}</span></code> 包装器来解决。同样，以下示例展示了如何为某些链接器实现这一点，但这仅用于演示目的。项目应改用内置的 <code class="docutils literal notranslate"><span class="pre">WEAK_FRAMEWORK</span></code> 或 <code class="docutils literal notranslate"><span class="pre">WEAK_LIBRARY</span></code> 功能（参见 <a class="reference internal" href="CMAKE_LINK_LIBRARY_USING_FEATURE.html#predefined-features">预定义功能</a>），它们提供了更完整、更稳健的实现。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if</span> <span class="nf">(</span><span class="no">CMAKE_C_COMPILER_ID</span><span class="w"> </span><span class="no">STREQUAL</span><span class="w"> </span><span class="s">"AppleClang"</span><span class="nf">)</span>
 <span class="w">  </span><span class="nf">set(</span><span class="nb">CMAKE_LINK_LIBRARY_USING_weak_library</span>
 <span class="w">      </span><span class="s">"PATH{-weak_library &lt;LIBRARY&gt;}NAME{LINKER:-weak-l&lt;LIB_ITEM&gt;}"</span>
@@ -157,6 +169,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if (CMAKE_C_COMPILER_ID STREQUAL &quot;AppleClang&quot;) set(CMAKE_LINK_LIBRARY_USING_weak_library &quot;PATH{-weak_library &lt;LIBRARY&gt;}NAME{LINKER:-weak-l&lt;LIB_ITEM&gt;}&quot; ) set(CMAKE_LINK_LIBRARY_USING_weak_library_SUPPORTED TRUE) endif() add_library(lib SHARED ...) add_executable(main ...) if(CMAKE_LINK_LIBRARY_USING_weak_library_SUPPORTED) target_link_libraries(main PRIVATE &quot;$&lt;LINK_LIBRARY:weak_library,lib,external&gt;&quot;) else() target_link_libraries(main PRIVATE lib external) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当使用 <code class="docutils literal notranslate"><span class="pre">AppleClang</span></code> 工具链链接 <code class="docutils literal notranslate"><span class="pre">main</span></code> 时，CMake 将生成以下链接器命令行片段：</p>
 <p><code class="docutils literal notranslate"><span class="pre">-weak_library</span> <span class="pre">/path/to/lib</span> <span class="pre">-Xlinker</span> <span class="pre">-weak-lexternal</span></code>.</p>
 </section>
@@ -173,7 +189,7 @@
 <li><p>所有 BSD 变体。</p></li>
 <li><p>SunOS。</p></li>
 <li><p>所有 Apple 变体。库必须指定为 CMake 目标名称、库文件名（例如 <code class="docutils literal notranslate"><span class="pre">libfoo.a</span></code>）或库文件路径（例如 <code class="docutils literal notranslate"><span class="pre">/path/to/libfoo.a</span></code>）。由于 Apple 链接器的限制，它不能指定为纯库名称，例如 <code class="docutils literal notranslate"><span class="pre">foo</span></code>（其中 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 不是 CMake 目标）。</p></li>
-<li><p>Windows。使用 MSVC 或类似 MSVC 工具链时，MSVC 版本必须大于 1900。</p></li>
+<li><p>Windows（微软桌面系统）。使用 MSVC 或类似 MSVC 工具链时，MSVC 版本必须大于 1900。</p></li>
 <li><p>Cygwin。</p></li>
 <li><p>MSYS。</p></li>
 </ul>
@@ -191,6 +207,10 @@
 <span class="c">#   -F/path/to -framework my_framework</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib SHARED ...) target_link_libraries(lib PRIVATE &quot;$&lt;LINK_LIBRARY:FRAMEWORK,/path/to/my_framework&gt;&quot;) # The constructed linker command line will contain: # -F/path/to -framework my_framework</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>文件路径必须符合以下模式之一（<code class="docutils literal notranslate"><span class="pre">*</span></code> 是通配符，可选部分显示为 <code class="docutils literal notranslate"><span class="pre">[...]</span></code>）：</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">[/path/to/]FwName[.framework]</span></code></p></li>

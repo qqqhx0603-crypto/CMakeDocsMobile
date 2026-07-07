@@ -14,7 +14,7 @@
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="CPack Archive Generator" href="archive.html" />
+    <link rel="next" title="CPack Archive Generator（归档包生成器）" href="archive.html" />
     <link rel="prev" title="cpack-generators(7)" href="../manual/cpack-generators.7.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
@@ -32,7 +32,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="archive.html" title="CPack Archive Generator" accesskey="N">下一页</a> |</li>
+          <a href="archive.html" title="CPack Archive Generator（归档包生成器）" accesskey="N">下一页</a> |</li>
         <li class="right">
           <a href="../manual/cpack-generators.7.html" title="cpack-generators(7)" accesskey="P">上一页</a> |</li>
   <li>
@@ -54,7 +54,7 @@
           <div class="body" role="main">
             
   <section id="cpack-appimage-generator">
-<span id="cpack_gen:CPack AppImage Generator"></span><h1>CPack AppImage 生成器<a class="headerlink" href="appimage.html#cpack-appimage-generator" title="链接到此标题">¶</a></h1>
+<span id="cpack_gen:CPack AppImage Generator（AppImage 打包生成器）"></span><h1>CPack AppImage 生成器<a class="headerlink" href="appimage.html#cpack-appimage-generator" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
 <p><span class="versionmodified added">版本 4.2 中添加。</span></p>
 </div>
@@ -80,6 +80,10 @@
 <span class="s s-Multiline">]]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">install(CODE [[ file(GET_RUNTIME_DEPENDENCIES EXECUTABLES $&lt;TARGET_FILE:my_application_target&gt; RESOLVED_DEPENDENCIES_VAR resolved_deps ) foreach(dep ${resolved_deps}) # copy the symlink file(COPY ${dep} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib) # Resolve the real path of the dependency (follows symlinks) file(REAL_PATH ${dep} resolved_dep_path) # Copy the resolved file to the destination file(COPY ${resolved_dep_path} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib) endforeach() ]])</span></code>：调用 `install()` 命令，声明安装规则。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>CPack AppImage 生成器将根据提供的 <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> 条目生成一个默认的 <a class="reference external" href="https://docs.appimage.org/introduction/software-overview.html#apprun">AppRun</a>。或者，如果安装了自定义的 <code class="docutils literal notranslate"><span class="pre">AppRun</span></code>（例如通过 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令），它将被使用，而不是生成的文件。</p>
 <p>对于基于 Qt 的项目，建议调用 <code class="docutils literal notranslate"><span class="pre">qt_generate_deploy_app_script()</span></code> 或 <code class="docutils literal notranslate"><span class="pre">qt_generate_deploy_qml_app_script()</span></code> 并安装脚本生成的文件。这将安装所需的 Qt 插件。</p>
 <p>您还必须设置 <span class="target" id="index-0-variable:CPACK_PACKAGE_ICON"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_ICON" title="CPACK_PACKAGE_ICON"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_ICON</span></code></a>，其值必须与 Desktop 文件中列出的值相同。</p>
@@ -87,7 +91,7 @@
 <h2>CPack AppImage 生成器特有的变量<a class="headerlink" href="appimage.html#variables-specific-to-cpack-appimage-generator" title="链接到此标题">¶</a></h2>
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_TOOL_EXECUTABLE">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_TOOL_EXECUTABLE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_TOOL_EXECUTABLE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_TOOL_EXECUTABLE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_TOOL_EXECUTABLE" title="跳转到此定义">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 可执行文件的名称。如果未提供绝对路径，则内部将基于 <span class="target" id="index-0-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 的逻辑使用此值来查找可执行文件。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -98,7 +102,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_PATCHELF_EXECUTABLE">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_PATCHELF_EXECUTABLE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_PATCHELF_EXECUTABLE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_PATCHELF_EXECUTABLE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_PATCHELF_EXECUTABLE" title="跳转到此定义">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">patchelf</span></code> 可执行文件的名称。如果未提供绝对路径，则内部将基于 <span class="target" id="index-1-command:find_program"></span><a class="reference internal" href="../command/find_program.html#command:find_program" title="find_program"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_program()</span></code></a> 的逻辑使用此值来查找可执行文件。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -109,7 +113,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_DESKTOP_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_DESKTOP_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_DESKTOP_FILE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_DESKTOP_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_DESKTOP_FILE" title="跳转到此定义">¶</a></dt>
 <dd><p>要安装的 freedesktop.org 桌面文件的名称。如果未指定，将使用在要安装的文件列表中找到的第一个 <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> 文件。包必须包含一个有效的 <code class="docutils literal notranslate"><span class="pre">.desktop</span></code> 文件，并且它必须包含一个与 <span class="target" id="index-1-variable:CPACK_PACKAGE_ICON"></span><a class="reference internal" href="../module/CPack.html#variable:CPACK_PACKAGE_ICON" title="CPACK_PACKAGE_ICON"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_ICON</span></code></a>（不带文件扩展名）匹配的 <code class="docutils literal notranslate"><span class="pre">Icon</span></code> 条目。图标的实际安装位置应遵循 freedesktop.org 规范。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -120,7 +124,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_UPDATE_INFORMATION">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_UPDATE_INFORMATION</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_UPDATE_INFORMATION" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_UPDATE_INFORMATION</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_UPDATE_INFORMATION" title="跳转到此定义">¶</a></dt>
 <dd><p>将此变量的值作为更新信息嵌入。有关 <code class="docutils literal notranslate"><span class="pre">--updateinformation</span></code> 选项支持的值和格式，请参阅 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 源代码。如果使用 <code class="docutils literal notranslate"><span class="pre">zsync</span></code> 更新信息，强烈建议安装 <code class="docutils literal notranslate"><span class="pre">zsyncmake</span></code> 工具。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -131,7 +135,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_GUESS_UPDATE_INFORMATION">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_GUESS_UPDATE_INFORMATION</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_GUESS_UPDATE_INFORMATION" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_GUESS_UPDATE_INFORMATION</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_GUESS_UPDATE_INFORMATION" title="跳转到此定义">¶</a></dt>
 <dd><p>当此变量为 true 时，在调用 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 时添加 <code class="docutils literal notranslate"><span class="pre">--guess</span></code> 选项。这会指导该工具尝试根据 GitHub 或 GitLab 环境变量猜测适当的更新信息。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -142,7 +146,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_COMPRESSOR">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_COMPRESSOR</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_COMPRESSOR" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_COMPRESSOR</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_COMPRESSOR" title="跳转到此定义">¶</a></dt>
 <dd><p>覆盖 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 的默认 squashfs 压缩类型（zstd）。这对应于 <code class="docutils literal notranslate"><span class="pre">appimagetool</span> <span class="pre">--comp</span></code> 选项。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -153,7 +157,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_MKSQUASHFS_OPTIONS">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_MKSQUASHFS_OPTIONS</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_MKSQUASHFS_OPTIONS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_MKSQUASHFS_OPTIONS</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_MKSQUASHFS_OPTIONS" title="跳转到此定义">¶</a></dt>
 <dd><p>传递给 <code class="docutils literal notranslate"><span class="pre">mksquashfs</span></code> 的参数列表。在 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 命令行中，每个参数前面都会加上 <code class="docutils literal notranslate"><span class="pre">--mksquashfs-opt</span></code>。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -164,7 +168,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_NO_APPSTREAM">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_NO_APPSTREAM</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_NO_APPSTREAM" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_NO_APPSTREAM</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_NO_APPSTREAM" title="跳转到此定义">¶</a></dt>
 <dd><p>如果设置为 true，则不检查 AppStream 元数据。这会将 <code class="docutils literal notranslate"><span class="pre">--no-appstream</span></code> 选项传递给 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code>。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -175,7 +179,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_EXCLUDE_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_EXCLUDE_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_EXCLUDE_FILE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_EXCLUDE_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_EXCLUDE_FILE" title="跳转到此定义">¶</a></dt>
 <dd><p>除了 <code class="docutils literal notranslate"><span class="pre">.appimageignore</span></code> 之外，使用指定的文件作为 <code class="docutils literal notranslate"><span class="pre">mksquashfs</span></code> 的排除文件。这使用了 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 的 <code class="docutils literal notranslate"><span class="pre">--exclude-file</span></code> 选项。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -186,7 +190,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_RUNTIME_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_RUNTIME_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_RUNTIME_FILE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_RUNTIME_FILE</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_RUNTIME_FILE" title="跳转到此定义">¶</a></dt>
 <dd><p>指定一个运行时文件以使用，而不是让 <code class="docutils literal notranslate"><span class="pre">appimagetool</span></code> 下载一个运行时来嵌入生成的 AppImage 中。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -197,7 +201,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_SIGN">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_SIGN</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_SIGN" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_SIGN</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_SIGN" title="跳转到此定义">¶</a></dt>
 <dd><p>当设置为 true 时，使用 gpg[2] 对生成的 AppImage 进行签名。如果使用此选项，还应指定 <span class="target" id="index-0-variable:CPACK_APPIMAGE_SIGN_KEY"></span><a class="reference internal" href="appimage.html#variable:CPACK_APPIMAGE_SIGN_KEY" title="CPACK_APPIMAGE_SIGN_KEY"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_APPIMAGE_SIGN_KEY</span></code></a>。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -208,7 +212,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_APPIMAGE_SIGN_KEY">
-<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_SIGN_KEY</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_SIGN_KEY" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_APPIMAGE_SIGN_KEY</span></span><a class="headerlink" href="appimage.html#variable:CPACK_APPIMAGE_SIGN_KEY" title="跳转到此定义">¶</a></dt>
 <dd><p>当使用 <span class="target" id="index-0-variable:CPACK_APPIMAGE_SIGN"></span><a class="reference internal" href="appimage.html#variable:CPACK_APPIMAGE_SIGN" title="CPACK_APPIMAGE_SIGN"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_APPIMAGE_SIGN</span></code></a> 启用签名时，用于 gpg[2] 签名的密钥 ID。</p>
 <dl class="field-list simple">
 <dt class="field-odd">默认值<span class="colon">：</span></dt>
@@ -271,7 +275,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="archive.html" title="CPack Archive Generator">下一页</a> |</li>
+          <a href="archive.html" title="CPack Archive Generator（归档包生成器）">下一页</a> |</li>
         <li class="right">
           <a href="../manual/cpack-generators.7.html" title="cpack-generators(7)">上一页</a> |</li>
   <li>

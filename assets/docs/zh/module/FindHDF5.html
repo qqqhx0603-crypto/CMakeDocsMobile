@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 [&lt;version&gt;] [COMPONENTS &lt;components&gt;...] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果 HDF5 库是使用其基于 CMake 的构建系统构建的，从 HDF5 1.8.15 版本开始，它将提供自己的 CMake 软件包配置文件（<code class="docutils literal notranslate"><span class="pre">hdf5-config.cmake</span></code>），以便与 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的<em>配置模式（config mode）</em>配合使用。默认情况下，该模块会搜索此文件，如果找到，则根据找到的配置返回结果。</p>
 <p>如果未找到上游配置文件，该模块将回退到<em>模块模式（module mode）</em>，并调用通常随 HDF5 库一起安装的 HDF5 包装编译器。根据配置的不同，此包装编译器被命名为 <code class="docutils literal notranslate"><span class="pre">h5cc</span></code>（串行）或 <code class="docutils literal notranslate"><span class="pre">h5pcc</span></code>（并行）。如果找到，将通过 <code class="docutils literal notranslate"><span class="pre">-show</span></code> 参数查询该包装器，以确定构建 HDF5 客户端应用程序所需的编译器和链接器标志。串行版和并行版的 HDF5 包装器都会被考虑。优先使用包含其中任意一个的第一个目录。如果同一目录下同时找到两个版本，默认优先使用串行版本。要更改此行为，请将变量 <code class="docutils literal notranslate"><span class="pre">HDF5_PREFER_PARALLEL</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>。</p>
 <p>除了查找编译 HDF5 应用程序所需的包含目录和库之外，该模块还尝试查找 HDF5 发行版提供的其他工具，这些工具对于回归测试或开发工作流程非常有用。</p>
@@ -68,6 +72,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;components&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 [COMPONENTS &lt;components&gt;...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>支持的组件包括</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">C</span></code></dt><dd><p>查找 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> C 库（C 绑定）。</p>
@@ -81,9 +89,9 @@
 </dl>
 <p>如果未指定任何组件，该模块默认将搜索 <code class="docutils literal notranslate"><span class="pre">C</span></code> 组件。</p>
 </section>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindHDF5.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindHDF5.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">HDF5::HDF5</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
@@ -228,7 +236,7 @@
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">HDF5_USE_STATIC_LIBRARIES</span></code></dt><dd><p>设置为布尔值，以决定是否为 <code class="docutils literal notranslate"><span class="pre">HDF5</span></code> 及其所有依赖项优先使用静态链接而非动态链接。</p>
 <div class="versionadded">
-<p><span class="versionmodified added">版本 3.10 新增: </span>支持 Windows 上的 <code class="docutils literal notranslate"><span class="pre">HDF5_USE_STATIC_LIBRARIES</span></code>。</p>
+<p><span class="versionmodified added">版本 3.10 新增: </span>支持 Windows（微软桌面系统） 上的 <code class="docutils literal notranslate"><span class="pre">HDF5_USE_STATIC_LIBRARIES</span></code>。</p>
 </div>
 </dd>
 </dl>
@@ -241,23 +249,43 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>指定查找 HDF5 的最低要求版本</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="m">1.8.15</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 1.8.15)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>查找 HDF5 并将其设为必需（如果未找到 HDF5，处理将停止并报错）</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="m">1.8.15</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 1.8.15 REQUIRED)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>搜索静态 HDF5 库</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">set(</span><span class="no">HDF5_USE_STATIC_LIBRARIES</span><span class="w"> </span><span class="no">TRUE</span><span class="nf">)</span>
 <span class="nf">find_package(</span><span class="no">HDF5</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(HDF5_USE_STATIC_LIBRARIES TRUE) find_package(HDF5)</span></code>：调用 `set()` 命令，把变量 `HDF5_USE_STATIC_LIBRARIES` 设为给定的值。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>指定组件以查找高级 C 和 C++ 函数</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="no">C</span><span class="w"> </span><span class="no">CXX</span><span class="w"> </span><span class="no">HL</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 COMPONENTS C CXX HL)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="examples-using-hdf5">
 <h3>示例：使用 HDF5<a class="headerlink" href="FindHDF5.html#examples-using-hdf5" title="链接到此标题">¶</a></h3>
@@ -266,11 +294,19 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">HDF5</span><span class="o">::</span><span class="no">HDF5</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5) target_link_libraries(project_target PRIVATE HDF5::HDF5)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>使用 Fortran HDF5 和 HDF5-HL 函数</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">HDF5</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">Fortran</span><span class="w"> </span><span class="no">HL</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">HDF5</span><span class="o">::</span><span class="no">HDF5</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(HDF5 COMPONENTS Fortran HL) target_link_libraries(project_target PRIVATE HDF5::HDF5)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 </section>
@@ -287,7 +323,7 @@
     <ul>
 <li><a class="reference internal" href="FindHDF5.html#">FindHDF5</a><ul>
 <li><a class="reference internal" href="FindHDF5.html#components">组件</a></li>
-<li><a class="reference internal" href="FindHDF5.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindHDF5.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindHDF5.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindHDF5.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindHDF5.html#hints">提示</a></li>

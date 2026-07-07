@@ -89,6 +89,10 @@
 <span class="w">                     </span><span class="no">PROPERTIES</span><span class="w"> </span><span class="no">RESOURCE_LOCK</span><span class="w"> </span><span class="nb">DbAccess</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_test(NAME testsDone COMMAND emailResults) add_test(NAME fooOnly COMMAND testFoo) add_test(NAME dbOnly COMMAND testDb) add_test(NAME dbWithFoo COMMAND testDbWithFoo) add_test(NAME createDB COMMAND initDB) add_test(NAME setupUsers COMMAND userCreation) add_test(NAME cleanupDB COMMAND deleteDB) add_test(NAME cleanupFoo COMMAND removeFoos) set_tests_properties(setupUsers PROPERTIES DEPENDS createDB) set_tests_properties(createDB PROPERTIES FIXTURES_SETUP DB) set_tests_properties(setupUsers PROPERTIES FIXTURES_SETUP DB) set_tests_properties(cleanupDB PROPERTIES FIXTURES_CLEANUP DB) set_tests_properties(cleanupFoo PROPERTIES FIXTURES_CLEANUP Foo) set_tests_properties(testsDone PROPERTIES FIXTURES_CLEANUP &quot;DB;Foo&quot;) set_tests_properties(fooOnly PROPERTIES FIXTURES_REQUIRED Foo) set_tests_properties(dbOnly PROPERTIES FIXTURES_REQUIRED DB) set_tests_properties(dbWithFoo PROPERTIES FIXTURES_REQUIRED &quot;DB;Foo&quot;) set_tests_properties(dbOnly dbWithFoo createDB setupUsers cleanupDB PROPERTIES RESOURCE_LOCK DbAccess)</span></code>：调用 `add_test()` 命令，登记一个测试用例。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>该示例的关键点</p>
 <ul class="simple">
 <li><p>定义了两个固件：<code class="docutils literal notranslate"><span class="pre">DB</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Foo</span></code>。测试可以像 <code class="docutils literal notranslate"><span class="pre">fooOnly</span></code> 和 <code class="docutils literal notranslate"><span class="pre">dbOnly</span></code> 那样仅需要单个固件，也可以像 <code class="docutils literal notranslate"><span class="pre">dbWithFoo</span></code> 那样依赖多个固件。</p></li>

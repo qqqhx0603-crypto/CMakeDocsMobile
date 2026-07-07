@@ -66,12 +66,20 @@
 
 <a class="reference internal" href="message.html#configure-log">Configure Log</a>
   message(CONFIGURE_LOG &lt;text&gt;...)</pre>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">General messages message([&lt;mode&gt;] &quot;message text&quot; ...) Reporting checks message(&lt;checkState&gt; &quot;message text&quot; ...) Configure Log message(CONFIGURE_LOG &lt;text&gt;...)</span></code>：这一行给出示例文本或输出，用来说明：General messages message([&lt;mode&gt;] &quot;message text&quot; ...) Reporting checks message(&lt;checkState&gt; &quot;message text&quot; ...) Configure Log message(CONFIGURE_LOG &lt;text&gt;...)</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="general-messages">
 <h2>常规消息<a class="headerlink" href="message.html#general-messages" title="链接到此标题">¶</a></h2>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="p">[</span><span class="nv">&lt;mode&gt;</span><span class="p">]</span><span class="w"> </span><span class="s">"message text"</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message([&lt;mode&gt;] &quot;message text&quot; ...)</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将指定的消息文本记录到日志中。如果给出了多个消息字符串，它们将被连接成一条消息，且字符串之间没有分隔符。</p>
 <p>可选的 <code class="docutils literal notranslate"><span class="pre">&lt;mode&gt;</span></code> 关键字决定了消息的类型，这会影响消息的处理方式：</p>
 <dl>
@@ -127,10 +135,18 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message(STATUS &quot;Looking for someheader.h&quot;) #... do the checks, set checkSuccess with the result if(checkSuccess) message(STATUS &quot;Looking for someheader.h - found&quot;) else() message(STATUS &quot;Looking for someheader.h - not found&quot;) endif()</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这可以使用 <code class="docutils literal notranslate"><span class="pre">message()</span></code> 命令的 <code class="docutils literal notranslate"><span class="pre">CHECK_...</span></code> 关键字形式更稳健且方便地表示：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="nv">&lt;checkState&gt;</span><span class="w"> </span><span class="s">"message"</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message(&lt;checkState&gt; &quot;message&quot; ...)</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>其中 <code class="docutils literal notranslate"><span class="pre">&lt;checkState&gt;</span></code> 必须是以下之一：</p>
 <blockquote>
 <div><dl class="simple">
@@ -165,6 +181,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message(CHECK_START &quot;Finding my things&quot;) list(APPEND CMAKE_MESSAGE_INDENT &quot; &quot;) unset(missingComponents) message(CHECK_START &quot;Finding partA&quot;) # ... do check, assume we find A message(CHECK_PASS &quot;found&quot;) message(CHECK_START &quot;Finding partB&quot;) # ... do check, assume we don&#x27;t find B list(APPEND missingComponents B) message(CHECK_FAIL &quot;not found&quot;) list(POP_BACK CMAKE_MESSAGE_INDENT) if(missingComponents) message(CHECK_FAIL &quot;missing components: ${missingComponents}&quot;) else() message(CHECK_PASS &quot;all components found&quot;) endif()</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>上述命令的输出如下所示：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- Finding my things
 --   Finding partA
@@ -174,6 +194,10 @@
 -- Finding my things - missing components: B
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">-- Finding my things -- Finding partA -- Finding partA - found -- Finding partB -- Finding partB - not found -- Finding my things - missing components: B</span></code>：这一行给出示例文本或输出，用来说明：-- Finding my things -- Finding partA -- Finding partA - found -- Finding partB -- Finding partB - not found -- Finding my things - missing components: B</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="configure-log">
 <h2>配置日志<a class="headerlink" href="message.html#configure-log" title="链接到此标题">¶</a></h2>
@@ -183,6 +207,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">message(</span><span class="no">CONFIGURE_LOG</span><span class="w"> </span><span class="nv">&lt;text&gt;...</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">message(CONFIGURE_LOG &lt;text&gt;...)</span></code>：调用 `message()` 输出提示信息，方便观察脚本执行结果。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>使用指定的 <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> 记录 <a class="reference internal" href="../manual/cmake-configure-log.7.html#message-configure-log-event"><span class="std std-ref">配置日志消息事件</span></a>。按照惯例，如果文本包含多行，第一行应该是事件的摘要。</p>
 <p>此模式旨在记录由缓存条目保护的系统检查或其他一次性操作的详细信息，但如果该操作不是使用 <span class="target" id="index-0-command:try_compile"></span><a class="reference internal" href="try_compile.html#command:try_compile" title="try_compile"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_compile()</span></code></a> 或 <span class="target" id="index-0-command:try_run"></span><a class="reference internal" href="try_run.html#command:try_run" title="try_run"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">try_run()</span></code></a> 执行的（因为它们会自动记录详细信息）。项目应避免在每次 CMake 运行时调用它。例如：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">if</span> <span class="nf">(</span><span class="no">NOT</span><span class="w"> </span><span class="no">DEFINED</span><span class="w"> </span><span class="no">MY_CHECK_RESULT</span><span class="nf">)</span>
@@ -209,6 +237,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if (NOT DEFINED MY_CHECK_RESULT) # Print check summary in configure output. message(CHECK_START &quot;My Check&quot;) # ... perform system inspection, e.g., with execute_process ... # Cache the result so we do not run the check again. set(MY_CHECK_RESULT &quot;${MY_CHECK_RESULT}&quot; CACHE INTERNAL &quot;My Check&quot;) # Record the check details in the cmake-configure-log. message(CONFIGURE_LOG &quot;My Check Result: ${MY_CHECK_RESULT}\n&quot; &quot;${details}&quot; ) # Print check result in configure output. if(MY_CHECK_RESULT) message(CHECK_PASS &quot;passed&quot;) else() message(CHECK_FAIL &quot;failed&quot;) endif() endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果当前没有正在配置的项目（例如在 <a class="reference internal" href="../manual/cmake.1.html#script-processing-mode"><span class="std std-ref">cmake -P</span></a> 脚本模式下），该命令不执行任何操作。</p>
 </section>
 <section id="see-also">

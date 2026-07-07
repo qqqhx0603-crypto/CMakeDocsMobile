@@ -55,11 +55,15 @@
             
   <section id="usewxwidgets">
 <span id="module:UsewxWidgets"></span><h1>UsewxWidgets<a class="headerlink" href="UsewxWidgets.html#usewxwidgets" title="链接到此标题">¶</a></h1>
-<p>此模块作为使用 wxWidgets 库（以前称为 wxWindows）的便捷包装器，并将其实用需求（例如库目录、包含目录和编译器标志）传播到当前目录的作用域，供目标使用。</p>
+<p>此模块作为使用 wxWidgets 库（以前称为 wxWindows（微软桌面系统））的便捷包装器，并将其实用需求（例如库目录、包含目录和编译器标志）传播到当前目录的作用域，供目标使用。</p>
 <p>在 CMake 项目中加载此模块，使用</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">include(</span><span class="nb">UsewxWidgets</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(UsewxWidgets)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此模块调用 <span class="target" id="index-0-command:include_directories"></span><a class="reference internal" href="../command/include_directories.html#command:include_directories" title="include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include_directories()</span></code></a> 和 <span class="target" id="index-0-command:link_directories"></span><a class="reference internal" href="../command/link_directories.html#command:link_directories" title="link_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">link_directories()</span></code></a>，设置当前目录的编译定义，并在调用 <span class="target" id="index-0-module:FindwxWidgets"></span><a class="reference internal" href="FindwxWidgets.html#module:FindwxWidgets" title="FindwxWidgets"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">find_package(wxWidgets)</span></code></a> 后将一些编译标志附加到使用 wxWidgets 库。</p>
 <section id="examples">
 <h2>示例<a class="headerlink" href="UsewxWidgets.html#examples" title="此标题的永久链接">¶</a></h2>
@@ -79,10 +83,14 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># Note that for MinGW users the order of libraries is important. find_package(wxWidgets COMPONENTS net gl core base) add_library(example example.cxx) if(wxWidgets_FOUND) include(UsewxWidgets) # Link wxWidgets libraries for each dependent executable/library target. target_link_libraries(example PRIVATE ${wxWidgets_LIBRARIES}) endif()</span></code>：这是注释，用来说明：Note that for MinGW users the order of libraries is important. find_package(wxWidgets COMPONENTS net gl core base) add_library(example example.cxx) if(wxWidgets_FOUND) include(UsewxWidgets) # Link wxWidgets libraries for each dependent executable/library target. target_link_libraries(example PRIVATE ${wxWidgets_LIBRARIES}) endif()。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>从 CMake 3.27 开始，更好的方法是仅将 <span class="target" id="index-1-module:FindwxWidgets"></span><a class="reference internal" href="FindwxWidgets.html#module:FindwxWidgets" title="FindwxWidgets"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">wxWidgets::wxWidgets</span></code></a> 导入目标链接到需要它的特定目标，而不是包含此模块。导入目标通过仅将其链接到的目标应用它们，从而更好地控制包的使用属性（例如包含目录和编译标志），避免将不必要的传播到当前目录中的所有目标。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="UsewxWidgets.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="UsewxWidgets.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">wxWidgets</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">net</span><span class="w"> </span><span class="nb">gl</span><span class="w"> </span><span class="nb">core</span><span class="w"> </span><span class="nb">base</span><span class="nf">)</span>
 
 <span class="nf">add_library(</span><span class="nb">example</span><span class="w"> </span><span class="nb">example.cxx</span><span class="nf">)</span>
@@ -91,6 +99,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">wxWidgets</span><span class="o">::</span><span class="nb">wxWidgets</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(wxWidgets COMPONENTS net gl core base) add_library(example example.cxx) # Link the imported target for each dependent executable/library target. target_link_libraries(example PRIVATE wxWidgets::wxWidgets)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 <section id="see-also">

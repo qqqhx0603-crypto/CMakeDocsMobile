@@ -64,27 +64,51 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="na">/path/to/libA.so</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>CMake 2.4 及以下版本在链接到全路径已知的库时，通过将它们拆分为链接器搜索路径和库名称这两个独立的部分来实现。上述示例代码可能会产生类似以下内容的结果：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>... -L/path/to -lA ...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">... -L/path/to -lA ...</span></code>：这一行给出示例文本或输出，用来说明：... -L/path/to -lA ...</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>以便链接到库 A。虽然通过分析可以对多个链接目录进行排序，从而使链接器能在预期的位置找到库 A，但有些情况下这种做法并不奏效。CMake 2.6 及以上版本采用了更可靠的方法，即在大多数情况下直接将库的全路径传递给链接器。示例代码现在会产生类似以下内容的结果：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>... /path/to/libA.so ....
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">... /path/to/libA.so ....</span></code>：这一行给出示例文本或输出，用来说明：... /path/to/libA.so ....</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>遗憾的是，这种变化可能会破坏类似如下的代码：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="na">/path/to/libA.so</span><span class="w"> </span><span class="no">B</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>其中 <code class="docutils literal notranslate"><span class="pre">B</span></code> 旨在找到 <code class="docutils literal notranslate"><span class="pre">/path/to/libB.so</span></code>。这段代码是错误的，因为用户要求链接器查找库 B，但并未提供链接器搜索路径（这可以通过 link_directories 命令添加）。然而，使用旧的链接实现时，该代码能“意外地”工作，因为为库 A 添加的链接器搜索路径使得库 B 也能被找到。</p>
 <p>为了支持依赖于通过链接全路径已知库而添加的链接器搜索路径的项目，此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为将继续添加这些链接器搜索路径，即使它们对于其自身的库而言并非必需。当此策略设置为 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 时，CMake 将生成如下链接行：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>... -L/path/to /path/to/libA.so -lB ...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">... -L/path/to /path/to/libA.so -lB ...</span></code>：这一行给出示例文本或输出，用来说明：... -L/path/to /path/to/libA.so -lB ...</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这将允许库 B 像以前一样被找到。当此策略设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，CMake 将生成如下链接行：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>... /path/to/libA.so -lB ...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">... /path/to/libA.so -lB ...</span></code>：这一行给出示例文本或输出，用来说明：... /path/to/libA.so -lB ...</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这更准确地匹配了项目所指定的意图。</p>
 <p>生成链接行时所使用的策略设置，取决于调用 add_executable 或 add_library 命令创建目标时该策略的生效状态。对于上述示例，代码：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="no">CMP0003</span><span class="w"> </span><span class="no">OLD</span><span class="nf">)</span><span class="w"> </span><span class="c"># or cmake_policy(VERSION 2.4)</span>
@@ -92,6 +116,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="na">/path/to/libA.so</span><span class="w"> </span><span class="no">B</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 OLD) # or cmake_policy(VERSION 2.4) add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `cmake_policy()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将可以正常工作并抑制此策略的警告。它也可以更新为使用更正后的链接方式：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_policy(</span><span class="no">SET</span><span class="w"> </span><span class="no">CMP0003</span><span class="w"> </span><span class="no">NEW</span><span class="nf">)</span><span class="w"> </span><span class="c"># or cmake_policy(VERSION 2.6)</span>
 <span class="nf">link_directories(</span><span class="na">/path/to</span><span class="nf">)</span><span class="w"> </span><span class="c"># needed to find library B</span>
@@ -99,11 +127,19 @@
 <span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="na">/path/to/libA.so</span><span class="w"> </span><span class="no">B</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 NEW) # or cmake_policy(VERSION 2.6) link_directories(/path/to) # needed to find library B add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `cmake_policy()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>更好的做法是，通过全路径指定库 B：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">myexe</span><span class="w"> </span><span class="nb">myexe.c</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">myexe</span><span class="w"> </span><span class="na">/path/to/libA.so</span><span class="w"> </span><span class="na">/path/to/libB.so</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so /path/to/libB.so)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>当链接行上的所有项目都具有已知路径时，CMake 不会检查此策略，因此它不起作用。</p>
 <p>请注意，此策略的警告最多只会针对一个目标发出。这避免了在用户只需设置一次策略即可修复所有目标的情况下，却被每个目标的警告消息所淹没。</p>
 <p>此策略在 CMake 2.6.0 版本中引入。在 CMake 4.0 版本移除之前，可以通过 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，CMake 会发出警告并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>

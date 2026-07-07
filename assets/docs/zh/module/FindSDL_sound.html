@@ -59,9 +59,13 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SDL_sound</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL_sound [&lt;version&gt;] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>本模块专门用于 SDL_sound 1.x 版本。从 2.0.2 版本开始，SDL_sound 在使用 CMake 构建时会提供 CMake 包配置文件，应通过 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2_sound)</span></code> 进行查找。这些较新的版本提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，封装了使用需求。有关更多信息，请参考上游的 SDL_sound 文档。</p>
+<p>本模块专门用于 SDL_sound 1.x 版本。从 2.0.2 版本开始，SDL_sound 在使用 CMake 构建时会提供 CMake 包配置文件，应通过 <code class="docutils literal notranslate"><span class="pre">find_package(SDL2_sound)</span></code> 进行查找。这些较新的版本提供了 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a>，封装了使用需求。有关更多信息，请参考上游的 SDL_sound 文档。</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
@@ -115,7 +119,7 @@
 <p>此模块接受以下变量</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">SDLDIR</span></code></dt><dd><p>环境变量，可用于帮助定位安装在自定义位置的 SDL 库。它应指向配置、构建和安装 SDL 库时使用的安装目标：<code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--prefix=$SDLDIR</span></code>。</p>
-<p>在 macOS 上，设置此变量将优先选择 Framework 版本（如果找到）而非其他版本。在这种情况下，需要手动更改 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 的缓存值以覆盖此选择，或者设置 <span class="target" id="index-0-variable:CMAKE_INCLUDE_PATH"></span><a class="reference internal" href="../variable/CMAKE_INCLUDE_PATH.html#variable:CMAKE_INCLUDE_PATH" title="CMAKE_INCLUDE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INCLUDE_PATH</span></code></a> 变量来修改搜索路径。</p>
+<p>在 macOS（苹果桌面系统） 上，设置此变量将优先选择 Framework 版本（如果找到）而非其他版本。在这种情况下，需要手动更改 <code class="docutils literal notranslate"><span class="pre">SDL_LIBRARY</span></code> 的缓存值以覆盖此选择，或者设置 <span class="target" id="index-0-variable:CMAKE_INCLUDE_PATH"></span><a class="reference internal" href="../variable/CMAKE_INCLUDE_PATH.html#variable:CMAKE_INCLUDE_PATH" title="CMAKE_INCLUDE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_INCLUDE_PATH</span></code></a> 变量来修改搜索路径。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">SDLSOUNDDIR</span></code></dt><dd><p>环境变量，其功能与 <code class="docutils literal notranslate"><span class="pre">SDLDIR</span></code> 相同。</p>
 </dd>
@@ -165,11 +169,19 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">SDL</span><span class="o">::</span><span class="nb">SDL_sound</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL) find_package(SDL_sound) if(SDL_sound_FOUND AND NOT TARGET SDL::SDL_sound) add_library(SDL::SDL_sound INTERFACE IMPORTED) set_target_properties( SDL::SDL_sound PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${SDL_SOUND_INCLUDE_DIR}&quot; INTERFACE_LINK_LIBRARIES &quot;${SDL_SOUND_LIBRARIES}&quot; ) # Append the SDL dependency as imported target to be transitively linked: set_property( TARGET SDL::SDL_sound APPEND PROPERTY INTERFACE_LINK_LIBRARIES SDL::SDL ) endif() target_link_libraries(project_target PRIVATE SDL::SDL_sound)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>在使用 SDL_sound 2.x 版本时，上游包直接提供了 <code class="docutils literal notranslate"><span class="pre">SDL2_sound::SDL2_sound</span></code> 导入目标。可以在不使用此模块的情况下在项目中使用它。</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SDL2_sound</span><span class="nf">)</span>
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">SDL2_sound</span><span class="o">::</span><span class="nb">SDL2_sound</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SDL2_sound) target_link_libraries(project_target PRIVATE SDL2_sound::SDL2_sound)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="see-also">
 <h2>另请参阅<a class="headerlink" href="FindSDL_sound.html#see-also" title="链接到此标题">¶</a></h2>

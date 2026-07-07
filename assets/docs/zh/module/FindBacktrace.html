@@ -59,10 +59,14 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Backtrace</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Backtrace [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>此模块检查是否支持 <code class="docutils literal notranslate"><span class="pre">backtrace(3)</span></code>，无论是通过标准 C 库 (<code class="docutils literal notranslate"><span class="pre">libc</span></code>)，还是一个单独的库。</p>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindBacktrace.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindBacktrace.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Backtrace::Backtrace</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">3.30 版本新增。</span></p>
@@ -104,10 +108,14 @@
 <span class="nf">target_link_libraries(</span><span class="nb">app</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Backtrace</span><span class="o">::</span><span class="nb">Backtrace</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Backtrace) target_link_libraries(app PRIVATE Backtrace::Backtrace)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>例如，可以使用 <code class="docutils literal notranslate"><span class="pre">Backtrace_HEADER</span></code> 变量，在由 <span class="target" id="index-0-command:configure_file"></span><a class="reference internal" href="../command/configure_file.html#command:configure_file" title="configure_file"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">configure_file()</span></code></a> 创建的配置头文件中使用。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindBacktrace.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code></span><a class="headerlink" href="FindBacktrace.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">app</span><span class="w"> </span><span class="nb">app.c</span><span class="nf">)</span>
 
 <span class="nf">find_package(</span><span class="nb">Backtrace</span><span class="nf">)</span>
@@ -116,6 +124,10 @@
 <span class="nf">configure_file(</span><span class="nb">config.h.in</span><span class="w"> </span><span class="nb">config.h</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(app app.c) find_package(Backtrace) target_link_libraries(app PRIVATE Backtrace::Backtrace) configure_file(config.h.in config.h)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">config.h.in</span></code></span><a class="headerlink" href="FindBacktrace.html#id3" title="链接到此代码">¶</a></div>
@@ -125,12 +137,20 @@
 <span class="cp">#endif</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#cmakedefine01 Backtrace_FOUND #if Backtrace_FOUND # include &lt;@Backtrace_HEADER@&gt; #endif</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">app.c</span></code></span><a class="headerlink" href="FindBacktrace.html#id4" title="链接到此代码">¶</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"config.h"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &quot;config.h&quot;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>如果项目需要支持 CMake 3.29 或更早版本，则可以手动定义导入的目标</p>
 <div class="literal-block-wrapper docutils container" id="id5">
@@ -148,6 +168,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">app</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Backtrace</span><span class="o">::</span><span class="nb">Backtrace</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Backtrace) if(Backtrace_FOUND AND NOT TARGET Backtrace::Backtrace) add_library(Backtrace::Backtrace INTERFACE IMPORTED) set_target_properties( Backtrace::Backtrace PROPERTIES INTERFACE_LINK_LIBRARIES &quot;${Backtrace_LIBRARIES}&quot; INTERFACE_INCLUDE_DIRECTORIES &quot;${Backtrace_INCLUDE_DIRS}&quot; ) endif() target_link_libraries(app PRIVATE Backtrace::Backtrace)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 </section>
@@ -163,7 +187,7 @@
     <h3>目录</h3>
     <ul>
 <li><a class="reference internal" href="FindBacktrace.html#">FindBacktrace</a><ul>
-<li><a class="reference internal" href="FindBacktrace.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindBacktrace.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindBacktrace.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindBacktrace.html#cache-variables">缓存变量</a></li>
 <li><a class="reference internal" href="FindBacktrace.html#examples">示例</a></li>

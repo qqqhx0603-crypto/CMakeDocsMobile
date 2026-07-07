@@ -76,6 +76,10 @@
 <span class="w">               </span><span class="p">[</span><span class="no">NEWLINE_STYLE</span><span class="w"> </span><span class="p">[</span><span class="no">UNIX</span><span class="p">|</span><span class="no">DOS</span><span class="p">|</span><span class="no">WIN32</span><span class="p">|</span><span class="no">LF</span><span class="p">|</span><span class="no">CRLF</span><span class="p">]]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">configure_file(&lt;input&gt; &lt;output&gt; [NO_SOURCE_PERMISSIONS | USE_SOURCE_PERMISSIONS | FILE_PERMISSIONS &lt;permissions&gt;...] [COPYONLY] [ESCAPE_QUOTES] [@ONLY] [NEWLINE_STYLE [UNIX|DOS|WIN32|LF|CRLF]])</span></code>：调用 `configure_file()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将 <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> 文件复制到 <code class="docutils literal notranslate"><span class="pre">&lt;output&gt;</span></code> 文件，同时对输入文件内容执行 <a class="reference internal" href="configure_file.html#transformations">转换</a>。</p>
 <p>如果输入文件被修改，构建系统将重新运行 CMake 以重新配置该文件并再次生成构建系统。生成的文件的修改时间戳仅在后续 cmake 运行且内容发生变化时才会更新。</p>
 <section id="options">
@@ -117,27 +121,51 @@
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#cmakedefine VAR ...</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#cmakedefine VAR ...</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将被替换为</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR ...</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#define VAR ...</span></code>：这一行定义预处理宏，供后续代码在编译前展开使用。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>或</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* #undef VAR */</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">/* #undef VAR */</span></code>：这是注释，用来说明：#undef VAR */。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>具体取决于 <code class="docutils literal notranslate"><span class="pre">VAR</span></code> 在 CMake 中是否被设置为任何未被 <span class="target" id="index-0-command:if"></span><a class="reference internal" href="if.html#command:if" title="if"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">if()</span></code></a> 命令视为假常数的值。变量名之后（如果有）的 "..." 内容将按上述方式处理。</p>
 <p>与 <code class="docutils literal notranslate"><span class="pre">#cmakedefine</span> <span class="pre">VAR</span> <span class="pre">...</span></code> 形式的行不同，在 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span></code> 形式的行中，<code class="docutils literal notranslate"><span class="pre">VAR</span></code> 本身将展开为 <code class="docutils literal notranslate"><span class="pre">VAR</span> <span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">VAR</span> <span class="pre">1</span></code>，而不是被赋值为 <code class="docutils literal notranslate"><span class="pre">...</span></code>。因此，以下形式的输入行</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#cmakedefine01 VAR</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#cmakedefine01 VAR</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将被替换为</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR 0</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#define VAR 0</span></code>：这一行定义预处理宏，供后续代码在编译前展开使用。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>或</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define VAR 1</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#define VAR 1</span></code>：这一行定义预处理宏，供后续代码在编译前展开使用。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p><code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span></code> 形式的输入行将展开为 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span> <span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">#cmakedefine01</span> <span class="pre">VAR</span> <span class="pre">...</span> <span class="pre">1</span></code>，这可能会导致未定义的行为。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.10 版本新增：</span>结果行（<code class="docutils literal notranslate"><span class="pre">#undef</span></code> 注释除外）可以在 <code class="docutils literal notranslate"><span class="pre">#</span></code> 字符与 <code class="docutils literal notranslate"><span class="pre">cmakedefine</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cmakedefine01</span></code> 单词之间使用空格和/或制表符进行缩进。这种空白缩进将保留在输出行中</p>
@@ -145,11 +173,19 @@
 <span class="cp">#  cmakedefine01 VAR</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># cmakedefine VAR # cmakedefine01 VAR</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>如果定义了 <code class="docutils literal notranslate"><span class="pre">VAR</span></code>，则会被替换为</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#  define VAR</span>
 <span class="cp">#  define VAR 1</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># define VAR # define VAR 1</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 </section>
 <section id="example">
@@ -159,6 +195,10 @@
 <span class="cp">#cmakedefine FOO_STRING "@FOO_STRING@"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#cmakedefine FOO_ENABLE #cmakedefine FOO_STRING &quot;@FOO_STRING@&quot;</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>相邻的 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 可以使用 <code class="docutils literal notranslate"><span class="pre">configure_file</span></code> 来配置头文件</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">option(</span><span class="no">FOO_ENABLE</span><span class="w"> </span><span class="s">"Enable Foo"</span><span class="w"> </span><span class="no">ON</span><span class="nf">)</span>
 <span class="nf">if(</span><span class="no">FOO_ENABLE</span><span class="nf">)</span>
@@ -167,20 +207,36 @@
 <span class="nf">configure_file(</span><span class="nb">foo.h.in</span><span class="w"> </span><span class="nb">foo.h</span><span class="w"> </span><span class="no">@ONLY</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(FOO_ENABLE &quot;Enable Foo&quot; ON) if(FOO_ENABLE) set(FOO_STRING &quot;foo&quot;) endif() configure_file(foo.h.in foo.h @ONLY)</span></code>：调用 `option()` 命令，声明一个布尔型配置选项。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这将在对应此源目录的构建目录中创建一个 <code class="docutils literal notranslate"><span class="pre">foo.h</span></code>。如果 <code class="docutils literal notranslate"><span class="pre">FOO_ENABLE</span></code> 选项开启，配置后的文件将包含</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define FOO_ENABLE</span>
 <span class="cp">#define FOO_STRING "foo"</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#define FOO_ENABLE #define FOO_STRING &quot;foo&quot;</span></code>：这一行定义预处理宏，供后续代码在编译前展开使用。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>否则它将包含</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* #undef FOO_ENABLE */</span>
 <span class="cm">/* #undef FOO_STRING */</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">/* #undef FOO_ENABLE */ /* #undef FOO_STRING */</span></code>：这是注释，用来说明：#undef FOO_ENABLE */ /* #undef FOO_STRING */。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>然后可以使用 <span class="target" id="index-0-command:target_include_directories"></span><a class="reference internal" href="target_include_directories.html#command:target_include_directories" title="target_include_directories"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_include_directories()</span></code></a> 命令将输出目录指定为包含目录</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_include_directories(</span><span class="nv">&lt;target&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">SYSTEM</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="no">INTERFACE</span><span class="p">|</span><span class="no">PUBLIC</span><span class="p">|</span><span class="no">PRIVATE</span><span class="p">}</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_BINARY_DIR}"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_include_directories(&lt;target&gt; [SYSTEM] {INTERFACE|PUBLIC|PRIVATE} &quot;${CMAKE_CURRENT_BINARY_DIR}&quot;)</span></code>：调用 `target_include_directories()` 命令，为目标配置头文件搜索目录。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>以便源文件可以使用 <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;foo.h&gt;</span></code> 来包含该头文件。</p>
 </section>
 <section id="see-also">

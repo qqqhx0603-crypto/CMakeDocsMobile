@@ -14,8 +14,8 @@
     <link rel="icon" href="../../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Importing and Exporting Guide" href="../importing-exporting/index.html" />
-    <link rel="prev" title="User Interaction Guide" href="../user-interaction/index.html" />
+    <link rel="next" title="导入和导出指南" href="../importing-exporting/index.html" />
+    <link rel="prev" title="用户交互指南" href="../user-interaction/index.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../../version_switch.js"></script>
  
@@ -32,9 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="../importing-exporting/index.html" title="Importing and Exporting Guide" accesskey="N">下一页</a> |</li>
+          <a href="../importing-exporting/index.html" title="导入和导出指南" accesskey="N">下一页</a> |</li>
         <li class="right">
-          <a href="../user-interaction/index.html" title="User Interaction Guide" accesskey="P">上一页</a> |</li>
+          <a href="../user-interaction/index.html" title="用户交互指南" accesskey="P">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -53,7 +53,7 @@
           <div class="body" role="main">
             
   <section id="using-dependencies-guide">
-<span id="guide:Using Dependencies Guide"></span><h1><a class="toc-backref" href="index.html#id3" role="doc-backlink">使用依赖项指南</a><a class="headerlink" href="index.html#using-dependencies-guide" title="链接到此标题">¶</a></h1>
+<span id="guide:使用依赖项指南"></span><h1><a class="toc-backref" href="index.html#id3" role="doc-backlink">使用依赖项指南</a><a class="headerlink" href="index.html#using-dependencies-guide" title="链接到此标题">¶</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">目录</p>
 <ul class="simple">
@@ -64,7 +64,7 @@
 <ul>
 <li><p><a class="reference internal" href="index.html#config-file-packages" id="id6">配置文件包 (Config-file packages)</a></p></li>
 <li><p><a class="reference internal" href="index.html#find-module-files" id="id7">查找模块文件 (Find Module Files)</a></p></li>
-<li><p><a class="reference internal" href="index.html#imported-targets" id="id8">导入目标</a></p></li>
+<li><p><a class="reference internal" href="index.html#imported-targets（目标）" id="id8">导入目标</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="index.html#downloading-and-building-from-source-with-fetchcontent" id="id9">使用 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 下载并从源码构建</a></p></li>
@@ -85,12 +85,16 @@
 <p>项目所需的包可能已经在用户系统上的某个位置构建并可用。该包可能是由 CMake 构建的，也可能完全使用了不同的构建系统。它甚至可能只是一组根本不需要构建的文件。CMake 针对这些场景提供了 <span class="target" id="index-1-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令。它会搜索已知位置，并结合项目或用户提供的额外提示和路径进行查找。它还支持包组件以及可选包。结果变量可供项目根据是否找到包或特定组件来自定义其行为。</p>
 <p>在大多数情况下，项目通常应该使用 <a class="reference internal" href="../../command/find_package.html#basic-signature"><span class="std std-ref">基本签名 (Basic Signature)</span></a>。大多数时候，这只需要包名，可能还会包含版本约束，如果依赖项不是可选的，则使用 <code class="docutils literal notranslate"><span class="pre">REQUIRED</span></code> 关键字。也可以指定一组包组件。</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 基本签名的示例</span><a class="headerlink" href="index.html#id1" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 基本签名的示例</span><a class="headerlink" href="index.html#id1" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Catch2</span><span class="nf">)</span>
 <span class="nf">find_package(</span><span class="nb">GTest</span><span class="w"> </span><span class="no">REQUIRED</span><span class="nf">)</span>
 <span class="nf">find_package(</span><span class="nb">Boost</span><span class="w"> </span><span class="m">1.79</span><span class="w"> </span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nb">date_time</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Catch2) find_package(GTest REQUIRED) find_package(Boost 1.79 COMPONENTS date_time)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p><span class="target" id="index-2-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令支持两种主要的搜索方法：</p>
 <dl class="simple">
@@ -106,7 +110,7 @@
 <p>第三方提供可执行文件、库、头文件和其他文件以供 CMake 使用的首选方式是提供 <a class="reference internal" href="../../manual/cmake-packages.7.html#config-file-packages"><span class="std std-ref">配置文件 (config files)</span></a>。这些是随包一起分发的文本文件，定义了 CMake 目标、变量、命令等。配置文件是一个普通的 CMake 脚本，由 <span class="target" id="index-5-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令读取。</p>
 <p>配置文件通常可以在名为 <code class="docutils literal notranslate"><span class="pre">lib/cmake/&lt;PackageName&gt;</span></code> 的目录中找到，尽管它们也可能在其他位置（请参阅 <a class="reference internal" href="../../command/find_package.html#search-procedure"><span class="std std-ref">配置模式搜索过程</span></a>）。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;</span></code> 通常是 <span class="target" id="index-6-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令的第一个参数，它甚至可能是唯一的一个参数。也可以使用 <code class="docutils literal notranslate"><span class="pre">NAMES</span></code> 选项指定替代名称。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">查找包时提供替代名称</span><a class="headerlink" href="index.html#id2" title="Link to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">查找包时提供替代名称</span><a class="headerlink" href="index.html#id2" title="跳转到此代码">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">SomeThing</span>
 <span class="w">  </span><span class="no">NAMES</span>
 <span class="w">    </span><span class="nb">SameThingOtherName</span><span class="w">   </span><span class="c"># Another name for the package</span>
@@ -114,14 +118,18 @@
 <span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(SomeThing NAMES SameThingOtherName # Another name for the package SomeThing # Also still look for its canonical name )</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </div>
 <p>配置文件必须命名为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;LowercasePackageName&gt;-config.cmake</span></code>（本指南后续部分使用前者，但两者均受支持）。该文件是 CMake 访问该包的入口点。同一目录下还可以存在另一个可选文件，命名为 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&lt;LowercasePackageName&gt;-config-version.cmake</span></code>。此文件供 CMake 用来确定包的版本是否满足 <span class="target" id="index-7-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用中包含的任何版本约束。即使存在 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;ConfigVersion.cmake</span></code> 文件，在调用 <span class="target" id="index-8-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 时指定版本也是可选的。</p>
 <p>如果找到了 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件并且满足所有版本约束，<span class="target" id="index-9-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令即认为已找到该包，并假定整个包已按照设计完成。</p>
-<p>可能还有其他提供 CMake 命令或 <a class="reference internal" href="../../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a> 的文件供您使用。CMake 不强制对这些文件进行任何命名约定。它们通过 CMake 的 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令与主 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件关联。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件通常会为您包含这些文件，因此除了调用 <span class="target" id="index-10-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 之外，通常不需要任何额外步骤。</p>
-<p>如果包的位置在 <a class="reference internal" href="../../command/find_package.html#search-procedure"><span class="std std-ref">CMake 已知的目录</span></a> 中，则 <span class="target" id="index-11-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用应该会成功。CMake 已知的目录是特定于平台的。例如，在 Linux 上使用标准系统包管理器安装的包会自动在 <code class="docutils literal notranslate"><span class="pre">/usr</span></code> 前缀中找到。类似地，在 Windows 上安装在 <code class="docutils literal notranslate"><span class="pre">Program</span> <span class="pre">Files</span></code> 中的包也会被自动找到。</p>
+<p>可能还有其他提供 CMake 命令或 <a class="reference internal" href="../../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a> 的文件供您使用。CMake 不强制对这些文件进行任何命名约定。它们通过 CMake 的 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 命令与主 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件关联。<code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;Config.cmake</span></code> 文件通常会为您包含这些文件，因此除了调用 <span class="target" id="index-10-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 之外，通常不需要任何额外步骤。</p>
+<p>如果包的位置在 <a class="reference internal" href="../../command/find_package.html#search-procedure"><span class="std std-ref">CMake 已知的目录</span></a> 中，则 <span class="target" id="index-11-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用应该会成功。CMake 已知的目录是特定于平台的。例如，在 Linux 上使用标准系统包管理器安装的包会自动在 <code class="docutils literal notranslate"><span class="pre">/usr</span></code> 前缀中找到。类似地，在 Windows（微软桌面系统） 上安装在 <code class="docutils literal notranslate"><span class="pre">Program</span> <span class="pre">Files</span></code> 中的包也会被自动找到。</p>
 <p>如果包位于 CMake 未知的位置（例如 <code class="docutils literal notranslate"><span class="pre">/opt/mylib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">$HOME/dev/prefix</span></code>），则在没有帮助的情况下，它们将不会被自动找到。这是正常情况，CMake 提供了几种方法供用户指定查找这些库的位置。</p>
 <p><span class="target" id="index-0-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 变量可以在 <a class="reference internal" href="../user-interaction/index.html#setting-build-variables"><span class="std std-ref">调用 CMake 时设置</span></a>。它被视为用于搜索 <a class="reference internal" href="../../manual/cmake-packages.7.html#config-file-packages"><span class="std std-ref">配置文件</span></a> 的基础路径列表。安装在 <code class="docutils literal notranslate"><span class="pre">/opt/somepackage</span></code> 中的包通常会安装配置文件，例如 <code class="docutils literal notranslate"><span class="pre">/opt/somepackage/lib/cmake/somePackage/SomePackageConfig.cmake</span></code>。在这种情况下，应将 <code class="docutils literal notranslate"><span class="pre">/opt/somepackage</span></code> 添加到 <span class="target" id="index-1-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 中。</p>
-<p>环境变量 <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> 也可以填充用于搜索包的前缀。与 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 环境变量一样，它是一个列表，但需要使用特定于平台的环境变量列表项分隔符（Unix 上为 <code class="docutils literal notranslate"><span class="pre">:</span></code>，Windows 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>）。</p>
+<p>环境变量 <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> 也可以填充用于搜索包的前缀。与 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 环境变量一样，它是一个列表，但需要使用特定于平台的环境变量列表项分隔符（Unix 上为 <code class="docutils literal notranslate"><span class="pre">:</span></code>，Windows（微软桌面系统） 上为 <code class="docutils literal notranslate"><span class="pre">;</span></code>）。</p>
 <p><span class="target" id="index-2-variable:CMAKE_PREFIX_PATH"></span><a class="reference internal" href="../../variable/CMAKE_PREFIX_PATH.html#variable:CMAKE_PREFIX_PATH" title="CMAKE_PREFIX_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code></a> 变量在需要指定多个前缀，或者在同一前缀下有多个包可用时提供了便利。包的路径也可以通过设置匹配 <code class="docutils literal notranslate"><span class="pre">&lt;PackageName&gt;_DIR</span></code> 的变量来指定，例如 <code class="docutils literal notranslate"><span class="pre">SomePackage_DIR</span></code>。请注意，这不是前缀，而应该是包含配置风格包文件的目录的完整路径，如上述示例中的 <code class="docutils literal notranslate"><span class="pre">/opt/somepackage/lib/cmake/SomePackage</span></code>。有关可能影响搜索的其他 CMake 变量和环境变量，请参阅 <span class="target" id="index-12-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 文档。</p>
 </section>
 <section id="find-module-files">
@@ -135,9 +143,9 @@
 </ol>
 <p>有关如何编写查找模块文件的详细讨论，请参阅 <a class="reference internal" href="../../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">查找模块 (Find Modules)</span></a>。</p>
 </section>
-<section id="imported-targets">
-<span id="imported-targets-from-packages"></span><h3><a class="toc-backref" href="index.html#id8" role="doc-backlink">导入目标</a><a class="headerlink" href="index.html#imported-targets" title="链接到此标题">¶</a></h3>
-<p>配置文件和查找模块文件都可以定义 <a class="reference internal" href="../../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标 (Imported Targets)</span></a>。这些目标通常具有 <code class="docutils literal notranslate"><span class="pre">SomePrefix::ThingName</span></code> 形式的名称。如果这些可用，项目应优先使用它们，而不是可能提供的任何 CMake 变量。此类目标通常带有使用要求，并自动将头文件搜索路径、编译器定义等应用到链接它们的其他目标（例如使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>）。这比尝试使用变量手动应用相同内容既健壮又方便。请检查包或查找模块的文档，查看它是否定义了导入目标（如果有）。</p>
+<section id="imported-targets（目标）">
+<span id="imported-targets（目标）-from-packages"></span><h3><a class="toc-backref" href="index.html#id8" role="doc-backlink">导入目标</a><a class="headerlink" href="index.html#imported-targets（目标）" title="链接到此标题">¶</a></h3>
+<p>配置文件和查找模块文件都可以定义 <a class="reference internal" href="../../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标 (Imported Targets)</span></a>。这些目标通常具有 <code class="docutils literal notranslate"><span class="pre">SomePrefix::ThingName</span></code> 形式的名称。如果这些可用，项目应优先使用它们，而不是可能提供的任何 CMake 变量。此类目标通常带有使用要求，并自动将头文件搜索路径、编译器定义等应用到链接它们的其他目标（例如使用 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a>）。这比尝试使用变量手动应用相同内容既健壮又方便。请检查包或查找模块的文档，查看它是否定义了导入目标（如果有）。</p>
 <p>导入目标还应封装任何配置特定的路径。这包括二进制文件（库、可执行文件）的位置、编译器标志以及任何其他与配置相关的量。查找模块在提供这些详细信息方面可能不如配置文件可靠。</p>
 <p>一个查找第三方包并使用其中库的完整示例可能如下所示：</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.10</span><span class="nf">)</span>
@@ -151,6 +159,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">MyExe</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">SomePrefix</span><span class="o">::</span><span class="nb">LibName</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.10) project(MyExeProject VERSION 1.0.0) # Make project-provided Find modules available list(APPEND CMAKE_MODULE_PATH &quot;${CMAKE_CURRENT_SOURCE_DIR}/cmake&quot;) find_package(SomePackage REQUIRED) add_executable(MyExe main.cpp) target_link_libraries(MyExe PRIVATE SomePrefix::LibName)</span></code>：调用 `cmake_minimum_required()` 命令，声明工程所需的最低 CMake 版本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>请注意，上述对 <span class="target" id="index-14-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的调用可以通过配置文件或查找模块来解析。它仅使用 <a class="reference internal" href="../../command/find_package.html#basic-signature"><span class="std std-ref">基本签名</span></a> 支持的基本参数。例如，<code class="docutils literal notranslate"><span class="pre">${CMAKE_CURRENT_SOURCE_DIR}/cmake</span></code> 目录中的 <code class="docutils literal notranslate"><span class="pre">FindSomePackage.cmake</span></code> 文件将允许 <span class="target" id="index-15-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令使用模块模式成功。如果没有此类模块文件，系统将搜索配置文件。</p>
 </section>
 </section>
@@ -172,6 +184,10 @@
 <span class="nf">FetchContent_MakeAvailable(</span><span class="nb">googletest</span><span class="w"> </span><span class="nb">Catch2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 ) FetchContent_Declare( Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG 605a34765aa5d5ecbf476b4598a862ada971b0cc # v3.0.1 ) FetchContent_MakeAvailable(googletest Catch2)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>支持各种下载方法，包括从 URL 下载和提取归档文件（支持多种归档格式），以及许多存储库格式，包括 Git、Subversion 和 Mercurial。自定义下载、更新和补丁命令也可用于支持任意用例。</p>
 <p>当使用 <span class="target" id="index-2-module:FetchContent"></span><a class="reference internal" href="../../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 将依赖项添加到项目时，项目链接到该依赖项的目标，就像链接来自项目的任何其他目标一样。如果依赖项提供了 <code class="docutils literal notranslate"><span class="pre">SomePrefix::ThingName</span></code> 形式的命名空间目标，项目应链接到这些目标，而不是任何非命名空间目标。请参阅下一节以了解为什么建议这样做。</p>
 <p>并非所有依赖项都可以通过这种方式引入项目。某些依赖项定义的目标名称与项目或其他依赖项中的其他目标冲突。由 <span class="target" id="index-0-command:add_executable"></span><a class="reference internal" href="../../command/add_executable.html#command:add_executable" title="add_executable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_executable()</span></code></a> 和 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 创建的具体可执行文件和库目标是全局的，因此每个目标在整个构建中必须是唯一的。如果依赖项添加了冲突的目标名称，则无法使用此方法直接将其引入构建中。</p>
@@ -196,6 +212,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">ThingUnitTest</span><span class="w"> </span><span class="nb">GTest</span><span class="o">::</span><span class="nb">gtest_main</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG 703bd9caab50b139428cea1aaff9974ebee5742e # release-1.10.0 FIND_PACKAGE_ARGS NAMES GTest ) FetchContent_MakeAvailable(googletest) add_executable(ThingUnitTest thing_ut.cpp) target_link_libraries(ThingUnitTest GTest::gtest_main)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>上面的示例首先调用 <span class="target" id="index-18-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package(googletest</span> <span class="pre">NAMES</span> <span class="pre">GTest)</span></code></a>。CMake 提供了一个 <span class="target" id="index-0-module:FindGTest"></span><a class="reference internal" href="../../module/FindGTest.html#module:FindGTest" title="FindGTest"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FindGTest</span></code></a> 模块，因此如果它在某处找到已安装的 GTest 包，它将使其可用，且不会从源代码构建该依赖项。如果没有找到 GTest 包，它*将*从源代码构建。无论哪种情况，都期望定义 <code class="docutils literal notranslate"><span class="pre">GTest::gtest_main</span></code> 目标，因此我们将单元测试可执行文件链接到该目标。</p>
 <p>高级控制也可以通过 <span class="target" id="index-0-variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE"></span><a class="reference internal" href="../../module/FetchContent.html#variable:FETCHCONTENT_TRY_FIND_PACKAGE_MODE" title="FETCHCONTENT_TRY_FIND_PACKAGE_MODE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">FETCHCONTENT_TRY_FIND_PACKAGE_MODE</span></code></a> 变量获得。这可以设置为 <code class="docutils literal notranslate"><span class="pre">NEVER</span></code> 以禁用所有对 <span class="target" id="index-19-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 的重定向。它可以设置为 <code class="docutils literal notranslate"><span class="pre">ALWAYS</span></code>，即使未指定 <code class="docutils literal notranslate"><span class="pre">FIND_PACKAGE_ARGS</span></code>，也会尝试 <span class="target" id="index-20-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>（应谨慎使用）。</p>
 <p>项目也可能决定必须从源代码构建特定的依赖项。如果需要补丁版本或未发布的依赖项版本，或者为了满足要求所有依赖项都必须从源代码构建的某些策略，可能需要这样做。项目可以通过将 <code class="docutils literal notranslate"><span class="pre">OVERRIDE_FIND_PACKAGE</span></code> 关键字添加到 <span class="target" id="index-1-command:fetchcontent_declare"></span><a class="reference internal" href="../../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a> 来强制执行此操作。随后，对该依赖项的 <span class="target" id="index-21-command:find_package"></span><a class="reference internal" href="../../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 调用将被重定向到 <span class="target" id="index-1-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>。</p>
@@ -211,6 +231,10 @@
 <span class="nf">find_package(</span><span class="nb">Catch2</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(FetchContent) FetchContent_Declare( Catch2 URL https://intranet.mycomp.com/vendored/Catch2_2.13.4_patched.tgz URL_HASH MD5=abc123... OVERRIDE_FIND_PACKAGE ) # The following is automatically redirected to FetchContent_MakeAvailable(Catch2) find_package(Catch2)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于更高级的用例，请参阅 <span class="target" id="index-0-variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR"></span><a class="reference internal" href="../../variable/CMAKE_FIND_PACKAGE_REDIRECTS_DIR.html#variable:CMAKE_FIND_PACKAGE_REDIRECTS_DIR" title="CMAKE_FIND_PACKAGE_REDIRECTS_DIR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_FIND_PACKAGE_REDIRECTS_DIR</span></code></a> 变量。</p>
 </section>
 <section id="dependency-providers">
@@ -226,6 +250,10 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/package_manager/setup.cmake ...
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/package_manager/setup.cmake ...</span></code>：这一行给出示例文本或输出，用来说明：cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=/path/to/package_manager/setup.cmake ...</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>有关如何实现您自己的自定义依赖项提供程序的详细信息，请参阅 <span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="../../command/cmake_language.html#set-dependency-provider" title="cmake_language(set_dependency_provider)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(SET_DEPENDENCY_PROVIDER)</span></code></a> 命令。</p>
 </section>
 </section>
@@ -245,7 +273,7 @@
 <li><a class="reference internal" href="index.html#using-pre-built-packages-with-find-package">配合 <code class="docutils literal notranslate"><span class="pre">find_package()</span></code> 使用预构建包</a><ul>
 <li><a class="reference internal" href="index.html#config-file-packages">配置文件包 (Config-file packages)</a></li>
 <li><a class="reference internal" href="index.html#find-module-files">查找模块文件 (Find Module Files)</a></li>
-<li><a class="reference internal" href="index.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="index.html#imported-targets（目标）">导入目标</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="index.html#downloading-and-building-from-source-with-fetchcontent">使用 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> 下载并从源码构建</a></li>
@@ -290,9 +318,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="../importing-exporting/index.html" title="Importing and Exporting Guide">下一页</a> |</li>
+          <a href="../importing-exporting/index.html" title="导入和导出指南">下一页</a> |</li>
         <li class="right">
-          <a href="../user-interaction/index.html" title="User Interaction Guide">上一页</a> |</li>
+          <a href="../user-interaction/index.html" title="用户交互指南">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>

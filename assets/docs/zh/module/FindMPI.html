@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">MPI</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;langs&gt;...</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(MPI [&lt;version&gt;] [COMPONENTS &lt;langs&gt;...] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>消息传递接口（MPI）是一个用于编写高性能分布式内存并行应用程序的库，通常部署在集群上。MPI 是一个由 MPI 论坛定义的标准接口，目前有许多可用的实现版本。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">3.10 版本新增: </span>该模块进行了重大重构：增加了许多新变量、按语言划分的组件，并支持更广泛的运行时环境。</p>
@@ -69,6 +73,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="no">MPI</span><span class="w"> </span><span class="p">[</span><span class="no">COMPONENTS</span><span class="w"> </span><span class="nv">&lt;langs&gt;...</span><span class="p">]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(MPI [COMPONENTS &lt;langs&gt;...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>支持的组件包括</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">C</span></code></dt><dd><div class="versionadded">
@@ -94,9 +102,9 @@
 </dl>
 <p>如果不指定任何组件，模块将根据项目中启用的语言，自动搜索 <code class="docutils literal notranslate"><span class="pre">C</span></code>、<code class="docutils literal notranslate"><span class="pre">CXX</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code> 组件。</p>
 </section>
-<section id="imported-targets">
-<h2>导入的目标<a class="headerlink" href="FindMPI.html#imported-targets" title="此标题的链接">¶</a></h2>
-<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a></p>
+<section id="imported-targets（目标）">
+<h2>导入的目标<a class="headerlink" href="FindMPI.html#imported-targets（目标）" title="此标题的链接">¶</a></h2>
+<p>此模块提供以下 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">MPI::MPI_&lt;lang&gt;</span></code></dt><dd><div class="versionadded">
 <p><span class="versionmodified added">版本 3.9 中添加。</span></p>
@@ -173,7 +181,7 @@
 <li><p>搜索 <code class="docutils literal notranslate"><span class="pre">MPIEXEC_EXECUTABLE</span></code>，如果找到，则使用其基础目录。</p></li>
 <li><p>检查编译器是否内置了 MPI 支持。如果用户将编译器包装器作为 <span class="target" id="index-0-variable:CMAKE_<LANG>_COMPILER"></span><a class="reference internal" href="../variable/CMAKE_LANG_COMPILER.html#variable:CMAKE_<LANG>_COMPILER" title="CMAKE_<LANG>_COMPILER"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_&lt;LANG&gt;_COMPILER</span></code></a> 传递，或者使用 Cray 系统编译器包装器，则属于这种情况。</p></li>
 <li><p>尝试寻找 MPI 编译器包装器，并从中确定编译器信息。</p></li>
-<li><p>尝试通过猜测设置来寻找不提供此类包装器的 MPI 实现。目前仅支持 Windows 上的 Microsoft MPI 和 MPICH2。</p></li>
+<li><p>尝试通过猜测设置来寻找不提供此类包装器的 MPI 实现。目前仅支持 Windows（微软桌面系统） 上的 Microsoft MPI 和 MPICH2。</p></li>
 </ol>
 <p>为了控制 <code class="docutils literal notranslate"><span class="pre">MPIEXEC_EXECUTABLE</span></code> 步骤，可以设置以下变量</p>
 <dl class="simple">
@@ -321,6 +329,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">example</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="no">MPI</span><span class="o">::</span><span class="no">MPI_C</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(MPI) target_link_libraries(example PRIVATE MPI::MPI_C)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 <section id="example-usage-of-mpiexec">
 <h3>示例：mpiexec 的使用<a class="headerlink" href="FindMPI.html#example-usage-of-mpiexec" title="链接到此标题">¶</a></h3>
@@ -342,6 +354,10 @@
 <span class="nf">endif()</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(MPI) if(MPI_FOUND) execute_process( COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} ${MPIEXEC_PREFLAGS} &lt;executable&gt; ${MPIEXEC_POSTFLAGS} &lt;args&gt; ) endif()</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 </section>
@@ -358,7 +374,7 @@
     <ul>
 <li><a class="reference internal" href="FindMPI.html#">FindMPI</a><ul>
 <li><a class="reference internal" href="FindMPI.html#components">组件</a></li>
-<li><a class="reference internal" href="FindMPI.html#imported-targets">导入目标</a></li>
+<li><a class="reference internal" href="FindMPI.html#imported-targets（目标）">导入目标</a></li>
 <li><a class="reference internal" href="FindMPI.html#result-variables">结果变量</a></li>
 <li><a class="reference internal" href="FindMPI.html#variables-for-locating-mpi">用于定位 MPI 的变量</a></li>
 <li><a class="reference internal" href="FindMPI.html#cache-variables">缓存变量</a></li>

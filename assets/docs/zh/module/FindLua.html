@@ -59,6 +59,10 @@
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Lua</span><span class="w"> </span><span class="p">[</span><span class="nv">&lt;version&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[...]</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Lua [&lt;version&gt;] [...])</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>Lua 是一种可嵌入的脚本语言。</p>
 <div class="versionadded">
 <p><span class="versionmodified added">版本 3.18 中添加： </span>支持 Lua 5.4。</p>
@@ -70,10 +74,18 @@
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lua.h&gt;</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;lua.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>而不是</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;lua/lua.h&gt;</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;lua/lua.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>这是因为 Lua 头文件的位置可能因平台而异，并且可能存在于 <code class="docutils literal notranslate"><span class="pre">lua/</span></code> 以外的位置。</p>
 <section id="result-variables">
 <h2>结果变量<a class="headerlink" href="FindLua.html#result-variables" title="此标题的链接">¶</a></h2>
@@ -149,7 +161,7 @@
 </section>
 <section id="examples">
 <h2>示例<a class="headerlink" href="FindLua.html#examples" title="此标题的永久链接">¶</a></h2>
-<p>查找 Lua 库并创建一个接口 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，封装其用法要求，以便链接到项目目标</p>
+<p>查找 Lua 库并创建一个接口 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a>，封装其用法要求，以便链接到项目目标</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">find_package(</span><span class="nb">Lua</span><span class="nf">)</span>
 
 <span class="nf">if(</span><span class="nb">Lua_FOUND</span><span class="w"> </span><span class="no">AND</span><span class="w"> </span><span class="no">NOT</span><span class="w"> </span><span class="no">TARGET</span><span class="w"> </span><span class="nb">Lua</span><span class="o">::</span><span class="nb">Lua</span><span class="nf">)</span>
@@ -165,6 +177,10 @@
 <span class="nf">target_link_libraries(</span><span class="nb">project_target</span><span class="w"> </span><span class="no">PRIVATE</span><span class="w"> </span><span class="nb">Lua</span><span class="o">::</span><span class="nb">Lua</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Lua) if(Lua_FOUND AND NOT TARGET Lua::Lua) add_library(Lua::Lua INTERFACE IMPORTED) set_target_properties( Lua::Lua PROPERTIES INTERFACE_INCLUDE_DIRECTORIES &quot;${LUA_INCLUDE_DIR}&quot; INTERFACE_LINK_LIBRARIES &quot;${LUA_LIBRARIES}&quot; ) endif() target_link_libraries(project_target PRIVATE Lua::Lua)</span></code>：调用 `find_package()` 命令，查找并加载外部依赖包。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 </section>
 

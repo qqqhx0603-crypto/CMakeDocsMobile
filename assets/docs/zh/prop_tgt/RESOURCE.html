@@ -56,7 +56,7 @@
   <section id="resource">
 <span id="prop_tgt:RESOURCE"></span><h1>资源<a class="headerlink" href="RESOURCE.html#resource" title="链接到此标题">¶</a></h1>
 <p>在 <span class="target" id="index-0-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 或 <span class="target" id="index-0-prop_tgt:BUNDLE"></span><a class="reference internal" href="BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 中指定资源文件。</p>
-<p>带有 <span class="target" id="index-1-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 或 <span class="target" id="index-1-prop_tgt:BUNDLE"></span><a class="reference internal" href="BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 属性的目标会生成框架或应用程序包（macOS 和 iOS 均受支持），或者在其他平台上生成普通的共享库。可以将此属性设置为要放置在相应目录（例如 macOS 的 <code class="docutils literal notranslate"><span class="pre">Resources</span></code> 目录）内的文件列表。在非 Apple 平台上，可以使用 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#targets" title="install(targets)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code> 选项来安装这些文件。</p>
+<p>带有 <span class="target" id="index-1-prop_tgt:FRAMEWORK"></span><a class="reference internal" href="FRAMEWORK.html#prop_tgt:FRAMEWORK" title="FRAMEWORK"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">FRAMEWORK</span></code></a> 或 <span class="target" id="index-1-prop_tgt:BUNDLE"></span><a class="reference internal" href="BUNDLE.html#prop_tgt:BUNDLE" title="BUNDLE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">BUNDLE</span></code></a> 属性的目标会生成框架或应用程序包（macOS（苹果桌面系统） 和 iOS 均受支持），或者在其他平台上生成普通的共享库。可以将此属性设置为要放置在相应目录（例如 macOS（苹果桌面系统） 的 <code class="docutils literal notranslate"><span class="pre">Resources</span></code> 目录）内的文件列表。在非 Apple 平台上，可以使用 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#targets（目标）" title="install(targets（目标）)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install(TARGETS)</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">RESOURCE</span></code> 选项来安装这些文件。</p>
 <p>应用程序包示例</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_executable(</span><span class="nb">ExecutableTarget</span>
 <span class="w">  </span><span class="nb">addDemo.c</span>
@@ -75,6 +75,10 @@
 <span class="w">  </span><span class="no">RESOURCE</span><span class="w"> </span><span class="s">"${RESOURCE_FILES}"</span><span class="nf">)</span>
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(ExecutableTarget addDemo.c resourcefile.txt appresourcedir/appres.txt) target_link_libraries(ExecutableTarget heymath mul) set(RESOURCE_FILES resourcefile.txt appresourcedir/appres.txt) set_target_properties(ExecutableTarget PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget RESOURCE &quot;${RESOURCE_FILES}&quot;)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>将为 iOS 系统生成扁平结构</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget.app
   appres.txt
@@ -83,7 +87,11 @@
   resourcefile.txt
 </pre></div>
 </div>
-<p>对于 macOS 系统，它将生成以下目录结构</p>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ExecutableTarget.app appres.txt ExecutableTarget Info.plist resourcefile.txt</span></code>：这一行给出示例文本或输出，用来说明：ExecutableTarget.app appres.txt ExecutableTarget Info.plist resourcefile.txt</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
+<p>对于 macOS（苹果桌面系统） 系统，它将生成以下目录结构</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget.app/
   Contents
     Info.plist
@@ -94,6 +102,10 @@
       resourcefile.txt
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ExecutableTarget.app/ Contents Info.plist MacOS ExecutableTarget Resources appres.txt resourcefile.txt</span></code>：这一行给出示例文本或输出，用来说明：ExecutableTarget.app/ Contents Info.plist MacOS ExecutableTarget Resources appres.txt resourcefile.txt</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 <p>对于 Linux，这样的 CMake 脚本将生成以下文件</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ExecutableTarget
 Resources
@@ -101,6 +113,10 @@ Resources
   resourcefile.txt
 </pre></div>
 </div>
+<!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">ExecutableTarget Resources appres.txt resourcefile.txt</span></code>：这一行给出示例文本或输出，用来说明：ExecutableTarget Resources appres.txt resourcefile.txt</p></li></ul></div>
+<!-- CMAKE_ZH_CODE_NOTES_END -->
+
 </section>
 
 
