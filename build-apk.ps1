@@ -70,8 +70,8 @@ if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed" }
   --java $GenDir `
   --min-sdk-version 23 `
   --target-sdk-version 35 `
-  --version-code 7 `
-  --version-name '1.6' `
+  --version-code 8 `
+  --version-name '1.7' `
   $CompiledRes
 if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed" }
 

@@ -66,7 +66,13 @@ public class MainActivity extends Activity {
     private boolean userDraggingProgress = false;
     private boolean pageLoading = false;
     private boolean hasDisplayedPage = false;
+    private boolean loadingPageStarted = false;
+    private boolean loadingPageFinished = false;
+    private int loadGeneration = 0;
+    private String expectedLoadLang = "zh";
+    private String expectedLoadPath = "index.html";
     private int pendingScrollY = 0;
+    private float pendingScrollRatio = -1f;
 
     private String currentLang = "zh";
     private String currentPath = "index.html";
@@ -352,6 +358,7 @@ public class MainActivity extends Activity {
         currentPath = normalizePath(path);
         loadingFromHistory = false;
         pendingScrollY = 0;
+        pendingScrollRatio = -1f;
         startLoadingCurrentPage();
     }
 
@@ -359,6 +366,11 @@ public class MainActivity extends Activity {
         WebView target = hasDisplayedPage ? standbyWebView : webView;
         loadingWebView = target;
         pageLoading = true;
+        loadGeneration++;
+        expectedLoadLang = currentLang;
+        expectedLoadPath = normalizePath(currentPath);
+        loadingPageStarted = false;
+        loadingPageFinished = false;
         skipNextPageStartedCapture = true;
         target.stopLoading();
         target.getSettings().setTextZoom(textZoom);
@@ -374,6 +386,7 @@ public class MainActivity extends Activity {
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
+        pendingScrollRatio = -1f;
         startLoadingCurrentPage();
     }
 
@@ -433,6 +446,7 @@ public class MainActivity extends Activity {
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
+        pendingScrollRatio = -1f;
         startLoadingCurrentPage();
         saveState(false);
     }
@@ -448,6 +462,7 @@ public class MainActivity extends Activity {
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
+        pendingScrollRatio = -1f;
         startLoadingCurrentPage();
         saveState(false);
     }
@@ -466,7 +481,16 @@ public class MainActivity extends Activity {
         if (!hasPage(other, currentPath)) {
             return;
         }
-        loadPage(other, currentPath);
+        captureCurrentScroll();
+        int range = getScrollableRange(webView);
+        pendingScrollRatio = range <= 0
+                ? 0f
+                : Math.max(0f, Math.min(1f, webView.getScrollY() / (float) range));
+        currentLang = other;
+        currentPath = normalizePath(currentPath);
+        loadingFromHistory = false;
+        pendingScrollY = 0;
+        startLoadingCurrentPage();
     }
 
     private boolean hasPage(String lang, String path) {
@@ -882,9 +906,30 @@ public class MainActivity extends Activity {
 
     private void restoreScrollAfterLoad(WebView target) {
         final int targetY = Math.max(0, pendingScrollY);
+        final float targetRatio = pendingScrollRatio;
+        final int generation = loadGeneration;
+        pendingScrollRatio = -1f;
+        waitForStableLayoutAndRestore(target, targetY, targetRatio, generation, 0, -1);
+    }
+
+    private void waitForStableLayoutAndRestore(WebView target, int targetY, float targetRatio,
+                                               int generation, int attempt, int previousRange) {
         target.postDelayed(() -> {
-            if (targetY > 0) {
-                target.scrollTo(0, Math.min(targetY, getScrollableRange(target)));
+            if (generation != loadGeneration || target != loadingWebView) {
+                return;
+            }
+            int range = getScrollableRange(target);
+            boolean needsScrollablePage = targetRatio > 0f || targetY > 0;
+            boolean rangeStable = range > 0 && previousRange >= 0 && Math.abs(range - previousRange) <= 2;
+            if (needsScrollablePage && attempt < 12 && !rangeStable) {
+                waitForStableLayoutAndRestore(target, targetY, targetRatio, generation,
+                        attempt + 1, range);
+                return;
+            }
+            if (targetRatio >= 0f) {
+                target.scrollTo(0, Math.round(range * Math.max(0f, Math.min(1f, targetRatio))));
+            } else if (targetY > 0) {
+                target.scrollTo(0, Math.min(targetY, range));
             } else if (!currentPath.contains("#")) {
                 target.scrollTo(0, 0);
             }
@@ -894,7 +939,7 @@ public class MainActivity extends Activity {
             captureCurrentScroll();
             saveState(false);
             updateControls();
-        }, 250);
+        }, 100);
     }
 
     private int getScrollableRange() {
@@ -1027,14 +1072,17 @@ public class MainActivity extends Activity {
             if (view != loadingWebView) {
                 return;
             }
+            Entry parsed = parseAssetUrl(url);
+            if (!isExpectedLoad(parsed) || loadingPageStarted) {
+                return;
+            }
+            loadingPageStarted = true;
             if (skipNextPageStartedCapture) {
                 skipNextPageStartedCapture = false;
             } else if (!loadingFromHistory) {
                 captureCurrentScroll();
-                Entry parsed = parseAssetUrl(url);
-                if (parsed != null) {
-                    pendingScrollY = 0;
-                }
+                pendingScrollY = 0;
+                pendingScrollRatio = -1f;
             }
             pageLoading = true;
         }
@@ -1046,11 +1094,10 @@ public class MainActivity extends Activity {
                 return;
             }
             Entry parsed = parseAssetUrl(url);
-            if (parsed == null) {
-                updateControls();
-                pageLoading = false;
+            if (!loadingPageStarted || !isExpectedLoad(parsed) || loadingPageFinished) {
                 return;
             }
+            loadingPageFinished = true;
             currentLang = parsed.lang;
             currentPath = parsed.path;
             if (loadingFromHistory) {
@@ -1061,6 +1108,12 @@ public class MainActivity extends Activity {
                 pushHistory(currentLang, currentPath);
                 restoreScrollAfterLoad(view);
             }
+        }
+
+        private boolean isExpectedLoad(Entry entry) {
+            return entry != null
+                    && expectedLoadLang.equals(entry.lang)
+                    && expectedLoadPath.equals(normalizePath(entry.path));
         }
     }
 
