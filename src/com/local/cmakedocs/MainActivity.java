@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -62,6 +63,7 @@ public class MainActivity extends Activity {
     private final ArrayList<Entry> history = new ArrayList<>();
     private int historyIndex = -1;
     private boolean loadingFromHistory = false;
+    private boolean replacingHistoryEntry = false;
     private boolean skipNextPageStartedCapture = false;
     private boolean userDraggingProgress = false;
     private boolean pageLoading = false;
@@ -186,7 +188,7 @@ public class MainActivity extends Activity {
 
         backButton.setOnClickListener(v -> goBackInHistory());
         forwardButton.setOnClickListener(v -> goForwardInHistory());
-        homeButton.setOnClickListener(v -> loadPage(currentLang, "index.html"));
+        homeButton.setOnClickListener(v -> loadPage(displayedLang, "index.html"));
         langButton.setOnClickListener(v -> switchLanguage());
         searchButton.setOnClickListener(v -> showSearchDialog());
         listButton.setOnClickListener(v -> showPagePicker());
@@ -357,6 +359,7 @@ public class MainActivity extends Activity {
         currentLang = lang;
         currentPath = normalizePath(path);
         loadingFromHistory = false;
+        replacingHistoryEntry = false;
         pendingScrollY = 0;
         pendingScrollRatio = -1f;
         startLoadingCurrentPage();
@@ -372,6 +375,7 @@ public class MainActivity extends Activity {
         loadingPageStarted = false;
         loadingPageFinished = false;
         skipNextPageStartedCapture = true;
+        updateControls();
         target.stopLoading();
         target.getSettings().setTextZoom(textZoom);
         target.scrollTo(0, 0);
@@ -383,6 +387,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadEntry(Entry entry) {
+        replacingHistoryEntry = false;
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
@@ -436,13 +441,19 @@ public class MainActivity extends Activity {
     }
 
     private void goBackInHistory() {
-        if (historyIndex <= 0) {
+        if (pageLoading || historyIndex <= 0) {
             return;
         }
+        String preferredLang = displayedLang;
         captureCurrentScroll();
         historyIndex--;
         loadingFromHistory = true;
+        replacingHistoryEntry = false;
         Entry entry = history.get(historyIndex);
+        if (!entry.lang.equals(preferredLang) && hasPage(preferredLang, entry.path)) {
+            entry = new Entry(preferredLang, entry.path, 0);
+            history.set(historyIndex, entry);
+        }
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
@@ -452,13 +463,19 @@ public class MainActivity extends Activity {
     }
 
     private void goForwardInHistory() {
-        if (historyIndex >= history.size() - 1) {
+        if (pageLoading || historyIndex >= history.size() - 1) {
             return;
         }
+        String preferredLang = displayedLang;
         captureCurrentScroll();
         historyIndex++;
         loadingFromHistory = true;
+        replacingHistoryEntry = false;
         Entry entry = history.get(historyIndex);
+        if (!entry.lang.equals(preferredLang) && hasPage(preferredLang, entry.path)) {
+            entry = new Entry(preferredLang, entry.path, 0);
+            history.set(historyIndex, entry);
+        }
         currentLang = entry.lang;
         currentPath = normalizePath(entry.path);
         pendingScrollY = entry.scrollY;
@@ -477,8 +494,13 @@ public class MainActivity extends Activity {
     }
 
     private void switchLanguage() {
-        String other = currentLang.equals("zh") ? "en" : "zh";
-        if (!hasPage(other, currentPath)) {
+        if (pageLoading) {
+            return;
+        }
+        String sourceLang = displayedLang;
+        String sourcePath = displayedPath;
+        String other = sourceLang.equals("zh") ? "en" : "zh";
+        if (!hasPage(other, sourcePath)) {
             return;
         }
         captureCurrentScroll();
@@ -487,10 +509,21 @@ public class MainActivity extends Activity {
                 ? 0f
                 : Math.max(0f, Math.min(1f, webView.getScrollY() / (float) range));
         currentLang = other;
-        currentPath = normalizePath(currentPath);
+        currentPath = normalizePath(sourcePath);
         loadingFromHistory = false;
+        replacingHistoryEntry = true;
         pendingScrollY = 0;
         startLoadingCurrentPage();
+    }
+
+    private void replaceCurrentHistoryEntry(String lang, String path) {
+        path = normalizePath(path);
+        if (historyIndex < 0 || historyIndex >= history.size()) {
+            pushHistory(lang, path);
+            return;
+        }
+        history.set(historyIndex, new Entry(lang, path, pendingScrollY));
+        saveState(false);
     }
 
     private boolean hasPage(String lang, String path) {
@@ -813,8 +846,9 @@ public class MainActivity extends Activity {
     }
 
     private void updateControls() {
-        backButton.setEnabled(historyIndex > 0);
-        forwardButton.setEnabled(historyIndex >= 0 && historyIndex < history.size() - 1);
+        backButton.setEnabled(!pageLoading && historyIndex > 0);
+        forwardButton.setEnabled(!pageLoading
+                && historyIndex >= 0 && historyIndex < history.size() - 1);
         backButton.setAlpha(backButton.isEnabled() ? 1.0f : 0.35f);
         forwardButton.setAlpha(forwardButton.isEnabled() ? 1.0f : 0.35f);
 
@@ -881,6 +915,7 @@ public class MainActivity extends Activity {
             if (historyIndex < 0 || historyIndex >= history.size()) {
                 historyIndex = history.size() - 1;
             }
+            collapseAdjacentLanguageHistory();
         } catch (Exception ignored) {
             history.clear();
             historyIndex = -1;
@@ -892,6 +927,29 @@ public class MainActivity extends Activity {
                 favorites.add(fav.getString(i));
             }
         } catch (Exception ignored) {}
+    }
+
+    private void collapseAdjacentLanguageHistory() {
+        if (history.size() < 2) {
+            return;
+        }
+        ArrayList<Entry> cleaned = new ArrayList<>();
+        int cleanedIndex = -1;
+        for (int i = 0; i < history.size(); i++) {
+            Entry entry = history.get(i);
+            if (!cleaned.isEmpty()
+                    && cleaned.get(cleaned.size() - 1).path.equals(entry.path)) {
+                cleaned.set(cleaned.size() - 1, entry);
+            } else {
+                cleaned.add(entry);
+            }
+            if (i <= historyIndex) {
+                cleanedIndex = cleaned.size() - 1;
+            }
+        }
+        history.clear();
+        history.addAll(cleaned);
+        historyIndex = cleanedIndex;
     }
 
     private void captureCurrentScroll() {
@@ -1042,7 +1100,7 @@ public class MainActivity extends Activity {
             if (url.startsWith(ASSET_BASE)) {
                 Entry local = parseAssetUrl(url);
                 if (local != null && !hasPage(local.lang, local.path)) {
-                    loadPage(local.lang, "index.html");
+                    showMissingPageMessage();
                     return true;
                 }
                 return false;
@@ -1050,7 +1108,7 @@ public class MainActivity extends Activity {
             if (url.startsWith("file:///android_asset/docs/")) {
                 Entry local = parseAssetUrl(url);
                 if (local != null && !hasPage(local.lang, local.path)) {
-                    loadPage(local.lang, "index.html");
+                    showMissingPageMessage();
                     return true;
                 }
                 return false;
@@ -1061,6 +1119,7 @@ public class MainActivity extends Activity {
                 return true;
             }
             if (url.startsWith("http://") || url.startsWith("https://")) {
+                showMissingPageMessage();
                 return true;
             }
             return false;
@@ -1104,6 +1163,10 @@ public class MainActivity extends Activity {
                 loadingFromHistory = false;
                 restoreScrollAfterLoad(view);
                 saveState(false);
+            } else if (replacingHistoryEntry) {
+                replacingHistoryEntry = false;
+                replaceCurrentHistoryEntry(currentLang, currentPath);
+                restoreScrollAfterLoad(view);
             } else {
                 pushHistory(currentLang, currentPath);
                 restoreScrollAfterLoad(view);
@@ -1115,6 +1178,10 @@ public class MainActivity extends Activity {
                     && expectedLoadLang.equals(entry.lang)
                     && expectedLoadPath.equals(normalizePath(entry.path));
         }
+    }
+
+    private void showMissingPageMessage() {
+        Toast.makeText(this, "当前离线包未包含此页面", Toast.LENGTH_SHORT).show();
     }
 
     private Entry mapExternalCMakeUrl(String url) {
@@ -1152,7 +1219,7 @@ public class MainActivity extends Activity {
                 }
             }
             if (rel == null) {
-                return new Entry(currentLang, "index.html");
+                return null;
             }
             if (rel.length() == 0 || rel.endsWith("/")) {
                 rel = rel + "index.html";
@@ -1168,7 +1235,7 @@ public class MainActivity extends Activity {
             if (hasPage(other, rel)) {
                 return new Entry(other, rel);
             }
-            return new Entry(currentLang, "index.html");
+            return null;
         } catch (Exception ignored) {
             return null;
         }
