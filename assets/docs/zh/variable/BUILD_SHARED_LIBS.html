@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="BUILD_SHARED_LIBS.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="PROJECT_VERSION_TWEAK" href="PROJECT_VERSION_TWEAK.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,17 +44,21 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="BUILD_SHARED_LIBS.html">BUILD_SHARED_LIBS</a></li> 
+        <li class="nav-item nav-item-this"><a href="BUILD_SHARED_LIBS.html">BUILD_SHARED_LIBS</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="build-shared-libs">
 <span id="variable:BUILD_SHARED_LIBS"></span><h1>BUILD_SHARED_LIBS<a class="headerlink" href="BUILD_SHARED_LIBS.html#build-shared-libs" title="链接到此标题">¶</a></h1>
+<!-- CMAKE_ZH_SYMBOL_NOTE_BEGIN -->
+<div class="admonition note cmake-symbol-note"><p class="admonition-title">变量说明</p><p><code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>：指示 add_library() 在调用时若未指定库类型，则默认使用 SHARED（动态库）而非 STATIC（静态库）。</p></div>
+<!-- CMAKE_ZH_SYMBOL_NOTE_END -->
+
 <p>指示 <span class="target" id="index-0-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 在调用时若未指定库类型，则默认使用 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code>（动态库）而非 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code>（静态库）。</p>
 <p>当调用 <span class="target" id="index-1-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 且未指定库类型时，会检查当前 <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> 变量的值。如果为 true，则默认库类型为 <code class="docutils literal notranslate"><span class="pre">SHARED</span></code>。否则，默认值为 <code class="docutils literal notranslate"><span class="pre">STATIC</span></code>。</p>
 <p>例如，以下代码：</p>
@@ -62,7 +66,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(example ${sources})</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(example ${sources})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标；变量说明：<code class="docutils literal notranslate"><span class="pre">sources</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>其行为就像是写成了</p>
@@ -74,7 +78,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(BUILD_SHARED_LIBS) add_library(example SHARED ${sources}) else() add_library(example STATIC ${sources}) endif()</span></code>：开始一个 `if()` 条件判断，根据条件结果选择是否执行后续语句。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">if(BUILD_SHARED_LIBS)</span></code>：开始一个 <code class="docutils literal notranslate"><span class="pre">if()</span></code> 条件判断，根据条件结果选择是否执行后续语句。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  add_library(example SHARED ${sources})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标；变量说明：<code class="docutils literal notranslate"><span class="pre">sources</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">else()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  add_library(example STATIC ${sources})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标；变量说明：<code class="docutils literal notranslate"><span class="pre">sources</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">endif()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>CMake 默认不会定义 <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>，但项目通常会使用 <span class="target" id="index-0-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option()</span></code></a> 命令为其创建缓存条目。</p>
@@ -82,7 +86,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS &quot;Build using shared libraries&quot; ON)</span></code>：调用 `option()` 命令，声明一个布尔型配置选项。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS &quot;Build using shared libraries&quot; ON)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">option()</span></code> 命令，声明一个布尔型配置选项；变量说明：<code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>：未显式指定库类型时，控制 add_library() 默认生成共享库还是静态库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>这提供了一个用户可以控制的开关，例如通过 <a class="reference internal" href="../manual/cmake.1.html#cmdoption-cmake-D"><code class="xref std std-option docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-D</span></code></a>。如果在项目中添加此类选项，请在顶级 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中，且在任何 <span class="target" id="index-2-command:add_library"></span><a class="reference internal" href="../command/add_library.html#command:add_library" title="add_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_library()</span></code></a> 调用之前进行设置。请注意，如果直接将外部依赖项引入构建（例如使用 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 或直接调用 <span class="target" id="index-0-command:add_subdirectory"></span><a class="reference internal" href="../command/add_subdirectory.html#command:add_subdirectory" title="add_subdirectory"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">add_subdirectory()</span></code></a>），并且其中某个依赖项包含了对此类 <span class="target" id="index-1-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS</span> <span class="pre">...)</span></code></a> 的调用，那么顶级项目也必须在引入这些依赖项之前调用 <span class="target" id="index-2-command:option"></span><a class="reference internal" href="../command/option.html#command:option" title="option"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">option(BUILD_SHARED_LIBS</span> <span class="pre">...)</span></code></a>。如果不这样做，可能会导致首次运行 CMake 与后续运行之间的行为不一致。</p>
@@ -141,7 +145,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="BUILD_SHARED_LIBS.html">BUILD_SHARED_LIBS</a></li> 
+        <li class="nav-item nav-item-this"><a href="BUILD_SHARED_LIBS.html">BUILD_SHARED_LIBS</a></li>
       </ul>
     </div>
 
@@ -165,5 +169,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

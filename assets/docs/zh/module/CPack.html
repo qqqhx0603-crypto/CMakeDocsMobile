@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CPack.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMakeVerifyManifest" href="CMakeVerifyManifest.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html" accesskey="U">cmake-modules(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CPack.html">CPack</a></li> 
+        <li class="nav-item nav-item-this"><a href="CPack.html">CPack</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cpack">
 <span id="module:CPack"></span><h1>CPack<a class="headerlink" href="CPack.html#cpack" title="链接到此标题">¶</a></h1>
 <p>该模块用于配置二进制安装程序和源代码包的生成器。</p>
@@ -61,16 +61,16 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code>：调用 `include()` 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">include()</span></code> 命令，加载并执行另一个 CMake 脚本。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <section id="introduction">
 <h2>简介<a class="headerlink" href="CPack.html#introduction" title="此标题的链接">¶</a></h2>
 <p>CPack 模块会生成配置文件 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CPackSourceConfig.cmake</span></code>。这些文件旨在随后的 <span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 程序运行中使用，用于指导安装程序或/和源代码包的生成。</p>
-<p>根据 CMake 生成器的不同，CPack 模块可能会添加两个新的构建目标：<code class="docutils literal notranslate"><span class="pre">package</span></code> 和 <code class="docutils literal notranslate"><span class="pre">package_source</span></code>。有关详细信息，请参阅下方的 <a class="reference internal" href="CPack.html#packaging-targets（目标）">打包目标</a> 部分。</p>
-<p>生成的二进制安装程序将包含所有通过 CMake 的 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令（以及已弃用的命令 <span class="target" id="index-0-command:install_files"></span><a class="reference internal" href="../command/install_files.html#command:install_files" title="install_files"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_files()</span></code></a>、<span class="target" id="index-0-command:install_programs"></span><a class="reference internal" href="../command/install_programs.html#command:install_programs" title="install_programs"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_programs()</span></code></a> 和 <span class="target" id="index-0-command:install_targets（目标）"></span><a class="reference internal" href="../command/install_targets（目标）.html#command:install_targets（目标）" title="install_targets（目标）"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_targets（目标）()</span></code></a>）安装的文件。请注意，<span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 选项必须为相对路径；否则，CPack 将忽略这些已安装的文件。</p>
+<p>根据 CMake 生成器的不同，CPack 模块可能会添加两个新的构建目标：<code class="docutils literal notranslate"><span class="pre">package</span></code> 和 <code class="docutils literal notranslate"><span class="pre">package_source</span></code>。有关详细信息，请参阅下方的 <a class="reference internal" href="CPack.html#packaging-targets">打包目标</a> 部分。</p>
+<p>生成的二进制安装程序将包含所有通过 CMake 的 <span class="target" id="index-0-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令（以及已弃用的命令 <span class="target" id="index-0-command:install_files"></span><a class="reference internal" href="../command/install_files.html#command:install_files" title="install_files"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_files()</span></code></a>、<span class="target" id="index-0-command:install_programs"></span><a class="reference internal" href="../command/install_programs.html#command:install_programs" title="install_programs"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_programs()</span></code></a> 和 <span class="target" id="index-0-command:install_targets"></span><a class="reference internal" href="../command/install_targets.html#command:install_targets" title="install_targets"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install_targets()</span></code></a>）安装的文件。请注意，<span class="target" id="index-1-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令的 <code class="docutils literal notranslate"><span class="pre">DESTINATION</span></code> 选项必须为相对路径；否则，CPack 将忽略这些已安装的文件。</p>
 <p>某些类型的二进制安装程序可以进行配置，以便用户能够选择要安装的单个应用程序组件。有关详细信息，请参阅 <span class="target" id="index-0-module:CPackComponent"></span><a class="reference internal" href="CPackComponent.html#module:CPackComponent" title="CPackComponent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">CPackComponent</span></code></a> 模块。</p>
-<p>源代码包（通过 <code class="docutils literal notranslate"><span class="pre">CPackSourceConfig.cmake</span></code> 配置并由 <span class="target" id="index-0-cpack_gen:CPack Archive Generator（归档包生成器）"></span><a class="reference internal" href="../cpack_gen/archive.html#cpack_gen:CPack Archive Generator（归档包生成器）" title="CPack Archive Generator（归档包生成器）"><code class="xref cmake cmake-cpack_gen docutils literal notranslate"><span class="pre">CPack</span> <span class="pre">归档生成器</span></code></a> 生成）将包含项目目录中的所有源文件，但 <span class="target" id="index-0-variable:CPACK_SOURCE_IGNORE_FILES"></span><a class="reference internal" href="CPack.html#variable:CPACK_SOURCE_IGNORE_FILES" title="CPACK_SOURCE_IGNORE_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SOURCE_IGNORE_FILES</span></code></a> 中指定的文件除外。</p>
+<p>源代码包（通过 <code class="docutils literal notranslate"><span class="pre">CPackSourceConfig.cmake</span></code> 配置并由 <span class="target" id="index-0-cpack_gen:CPack Archive Generator"></span><a class="reference internal" href="../cpack_gen/archive.html#cpack_gen:CPack Archive Generator" title="CPack Archive Generator"><code class="xref cmake cmake-cpack_gen docutils literal notranslate"><span class="pre">CPack</span> <span class="pre">归档生成器</span></code></a> 生成）将包含项目目录中的所有源文件，但 <span class="target" id="index-0-variable:CPACK_SOURCE_IGNORE_FILES"></span><a class="reference internal" href="CPack.html#variable:CPACK_SOURCE_IGNORE_FILES" title="CPACK_SOURCE_IGNORE_FILES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_SOURCE_IGNORE_FILES</span></code></a> 中指定的文件除外。</p>
 </section>
 <section id="cpack-generators">
 <h2>CPack 生成器<a class="headerlink" href="CPack.html#cpack-generators" title="链接到此标题">¶</a></h2>
@@ -91,102 +91,102 @@
 <p>关键点：对于 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code> 中 <span class="target" id="index-5-variable:CPACK_GENERATOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 列出的每个生成器，cpack 将在内部<em>重置</em> <span class="target" id="index-6-variable:CPACK_GENERATOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 为<em>当前正在使用的那个</em>，然后包含 <span class="target" id="index-4-variable:CPACK_PROJECT_CONFIG_FILE"></span><a class="reference internal" href="CPack.html#variable:CPACK_PROJECT_CONFIG_FILE" title="CPACK_PROJECT_CONFIG_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PROJECT_CONFIG_FILE</span></code></a>。</p>
 <p>有关可用生成器的列表，请参阅 <span class="target" id="index-0-manual:cpack-generators(7)"></span><a class="reference internal" href="../manual/cpack-generators.7.html#manual:cpack-generators(7)" title="cpack-generators(7)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack-generators(7)</span></code></a>。</p>
 </section>
-<section id="targets（目标）-package-and-package-source">
-<span id="packaging-targets（目标）"></span><h2>目标 package 和 package_source<a class="headerlink" href="CPack.html#targets（目标）-package-and-package-source" title="链接到此标题">¶</a></h2>
-<p>如果使用 Makefile（构建脚本）、Ninja（构建工具） 或 Xcode 生成器运行 CMake，则 <code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code> 会生成一个 <code class="docutils literal notranslate"><span class="pre">package</span></code> 目标。这使得从 CMake、Make 或 Ninja（构建工具） 构建二进制安装程序成为可能：不再使用 <code class="docutils literal notranslate"><span class="pre">cpack</span></code>，而是可以调用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span> <span class="pre">--target</span> <span class="pre">package</span></code> 或 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">package</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">package</span></code>。VS 生成器会创建一个大写的 <code class="docutils literal notranslate"><span class="pre">PACKAGE</span></code> 目标。</p>
-<p>如果使用 Makefile（构建脚本） 或 Ninja（构建工具） 生成器运行 CMake，则 <code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code> 还会生成一个 <code class="docutils literal notranslate"><span class="pre">package_source</span></code> 目标。要构建源代码包，不再使用 <code class="docutils literal notranslate"><span class="pre">cpack</span> <span class="pre">-G</span> <span class="pre">TGZ</span> <span class="pre">--config</span> <span class="pre">CPackSourceConfig.cmake</span></code>，而是可以调用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span> <span class="pre">--target</span> <span class="pre">package_source</span></code>、<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">package_source</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">package_source</span></code>。</p>
+<section id="targets-package-and-package-source">
+<span id="packaging-targets"></span><h2>目标 package 和 package_source<a class="headerlink" href="CPack.html#targets-package-and-package-source" title="链接到此标题">¶</a></h2>
+<p>如果使用 Makefile（Make 构建脚本）、Ninja（构建工具） 或 Xcode 生成器运行 CMake，则 <code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code> 会生成一个 <code class="docutils literal notranslate"><span class="pre">package</span></code> 目标。这使得从 CMake、Make 或 Ninja（构建工具） 构建二进制安装程序成为可能：不再使用 <code class="docutils literal notranslate"><span class="pre">cpack</span></code>，而是可以调用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span> <span class="pre">--target</span> <span class="pre">package</span></code> 或 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">package</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">package</span></code>。VS 生成器会创建一个大写的 <code class="docutils literal notranslate"><span class="pre">PACKAGE</span></code> 目标。</p>
+<p>如果使用 Makefile（Make 构建脚本） 或 Ninja（构建工具） 生成器运行 CMake，则 <code class="docutils literal notranslate"><span class="pre">include(CPack)</span></code> 还会生成一个 <code class="docutils literal notranslate"><span class="pre">package_source</span></code> 目标。要构建源代码包，不再使用 <code class="docutils literal notranslate"><span class="pre">cpack</span> <span class="pre">-G</span> <span class="pre">TGZ</span> <span class="pre">--config</span> <span class="pre">CPackSourceConfig.cmake</span></code>，而是可以调用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">.</span> <span class="pre">--target</span> <span class="pre">package_source</span></code>、<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">package_source</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">package_source</span></code>。</p>
 </section>
 <section id="variables-common-to-all-cpack-generators">
 <h2>所有 CPack 生成器共有的变量<a class="headerlink" href="CPack.html#variables-common-to-all-cpack-generators" title="链接到此标题">¶</a></h2>
 <p>在 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中包含此 CPack 模块之前，可以设置各种变量来自定义生成的安装程序。最常用的变量有：</p>
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_NAME">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_NAME" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>包（或应用程序）的名称。如果未指定，则默认为项目名称。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_VENDOR">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VENDOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VENDOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VENDOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VENDOR" title="Link to this definition">¶</a></dt>
 <dd><p>包供应商的名称（例如 "Kitware"）。默认值为 "Humanity"。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_DIRECTORY">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DIRECTORY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DIRECTORY" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DIRECTORY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DIRECTORY" title="Link to this definition">¶</a></dt>
 <dd><p>CPack 进行打包的目录。如果未设置，则默认（内部）为构建目录。此变量可以在 CPack 配置文件中定义，也可以通过 <span class="target" id="index-3-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 命令行选项 <code class="docutils literal notranslate"><span class="pre">-B</span></code> 设置。如果已设置，命令行选项将覆盖配置文件中找到的值。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_VERSION_MAJOR">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_MAJOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MAJOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_MAJOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MAJOR" title="Link to this definition">¶</a></dt>
 <dd><p>包主版本号。此变量将始终被设置，但其默认值取决于顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令是否给出了版本详细信息。如果给出了版本详细信息，默认值将是 <span class="target" id="index-0-variable:CMAKE_PROJECT_VERSION_MAJOR"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_VERSION_MAJOR.html#variable:CMAKE_PROJECT_VERSION_MAJOR" title="CMAKE_PROJECT_VERSION_MAJOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_VERSION_MAJOR</span></code></a>。如果未给出版本详细信息，则假定默认版本为 0.1.1，导致 <code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MAJOR</span></code> 的默认值为 0。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_VERSION_MINOR">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MINOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MINOR" title="Link to this definition">¶</a></dt>
 <dd><p>包次版本号。默认值取决于顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中的 <span class="target" id="index-1-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令是否给出了版本详细信息。如果给出了版本详细信息，默认值将是 <span class="target" id="index-0-variable:CMAKE_PROJECT_VERSION_MINOR"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_VERSION_MINOR.html#variable:CMAKE_PROJECT_VERSION_MINOR" title="CMAKE_PROJECT_VERSION_MINOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_VERSION_MINOR</span></code></a>，但如果未指定次版本组件，则 <code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></code> 将保持未设置状态。如果根本没有给出项目版本，则假定默认版本为 0.1.1，导致 <code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></code> 的默认值为 1。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_VERSION_PATCH">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_PATCH" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION_PATCH" title="Link to this definition">¶</a></dt>
 <dd><p>包补丁版本号。默认值取决于顶层 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件中的 <span class="target" id="index-2-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令是否给出了版本详细信息。如果给出了版本详细信息，默认值将是 <span class="target" id="index-0-variable:CMAKE_PROJECT_VERSION_PATCH"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_VERSION_PATCH.html#variable:CMAKE_PROJECT_VERSION_PATCH" title="CMAKE_PROJECT_VERSION_PATCH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_VERSION_PATCH</span></code></a>，但如果未指定补丁版本组件，则 <code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></code> 将保持未设置状态。如果根本没有给出项目版本，则假定默认版本为 0.1.1，导致 <code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></code> 的默认值为 1。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_DESCRIPTION">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION" title="Link to this definition">¶</a></dt>
 <dd><p>项目的描述，用于 CPack 生成的 Windows（微软桌面系统） 安装程序的介绍界面等位置。如果未设置，该变量的值将从 <span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION_FILE"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_FILE" title="CPACK_PACKAGE_DESCRIPTION_FILE"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></code></a> 指定的文件中获取。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_DESCRIPTION_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_FILE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_FILE" title="Link to this definition">¶</a></dt>
 <dd><p>当 <span class="target" id="index-0-variable:CPACK_PACKAGE_DESCRIPTION"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION" title="CPACK_PACKAGE_DESCRIPTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION</span></code></a> 未明确设置时，用于描述项目的文本文件。<code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_DESCRIPTION_FILE</span></code> 的默认值指向内置的模板文件 <code class="docutils literal notranslate"><span class="pre">Templates/CPack.GenericDescription.txt</span></code>。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION_SUMMARY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_DESCRIPTION_SUMMARY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_DESCRIPTION_SUMMARY" title="Link to this definition">¶</a></dt>
 <dd><p>项目的简短描述（仅几个词）。如果设置了 <span class="target" id="index-0-variable:CMAKE_PROJECT_DESCRIPTION"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_DESCRIPTION.html#variable:CMAKE_PROJECT_DESCRIPTION" title="CMAKE_PROJECT_DESCRIPTION"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_DESCRIPTION</span></code></a> 变量，则将其用作默认值，否则默认值为 CMake 基于 <span class="target" id="index-0-variable:CMAKE_PROJECT_NAME"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_NAME.html#variable:CMAKE_PROJECT_NAME" title="CMAKE_PROJECT_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_NAME</span></code></a> 生成的字符串。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_HOMEPAGE_URL">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_HOMEPAGE_URL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_HOMEPAGE_URL" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_HOMEPAGE_URL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_HOMEPAGE_URL" title="Link to this definition">¶</a></dt>
 <dd><p>项目主页 URL。默认值取自 <span class="target" id="index-0-variable:CMAKE_PROJECT_HOMEPAGE_URL"></span><a class="reference internal" href="../variable/CMAKE_PROJECT_HOMEPAGE_URL.html#variable:CMAKE_PROJECT_HOMEPAGE_URL" title="CMAKE_PROJECT_HOMEPAGE_URL"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_PROJECT_HOMEPAGE_URL</span></code></a> 变量，该变量由顶层 <span class="target" id="index-3-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 命令设置；如果未向 <span class="target" id="index-4-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 提供 URL，则默认值为空。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_FILE_NAME">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_FILE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_FILE_NAME" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_FILE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_FILE_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>要生成的包文件的名称（不包括扩展名）。例如，<code class="docutils literal notranslate"><span class="pre">cmake-2.6.1-Linux-i686</span></code>。默认值为</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="o">${</span><span class="nt">CPACK_PACKAGE_NAME</span><span class="o">}</span><span class="p">-</span><span class="o">${</span><span class="nt">CPACK_PACKAGE_VERSION</span><span class="o">}</span><span class="p">-</span><span class="o">${</span><span class="nt">CPACK_SYSTEM_NAME</span><span class="o">}</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}</span></code>：这一行继续补充当前命令或表达式的内容；变量说明：<code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_NAME</span></code>：CPack 名称相关变量，其精确取值和作用域以当前页面或脚本上下文为准；<code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION</span></code>：CPack 版本相关变量，其精确取值和作用域以当前页面或脚本上下文为准；<code class="docutils literal notranslate"><span class="pre">CPACK_SYSTEM_NAME</span></code>：CPack 系统、名称相关变量，其精确取值和作用域以当前页面或脚本上下文为准。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_INSTALL_DIRECTORY">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_INSTALL_DIRECTORY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_INSTALL_DIRECTORY" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_INSTALL_DIRECTORY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_INSTALL_DIRECTORY" title="Link to this definition">¶</a></dt>
 <dd><p>目标系统上的安装目录。某些 CPack 生成器（如 NSIS）可能会使用它在安装前缀下创建安装目录，例如 "CMake 2.5"。所有安装的元素都将放入此目录中。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_ICON">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_ICON</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_ICON" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_ICON</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_ICON" title="Link to this definition">¶</a></dt>
 <dd><p>将显示在安装程序内的品牌图像（供 GUI 安装程序使用）。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_CHECKSUM">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_CHECKSUM</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_CHECKSUM" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_CHECKSUM</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_CHECKSUM" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.7 版本中新增。</span></p>
 </div>
@@ -195,7 +195,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">${CPACK_PACKAGE_FILE_NAME}.${CPACK_PACKAGE_CHECKSUM}</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">${CPACK_PACKAGE_FILE_NAME}.${CPACK_PACKAGE_CHECKSUM}</span></code>：这一行继续补充当前命令或表达式的内容；变量说明：<code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_FILE_NAME</span></code>：CPack 文件、名称相关变量，其精确取值和作用域以当前页面或脚本上下文为准；<code class="docutils literal notranslate"><span class="pre">CPACK_PACKAGE_CHECKSUM</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>支持的算法是 <a class="reference internal" href="../command/string.html#supported-hash-algorithms"><span class="std std-ref">string(&lt;HASH&gt;)</span></a> 命令列出的那些。</p>
@@ -206,61 +206,61 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PROJECT_CONFIG_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_PROJECT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PROJECT_CONFIG_FILE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PROJECT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PROJECT_CONFIG_FILE" title="Link to this definition">¶</a></dt>
 <dd><p>CPack 运行时的项目 CPack 配置文件。此文件在 cpack 运行时包含，每个生成器包含一次，在 CPack 将 <span class="target" id="index-7-variable:CPACK_GENERATOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 设置为实际正在使用的生成器之后。它允许在 cpack 运行时针对每个生成器设置 <code class="docutils literal notranslate"><span class="pre">CPACK_*</span></code> 变量。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_RESOURCE_FILE_LICENSE">
-<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_LICENSE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_LICENSE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_LICENSE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_LICENSE" title="Link to this definition">¶</a></dt>
 <dd><p>要嵌入到安装程序中的许可证。它通常由生成的安装程序在安装前向用户显示（对于图形化安装程序，通常带有明确的“接受”按钮）。此许可证文件不会添加到已安装的文件中，而是被 NSIS 等某些 CPack 生成器使用。如果您想使用 UTF-8 字符，该文件需要以带 BOM 的 UTF-8 编码。如果您想随项目一起安装许可证文件（可能是同一个文件），则必须在 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 中添加适当的 CMake <span class="target" id="index-2-command:install"></span><a class="reference internal" href="../command/install.html#command:install" title="install"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">install()</span></code></a> 命令。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_RESOURCE_FILE_README">
-<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_README</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_README" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_README</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_README" title="Link to this definition">¶</a></dt>
 <dd><p>要嵌入到安装程序中的自述文件 (ReadMe)。它通常在安装过程中详细描述项目的目的。并非所有 CPack 生成器都使用此文件。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_RESOURCE_FILE_WELCOME">
-<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_WELCOME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_WELCOME" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_RESOURCE_FILE_WELCOME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_RESOURCE_FILE_WELCOME" title="Link to this definition">¶</a></dt>
 <dd><p>要嵌入到安装程序中的欢迎文件。它欢迎用户使用此安装程序。通常用于 Windows（微软桌面系统） 和 Mac OS X 上的图形化安装程序。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_MONOLITHIC_INSTALL">
-<span class="sig-name descname"><span class="pre">CPACK_MONOLITHIC_INSTALL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_MONOLITHIC_INSTALL" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_MONOLITHIC_INSTALL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_MONOLITHIC_INSTALL" title="Link to this definition">¶</a></dt>
 <dd><p>禁用基于组件的安装机制。设置此项后，组件规范将被忽略，所有安装的项目都将放入单个“单体 (MONOLITHIC)”包中。某些 CPack 生成器默认进行单体打包，可以通过将 <code class="docutils literal notranslate"><span class="pre">CPACK_&lt;GENNAME&gt;_COMPONENT_INSTALL</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 来要求其进行组件打包。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_GENERATOR">
-<span class="sig-name descname"><span class="pre">CPACK_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_GENERATOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_GENERATOR" title="Link to this definition">¶</a></dt>
 <dd><p>要使用的 CPack 生成器列表。如果未指定，CPack 将创建一组遵循 <span class="target" id="index-0-variable:CPACK_BINARY_<GENNAME>"></span><a class="reference internal" href="CPack.html#variable:CPACK_BINARY_<GENNAME>" title="CPACK_BINARY_<GENNAME>"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_BINARY_&lt;GENNAME&gt;</span></code></a>（例如 <code class="docutils literal notranslate"><span class="pre">CPACK_BINARY_NSIS</span></code>）命名模式的选项，允许用户启用/禁用各个生成器。如果在 <span class="target" id="index-4-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 命令行上给出了 <a class="reference internal" href="../manual/cpack.1.html#cmdoption-cpack-G"><code class="xref std std-option docutils literal notranslate"><span class="pre">-G</span></code></a> 选项，它将覆盖此变量和任何 <code class="docutils literal notranslate"><span class="pre">CPACK_BINARY_&lt;GENNAME&gt;</span></code> 选项。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_OUTPUT_CONFIG_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_OUTPUT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OUTPUT_CONFIG_FILE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_OUTPUT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OUTPUT_CONFIG_FILE" title="Link to this definition">¶</a></dt>
 <dd><p>CPack 二进制配置文件的名称。此文件是 CPack 模块为二进制安装程序生成的 CPack 配置。默认为 <code class="docutils literal notranslate"><span class="pre">CPackConfig.cmake</span></code>。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_EXECUTABLES">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_EXECUTABLES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_EXECUTABLES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_EXECUTABLES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_EXECUTABLES" title="Link to this definition">¶</a></dt>
 <dd><p>列出每个可执行文件及相关的文本标签，用于创建开始菜单快捷方式。例如，将其设置为列表 <code class="docutils literal notranslate"><span class="pre">ccmake;CMake</span></code> 将创建一个名为“CMake”的快捷方式，该快捷方式将执行安装好的可执行文件 <strong class="program">ccmake</strong>。并非所有 CPack 生成器都使用它（至少 NSIS、Inno Setup 和 WIX 使用）。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_STRIP_FILES">
-<span class="sig-name descname"><span class="pre">CPACK_STRIP_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_STRIP_FILES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_STRIP_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_STRIP_FILES" title="Link to this definition">¶</a></dt>
 <dd><p>要剥离的文件列表。从 CMake 2.6.0 开始，<code class="docutils literal notranslate"><span class="pre">CPACK_STRIP_FILES</span></code> 将成为一个布尔变量，用于启用所有文件的剥离（文件列表在 CMake 中评估为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，因此此更改是兼容的）。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_VERBATIM_VARIABLES">
-<span class="sig-name descname"><span class="pre">CPACK_VERBATIM_VARIABLES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_VERBATIM_VARIABLES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_VERBATIM_VARIABLES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_VERBATIM_VARIABLES" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.4 版本新增。</span></p>
 </div>
@@ -269,7 +269,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_THREADS">
-<span class="sig-name descname"><span class="pre">CPACK_THREADS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_THREADS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_THREADS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_THREADS" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
 </div>
@@ -297,7 +297,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_COMPRESSION_LEVEL">
-<span class="sig-name descname"><span class="pre">CPACK_COMPRESSION_LEVEL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_COMPRESSION_LEVEL" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_COMPRESSION_LEVEL</span></span><a class="headerlink" href="CPack.html#variable:CPACK_COMPRESSION_LEVEL" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">4.3 版本新增。</span></p>
 </div>
@@ -312,31 +312,31 @@
 <p>以下 CPack 变量特定于源代码包，不会影响二进制包</p>
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SOURCE_PACKAGE_FILE_NAME">
-<span class="sig-name descname"><span class="pre">CPACK_SOURCE_PACKAGE_FILE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_PACKAGE_FILE_NAME" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SOURCE_PACKAGE_FILE_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_PACKAGE_FILE_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>源代码包的名称。例如 <code class="docutils literal notranslate"><span class="pre">cmake-2.6.1</span></code>。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SOURCE_STRIP_FILES">
-<span class="sig-name descname"><span class="pre">CPACK_SOURCE_STRIP_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_STRIP_FILES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SOURCE_STRIP_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_STRIP_FILES" title="Link to this definition">¶</a></dt>
 <dd><p>要剥离的源代码树中的文件列表。从 CMake 2.6.0 开始，<code class="docutils literal notranslate"><span class="pre">CPACK_SOURCE_STRIP_FILES</span></code> 将成为一个布尔变量，用于启用所有文件的剥离（文件列表在 CMake 中评估为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>，因此此更改是兼容的）。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SOURCE_GENERATOR">
-<span class="sig-name descname"><span class="pre">CPACK_SOURCE_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_GENERATOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SOURCE_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_GENERATOR" title="Link to this definition">¶</a></dt>
 <dd><p>用于源代码包的生成器列表。与 <span class="target" id="index-8-variable:CPACK_GENERATOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_GENERATOR" title="CPACK_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_GENERATOR</span></code></a> 一样，如果未指定此项，则 CPack 将创建一组选项（例如 <code class="docutils literal notranslate"><span class="pre">CPACK_SOURCE_ZIP</span></code>），允许用户选择将生成哪些包。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SOURCE_OUTPUT_CONFIG_FILE">
-<span class="sig-name descname"><span class="pre">CPACK_SOURCE_OUTPUT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_OUTPUT_CONFIG_FILE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SOURCE_OUTPUT_CONFIG_FILE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_OUTPUT_CONFIG_FILE" title="Link to this definition">¶</a></dt>
 <dd><p>CPack 源代码配置文件的名称。此文件是 CPack 模块为源代码安装程序生成的 CPack 配置。默认为 <code class="docutils literal notranslate"><span class="pre">CPackSourceConfig.cmake</span></code>。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SOURCE_IGNORE_FILES">
-<span class="sig-name descname"><span class="pre">CPACK_SOURCE_IGNORE_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_IGNORE_FILES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SOURCE_IGNORE_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SOURCE_IGNORE_FILES" title="Link to this definition">¶</a></dt>
 <dd><p>构建源代码包时不会打包的源代码树中的文件模式。这是一个正则表达式模式列表（必须正确转义），例如 <code class="docutils literal notranslate"><span class="pre">/CVS/;/\\.svn/;\\.swp$;\\.#;/#;.*~;cscope.*</span></code></p>
 </dd></dl>
 
@@ -346,43 +346,43 @@
 <p>以下变量用于 CPack 的高级用法</p>
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_CMAKE_GENERATOR">
-<span class="sig-name descname"><span class="pre">CPACK_CMAKE_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_CMAKE_GENERATOR" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_CMAKE_GENERATOR</span></span><a class="headerlink" href="CPack.html#variable:CPACK_CMAKE_GENERATOR" title="Link to this definition">¶</a></dt>
 <dd><p>如果项目是 CMake 项目，应该使用什么 CMake 生成器。默认为 <span class="target" id="index-0-variable:CMAKE_GENERATOR"></span><a class="reference internal" href="../variable/CMAKE_GENERATOR.html#variable:CMAKE_GENERATOR" title="CMAKE_GENERATOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_GENERATOR</span></code></a> 的值。很少有用户需要更改此设置。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_INSTALL_CMAKE_PROJECTS">
-<span class="sig-name descname"><span class="pre">CPACK_INSTALL_CMAKE_PROJECTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_CMAKE_PROJECTS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_INSTALL_CMAKE_PROJECTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_CMAKE_PROJECTS" title="Link to this definition">¶</a></dt>
 <dd><p>指定要安装的项目的四个值的列表。这四个值是：构建目录、项目名称、项目组件、目录。如果省略，CPack 将构建一个安装所有内容的安装程序。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_SYSTEM_NAME">
-<span class="sig-name descname"><span class="pre">CPACK_SYSTEM_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SYSTEM_NAME" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_SYSTEM_NAME</span></span><a class="headerlink" href="CPack.html#variable:CPACK_SYSTEM_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>系统名称，默认为 <span class="target" id="index-0-variable:CMAKE_SYSTEM_NAME"></span><a class="reference internal" href="../variable/CMAKE_SYSTEM_NAME.html#variable:CMAKE_SYSTEM_NAME" title="CMAKE_SYSTEM_NAME"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_SYSTEM_NAME</span></code></a> 的值，但在 Windows（微软桌面系统） 上它将是 <code class="docutils literal notranslate"><span class="pre">win32</span></code> 或 <code class="docutils literal notranslate"><span class="pre">win64</span></code>。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_VERSION">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_VERSION</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_VERSION" title="Link to this definition">¶</a></dt>
 <dd><p>包完整版本，内部使用。默认情况下，这是由 <span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_MAJOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MAJOR" title="CPACK_PACKAGE_VERSION_MAJOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MAJOR</span></code></a>、<span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_MINOR"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_VERSION_MINOR" title="CPACK_PACKAGE_VERSION_MINOR"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_MINOR</span></code></a> 和 <span class="target" id="index-0-variable:CPACK_PACKAGE_VERSION_PATCH"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_VERSION_PATCH" title="CPACK_PACKAGE_VERSION_PATCH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_VERSION_PATCH</span></code></a> 构建的。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_TOPLEVEL_TAG">
-<span class="sig-name descname"><span class="pre">CPACK_TOPLEVEL_TAG</span></span><a class="headerlink" href="CPack.html#variable:CPACK_TOPLEVEL_TAG" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_TOPLEVEL_TAG</span></span><a class="headerlink" href="CPack.html#variable:CPACK_TOPLEVEL_TAG" title="Link to this definition">¶</a></dt>
 <dd><p>已安装文件的目录。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_INSTALL_COMMANDS">
-<span class="sig-name descname"><span class="pre">CPACK_INSTALL_COMMANDS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_COMMANDS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_INSTALL_COMMANDS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_COMMANDS" title="Link to this definition">¶</a></dt>
 <dd><p>安装组件的额外命令。执行期间，环境变量 <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> 被设置为临时安装目录。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_INSTALL_SCRIPTS">
-<span class="sig-name descname"><span class="pre">CPACK_INSTALL_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_SCRIPTS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_INSTALL_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALL_SCRIPTS" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.16 版新增。</span></p>
 </div>
@@ -392,7 +392,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PRE_BUILD_SCRIPTS">
-<span class="sig-name descname"><span class="pre">CPACK_PRE_BUILD_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PRE_BUILD_SCRIPTS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PRE_BUILD_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PRE_BUILD_SCRIPTS" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
 </div>
@@ -401,7 +401,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_POST_BUILD_SCRIPTS">
-<span class="sig-name descname"><span class="pre">CPACK_POST_BUILD_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_POST_BUILD_SCRIPTS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_POST_BUILD_SCRIPTS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_POST_BUILD_SCRIPTS" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
 </div>
@@ -410,7 +410,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_FILES">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_FILES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_FILES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_FILES" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
 </div>
@@ -419,19 +419,19 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_INSTALLED_DIRECTORIES">
-<span class="sig-name descname"><span class="pre">CPACK_INSTALLED_DIRECTORIES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALLED_DIRECTORIES" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_INSTALLED_DIRECTORIES</span></span><a class="headerlink" href="CPack.html#variable:CPACK_INSTALLED_DIRECTORIES" title="Link to this definition">¶</a></dt>
 <dd><p>要安装的额外目录。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_PACKAGE_INSTALL_REGISTRY_KEY">
-<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_INSTALL_REGISTRY_KEY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_INSTALL_REGISTRY_KEY" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_PACKAGE_INSTALL_REGISTRY_KEY</span></span><a class="headerlink" href="CPack.html#variable:CPACK_PACKAGE_INSTALL_REGISTRY_KEY" title="Link to this definition">¶</a></dt>
 <dd><p>安装此项目时使用的注册表项。这仅由 Windows（微软桌面系统） 安装程序使用。默认值基于安装目录。</p>
 </dd></dl>
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_CREATE_DESKTOP_LINKS">
-<span class="sig-name descname"><span class="pre">CPACK_CREATE_DESKTOP_LINKS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_CREATE_DESKTOP_LINKS" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_CREATE_DESKTOP_LINKS</span></span><a class="headerlink" href="CPack.html#variable:CPACK_CREATE_DESKTOP_LINKS" title="Link to this definition">¶</a></dt>
 <dd><p>要创建的桌面链接列表。每个桌面链接都需要一个由 <span class="target" id="index-0-variable:CPACK_PACKAGE_EXECUTABLES"></span><a class="reference internal" href="CPack.html#variable:CPACK_PACKAGE_EXECUTABLES" title="CPACK_PACKAGE_EXECUTABLES"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CPACK_PACKAGE_EXECUTABLES</span></code></a> 创建的相应开始菜单快捷方式。</p>
 </dd></dl>
 
@@ -443,7 +443,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_READELF_EXECUTABLE">
-<span class="sig-name descname"><span class="pre">CPACK_READELF_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_READELF_EXECUTABLE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_READELF_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_READELF_EXECUTABLE" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
 </div>
@@ -452,7 +452,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_OBJCOPY_EXECUTABLE">
-<span class="sig-name descname"><span class="pre">CPACK_OBJCOPY_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OBJCOPY_EXECUTABLE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_OBJCOPY_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OBJCOPY_EXECUTABLE" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
 </div>
@@ -461,7 +461,7 @@
 
 <dl class="cmake variable">
 <dt class="sig sig-object cmake" id="variable:CPACK_OBJDUMP_EXECUTABLE">
-<span class="sig-name descname"><span class="pre">CPACK_OBJDUMP_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OBJDUMP_EXECUTABLE" title="跳转到此定义">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPACK_OBJDUMP_EXECUTABLE</span></span><a class="headerlink" href="CPack.html#variable:CPACK_OBJDUMP_EXECUTABLE" title="Link to this definition">¶</a></dt>
 <dd><div class="versionadded">
 <p><span class="versionmodified added">在 3.25 版本中新增。</span></p>
 </div>
@@ -484,7 +484,7 @@
 <li><a class="reference internal" href="CPack.html#">CPack</a><ul>
 <li><a class="reference internal" href="CPack.html#introduction">简介</a></li>
 <li><a class="reference internal" href="CPack.html#cpack-generators">CPack 生成器</a></li>
-<li><a class="reference internal" href="CPack.html#targets（目标）-package-and-package-source">目标 package 和 package_source</a></li>
+<li><a class="reference internal" href="CPack.html#targets-package-and-package-source">目标 package 和 package_source</a></li>
 <li><a class="reference internal" href="CPack.html#variables-common-to-all-cpack-generators">所有 CPack 生成器共有的变量</a></li>
 <li><a class="reference internal" href="CPack.html#variables-for-source-package-generators">源代码包生成器的变量</a></li>
 <li><a class="reference internal" href="CPack.html#variables-for-advanced-use">高级用法变量</a></li>
@@ -539,7 +539,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-modules.7.html">cmake-modules(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CPack.html">CPack</a></li> 
+        <li class="nav-item nav-item-this"><a href="CPack.html">CPack</a></li>
       </ul>
     </div>
 
@@ -563,5 +563,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

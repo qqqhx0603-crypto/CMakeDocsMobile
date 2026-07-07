@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0003.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0004" href="CMP0004.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0003.html">CMP0003</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0003.html">CMP0003</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0003">
 <span id="policy:CMP0003"></span><h1>CMP0003<a class="headerlink" href="CMP0003.html#cmp0003" title="链接到此标题">¶</a></h1>
 <div class="admonition warning">
@@ -65,7 +65,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>CMake 2.4 及以下版本在链接到全路径已知的库时，通过将它们拆分为链接器搜索路径和库名称这两个独立的部分来实现。上述示例代码可能会产生类似以下内容的结果：</p>
@@ -89,7 +89,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>其中 <code class="docutils literal notranslate"><span class="pre">B</span></code> 旨在找到 <code class="docutils literal notranslate"><span class="pre">/path/to/libB.so</span></code>。这段代码是错误的，因为用户要求链接器查找库 B，但并未提供链接器搜索路径（这可以通过 link_directories 命令添加）。然而，使用旧的链接实现时，该代码能“意外地”工作，因为为库 A 添加的链接器搜索路径使得库 B 也能被找到。</p>
@@ -117,7 +117,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 OLD) # or cmake_policy(VERSION 2.4) add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `cmake_policy()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 OLD) # or cmake_policy(VERSION 2.4)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">cmake_policy()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myexe myexe.c)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>将可以正常工作并抑制此策略的警告。它也可以更新为使用更正后的链接方式：</p>
@@ -128,7 +128,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 NEW) # or cmake_policy(VERSION 2.6) link_directories(/path/to) # needed to find library B add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 `cmake_policy()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_policy(SET CMP0003 NEW) # or cmake_policy(VERSION 2.6)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">cmake_policy()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">link_directories(/path/to) # needed to find library B</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myexe myexe.c)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so B)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>更好的做法是，通过全路径指定库 B：</p>
@@ -137,7 +137,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myexe myexe.c) target_link_libraries(myexe /path/to/libA.so /path/to/libB.so)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myexe myexe.c)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /path/to/libA.so /path/to/libB.so)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>当链接行上的所有项目都具有已知路径时，CMake 不会检查此策略，因此它不起作用。</p>
@@ -198,7 +198,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0003.html">CMP0003</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0003.html">CMP0003</a></li>
       </ul>
     </div>
 
@@ -222,5 +222,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

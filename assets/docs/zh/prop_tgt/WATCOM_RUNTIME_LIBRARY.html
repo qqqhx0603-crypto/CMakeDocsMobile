@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="WATCOM_RUNTIME_LIBRARY.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="VS_WINRT_REFERENCES" href="VS_WINRT_REFERENCES.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="WATCOM_RUNTIME_LIBRARY.html">WATCOM_RUNTIME_LIBRARY</a></li> 
+        <li class="nav-item nav-item-this"><a href="WATCOM_RUNTIME_LIBRARY.html">WATCOM_RUNTIME_LIBRARY</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="watcom-runtime-library">
 <span id="prop_tgt:WATCOM_RUNTIME_LIBRARY"></span><h1>WATCOM_RUNTIME_LIBRARY<a class="headerlink" href="WATCOM_RUNTIME_LIBRARY.html#watcom-runtime-library" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
@@ -63,11 +63,11 @@
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">SingleThreaded</span></code></dt><dd><p>不使用额外标志编译，以使用单线程静态链接的运行时库。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">SingleThreadedDLL（动态链接库）</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-br</span></code> 或等效标志编译，以使用单线程动态链接的运行时库。此选项在 Linux 目标上不可用。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">SingleThreadedDLL</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-br</span></code> 或等效标志编译，以使用单线程动态链接的运行时库。此选项在 Linux 目标上不可用。</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MultiThreaded</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-bm</span></code> 或等效标志编译，以使用多线程静态链接的运行时库。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">MultiThreadedDLL（动态链接库）</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-bm</span> <span class="pre">-br</span></code> 或等效标志编译，以使用多线程动态链接的运行时库。此选项在 Linux 目标上不可用。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">MultiThreadedDLL</span></code></dt><dd><p>使用 <code class="docutils literal notranslate"><span class="pre">-bm</span> <span class="pre">-br</span></code> 或等效标志编译，以使用多线程动态链接的运行时库。此选项在 Linux 目标上不可用。</p>
 </dd>
 </dl>
 <p>对于非 Watcom 编译器，该值将被忽略，但使用针对 Watcom ABI 的编译器时，不支持的值将被拒绝并报错。</p>
@@ -80,11 +80,11 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(foo foo.c) set_property(TARGET foo PROPERTY WATCOM_RUNTIME_LIBRARY &quot;MultiThreaded&quot;)</span></code>：调用 `add_executable()` 命令，定义一个可执行目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(foo foo.c)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET foo PROPERTY</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  WATCOM_RUNTIME_LIBRARY &quot;MultiThreaded&quot;)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>为目标 <code class="docutils literal notranslate"><span class="pre">foo</span></code> 选择多线程静态链接的运行时库。</p>
-<p>如果未设置此属性，则 CMake 在 Windows（微软桌面系统） 上使用默认值 <code class="docutils literal notranslate"><span class="pre">MultiThreadedDLL（动态链接库）</span></code>，在其他平台上使用 <code class="docutils literal notranslate"><span class="pre">SingleThreaded</span></code> 来选择 Watcom 运行时库。</p>
+<p>如果未设置此属性，则 CMake 在 Windows（微软桌面系统） 上使用默认值 <code class="docutils literal notranslate"><span class="pre">MultiThreadedDLL</span></code>，在其他平台上使用 <code class="docutils literal notranslate"><span class="pre">SingleThreaded</span></code> 来选择 Watcom 运行时库。</p>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
 <p>只有当策略 <span class="target" id="index-0-policy:CMP0136"></span><a class="reference internal" href="../policy/CMP0136.html#policy:CMP0136" title="CMP0136"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0136</span></code></a> 在第一个 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令启用使用针对 Watcom ABI 的编译器的语言之前设置为 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 时，此属性才有效。</p>
@@ -144,7 +144,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="WATCOM_RUNTIME_LIBRARY.html">WATCOM_RUNTIME_LIBRARY</a></li> 
+        <li class="nav-item nav-item-this"><a href="WATCOM_RUNTIME_LIBRARY.html">WATCOM_RUNTIME_LIBRARY</a></li>
       </ul>
     </div>
 
@@ -168,5 +168,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

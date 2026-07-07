@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="LINK_LIBRARY_OVERRIDE_LIBRARY.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="LINK_LIBRARY_OVERRIDE" href="LINK_LIBRARY_OVERRIDE.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="LINK_LIBRARY_OVERRIDE_LIBRARY.html">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</a></li> 
+        <li class="nav-item nav-item-this"><a href="LINK_LIBRARY_OVERRIDE_LIBRARY.html">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="link-library-override-library">
 <span id="prop_tgt:LINK_LIBRARY_OVERRIDE_<LIBRARY>"></span><h1>LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;<a class="headerlink" href="LINK_LIBRARY_OVERRIDE_LIBRARY.html#link-library-override-library" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
@@ -77,7 +77,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib1 ...) add_library(lib2 ...) add_library(lib3 ...) target_link_libraries(lib1 PUBLIC &quot;$&lt;LINK_LIBRARY:feature1,external&gt;&quot;) target_link_libraries(lib2 PUBLIC &quot;$&lt;LINK_LIBRARY:feature2,lib1&gt;&quot;) target_link_libraries(lib3 PRIVATE lib1 lib2) # lib1 is associated with both feature2 and no feature. Without any override, # this would result in a fatal error at generation time for lib3. # Define an override to resolve the incompatible feature associations. set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE_lib1 feature2) # lib1 will now be associated with feature2 instead when linking lib3</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib1 ...)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib2 ...)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(lib3 ...)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(lib1 PUBLIC &quot;$&lt;LINK_LIBRARY:feature1,external&gt;&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库；生成器表达式：<code class="docutils literal notranslate"><span class="pre">$&lt;LINK_LIBRARY:...&gt;</span></code> 在生成构建系统时按当前目标和配置计算结果。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(lib2 PUBLIC &quot;$&lt;LINK_LIBRARY:feature2,lib1&gt;&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库；生成器表达式：<code class="docutils literal notranslate"><span class="pre">$&lt;LINK_LIBRARY:...&gt;</span></code> 在生成构建系统时按当前目标和配置计算结果。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(lib3 PRIVATE lib1 lib2)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># lib1 is associated with both feature2 and no feature. Without any override,</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># this would result in a fatal error at generation time for lib3.</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># Define an override to resolve the incompatible feature associations.</span></code>：这是 CMake 注释。定义后续代码会使用的变量、宏或配置。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE_lib1 feature2)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set_property()</span></code> 命令，设置目标、目录、源文件等对象的属性。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># lib1 will now be associated with feature2 instead when linking lib3</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>也可以使用预定义的 <code class="docutils literal notranslate"><span class="pre">DEFAULT</span></code> 库特性来覆盖任何特性。这有效地丢弃了该链接项的任何特性，仅针对该目标 (<code class="docutils literal notranslate"><span class="pre">lib3</span></code> 在此示例中)。</p>
@@ -86,7 +86,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># When linking lib3, discard any library feature for lib1 set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE_lib1 DEFAULT)</span></code>：这是注释，用来说明：When linking lib3, discard any library feature for lib1 set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE_lib1 DEFAULT)。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre"># When linking lib3, discard any library feature for lib1</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET lib3 PROPERTY LINK_LIBRARY_OVERRIDE_lib1 DEFAULT)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set_property()</span></code> 命令，设置目标、目录、源文件等对象的属性。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>有关替代覆盖多个库特性的方法，请参阅 <span class="target" id="index-0-prop_tgt:LINK_LIBRARY_OVERRIDE"></span><a class="reference internal" href="LINK_LIBRARY_OVERRIDE.html#prop_tgt:LINK_LIBRARY_OVERRIDE" title="LINK_LIBRARY_OVERRIDE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE</span></code></a> 目标属性。如果同时定义了这两个属性并且为相同的链接项指定了覆盖，则 <code class="docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</span></code> 优先于 <span class="target" id="index-1-prop_tgt:LINK_LIBRARY_OVERRIDE"></span><a class="reference internal" href="LINK_LIBRARY_OVERRIDE.html#prop_tgt:LINK_LIBRARY_OVERRIDE" title="LINK_LIBRARY_OVERRIDE"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_LIBRARY_OVERRIDE</span></code></a>。</p>
@@ -147,7 +147,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="LINK_LIBRARY_OVERRIDE_LIBRARY.html">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</a></li> 
+        <li class="nav-item nav-item-this"><a href="LINK_LIBRARY_OVERRIDE_LIBRARY.html">LINK_LIBRARY_OVERRIDE_&lt;LIBRARY&gt;</a></li>
       </ul>
     </div>
 
@@ -171,5 +171,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

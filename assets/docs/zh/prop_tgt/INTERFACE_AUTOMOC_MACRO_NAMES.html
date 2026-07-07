@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="INTERFACE_AUTOMOC_MACRO_NAMES.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="INSTALL_RPATH_USE_LINK_PATH" href="INSTALL_RPATH_USE_LINK_PATH.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html" accesskey="U">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="INTERFACE_AUTOMOC_MACRO_NAMES.html">INTERFACE_AUTOMOC_MACRO_NAMES</a></li> 
+        <li class="nav-item nav-item-this"><a href="INTERFACE_AUTOMOC_MACRO_NAMES.html">INTERFACE_AUTOMOC_MACRO_NAMES</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="interface-automoc-macro-names">
 <span id="prop_tgt:INTERFACE_AUTOMOC_MACRO_NAMES"></span><h1>INTERFACE_AUTOMOC_MACRO_NAMES<a class="headerlink" href="INTERFACE_AUTOMOC_MACRO_NAMES.html#interface-automoc-macro-names" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
@@ -76,7 +76,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON) add_executable(myapp main.cpp) target_link_libraries(myapp PRIVATE static_lib) add_library(static_lib STATIC static.cpp) set_property(TARGET static_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LIB_1;STATIC_LIB_2&quot; )</span></code>：调用 `set()` 命令，把变量 `AUTOMOC` 设为给定的值。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(myapp main.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myapp PRIVATE static_lib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(static_lib STATIC static.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET static_lib PROPERTY</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LIB_1;STATIC_LIB_2&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </section>
@@ -116,7 +116,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON) add_library(shared_deep_lib SHARED deep_lib.cpp) add_library(static_deep_lib STATIC deep_lib.cpp) add_library(interface_deep_lib INTERFACE) set_property(TARGET shared_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;SHARED_LINK_LIB&quot; ) set_property(TARGET static_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LINK_LIB&quot; ) set_property(TARGET interface_deep_lib PROPERTY INTERFACE_AUTOMOC_MACRO_NAMES &quot;INTERFACE_LINK_LIB&quot; ) add_library(shared_lib SHARED lib.cpp) add_library(static_lib STATIC lib.cpp) add_library(interface_lib INTERFACE) # PUBLIC and INTERFACE here ensure the macro names propagate to any # consumers of shared_lib, static_lib or interface_lib too target_link_libraries(shared_lib PUBLIC shared_deep_lib) target_link_libraries(static_lib PUBLIC static_deep_lib) target_link_libraries(interface_lib INTERFACE interface_deep_lib) # This consumer will receive all three of the above custom macro names as # transitive usage requirements add_executable(app main.cpp) target_link_libraries(app PRIVATE shared_lib static_lib interface_lib)</span></code>：调用 `set()` 命令，把变量 `AUTOMOC` 设为给定的值。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">set(AUTOMOC ON)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">AUTOMOC</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(shared_deep_lib SHARED deep_lib.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(static_deep_lib STATIC deep_lib.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(interface_deep_lib INTERFACE)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET shared_deep_lib PROPERTY</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  INTERFACE_AUTOMOC_MACRO_NAMES &quot;SHARED_LINK_LIB&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET static_deep_lib PROPERTY</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  INTERFACE_AUTOMOC_MACRO_NAMES &quot;STATIC_LINK_LIB&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(TARGET interface_deep_lib PROPERTY</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  INTERFACE_AUTOMOC_MACRO_NAMES &quot;INTERFACE_LINK_LIB&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(shared_lib SHARED lib.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(static_lib STATIC lib.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(interface_lib INTERFACE)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># PUBLIC and INTERFACE here ensure the macro names propagate to any</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># consumers of shared_lib, static_lib or interface_lib too</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(shared_lib PUBLIC shared_deep_lib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(static_lib PUBLIC static_deep_lib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(interface_lib INTERFACE interface_deep_lib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># This consumer will receive all three of the above custom macro names as</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># transitive usage requirements</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_executable(app main.cpp)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> 命令，定义一个可执行目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(app PRIVATE shared_lib static_lib interface_lib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>在上述内容中</p>
@@ -192,7 +192,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-properties.7.html">cmake-properties(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="INTERFACE_AUTOMOC_MACRO_NAMES.html">INTERFACE_AUTOMOC_MACRO_NAMES</a></li> 
+        <li class="nav-item nav-item-this"><a href="INTERFACE_AUTOMOC_MACRO_NAMES.html">INTERFACE_AUTOMOC_MACRO_NAMES</a></li>
       </ul>
     </div>
 
@@ -216,5 +216,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

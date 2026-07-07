@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0113.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0114" href="CMP0114.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,21 +44,21 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0113.html">CMP0113</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0113.html">CMP0113</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0113">
 <span id="policy:CMP0113"></span><h1>CMP0113<a class="headerlink" href="CMP0113.html#cmp0113" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
 <p><span class="versionmodified added">3.19 版本新增。</span></p>
 </div>
-<p><a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile（构建脚本） 生成器</span></a> 不会重复目标依赖项中的自定义命令。</p>
+<p><a class="reference internal" href="../manual/cmake-generators.7.html#makefile-generators"><span class="std std-ref">Makefile（Make 构建脚本） 生成器</span></a> 不会重复目标依赖项中的自定义命令。</p>
 <p>考虑一个跨两个依赖目标拆分的自定义命令链</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_custom_command(</span><span class="no">OUTPUT</span><span class="w"> </span><span class="nb">output-not-created</span>
 <span class="w">  </span><span class="no">COMMAND</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="no">DEPENDS</span><span class="w"> </span><span class="p">...</span><span class="nf">)</span>
@@ -71,10 +71,10 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT output-not-created COMMAND ... DEPENDS ...) set_property(SOURCE output-not-created PROPERTY SYMBOLIC 1) add_custom_command(OUTPUT output-created COMMAND ... DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/output-not-created) add_custom_target(first DEPENDS output-not-created) add_custom_target(second DEPENDS output-created) add_dependencies(second first)</span></code>：调用 `add_custom_command()` 命令，定义自定义构建命令及其输入输出关系。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT output-not-created</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  COMMAND ... DEPENDS ...)</span></code>：这一行继续补充当前命令或表达式的内容；条件运算符：<code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 表示判断给定名称是否为可调用命令。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set_property(SOURCE output-not-created PROPERTY SYMBOLIC 1)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set_property()</span></code> 命令，设置目标、目录、源文件等对象的属性。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_command(OUTPUT output-created</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  COMMAND ... DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/output-not-created)</span></code>：这一行继续补充当前命令或表达式的内容；变量说明：<code class="docutils literal notranslate"><span class="pre">CMAKE_CURRENT_BINARY_DIR</span></code>：当前源目录所对应的构建目录；条件运算符：<code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> 表示判断给定名称是否为可调用命令。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_target(first DEPENDS output-not-created)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_custom_target()</span></code> 命令，定义一个没有直接输出文件的自定义目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_custom_target(second DEPENDS output-created)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_custom_target()</span></code> 命令，定义一个没有直接输出文件的自定义目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_dependencies(second first)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_dependencies()</span></code> 命令，声明目标之间的构建依赖关系。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
-<p>在 CMake 3.18 及更早版本中，Makefile（构建脚本） 生成器会将两个自定义命令的副本都放入目标 <code class="docutils literal notranslate"><span class="pre">second</span></code> 的 Makefile（构建脚本） 中，即使它对目标 <code class="docutils literal notranslate"><span class="pre">first</span></code> 的依赖关系确保第一个自定义命令在第二个命令之前运行。运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">second</span></code> 将导致第一个自定义命令在 <code class="docutils literal notranslate"><span class="pre">first</span></code> 目标中运行一次，然后在 <code class="docutils literal notranslate"><span class="pre">second</span></code> 目标中再次运行。</p>
+<p>在 CMake 3.18 及更早版本中，Makefile（Make 构建脚本） 生成器会将两个自定义命令的副本都放入目标 <code class="docutils literal notranslate"><span class="pre">second</span></code> 的 Makefile（Make 构建脚本） 中，即使它对目标 <code class="docutils literal notranslate"><span class="pre">first</span></code> 的依赖关系确保第一个自定义命令在第二个命令之前运行。运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">second</span></code> 将导致第一个自定义命令在 <code class="docutils literal notranslate"><span class="pre">first</span></code> 目标中运行一次，然后在 <code class="docutils literal notranslate"><span class="pre">second</span></code> 目标中再次运行。</p>
 <p>CMake 3.19 及更高版本更倾向于不在目标中重复自定义命令，这些命令已经在目标所依赖的其他目标（直接或间接）中生成。此策略为尚未更新以期望新行为的项目提供兼容性。特别是，依赖于重复执行或未正确设置 <span class="target" id="index-0-prop_sf:SYMBOLIC"></span><a class="reference internal" href="../prop_sf/SYMBOLIC.html#prop_sf:SYMBOLIC" title="SYMBOLIC"><code class="xref cmake cmake-prop_sf docutils literal notranslate"><span class="pre">SYMBOLIC</span></code></a> 源代码文件属性的项目可能会受到影响。</p>
 <p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是在依赖目标中重复自定义命令。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是不在依赖目标中重复自定义命令。</p>
 <p>此策略是在 CMake 3.19 版本中引入的。它可以通过 <span class="target" id="index-0-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-0-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake 不会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
@@ -137,7 +137,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0113.html">CMP0113</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0113.html">CMP0113</a></li>
       </ul>
     </div>
 
@@ -161,5 +161,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

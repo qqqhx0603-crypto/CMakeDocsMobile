@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0065.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0066" href="CMP0066.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0065.html">CMP0065</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0065.html">CMP0065</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0065">
 <span id="policy:CMP0065"></span><h1>CMP0065<a class="headerlink" href="CMP0065.html#cmp0065" title="链接到此标题">¶</a></h1>
 <div class="admonition warning">
@@ -63,7 +63,7 @@
 <p><span class="versionmodified added">3.4 版本新增。</span></p>
 </div>
 <p>不要在没有设置 <span class="target" id="index-0-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性的情况下，向可执行文件添加导出符号的标志。</p>
-<p>出于历史原因，CMake 3.3 及更早版本在某些平台上始终使用诸如 <code class="docutils literal notranslate"><span class="pre">-rdynamic</span></code> 之类的标志来链接可执行文件，以便通过 <code class="docutils literal notranslate"><span class="pre">dlopen（动态装载接口）</span></code> 加载的任何插件使用其中的符号。CMake 3.4 及更高版本更倾向于仅对显式设置了 <span class="target" id="index-1-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性的可执行文件执行此操作。</p>
+<p>出于历史原因，CMake 3.3 及更早版本在某些平台上始终使用诸如 <code class="docutils literal notranslate"><span class="pre">-rdynamic</span></code> 之类的标志来链接可执行文件，以便通过 <code class="docutils literal notranslate"><span class="pre">dlopen</span></code> 加载的任何插件使用其中的符号。CMake 3.4 及更高版本更倾向于仅对显式设置了 <span class="target" id="index-1-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性的可执行文件执行此操作。</p>
 <p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是，无论 <span class="target" id="index-2-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性的值如何，始终在链接可执行文件时使用额外的链接标志。</p>
 <p>此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是，仅当 <span class="target" id="index-3-prop_tgt:ENABLE_EXPORTS"></span><a class="reference internal" href="../prop_tgt/ENABLE_EXPORTS.html#prop_tgt:ENABLE_EXPORTS" title="ENABLE_EXPORTS"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">ENABLE_EXPORTS</span></code></a> 目标属性设置为 <code class="docutils literal notranslate"><span class="pre">True</span></code> 时，才在链接可执行文件时使用额外的链接标志。</p>
 <p>此策略是在 CMake 3.4 版本中引入的。在 CMake 4.0 版本中移除之前，可以通过 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 进行设置。如果未设置，CMake 默认情况下<em>不</em>发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
@@ -123,7 +123,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0065.html">CMP0065</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0065.html">CMP0065</a></li>
       </ul>
     </div>
 
@@ -147,5 +147,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

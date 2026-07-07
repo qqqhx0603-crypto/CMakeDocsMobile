@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CPACK_CUSTOM_INSTALL_VARIABLES.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY" href="CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,17 +44,21 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CPACK_CUSTOM_INSTALL_VARIABLES.html">CPACK_CUSTOM_INSTALL_VARIABLES</a></li> 
+        <li class="nav-item nav-item-this"><a href="CPACK_CUSTOM_INSTALL_VARIABLES.html">CPACK_CUSTOM_INSTALL_VARIABLES</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cpack-custom-install-variables">
 <span id="variable:CPACK_CUSTOM_INSTALL_VARIABLES"></span><h1>CPACK_CUSTOM_INSTALL_VARIABLES<a class="headerlink" href="CPACK_CUSTOM_INSTALL_VARIABLES.html#cpack-custom-install-variables" title="链接到此标题">¶</a></h1>
+<!-- CMAKE_ZH_SYMBOL_NOTE_BEGIN -->
+<div class="admonition note cmake-symbol-note"><p class="admonition-title">变量说明</p><p><code class="docutils literal notranslate"><span class="pre">CPACK_CUSTOM_INSTALL_VARIABLES</span></code>：CPack 变量（通过例如 cpack -D、CPackConfig.cmake 或 CPACK_PROJECT_CONFIG_FILE 脚本设置）不能直接在安装脚本中可见。相反，可以将一个 varName=value 对的列表传递到 CPACK_CUSTOM_INSTALL_VARIABLES 变量中。在安装时，列表中的每个条目都会导致一个指定名称 (varName) 的变量被设置为给定的 value。可以省略 = 以获得一个空的 value。</p></div>
+<!-- CMAKE_ZH_SYMBOL_NOTE_END -->
+
 <div class="versionadded">
 <p><span class="versionmodified added">3.21 版本新增。</span></p>
 </div>
@@ -74,15 +78,15 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">install(FILES large.txt DESTINATION data) install(CODE [[ if(ENABLE_COMPRESSION) # &quot;run-compressor&quot; is a fictional tool that produces # large.txt.xz from large.txt and then removes the input file execute_process(COMMAND run-compressor $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/large.txt) endif() ]])</span></code>：调用 `install()` 命令，声明安装规则。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">install(FILES large.txt DESTINATION data)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">install()</span></code> 命令，声明安装规则。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">install(CODE [[</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  if(ENABLE_COMPRESSION)</span></code>：开始一个 <code class="docutils literal notranslate"><span class="pre">if()</span></code> 条件判断，根据条件结果选择是否执行后续语句。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # &quot;run-compressor&quot; is a fictional tool that produces</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # large.txt.xz from large.txt and then removes the input file</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    execute_process(COMMAND run-compressor $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/large.txt)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">execute_process()</span></code> 命令，在配置阶段执行外部进程；变量说明：<code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code>：install() 默认使用的安装根目录；<code class="docutils literal notranslate"><span class="pre">DESTDIR</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  endif()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">]])</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>根据上面的示例片段，<span class="target" id="index-0-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 默认情况下将使用未设置 <code class="docutils literal notranslate"><span class="pre">ENABLE_COMPRESSION</span></code> 的安装脚本运行，从而生成包含未压缩的 <code class="docutils literal notranslate"><span class="pre">large.txt</span></code> 的软件包。可以通过以下方式在调用 <span class="target" id="index-1-manual:cpack(1)"></span><a class="reference internal" href="../manual/cpack.1.html#manual:cpack(1)" title="cpack(1)"><code class="xref cmake cmake-manual docutils literal notranslate"><span class="pre">cpack</span></code></a> 时覆盖此设置</p>
-<div class="highlight-shell（命令解释器） notranslate"><div class="highlight"><pre><span></span>cpack<span class="w"> </span>-D<span class="w"> </span><span class="s2">"CPACK_CUSTOM_INSTALL_VARIABLES=ENABLE_COMPRESSION=TRUE"</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cpack<span class="w"> </span>-D<span class="w"> </span><span class="s2">"CPACK_CUSTOM_INSTALL_VARIABLES=ENABLE_COMPRESSION=TRUE"</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cpack -D &quot;CPACK_CUSTOM_INSTALL_VARIABLES=ENABLE_COMPRESSION=TRUE&quot;</span></code>：这是一条命令行输入，执行打包流程。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cpack -D &quot;CPACK_CUSTOM_INSTALL_VARIABLES=ENABLE_COMPRESSION=TRUE&quot;</span></code>：这是一条命令行输入，执行打包流程；运算符：<code class="docutils literal notranslate"><span class="pre">=</span></code> 表示赋值或键值关联；命令行选项：<code class="docutils literal notranslate"><span class="pre">-D</span></code> 用于定义或覆盖一个 CMake 缓存变量。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>然后安装脚本将使用将 <code class="docutils literal notranslate"><span class="pre">ENABLE_COMPRESSION</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> 运行，从而生成包含压缩的 <code class="docutils literal notranslate"><span class="pre">large.txt.xz</span></code> 的软件包。</p>
@@ -152,7 +156,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CPACK_CUSTOM_INSTALL_VARIABLES.html">CPACK_CUSTOM_INSTALL_VARIABLES</a></li> 
+        <li class="nav-item nav-item-this"><a href="CPACK_CUSTOM_INSTALL_VARIABLES.html">CPACK_CUSTOM_INSTALL_VARIABLES</a></li>
       </ul>
     </div>
 
@@ -176,5 +180,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

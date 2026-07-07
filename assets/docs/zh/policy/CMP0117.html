@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0117.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0118" href="CMP0118.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,22 +44,22 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0117.html">CMP0117</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0117.html">CMP0117</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0117">
 <span id="policy:CMP0117"></span><h1>CMP0117<a class="headerlink" href="CMP0117.html#cmp0117" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
 <p><span class="versionmodified added">在 3.20 版本中添加。</span></p>
 </div>
 <p>MSVC RTTI 标志 <code class="docutils literal notranslate"><span class="pre">/GR</span></code> 不再默认添加到 <span class="target" id="index-0-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 中。</p>
-<p>在使用 CMake 3.19 及以下版本的 MSVC 类编译器时，RTTI 标志 <code class="docutils literal notranslate"><span class="pre">/GR</span></code> 会默认添加到 <span class="target" id="index-1-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 中。这种行为源于对 Visual Studio（集成开发环境） 2003 及更早版本的 MSVC 支持，因为那些版本默认未启用 RTTI。现在已不再需要此做法。此外，对于希望以编程方式更改为 <code class="docutils literal notranslate"><span class="pre">/GR-</span></code> 的项目来说，这会造成问题。具体而言，它要求在知晓 CMake 内置默认值的前提下，对 <span class="target" id="index-2-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 变量进行字符串编辑，以便进行替换。</p>
+<p>在使用 CMake 3.19 及以下版本的 MSVC 类编译器时，RTTI 标志 <code class="docutils literal notranslate"><span class="pre">/GR</span></code> 会默认添加到 <span class="target" id="index-1-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 中。这种行为源于对 Visual Studio 2003（微软集成开发环境）（微软集成开发环境） 及更早版本的 MSVC 支持，因为那些版本默认未启用 RTTI。现在已不再需要此做法。此外，对于希望以编程方式更改为 <code class="docutils literal notranslate"><span class="pre">/GR-</span></code> 的项目来说，这会造成问题。具体而言，它要求在知晓 CMake 内置默认值的前提下，对 <span class="target" id="index-2-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 变量进行字符串编辑，以便进行替换。</p>
 <p>CMake 3.20 及以上版本倾向于默认不在 <span class="target" id="index-3-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 的值中包含 <code class="docutils literal notranslate"><span class="pre">/GR</span></code>。</p>
 <p>此策略为那些尚未更新以适应缺少 <code class="docutils literal notranslate"><span class="pre">/GR</span></code> 标志的项目提供了兼容性。策略设置在第一个初始化 <span class="target" id="index-4-variable:CMAKE_<LANG>_FLAGS"></span><a class="reference internal" href="../variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_<LANG>_FLAGS" title="CMAKE_<LANG>_FLAGS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code></a> 的 <span class="target" id="index-0-command:project"></span><a class="reference internal" href="../command/project.html#command:project" title="project"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">project()</span></code></a> 或 <span class="target" id="index-0-command:enable_language"></span><a class="reference internal" href="../command/enable_language.html#command:enable_language" title="enable_language"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">enable_language()</span></code></a> 命令调用时生效。</p>
 <div class="admonition note">
@@ -127,7 +127,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0117.html">CMP0117</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0117.html">CMP0117</a></li>
       </ul>
     </div>
 
@@ -151,5 +151,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

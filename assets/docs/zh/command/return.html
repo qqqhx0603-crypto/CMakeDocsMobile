@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="return.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="option" href="option.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html" accesskey="U">cmake-commands(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="return.html">return</a></li> 
+        <li class="nav-item nav-item-this"><a href="return.html">return</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="return">
 <span id="command:return"></span><h1>return<a class="headerlink" href="return.html#return" title="链接到此标题">¶</a></h1>
 <p>从文件、目录或函数中返回。</p>
@@ -60,7 +60,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">return([PROPAGATE &lt;var-name&gt;...])</span></code>：调用 `return()` 命令，从当前函数、宏或脚本提前返回。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">return([PROPAGATE &lt;var-name&gt;...])</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">return()</span></code> 命令，从当前函数、宏或脚本提前返回。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>当此命令在被包含的文件中（通过 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 或 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a>）遇到时，它会停止处理当前文件并将控制权返回给包含该文件的父文件。如果它在未被其他文件包含的文件（例如 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>）中遇到，则会调用由 <span class="target" id="index-0-command:cmake_language"></span><a class="reference internal" href="cmake_language.html#defer" title="cmake_language(defer)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_language(DEFER)</span></code></a> 调度的延迟调用，并将控制权返回给父目录（如果存在）。</p>
@@ -73,7 +73,7 @@
 <p>此选项用于设置或取消设置父目录或函数调用者作用域中的指定变量。这等效于 <span class="target" id="index-0-command:set"></span><a class="reference internal" href="set.html#command:set" title="set(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">set(PARENT_SCOPE)</span></code></a> 或 <span class="target" id="index-0-command:unset"></span><a class="reference internal" href="unset.html#command:unset" title="unset(parent_scope)"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">unset(PARENT_SCOPE)</span></code></a> 命令，但它与 <span class="target" id="index-0-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令的交互方式有所不同，如下所述。</p>
 <p><code class="docutils literal notranslate"><span class="pre">PROPAGATE</span></code> 选项与 <span class="target" id="index-1-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令结合使用时非常有用。<code class="docutils literal notranslate"><span class="pre">return</span></code> 将把指定的变量传播到由 <span class="target" id="index-2-command:block"></span><a class="reference internal" href="block.html#command:block" title="block"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">block()</span></code></a> 命令创建的任何封闭块作用域中。在函数内部，这确保了无论函数内部有多少块，变量都会传播到函数的调用者。如果不在函数内部，它确保变量被传播到父文件或父目录作用域。例如：</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">CMakeLists.txt</span><a class="headerlink" href="return.html#id1" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">CMakeLists.txt</span><a class="headerlink" href="return.html#id1" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">cmake_minimum_required(</span><span class="no">VERSION</span><span class="w"> </span><span class="m">3.25</span><span class="nf">)</span>
 <span class="nf">project(</span><span class="nb">example</span><span class="nf">)</span>
 
@@ -88,12 +88,12 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.25) project(example) set(var1 &quot;top-value&quot;) block(SCOPE_FOR VARIABLES) add_subdirectory(subDir) # var1 has the value &quot;block-nested&quot; endblock() # var1 has the value &quot;top-value&quot;</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake_minimum_required(VERSION 3.25)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code> 命令，声明工程所需的最低 CMake 版本。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">project(example)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">project()</span></code> 命令，定义项目名称及语言等元数据。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set(var1 &quot;top-value&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">var1</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">block(SCOPE_FOR VARIABLES)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">block()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  add_subdirectory(subDir)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_subdirectory()</span></code> 命令，把子目录中的 CMakeLists.txt 纳入当前构建。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  # var1 has the value &quot;block-nested&quot;</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">endblock()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># var1 has the value &quot;top-value&quot;</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">subDir/CMakeLists.txt</span><a class="headerlink" href="return.html#id2" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">subDir/CMakeLists.txt</span><a class="headerlink" href="return.html#id2" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">function(</span><span class="nb">multi_scopes</span><span class="w"> </span><span class="nb">result_var1</span><span class="w"> </span><span class="nb">result_var2</span><span class="nf">)</span>
 <span class="w">  </span><span class="nf">block(</span><span class="no">SCOPE_FOR</span><span class="w"> </span><span class="no">VARIABLES</span><span class="nf">)</span>
 <span class="w">    </span><span class="c"># This would only propagate out of the immediate block, not to</span>
@@ -126,7 +126,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function(multi_scopes result_var1 result_var2) block(SCOPE_FOR VARIABLES) # This would only propagate out of the immediate block, not to # the caller of the function. #set(${result_var1} &quot;new-value&quot; PARENT_SCOPE) #unset(${result_var2} PARENT_SCOPE) # This propagates the variables through the enclosing block and # out to the caller of the function. set(${result_var1} &quot;new-value&quot;) unset(${result_var2}) return(PROPAGATE ${result_var1} ${result_var2}) endblock() endfunction() set(var1 &quot;some-value&quot;) set(var2 &quot;another-value&quot;) multi_scopes(var1 var2) # Now var1 will hold &quot;new-value&quot; and var2 will be unset block(SCOPE_FOR VARIABLES) # This return() will set var1 in the directory scope that included us # via add_subdirectory(). The surrounding block() here does not limit # propagation to the current file, but the block() in the parent # directory scope does prevent propagation going any further. set(var1 &quot;block-nested&quot;) return(PROPAGATE var1) endblock()</span></code>：定义一个函数，并为其后的语句建立独立作用域。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">function(multi_scopes result_var1 result_var2)</span></code>：定义一个函数，并为其后的语句建立独立作用域。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  block(SCOPE_FOR VARIABLES)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">block()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # This would only propagate out of the immediate block, not to</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # the caller of the function.</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    #set(${result_var1} &quot;new-value&quot; PARENT_SCOPE)</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中；变量说明：<code class="docutils literal notranslate"><span class="pre">result_var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    #unset(${result_var2} PARENT_SCOPE)</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中；变量说明：<code class="docutils literal notranslate"><span class="pre">result_var2</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # This propagates the variables through the enclosing block and</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    # out to the caller of the function.</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    set(${result_var1} &quot;new-value&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，设置变量、缓存项或环境变量；变量说明：<code class="docutils literal notranslate"><span class="pre">result_var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    unset(${result_var2})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">unset()</span></code> 命令，具体行为由这一行传入的参数决定；变量说明：<code class="docutils literal notranslate"><span class="pre">result_var2</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    return(PROPAGATE ${result_var1} ${result_var2})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">return()</span></code> 命令，从当前函数、宏或脚本提前返回；变量说明：<code class="docutils literal notranslate"><span class="pre">result_var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供；<code class="docutils literal notranslate"><span class="pre">result_var2</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  endblock()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">endfunction()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set(var1 &quot;some-value&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">var1</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">set(var2 &quot;another-value&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">var2</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">var2</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">multi_scopes(var1 var2)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">multi_scopes()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># Now var1 will hold &quot;new-value&quot; and var2 will be unset</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">block(SCOPE_FOR VARIABLES)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">block()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  # This return() will set var1 in the directory scope that included us</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  # via add_subdirectory(). The surrounding block() here does not limit</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  # propagation to the current file, but the block() in the parent</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  # directory scope does prevent propagation going any further.</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  set(var1 &quot;block-nested&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">set()</span></code> 命令，把变量 <code class="docutils literal notranslate"><span class="pre">var1</span></code> 设为给定的值；变量说明：<code class="docutils literal notranslate"><span class="pre">var1</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  return(PROPAGATE var1)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">return()</span></code> 命令，从当前函数、宏或脚本提前返回。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">endblock()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
@@ -204,7 +204,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-commands.7.html">cmake-commands(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="return.html">return</a></li> 
+        <li class="nav-item nav-item-this"><a href="return.html">return</a></li>
       </ul>
     </div>
 
@@ -228,5 +228,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0060.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0061" href="CMP0061.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0060.html">CMP0060</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0060.html">CMP0060</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0060">
 <span id="policy:CMP0060"></span><h1>CMP0060<a class="headerlink" href="CMP0060.html#cmp0060" title="链接到此标题">¶</a></h1>
 <div class="admonition warning">
@@ -65,7 +65,7 @@
 <p>即使在隐式目录中也按完整路径链接库。</p>
 <p>引入策略 <span class="target" id="index-0-policy:CMP0003"></span><a class="reference internal" href="CMP0003.html#policy:CMP0003" title="CMP0003"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0003</span></code></a> 的初衷是，当向 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 命令提供完整路径时，始终通过完整路径链接库文件。然而，在某些平台（例如 HP-UX）上，编译器前端会为当前架构添加替代的库搜索路径（例如 <code class="docutils literal notranslate"><span class="pre">/usr/lib/&lt;arch&gt;</span></code> 包含针对当前架构的 <code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 中库的替代版本）。在这些平台上，<span class="target" id="index-0-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 可能会找到类似 <code class="docutils literal notranslate"><span class="pre">/usr/lib/libfoo.so</span></code> 这样不属于当前架构的库。</p>
 <p>在策略 <span class="target" id="index-1-policy:CMP0003"></span><a class="reference internal" href="CMP0003.html#policy:CMP0003" title="CMP0003"><code class="xref cmake cmake-policy docutils literal notranslate"><span class="pre">CMP0003</span></code></a> 之前，项目在上述情况下仍然可以构建，因为错误的库路径会被转换为链接行上的 <code class="docutils literal notranslate"><span class="pre">-lfoo</span></code>，链接器会在编译器前端隐式提供的特定架构搜索路径中找到正确的库。当时我们选择通过始终将隐式链接目录中找到的库文件转换为 <code class="docutils literal notranslate"><span class="pre">-lfoo</span></code> 标志来保持与此类项目的兼容性，以要求链接器搜索它们。这种方法允许现有项目在继续构建的同时，仍能通过完整路径链接到隐式链接目录之外的库（例如构建树中的库）。</p>
-<p>CMake 允许项目通过使用 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">IMPORTED 库目标</span></a> 并将其 <span class="target" id="index-0-prop_tgt:IMPORTED_LOCATION"></span><a class="reference internal" href="../prop_tgt/IMPORTED_LOCATION.html#prop_tgt:IMPORTED_LOCATION" title="IMPORTED_LOCATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_LOCATION</span></code></a> 属性设置为所需的库文件完整路径来覆盖此行为。事实上，许多 <a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">Find 模块</span></a> 正在学习提供 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets（目标）"><span class="std std-ref">导入目标</span></a>，而不是仅仅提供列出库文件的传统 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARIES</span></code> 变量。然而，这使得 Find 模块找到的库所生成的链接行取决于它是否通过导入目标进行链接，这是不一致的。此外，这种行为一直是困惑的来源，因为库文件生成的链接行取决于其位置。对于试图进行静态链接的项目来说，这也是有问题的，因为诸如 <code class="docutils literal notranslate"><span class="pre">-Wl,-Bstatic</span> <span class="pre">-lfoo</span> <span class="pre">-Wl,-Bdynamic</span></code> 之类的标志可能被用来帮助链接器选择 <code class="docutils literal notranslate"><span class="pre">libfoo.a</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">libfoo.so</span></code>，但随后会将动态链接泄漏到后续的库中。（关于该问题的典型解决方案，请参阅 <span class="target" id="index-0-prop_tgt:LINK_SEARCH_END_STATIC"></span><a class="reference internal" href="../prop_tgt/LINK_SEARCH_END_STATIC.html#prop_tgt:LINK_SEARCH_END_STATIC" title="LINK_SEARCH_END_STATIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_SEARCH_END_STATIC</span></code></a> 目标属性。）</p>
+<p>CMake 允许项目通过使用 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">IMPORTED 库目标</span></a> 并将其 <span class="target" id="index-0-prop_tgt:IMPORTED_LOCATION"></span><a class="reference internal" href="../prop_tgt/IMPORTED_LOCATION.html#prop_tgt:IMPORTED_LOCATION" title="IMPORTED_LOCATION"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">IMPORTED_LOCATION</span></code></a> 属性设置为所需的库文件完整路径来覆盖此行为。事实上，许多 <a class="reference internal" href="../manual/cmake-developer.7.html#find-modules"><span class="std std-ref">Find 模块</span></a> 正在学习提供 <a class="reference internal" href="../manual/cmake-buildsystem.7.html#imported-targets"><span class="std std-ref">导入目标</span></a>，而不是仅仅提供列出库文件的传统 <code class="docutils literal notranslate"><span class="pre">Foo_LIBRARIES</span></code> 变量。然而，这使得 Find 模块找到的库所生成的链接行取决于它是否通过导入目标进行链接，这是不一致的。此外，这种行为一直是困惑的来源，因为库文件生成的链接行取决于其位置。对于试图进行静态链接的项目来说，这也是有问题的，因为诸如 <code class="docutils literal notranslate"><span class="pre">-Wl,-Bstatic</span> <span class="pre">-lfoo</span> <span class="pre">-Wl,-Bdynamic</span></code> 之类的标志可能被用来帮助链接器选择 <code class="docutils literal notranslate"><span class="pre">libfoo.a</span></code> 而不是 <code class="docutils literal notranslate"><span class="pre">libfoo.so</span></code>，但随后会将动态链接泄漏到后续的库中。（关于该问题的典型解决方案，请参阅 <span class="target" id="index-0-prop_tgt:LINK_SEARCH_END_STATIC"></span><a class="reference internal" href="../prop_tgt/LINK_SEARCH_END_STATIC.html#prop_tgt:LINK_SEARCH_END_STATIC" title="LINK_SEARCH_END_STATIC"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">LINK_SEARCH_END_STATIC</span></code></a> 目标属性。）</p>
 <p>当首次引入隐式链接目录中库的特殊情况时，隐式链接目录列表只是硬编码的（例如 <code class="docutils literal notranslate"><span class="pre">/lib</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> 等）。从那时起，CMake 已经学会了检测编译器前端使用的隐式链接目录。如有必要，<span class="target" id="index-1-command:find_library"></span><a class="reference internal" href="../command/find_library.html#command:find_library" title="find_library"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_library()</span></code></a> 命令可以被教导使用这些信息来帮助找到正确架构的库。</p>
 <p>由于这些原因，CMake 3.3 及更高版本倾向于放弃这种特殊情况，即使库位于隐式链接目录中，也按完整路径进行链接。策略 <code class="docutils literal notranslate"><span class="pre">CMP0060</span></code> 为现有项目提供了兼容性。</p>
 <p>此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是要求链接器搜索已知位于隐式链接目录中的库。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是即使库位于隐式链接目录中，也按完整路径链接库。</p>
@@ -126,7 +126,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0060.html">CMP0060</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0060.html">CMP0060</a></li>
       </ul>
     </div>
 
@@ -150,5 +150,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

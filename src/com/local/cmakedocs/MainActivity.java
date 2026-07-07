@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     private static final String PREFS = "cmake_docs_state";
     private static final String ASSET_BASE = "file:///android_asset/docs/";
     private static final int MAX_HISTORY = 30;
-    private static final int CONTENT_VERSION = 5;
+    private static final int CONTENT_VERSION = 6;
 
     private WebView webView;
     private WebView standbyWebView;

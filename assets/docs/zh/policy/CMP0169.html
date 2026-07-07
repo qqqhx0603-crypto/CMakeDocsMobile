@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0169.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0170" href="CMP0170.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0169.html">CMP0169</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0169.html">CMP0169</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0169">
 <span id="policy:CMP0169"></span><h1>CMP0169<a class="headerlink" href="CMP0169.html#cmp0169" title="链接到此标题">¶</a></h1>
 <div class="versionadded">
@@ -68,7 +68,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_GetProperties(depname) if(NOT depname_POPULATED) FetchContent_Populate(depname) add_subdirectory(${depname_SOURCE_DIR} ${depname_BINARY_DIR}) endif()</span></code>：调用 `FetchContent_GetProperties()` 命令，具体行为由这一行传入的参数决定。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">FetchContent_GetProperties(depname)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_GetProperties()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">if(NOT depname_POPULATED)</span></code>：开始一个 <code class="docutils literal notranslate"><span class="pre">if()</span></code> 条件判断，根据条件结果选择是否执行后续语句；条件运算符：<code class="docutils literal notranslate"><span class="pre">NOT</span></code> 表示逻辑非：反转后续条件的真假值。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  FetchContent_Populate(depname)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">FetchContent_Populate()</span></code> 命令，具体行为由这一行传入的参数决定。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  add_subdirectory(${depname_SOURCE_DIR} ${depname_BINARY_DIR})</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_subdirectory()</span></code> 命令，把子目录中的 CMakeLists.txt 纳入当前构建；变量说明：<code class="docutils literal notranslate"><span class="pre">depname_SOURCE_DIR</span></code>：源代码、目录相关变量，其精确取值和作用域以当前页面或脚本上下文为准；<code class="docutils literal notranslate"><span class="pre">depname_BINARY_DIR</span></code>：构建、目录相关变量，其精确取值和作用域以当前页面或脚本上下文为准。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">endif()</span></code>：这一行结束或切换上一段控制结构的分支。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>上述模式不支持随着时间推移添加到 <span class="target" id="index-0-module:FetchContent"></span><a class="reference internal" href="../module/FetchContent.html#module:FetchContent" title="FetchContent"><code class="xref cmake cmake-module docutils literal notranslate"><span class="pre">FetchContent</span></code></a> 中的许多功能。它忽略了诸如 <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code> 和 <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FROM_ALL</span></code> 等选项，这些选项可以传递给 <span class="target" id="index-1-command:fetchcontent_declare"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_declare" title="fetchcontent_declare"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_Declare()</span></code></a>，但无法让上述项目代码感知到。它也不支持 <a class="reference internal" href="../guide/using-dependencies/index.html#dependency-providers-overview"><span class="std std-ref">依赖项提供程序（dependency providers）</span></a>。项目应调用 <span class="target" id="index-1-command:fetchcontent_makeavailable"></span><a class="reference internal" href="../module/FetchContent.html#command:fetchcontent_makeavailable" title="fetchcontent_makeavailable"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">FetchContent_MakeAvailable()</span></code></a>，而不是使用上述模式。</p>
@@ -138,7 +138,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0169.html">CMP0169</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0169.html">CMP0169</a></li>
       </ul>
     </div>
 
@@ -162,5 +162,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

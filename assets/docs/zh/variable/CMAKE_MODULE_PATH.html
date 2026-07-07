@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMAKE_MODULE_PATH.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMAKE_MFC_FLAG" href="CMAKE_MFC_FLAG.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,17 +44,21 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html" accesskey="U">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMAKE_MODULE_PATH.html">CMAKE_MODULE_PATH</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMAKE_MODULE_PATH.html">CMAKE_MODULE_PATH</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmake-module-path">
 <span id="variable:CMAKE_MODULE_PATH"></span><h1>CMAKE_MODULE_PATH<a class="headerlink" href="CMAKE_MODULE_PATH.html#cmake-module-path" title="链接到此标题">¶</a></h1>
+<!-- CMAKE_ZH_SYMBOL_NOTE_BEGIN -->
+<div class="admonition note cmake-symbol-note"><p class="admonition-title">变量说明</p><p><code class="docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code>：分号分隔的列表，使用正斜杠表示，指定 CMake 模块的搜索路径，这些模块将被 include() 或 find_package() 命令在检查随 CMake 提供的默认模块之前加载。默认情况下它是空的。它旨在由项目设置。</p></div>
+<!-- CMAKE_ZH_SYMBOL_NOTE_END -->
+
 <p><a class="reference internal" href="../manual/cmake-language.7.html#cmake-language-lists"><span class="std std-ref">分号分隔的列表</span></a>，使用正斜杠表示，指定 CMake 模块的搜索路径，这些模块将被 <span class="target" id="index-0-command:include"></span><a class="reference internal" href="../command/include.html#command:include" title="include"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">include()</span></code></a> 或 <span class="target" id="index-0-command:find_package"></span><a class="reference internal" href="../command/find_package.html#command:find_package" title="find_package"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">find_package()</span></code></a> 命令在检查随 CMake 提供的默认模块之前加载。默认情况下它是空的。它旨在由项目设置。</p>
 <p>一个项目通常会有一个目录，其中包含各种 <code class="docutils literal notranslate"><span class="pre">*.cmake</span></code> 文件来辅助开发。将该目录添加到 <span class="target" id="index-0-variable:CMAKE_MODULE_PATH"></span><a class="reference internal" href="CMAKE_MODULE_PATH.html#variable:CMAKE_MODULE_PATH" title="CMAKE_MODULE_PATH"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code></a> 可以简化加载它们。例如，一个项目的顶级 <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> 文件可能包含</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">list(</span><span class="no">APPEND</span><span class="w"> </span><span class="no">CMAKE_MODULE_PATH</span><span class="w"> </span><span class="s">"${CMAKE_CURRENT_SOURCE_DIR}/cmake"</span><span class="nf">)</span>
@@ -65,7 +69,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">list(APPEND CMAKE_MODULE_PATH &quot;${CMAKE_CURRENT_SOURCE_DIR}/cmake&quot;) include(Foo) # Loads ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Foo.cmake find_package(Bar) # Loads ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindBar.cmake</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">list(APPEND CMAKE_MODULE_PATH &quot;${CMAKE_CURRENT_SOURCE_DIR}/cmake&quot;)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">list()</span></code> 命令，对列表变量执行追加、删除、查询等操作；变量说明：<code class="docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code>：当前正在处理的源代码目录。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">include(Foo) # Loads ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Foo.cmake</span></code>：这一行继续补充当前命令或表达式的内容；变量说明：<code class="docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code>：当前正在处理的源代码目录。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">find_package(Bar) # Loads ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindBar.cmake</span></code>：这一行继续补充当前命令或表达式的内容；变量说明：<code class="docutils literal notranslate"><span class="pre">CMAKE_CURRENT_SOURCE_DIR</span></code>：当前正在处理的源代码目录。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </section>
@@ -123,7 +127,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-variables.7.html">cmake-variables(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMAKE_MODULE_PATH.html">CMAKE_MODULE_PATH</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMAKE_MODULE_PATH.html">CMAKE_MODULE_PATH</a></li>
       </ul>
     </div>
 
@@ -147,5 +151,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

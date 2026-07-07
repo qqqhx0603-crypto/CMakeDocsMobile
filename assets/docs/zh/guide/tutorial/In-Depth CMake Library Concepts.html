@@ -5,20 +5,20 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../../_static/doctools.js@v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html" />
     <link rel="icon" href="../../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="第 6 步：深入系统内省" href="In-Depth&#32;System&#32;Introspection.html" />
-    <link rel="prev" title="第 4 步：深入了解 CMake 目标命令" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" />
+    <link rel="next" title="Step 6: In-Depth System Introspection" href="In-Depth&#32;System&#32;Introspection.html" />
+    <link rel="prev" title="Step 4: In-Depth CMake Target Commands" href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -32,9 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引" accesskey="I">索引</a></li>
         <li class="right">
-          <a href="In-Depth&#32;System&#32;Introspection.html" title="第 6 步：深入系统内省" accesskey="N">下一页</a> |</li>
+          <a href="In-Depth&#32;System&#32;Introspection.html" title="Step 6: In-Depth System Introspection" accesskey="N">下一页</a> |</li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="第 4 步：深入了解 CMake 目标命令" accesskey="P">上一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="Step 4: In-Depth CMake Target Commands" accesskey="P">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -44,15 +44,15 @@
     <a href="../../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">CMake 教程</a> »</li>
-        <li class="nav-item nav-item-this"><a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html">第五步：深入 CMake 库概念</a></li> 
+        <li class="nav-item nav-item-this"><a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html">第五步：深入 CMake 库概念</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="step-5-in-depth-cmake-library-concepts">
 <span id="guide:tutorial/In-Depth CMake Library Concepts"></span><h1>第 5 步：深入了解 CMake 库概念<a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#step-5-in-depth-cmake-library-concepts" title="链接到此标题">¶</a></h1>
 <p>虽然可执行文件大多是通用的，但库的形式多种多样。仅举几例，就有静态归档库、共享对象库、模块库、对象库、仅含头文件的库，以及描述高级 CMake 属性并可被其他目标继承的库。</p>
@@ -89,7 +89,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyLib-static STATIC) add_library(MyLib-shared SHARED) # Depends on BUILD_SHARED_LIBS add_library(MyLib)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyLib-static STATIC)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyLib-shared SHARED)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre"># Depends on BUILD_SHARED_LIBS</span></code>：这是 CMake 注释。这是代码作者保留的说明，描述当前步骤的目的、输入输出或使用限制；英文原文保留在代码中。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyLib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>这是一种理想的行为，因为它允许打包人员确定生成哪种类型的库，并确保依赖项链接到该版本的库，而无需修改其源代码。在某些上下文中，完全静态构建是合适的，而在其他上下文中，共享库则是首选。</p>
@@ -127,7 +127,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial -DBUILD_SHARED_LIBS=ON</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial -DBUILD_SHARED_LIBS=ON</span></code>：这是一条命令行输入，调用 CMake 命令；变量说明：<code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code>：未显式指定库类型时，控制 add_library() 默认生成共享库还是静态库；运算符：<code class="docutils literal notranslate"><span class="pre">=</span></code> 表示赋值或键值关联；命令行选项：<code class="docutils literal notranslate"><span class="pre">-D</span></code> 用于定义或覆盖一个 CMake 缓存变量；<code class="docutils literal notranslate"><span class="pre">--preset</span></code> 用于使用 CMakePresets.json 中定义的预设。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>然后我们可以使用 <a class="reference internal" href="../../manual/cmake.1.html#cmdoption-cmake-build-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">-t</span></code></a> 仅构建 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库。</p>
@@ -135,7 +135,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build -t MathFunctions</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build -t MathFunctions</span></code>：这是一条命令行输入，调用 CMake 命令；命令行选项：<code class="docutils literal notranslate"><span class="pre">--build</span></code> 用于驱动已经生成的构建目录执行构建。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>验证是否为 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 生成了共享库，然后重置 <span class="target" id="index-5-variable:BUILD_SHARED_LIBS"></span><a class="reference internal" href="../../variable/BUILD_SHARED_LIBS.html#variable:BUILD_SHARED_LIBS" title="BUILD_SHARED_LIBS"><code class="xref cmake cmake-variable docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code></a>，可以通过使用 <code class="docutils literal notranslate"><span class="pre">-DBUILD_SHARED_LIBS=OFF</span></code> 重新配置，或者删除 <code class="docutils literal notranslate"><span class="pre">CMakeCache.txt</span></code> 来实现。</p>
@@ -153,7 +153,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyInterface INTERFACE) target_compile_definitions(MyInterface INTERFACE MYINTERFACE_COMPILE_DEF)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyInterface INTERFACE)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">target_compile_definitions(MyInterface INTERFACE MYINTERFACE_COMPILE_DEF)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_compile_definitions()</span></code> 命令，为目标设置编译宏。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>C++ 开发中最常见的接口库类型是仅包含头文件的库。此类库不构建任何东西，只提供发现其头文件所需的标志。</p>
@@ -195,7 +195,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --preset tutorial</span></code>：这是一条命令行输入，调用 CMake 命令；命令行选项：<code class="docutils literal notranslate"><span class="pre">--preset</span></code> 用于使用 CMakePresets.json 中定义的预设。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令；命令行选项：<code class="docutils literal notranslate"><span class="pre">--build</span></code> 用于驱动已经生成的构建目录执行构建。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出现在是否使用了日志框架。</p>
@@ -204,18 +204,18 @@
 <h3>解决方案<a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#id6" title="此标题的永久链接">¶</a></h3>
 <p>首先，我们添加一个名为 <code class="docutils literal notranslate"><span class="pre">MathLogger</span></code> 的新 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库。</p>
 <details><summary>TODO 1：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathlogger-cmakelists-txt-add-library">
-<div class="code-block-caption"><span class="caption-text">TODO 1: MathFunctions/MathLogger/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathlogger-cmakelists-txt-add-library" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 1: MathFunctions/MathLogger/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathlogger-cmakelists-txt-add-library" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_library(</span><span class="nb">MathLogger</span><span class="w"> </span><span class="no">INTERFACE</span><span class="nf">)</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MathLogger INTERFACE)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MathLogger INTERFACE)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 </details><p>然后我们添加适当的 <span class="target" id="index-3-command:target_sources"></span><a class="reference internal" href="../../command/target_sources.html#command:target_sources" title="target_sources"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_sources()</span></code></a> 调用来捕获头文件信息。我们给这个文件集命名为 <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code>，这样我们就可以省略 <code class="docutils literal notranslate"><span class="pre">TYPE</span></code>；我们不需要 <code class="docutils literal notranslate"><span class="pre">BASE_DIRS</span></code>，因为我们将使用当前源目录的默认值；我们也可以省略 <code class="docutils literal notranslate"><span class="pre">FILES</span></code> 列表，因为我们不打算安装该库。</p>
 <details><summary>TODO 2：点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathlogger-cmakelists-txt-target-sources">
-<div class="code-block-caption"><span class="caption-text">TODO 2: MathFunctions/MathLogger/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathlogger-cmakelists-txt-target-sources" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 2: MathFunctions/MathLogger/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathlogger-cmakelists-txt-target-sources" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_sources(</span><span class="nb">MathLogger</span>
 <span class="w">  </span><span class="no">INTERFACE</span>
 <span class="w">    </span><span class="no">FILE_SET</span><span class="w"> </span><span class="no">HEADERS</span>
@@ -223,13 +223,13 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_sources(MathLogger INTERFACE FILE_SET HEADERS )</span></code>：调用 `target_sources()` 命令，为目标补充源文件列表。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_sources(MathLogger</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  INTERFACE</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    FILE_SET HEADERS</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 </details><p>现在我们可以将 <code class="docutils literal notranslate"><span class="pre">MathLogger</span></code> 库添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 的链接库中，并将 <code class="docutils literal notranslate"><span class="pre">MathLogger</span></code> 文件夹添加到项目中。</p>
 <details><summary>TODO 3-4: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-link-mathlogger">
-<div class="code-block-caption"><span class="caption-text">TODO 3: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-link-mathlogger" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 3: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-link-mathlogger" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">MathFunctions</span>
 <span class="w">  </span><span class="no">PRIVATE</span>
 <span class="w">    </span><span class="nb">MathLogger</span>
@@ -237,23 +237,23 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(MathFunctions PRIVATE MathLogger )</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(MathFunctions</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  PRIVATE</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    MathLogger</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 <div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-add-mathlogger">
-<div class="code-block-caption"><span class="caption-text">TODO 4: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-add-mathlogger" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 4: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-add-mathlogger" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_subdirectory(</span><span class="nb">MathLogger</span><span class="nf">)</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_subdirectory(MathLogger)</span></code>：调用 `add_subdirectory()` 命令，把子目录中的 CMakeLists.txt 纳入当前构建。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_subdirectory(MathLogger)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_subdirectory()</span></code> 命令，把子目录中的 CMakeLists.txt 纳入当前构建。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 </details><p>最后，我们可以更新 <code class="docutils literal notranslate"><span class="pre">MathFunctions.cxx</span></code> 以利用新的记录器。</p>
 <details><summary>TODO 5-7: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-mathlogger-header">
-<div class="code-block-caption"><span class="caption-text">TODO 5: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-header" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 5: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-header" title="Link to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cmath&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;format&gt;</span>
 
@@ -261,12 +261,12 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;cmath&gt; #include &lt;format&gt; #include &lt;MathLogger.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;cmath&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;format&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;MathLogger.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 <div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-mathlogger-logger">
-<div class="code-block-caption"><span class="caption-text">TODO 6: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-logger" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 6: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-logger" title="Link to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">mathlogger</span><span class="o">::</span><span class="n">Logger</span><span class="w"> </span><span class="n">Logger</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -276,7 +276,7 @@
 
 </div>
 <div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-cxx-mathlogger-code">
-<div class="code-block-caption"><span class="caption-text">TODO 7: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-code" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 7: MathFunctions/MathFunctions.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-cxx-mathlogger-code" title="Link to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Logger</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"Computing sqrt of {} to be {}</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">));</span>
 </pre></div>
 </div>
@@ -294,7 +294,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyObjects OBJECT)</span></code>：调用 `add_library()` 命令，定义一个库目标。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_library(MyObjects OBJECT)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> 命令，定义一个库目标。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>对象库最明显的缺点是对象本身不能被传递链接。如果一个对象库出现在目标的 <span class="target" id="index-0-prop_tgt:INTERFACE_LINK_LIBRARIES"></span><a class="reference internal" href="../../prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES" title="INTERFACE_LINK_LIBRARIES"><code class="xref cmake cmake-prop_tgt docutils literal notranslate"><span class="pre">INTERFACE_LINK_LIBRARIES</span></code></a> 中，链接该目标的依赖项将“看不到”这些对象。在这种情况下，对象库的作用类似于 <code class="docutils literal notranslate"><span class="pre">INTERFACE</span></code> 库。一般情况下，对象库仅适用于通过 <span class="target" id="index-0-command:target_link_libraries"></span><a class="reference internal" href="../../command/target_link_libraries.html#command:target_link_libraries" title="target_link_libraries"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">target_link_libraries()</span></code></a> 进行 <code class="docutils literal notranslate"><span class="pre">PRIVATE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 使用。</p>
@@ -329,7 +329,7 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">cmake --build build</span></code>：这是一条命令行输入，调用 CMake 命令；命令行选项：<code class="docutils literal notranslate"><span class="pre">--build</span></code> 用于驱动已经生成的构建目录执行构建。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 <p>验证 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 的输出现在是否包含验证消息。还要花点时间检查 <code class="docutils literal notranslate"><span class="pre">build/MathFunctions/MathExtensions</span></code> 下的构建目录。您应该发现，与 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 不同，没有任何对象库产生归档文件。</p>
@@ -339,7 +339,7 @@
 <p>首先，我们将所有对象库的链接添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code>。它们是 <code class="docutils literal notranslate"><span class="pre">PUBLIC</span></code> 的，因为我们希望将对象作为其自身构建步骤的一部分添加到 <code class="docutils literal notranslate"><span class="pre">MathFunctions</span></code> 库中，并且我们希望该库的使用者能够使用这些头文件。</p>
 <p>然后我们向项目添加 <code class="docutils literal notranslate"><span class="pre">MathExtensions</span></code> 子目录。</p>
 <details><summary>TODO 8-9: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-link-objects">
-<div class="code-block-caption"><span class="caption-text">TODO 8: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-link-objects" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 8: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-link-objects" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">target_link_libraries(</span><span class="nb">MathFunctions</span>
 <span class="w">  </span><span class="no">PRIVATE</span>
 <span class="w">    </span><span class="nb">MathLogger</span>
@@ -352,43 +352,43 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(MathFunctions PRIVATE MathLogger PUBLIC OpAdd OpMul OpSub )</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(MathFunctions</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  PRIVATE</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    MathLogger</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">  PUBLIC</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    OpAdd</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    OpMul</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">    OpSub</span></code>：这一行继续补充当前命令或表达式的内容。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">)</span></code>：这一行继续补充当前命令或表达式的内容。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 <div class="literal-block-wrapper docutils container" id="mathfunctions-cmakelists-txt-add-objs">
-<div class="code-block-caption"><span class="caption-text">TODO 9: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-add-objs" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 9: MathFunctions/CMakeLists.txt</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-cmakelists-txt-add-objs" title="Link to this code">¶</a></div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nf">add_subdirectory(</span><span class="nb">MathExtensions</span><span class="nf">)</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_subdirectory(MathExtensions)</span></code>：调用 `add_subdirectory()` 命令，把子目录中的 CMakeLists.txt 纳入当前构建。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">add_subdirectory(MathExtensions)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">add_subdirectory()</span></code> 命令，把子目录中的 CMakeLists.txt 纳入当前构建。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 </details><p>为了让使用者能够使用这些扩展，我们在 <code class="docutils literal notranslate"><span class="pre">MathFunctions.h</span></code> 头文件中包含了它们的头文件。</p>
 <details><summary>TODO 10: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="mathfunctions-mathfunctions-h-include-objects">
-<div class="code-block-caption"><span class="caption-text">TODO 10: MathFunctions/MathFunctions.h</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-h-include-objects" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 10: MathFunctions/MathFunctions.h</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#mathfunctions-mathfunctions-h-include-objects" title="Link to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;OpAdd.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;OpMul.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;OpSub.h&gt;</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;OpAdd.h&gt; #include &lt;OpMul.h&gt; #include &lt;OpSub.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;OpAdd.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;OpMul.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">#include &lt;OpSub.h&gt;</span></code>：这一行引入头文件，使当前源文件可以使用其中声明的类型、函数或宏。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
 </details><p>最后，我们可以利用 <code class="docutils literal notranslate"><span class="pre">Tutorial</span></code> 程序中的这些扩展。</p>
 <details><summary>TODO 11: 点击显示/隐藏答案</summary><div class="literal-block-wrapper docutils container" id="tutorial-tutorial-cxx-use-objects">
-<div class="code-block-caption"><span class="caption-text">TODO 11: Tutorial/Tutorial.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#tutorial-tutorial-cxx-use-objects" title="跳转到此代码">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">TODO 11: Tutorial/Tutorial.cxx</span><a class="headerlink" href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html#tutorial-tutorial-cxx-use-objects" title="Link to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">checkValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mathfunctions</span><span class="o">::</span><span class="n">OpMul</span><span class="p">(</span><span class="n">outputValue</span><span class="p">,</span><span class="w"> </span><span class="n">outputValue</span><span class="p">);</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"The square of {} is {}</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">outputValue</span><span class="p">,</span>
 <span class="w">                         </span><span class="n">checkValue</span><span class="p">);</span>
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">double const checkValue = mathfunctions::OpMul(outputValue, outputValue); std::cout &lt;&lt; std::format(&quot;The square of {} is {}\n&quot;, outputValue, checkValue);</span></code>：这一行完成赋值或初始化，把右侧结果写入左侧变量。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">double const checkValue = mathfunctions::OpMul(outputValue, outputValue);</span></code>：这一行完成赋值或初始化，把右侧结果写入左侧变量；变量说明：<code class="docutils literal notranslate"><span class="pre">checkValue</span></code>：当前示例使用的变量，其值由前面的命令、调用参数或运行环境提供；运算符：<code class="docutils literal notranslate"><span class="pre">=</span></code> 表示赋值或键值关联。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">std::cout &lt;&lt; std::format(&quot;The square of {} is {}\n&quot;, outputValue,</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文；运算符：<code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> 表示流插入，把右侧内容写入输出流。</p></li><li><p><code class="docutils literal notranslate"><span class="pre">                         checkValue);</span></code>：这一行补充当前 C/C++ 代码逻辑，具体作用取决于其上下文。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
 </div>
@@ -474,9 +474,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="总索引">索引</a></li>
         <li class="right">
-          <a href="In-Depth&#32;System&#32;Introspection.html" title="第 6 步：深入系统内省">下一页</a> |</li>
+          <a href="In-Depth&#32;System&#32;Introspection.html" title="Step 6: In-Depth System Introspection">下一页</a> |</li>
         <li class="right">
-          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="第 4 步：深入了解 CMake 目标命令">上一页</a> |</li>
+          <a href="In-Depth&#32;CMake&#32;Target&#32;Commands.html" title="Step 4: In-Depth CMake Target Commands">上一页</a> |</li>
   <li>
     <label class="sidebar-toggle" for="sidebar-check"></label>
   </li>
@@ -486,7 +486,7 @@
     <a href="../../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../../index.html">CMake 教程</a> »</li>
-        <li class="nav-item nav-item-this"><a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html">第五步：深入 CMake 库概念</a></li> 
+        <li class="nav-item nav-item-this"><a href="In-Depth&#32;CMake&#32;Library&#32;Concepts.html">第五步：深入 CMake 库概念</a></li>
       </ul>
     </div>
 
@@ -510,5 +510,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>

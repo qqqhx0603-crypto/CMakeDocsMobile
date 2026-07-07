@@ -5,11 +5,11 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css@v=a3862c66.css" />
     <link rel="stylesheet" type="text/css" href="../_static/cmake.css@v=d27bb136.css" />
-    
+
     <script src="../_static/documentation_options.js@v=a17b270f"></script>
     <script src="../_static/doctools.js@v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js@v=dc90522c"></script>
-    
+
     <link rel="canonical" href="CMP0008.html" />
     <link rel="icon" href="../_static/cmake-favicon.ico" />
     <link rel="index" title="索引" href="../genindex.html" />
@@ -18,7 +18,7 @@
     <link rel="prev" title="CMP0009" href="CMP0009.html" />
     <link rel="search" type="application/opensearchdescription+xml" title="在最新版本 CMake 文档中搜索" href="https://cmake.com.cn/cmake/help/latest-opensearch.xml" />
     <script type="text/javascript" src="../version_switch.js"></script>
- 
+
 
   </head><body>
     <input id="sidebar-check" type="checkbox" />
@@ -44,15 +44,15 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html" accesskey="U">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0008.html">CMP0008</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0008.html">CMP0008</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <section id="cmp0008">
 <span id="policy:CMP0008"></span><h1>CMP0008<a class="headerlink" href="CMP0008.html#cmp0008" title="链接到此标题">¶</a></h1>
 <div class="admonition warning">
@@ -65,10 +65,10 @@
 </pre></div>
 </div>
 <!-- CMAKE_ZH_CODE_NOTES_BEGIN -->
-<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /full/path/to/somelib)</span></code>：调用 `target_link_libraries()` 命令，为目标链接依赖库。</p></li></ul></div>
+<div class="admonition note cmake-code-notes"><p class="admonition-title">代码说明</p><ul class="simple"><li><p><code class="docutils literal notranslate"><span class="pre">target_link_libraries(myexe /full/path/to/somelib)</span></code>：调用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries()</span></code> 命令，为目标链接依赖库。</p></li></ul></div>
 <!-- CMAKE_ZH_CODE_NOTES_END -->
 
-<p>其中 <code class="docutils literal notranslate"><span class="pre">somelib</span></code> 应该是一个有效的库文件名，例如 <code class="docutils literal notranslate"><span class="pre">libsomelib.a</span></code> 或 <code class="docutils literal notranslate"><span class="pre">somelib.lib</span></code>。对于 Makefile（构建脚本） 生成器，这会在构建时产生错误，因为无法找到对完整路径的依赖。对于 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio（集成开发环境） 生成器</span></a> IDE 和 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器，这曾经可以意外地工作，因为 CMake 总是会分离库目录并要求链接器按名称搜索库（<code class="docutils literal notranslate"><span class="pre">-lsomelib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">somelib.lib</span></code>）。尽管 Makefile（构建脚本） 失败了，但有些项目具有这样的代码，并且仅使用 Visual Studio（集成开发环境） 和/或 Xcode 构建。此版本的 CMake 倾向于将完整路径直接传递给本机构建工具，在这种情况下，由于它没有命名有效的库文件，因此会失败。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">somelib</span></code> 应该是一个有效的库文件名，例如 <code class="docutils literal notranslate"><span class="pre">libsomelib.a</span></code> 或 <code class="docutils literal notranslate"><span class="pre">somelib.lib</span></code>。对于 Makefile（Make 构建脚本） 生成器，这会在构建时产生错误，因为无法找到对完整路径的依赖。对于 <a class="reference internal" href="../manual/cmake-generators.7.html#visual-studio-generators"><span class="std std-ref">Visual Studio（集成开发环境） 生成器</span></a> IDE 和 <span class="target" id="index-0-generator:Xcode"></span><a class="reference internal" href="../generator/Xcode.html#generator:Xcode" title="Xcode"><code class="xref cmake cmake-generator docutils literal notranslate"><span class="pre">Xcode</span></code></a> 生成器，这曾经可以意外地工作，因为 CMake 总是会分离库目录并要求链接器按名称搜索库（<code class="docutils literal notranslate"><span class="pre">-lsomelib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">somelib.lib</span></code>）。尽管 Makefile（Make 构建脚本） 失败了，但有些项目具有这样的代码，并且仅使用 Visual Studio（集成开发环境） 和/或 Xcode 构建。此版本的 CMake 倾向于将完整路径直接传递给本机构建工具，在这种情况下，由于它没有命名有效的库文件，因此会失败。</p>
 <p>此策略确定如何处理不指向有效库文件的完整路径。此策略的 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为是从路径中分离库名称并要求链接器搜索它。此策略的 <code class="docutils literal notranslate"><span class="pre">NEW</span></code> 行为是信任给定的路径并将其原样传递给本机构建工具。</p>
 <p>此策略是在 CMake 2.6.1 版本中引入的。在 CMake 4.0 版本中移除之前，可以通过 <span class="target" id="index-1-command:cmake_policy"></span><a class="reference internal" href="../command/cmake_policy.html#command:cmake_policy" title="cmake_policy"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_policy()</span></code></a> 或 <span class="target" id="index-1-command:cmake_minimum_required"></span><a class="reference internal" href="../command/cmake_minimum_required.html#command:cmake_minimum_required" title="cmake_minimum_required"><code class="xref cmake cmake-command docutils literal notranslate"><span class="pre">cmake_minimum_required()</span></code></a> 设置。如果未设置，CMake 会发出警告，并使用 <code class="docutils literal notranslate"><span class="pre">OLD</span></code> 行为。</p>
 </section>
@@ -126,7 +126,7 @@
     <a href="../index.html">文档</a> »</li>
 
           <li class="nav-item nav-item-1"><a href="../manual/cmake-policies.7.html">cmake-policies(7)</a> »</li>
-        <li class="nav-item nav-item-this"><a href="CMP0008.html">CMP0008</a></li> 
+        <li class="nav-item nav-item-this"><a href="CMP0008.html">CMP0008</a></li>
       </ul>
     </div>
 
@@ -150,5 +150,5 @@ pageTracker._trackPageview();
   addEventListener("hashchange", hide)
 })();
 </script>
-  
+
 </body></html>
